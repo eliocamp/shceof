@@ -676,13 +676,6 @@
       "Repository": "CRAN",
       "Hash": "6154ec2223172bce8162d4153cda21f7"
     },
-    "irlba": {
-      "Package": "irlba",
-      "Version": "2.3.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "a9ad517358000d57022401ef18ee657a"
-    },
     "isoband": {
       "Package": "isoband",
       "Version": "0.2.3",
