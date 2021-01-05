@@ -1,0 +1,925 @@
+---
+title: "Title Goes Here"
+author:
+  - Myfirstname Mylastname:
+      email: fl@oneplace.edu
+      institute: [UofO]
+      correspondence: true
+  - Yourfirstname Yourlastname:
+      email: fl@another.edu
+      institute: [UofA]
+      correspondence: false
+institute:
+  - UofO: University of One Place
+  - UofA: University of Another Place
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::pdf_document2:
+    fig_height: 7.6
+    fig_width: 12.8
+  powerpoint_presentation:
+    fig_height: 7.6
+    fig_width: 12.8
+    reference_doc: ../templates/template.pptx
+bibliography: references.bib
+csl: "../templates/journal-of-archaeological-science.csl" # Insert path for the bib-style
+header-includes:
+  - \usepackage{subfig}
+# abstract: |
+#   Text of abstract
+# keywords: |
+#   keyword 1; keyword 2; keyword 3
+# highlights: |
+#   These are the highlights. 
+---
+
+
+<!-- cambiarn nomenclatura. Imaginario / real -> pasarlo a nombrar la fase -->
+
+<!-- Chequear con ncep -->
+
+
+<!-- The following code chunk defines some general settings how code chunks should behave. -->
+
+```{r setup, echo = FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE,
+  cache = TRUE,
+  comment = "#>",
+  cache.extra = 43,
+  cache.path = "../cache/paper/",
+  fig.path = "../figures/",
+  dpi = 300
+)
+
+library(metR)
+library(data.table)
+library(magrittr)
+library(ggplot2)
+library(tagger)
+library(ggperiodic)
+library(patchwork)
+library(shceof)
+
+
+theme_set(theme_shceof(base_size = 16))
+
+grid <- theme(panel.grid = element_line(color = "gray10", size = 0.4, linetype = 3))
+
+guide_colorstrip_bottom <- function(width = 25, height = 0.5, ...) {
+  guide_colorstrip(title.position = "top", title.hjust = 0.5,
+                   barheight = height,
+                   barwidth = width, ...)
+}
+
+guide_colorsteps_bottom <- function(width = 25, height = 0.5, ...) {
+  guide_colorsteps(title.position = "top", title.hjust = 0.5,
+                   barheight = height,
+                   barwidth = width, ...)
+}
+
+axis_labs_smol <- theme(axis.text = element_text(size = 6))
+
+pattern_crosshatch <- ggplot2::ggproto("GeomCrosshatch", ggpattern::GeomPolygonPattern)
+
+
+ggplot2::update_geom_defaults(pattern_crosshatch, 
+                              list(pattern = "crosshatch",
+                                   pattern_colour = "black",
+                                   pattern_fill = "black",
+                                   pattern_density = 0.01,
+                                   pattern_alpha = 0.2,
+                                   pattern_spacing = 0.02))
+
+lab_lev <- AddSuffix(" hPa")
+lab_cplx <- c(R = "Real", 
+              I = "Imaginary")
+combine_lists <- function(...) {
+  # browser(expr = length(x) != length(y))
+  X <- list(...)
+  names <- names(X[[1]])
+  names(names) <- names
+  lapply(names, function(n) {
+    unlist(lapply(X, function(x) x[[n]]))
+  })
+}
+```
+
+
+
+```{r read-data}
+era5 <- ReadNetCDF(ERA5(), vars = c(hgt = "z",
+                                    t = "t"),
+                   subset = list(level = list(850, 700, 200, 50),
+                                 latitude = -90:10)) %>% 
+  normalise_coords() %>% 
+  .[season(time) == "SON"] %>%
+  .[, .(hgt = mean(hgt), 
+        t = mean(t)), by = .(lev, lon, lat, time = seasonally(time))]
+```
+
+# Introduction
+
+
+# Data & Methods 
+
+ERA5, ERA5 BE, ERA 20C
+
+If
+
+
+# Results
+
+
+```{r}
+eof_naive <- era5[lev %in% c(50, 200) & lat %between% c(-90, -20)] %>% 
+  # .[, hgt := Anomaly(hgt), by = .(season(time), lon, lat, lev)] %>%
+  .[, hgt  := Anomaly(hgt)*sqrt(cos(lat*pi/180)), by = .(time, lev, lat)] %>% 
+  .[, .(eof = list(EOF(hgt ~ time | lon + lat, n = 1:4, data = .SD, suffix = "EOF"))), by = lev]
+
+explained <- eof_naive[, eof[[1]]$sdev, by = lev] %>% 
+  .[order(lev, EOF)] %>% 
+  .[, scales::percent(r2, accuracy = .1)]
+
+```
+
+
+
+(ref:cap-eof-naive) Leading 4 EOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009.
+
+(ref:subcap-eof-naive) Spatial patterns (arbitrary units). The numbers at the top-left of each panel is the variance explained by each EOF.
+
+(ref:subcap-cor-eof-naive) Coefficient of determination of the temporal index of each EOF between levels. 
+
+
+```{r cor-eof-naive, fig.cap = "(ref:cap-eof-naive)", fig.subcap = c("(ref:subcap-eof-naive)", "(ref:subcap-cor-eof-naive)"), fig.ncol = 1}
+eof_naive[, eof[[1]]$right, by = lev] %>% 
+  periodic(lon = c(0, 360)) %>% 
+  ggplot(aes(lon, lat)) +
+  
+  geom_contour_fill(aes(z = hgt, fill = ..level..), 
+                    breaks = AnchorBreaks(0, 0.01, exclude = 0)) +
+  geom_contour_tanaka(aes(z = hgt), breaks = AnchorBreaks(0, 0.01, exclude = 0)) +
+  
+  geom_qmap(~.x[lat <= -20]) +
+  scale_fill_divergent_discretised(guide = "none")  +
+  scale_y_latitude() +
+  scale_x_longitude() +
+  coord_polar() +
+  facet_grid(lev~EOF, labeller = labeller(lev = lab_lev))  +
+  axis_labs_smol +
+  tagger::tag_facets(tag = "panel", tag_pool = explained, tag_suffix = "") 
+
+
+eof_naive[, eof[[1]]$left, by = lev] %>% 
+  .[, item := paste(lev, EOF, sep = "_")] %>% 
+  widyr::pairwise_cor(item, time, hgt) %>% 
+  setDT() %>%
+  # .[]
+  .[tstrsplit(item1, "_")[[1]] != tstrsplit(item2, "_")[[1]], ] %>% 
+  .[tstrsplit(item1, "_")[[1]] != 50] %>% 
+  .[, item1 := tstrsplit(item1, "_")[[2]]] %>%
+  .[, item2 := tstrsplit(item2, "_")[[2]]] %>%
+  ggplot(aes(item1, item2)) +
+  geom_raster(aes(fill = correlation^2)) +
+  shadowtext::geom_shadowtext(aes(label = round(correlation^2, 2)), 
+                              color = "black", bg.colour = "white", bg.r = 0.2) +
+  scale_fill_gradient(guide = "none", low = "white", high = scales::muted("red"), limits = c(0, 1)) +
+  scale_x_discrete("200 hPa") +
+  scale_y_discrete("50 hPa") +
+  plot_layout(ncol = 1)
+```
+
+Figure \@ref(fig:cor-eof-naive-1) show the spatial pattern of the 4 leading EOF of zonal anomalies of geopotential height for 50 hPa and 200 hPa computed separately. The percentages XXX . At 50 hPa, EOF1 and EOF2 on one hand, and EOF3 and EOF4 on the other are clearly pairs of zonal waves with wave numbers 1 and 2-3 respectively shifted by 1/4 wavelength. That is, each group of two EOFs represents the same zonal wave structure that changes in magnitude and location. Similarly, at 200 hPa EOF2 and EOF3 represent the same zonal wave structure with wave number ~3. 
+
+Furthermore, the wave 1 pattern represented by the first two EOFs at 50 hPa is similar to the wave 1 pattern shown as the leading EOF at 200 hPa, and the wave 2-3 pattern represented by the third and fourth EOF at 50 hPa is similar to the wave 3 pattern present in EOF2 and EOF3 at 200 hPa. These similarities suggest some level of joint variability across levels. Figure \@ref(fig:cor-eof-naive-2) shows the coefficient of determination between temporal series of each EOF at each level. EOF3 and EOF4 at 50 hPa are highly correlated with EOF2 and EOF3 at 200 hPa. Not only each pair of EOFs represent a single structure within each level, but they represent a coherent pattern of variability between levels. Similarly, the leading EOF of each level are relatively highly correlated, again suggesting an unique mode of joint variability. 
+
+
+
+
+```{r compute-ceof}
+invisible(
+  ReadNetCDF(ERA5(), vars = c(hgt = "z"),
+             subset = list(latitude = -90:10,
+                           level = list(200, 50))) %>%
+    normalise_coords() %>%
+    .[season(time) == "SON"] %>%
+    .[, .(hgt = mean(hgt)), by = .(lev, lon, lat, time = seasonally(time))] %>%
+    .[, season := season(time)] %>%
+    {
+      ceof <<- .[, .(eof = list(compute_ceof(.SD))), by = .(season)]
+      ceof_splitted <<-  .[, levs := lev] %>%
+        .[, .(eof = list(compute_ceof(.SD, n = 1:3))), by = .(season, levs)]
+      
+    }
+)
+```
+
+
+
+(ref:cap-splitted) Coefficient of determination of the absolute magnitude of complex EOFs between 200 hPa and 50 hPa computing EOF separatedly for each level. The high correlation between levels for the two leading EOFs justifies treating the pattern as a mode of covariability between the stratosphere and the troposphere and, thus, computing the EOFs using both levels at the same time. (probably not to be shown.) 
+
+```{r corr-ceof-splitted, fig.cap = "(ref:cap-splitted)"}
+ceof_splitted[, eof[[1]]$left, by = .(lev = levs)] %>%
+  copy() %>%
+  .[, mag := abs(hgt)] %>%
+  .[, item := paste(lev, PC, sep = "_")] %>%
+  widyr::pairwise_cor(item, time, mag) %>%
+  setDT() %>%
+  # .[]
+  .[tstrsplit(item1, "_")[[1]] != tstrsplit(item2, "_")[[1]], ] %>%
+  .[tstrsplit(item1, "_")[[1]] != 50] %>%
+  .[, item1 := tstrsplit(item1, "_")[[2]]] %>%
+  .[, item2 := tstrsplit(item2, "_")[[2]]] %>%
+  ggplot(aes(item1, item2)) +
+  geom_raster(aes(fill = correlation^2)) +
+  shadowtext::geom_shadowtext(aes(label = round(correlation^2, 2)),
+                              color = "black", bg.colour = "white", bg.r = 0.2) +
+  scale_fill_gradient(guide = "none", low = "white", high = scales::muted("red")) +
+  scale_x_discrete("200 hPa") +
+  scale_y_discrete("50 hPa")
+```
+
+
+
+
+```{r}
+plot_ceof <- function(data, n = 1:2, formula = lev  ~  PC) {
+  
+  gdata <- data[, cut(eof[[1]], n)$right, by = .(season)]
+  
+  var <- data[, cut(eof[[1]], n)$sdev, by = .(season)] %>%
+    .[, setNames(paste0(PC, " (", scales::percent(r2), ")"),
+                 PC)]
+  
+  gdata %>%
+    ggperiodic::periodic(lon = c(0, 360)) %>%
+    ggplot(aes(lon, lat)) +
+    
+    geom_contour_fill(aes(z = Re(hgt), fill = ..level..),
+                      breaks = AnchorBreaks(0, 0.005, exclude = 0)) +
+    geom_contour2(aes(z = Im(hgt),  linetype = factor(sign(..level..))),
+                  breaks = AnchorBreaks(0, 0.005, exclude = 0)) +
+    
+    scale_fill_divergent_discretised(guide = "none") +
+    
+    
+    geom_qmap(~ .x[lat <= -20]) +
+    scale_x_longitude() +
+    scale_y_latitude() +
+    scale_linetype_manual(values = c("1" = 1, "-1" = 2), labels = c("1" = "+", "-1" = "-"),
+                          guide = "none") +
+    facet_grid(formula,
+               labeller = labeller(lev = lab_lev,
+                                   PC = var)) +
+    coord_quickmap(ylim = c(NA, -20)) +
+    theme(legend.title = element_blank())
+}
+```
+
+
+
+```{r ceofs, fig.cap = "Leading 2 EOFs of zonal anomalies of geopotential height in 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009.", fig.subcap = c("Spatial patterns. Real part in shading, imaginary part in contours.", "Temproal series."), fig.ncol = 1}
+ceof[season == "SON"] %>%
+  plot_ceof() +
+  coord_polar() +
+  axis_labs_smol +
+  tag_facets(tag = "cr")
+
+ceof %>%
+  .[, eof[[1]]$left, by = season] %>%
+  sep_ReIm(hgt) %>%
+  .[season == "SON"] %>%
+  # .[, hgt := scale(hgt), by = .(part, PC)] %>%
+  ggplot(aes(time, hgt)) +
+  geom_hline(yintercept = 0, size = 0.1, color = "gray30") +
+  geom_line(aes(color = part)) +
+  scale_x_datetime(NULL) +
+  scale_y_continuous("EOF") +
+  scale_color_brewer(NULL, palette = "Dark2") +
+  facet_grid(PC ~ .) +
+  theme(panel.spacing = grid::unit(1.5, "lines"))  +
+  ggthemes::geom_rangeframe(sides = "lr", size = 0.1, color = "gray30")
+```
+Both observations motivate the decision of performing complex EOF jointly between levels. The computation of the EOFs was carried out using data from both levels at the same time, therefore, each complex EOF has a spatial part that depends on longitude, latitude and level, an a temporal part that depends only on time. Figures \@ref(fig:ceofs-1) and \@ref(fig:ceofs-2) show, respectively, the spatial and temporal parts of the first two leading complex EOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa. In the spatial patterns in Figure \@ref(fig:ceofs-1), the real (in shading) and the imaginary parts (in contour) are in quadrature by construction, so that each EOF describe a single wave-like pattern whose amplitude and position (i.e. phase) is controlled by the magnitude and argument of the complex temporal EOF. 
+
+The wave patterns described by these complex EOFs match the patterns seen in the *navie* EOFs of Figure \@ref(fig: cor-eof-naive-1): The first is a wave 1, while the second is a wave 3. Note that in Figure \@ref(fig:ceofs-2), the real part of EOF1 has non zero mean. This is due to th fact that the geopotential fields that enter into the algorithm are anomalies with respect to the zonal mean, not the time mean. The real part of the first EOF is, therefore, capturing the mean zonally anomalous field *and the variability that projects onto it*.
+
+
+```{r, fig.cap = "Correlación entre el las anomalías zonales de geopotential de cada mes y el campo medio de anomalías zonales de geopotencial (negro) y correlación (inversa) entre anomalías zonales de altura geopotencial y la parte real del EOF1 en (rojo) entre 80S y 20S."}
+# cor_mean <- era5 %>% 
+#   .[lev %in% c(50, 200)] %>% 
+#   .[lat <= -20] %>% 
+#   # .[lat >= -80] %>% 
+#   .[, hgt := Anomaly(hgt), by = .(time, lat, lev)] %>% 
+#   .[, hgt_mean := mean(hgt), by = .(lat, lon, lev)] %>% 
+#   .[, .(mean = cor(hgt_mean, hgt)), by = .(lev, time)] %>%
+#   identity()
+# 
+# 
+# ceof$eof[[1]] %>% 
+#   .$right %>% 
+# 
+#   .[PC == "PC1"] %>% 
+#   sep_ReIm(format = "wide") %>% 
+#   .[, hgt := NULL] %>% 
+#   .[, PC := NULL] %>% 
+#   era5[., on = .NATURAL] %>% 
+#   .[, hgt := Anomaly(hgt), by = .(time, lat, lev)] %>% 
+#   .[, .(hgt = -cor(hgt, R)), by = .(lev, time)] %>% 
+# 
+#   ggplot(aes(time, hgt))  +
+#   geom_line(color = "red") +
+#   geom_line(data = cor_mean, aes(y = mean)) +
+#   facet_grid(lev~.)
+
+```
+
+(ref:extended-series-cap) Temporal series extended using ERA5 Back extended preliminary edition (period 1950 -- 1978), ERA5 (period 1979 -- 2019) and ERA20C (period 1900 -- 2010). Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern. In numbers, the correlation between the ERA20C-based series and the two ERA5-based series. The ERA5 + ERABC and the ERA20C series are centred and scaled using the mean and standard deviation for their period of overlap (1950 -- 2010).
+
+```{r extended-series, fig.cap = "(ref:extended-series-cap)"}
+
+pattern <- ceof$eof[[1]]$right %>%
+  sep_ReIm() %>%
+  setnames("hgt", "EOF")
+
+era20c <- ERA20C() %>%
+  ReadNetCDF(vars = c(hgt = "z"),
+             subset = list(latitude = range(pattern$lat),
+                           level = list(200, 50))) %>%
+  normalise_coords() %>%
+  .[season(time) == "SON"] %>%
+  .[, .(hgt = mean(hgt)), by = .(lev, lon, lat, time = seasonally(time))] %>%
+  .[, season := season(time)] %>%
+  .[, hgt := hgt/sd(hgt), by = .(lev)] %>%
+  .[pattern, on = .NATURAL, allow.cartesian = TRUE] %>%
+  .[, .(hgt = weighted.mean(hgt*EOF, w = cos(lat*pi/180))),  by = .(part, PC, time)]
+
+era_more <- ERA5_BE() %>%
+  ReadNetCDF(vars = c(hgt = "z"),
+             subset = list(latitude = range(pattern$lat),
+                           level = list(200, 50))) %>%
+  rbind(.,
+        ReadNetCDF(ERA5(), vars = c(hgt = "z"),
+                   subset = list(latitude = range(pattern$lat),
+                                 level = list(200, 50)))) %>%
+  normalise_coords() %>%
+  .[season(time) == "SON"] %>%
+  .[, .(hgt = mean(hgt)), by = .(lev, lon, lat, time = seasonally(time))] %>%
+  .[, season := season(time)] %>%
+  .[, hgt := hgt/sd(hgt), by = .(lev)] %>%
+  .[pattern, on = .NATURAL, allow.cartesian = TRUE] %>%
+  .[, .(hgt = weighted.mean(hgt*EOF, w = cos(lat*pi/180))),  by = .(part, PC, time)] %>%
+  era20c[., on = c("part", "PC", "time")] %>%
+  .[, hgt := (i.hgt - mean(i.hgt))/sd(i.hgt)*sd(hgt, na.rm = TRUE) + mean(hgt, na.rm = TRUE),
+    by = .(part, PC)] %>%
+  .[, i.hgt := NULL]
+
+
+
+extended <- rbindlist(list(era20c = era20c,
+               era5 = era_more),  use.names = TRUE, idcol = "dataset") %>%
+  .[, hgt := (hgt - mean(hgt[dataset == "era5"], na.rm = TRUE))/sd(hgt[dataset == "era5"], na.rm = TRUE),
+    by = .(part, PC)]
+
+correlations <- extended %>% 
+  dcast(time + PC + part ~ dataset, value.var = "hgt") %>% 
+  na.omit() %>% 
+  .[, cor(era20c, era5), 
+    by = .(PC, part, time = ifelse(year(time) >= 1979, 2005, 1960))] %>% 
+  .[, time := lubridate::as_datetime(paste0(time,  "-01-01"))] %>% 
+  .[, dataset := ifelse(year(time) >= 1979, "era5", "era5be")]
+
+extended %>% 
+  copy() %>% 
+  .[dataset == "era5", dataset := ifelse(year(time) < 1979, "era5be", "era5")] %>% 
+  ggplot(aes(time, hgt)) +
+  geom_hline(yintercept = 0, size = 0.1, color = "gray30") +
+  geom_line(aes(color = dataset)) +
+  geom_text(data = correlations, aes(color = dataset, y = 2.3, label = signif(V1, 2))) +
+  scale_x_datetime(NULL) +
+  scale_y_continuous("Standarised EOF") +
+  scale_color_brewer("Data", palette = "Dark2", labels = c(era5 = "ERA5",
+                                                           era20c = "ERA20C",
+                                                           era5be = "ERA5 BE"),
+                     guide = guide_legend(override.aes = list(size = 1), order = 1)) +
+  ggnewscale::new_scale_colour() +
+  geom_smooth(data = ~.x[dataset == "era20c"][, dataset := dataset == "era20c"], 
+              method = "lm", se = FALSE,  aes(color = dataset)) +
+  geom_smooth(data = ~copy(.x)[, dataset := dataset == "era20c"][time %between% common_range(time, dataset)],
+              aes(color = dataset), method = "lm", se = FALSE) +
+    
+  scale_color_brewer("Trend", palette = "Dark2", direction = -1,
+                     guide = guide_legend(override.aes = list(size = 1), order = 99),
+                     labels = c("FALSE" = "ERA5+ERA5 BE",
+                                "TRUE" = "ERA2CO")) +
+  facet_grid(part ~ PC) +
+  theme(panel.spacing = grid::unit(1.5, "lines"))  +
+  ggthemes::geom_rangeframe(sides = "lr", size = 0.1, color = "gray30") +
+  tag_facets("cr")
+```
+
+Figure \@ref(fig:extended-series) shows temporal series of the two complex EOFs extended beyond the satellite era using the preliminary ERA5 back extension going back to 1950 and using ERA20C for the period 1900 -- 2010. The hybrid ERA5 + ERA5 BE series and the ERE20C series agree relatively well during the period of overlap, although correlations are higher in the satellite period. The ERA20C time-series has a significant upward linear trend in the imaginary part of EOF1. However, there is no trend in the corresponding hybrid modern dataset during the period of overlap and the correlations between the old and modern series is much poorer. This suggests that the observed trends is not robust. 
+
+
+## Regression
+
+
+
+
+```{r}
+regr <- ceof[, eof[[1]]$left, by = season] %>%
+  .[season == "SON"] %>%
+  sep_ReIm(format = "wide") %>%
+  .[, hgt := NULL] %>%
+  .[, `:=`(R = R/sd(R), I = I/sd(I)), by = .(season, PC)] %>%
+  dcast(time ~ PC, value.var = c("R", "I")) %>%
+  .[melt(era5, id.vars = c("time", "lon", "lat", "lev")), on = "time", allow.cartesian = TRUE] %>%
+  .[lev %in% c(850, 700, 200, 50)] %>%
+  # .[variable == "hgt"] %>%
+  .[, FitLm(value, I_PC1, R_PC1, I_PC2, R_PC2, se = TRUE), by = .(lev, lon, lat, variable)] %>%
+  .[, c("term", "PC") := tstrsplit(term, "_")] %>%
+  rm_intercept()
+```
+
+
+```{r}
+plot_regr <- function(data, which_PC, which_levs, which_var) {
+  data <- data %>%
+    .[ PC %in% which_PC] %>%
+    .[variable == which_var]
+  
+  if (length(which_PC) > 1) {
+    facet <- ggh4x::facet_nested(PC ~  term, labeller = labeller(term = lab_cplx))
+  } else {
+    facet <- ggh4x::facet_nested(lev ~  term, labeller = labeller(term = lab_cplx,
+                                                                  lev = lab_lev))
+  }
+  
+  if ("lev" %in% colnames(data)) {
+    data <- data[lev %in% which_levs]
+  } else {
+    data[, lev := which_levs]
+  }
+  data[lat <= -20] %>%
+    # .[term == "I" & lev == 50] %>%
+    .[, p_val := Pvaluate(estimate, std.error, df, "fdr"), by = .(lev, PC, term)] %>%
+    periodic(lon = c(0, 360)) %>%
+    ggplot(aes(lon, lat)) +
+    ditto(
+      geom_contour_fill(aes(z = estimate), breaks = AnchorBreaks(exclude = 0), global.breaks = FALSE) +
+        geom_contour_tanaka() +
+        scale_fill_divergent(NULL, guide = guide_colorstrip_bottom())
+    ) +
+    
+    geom_contour2(aes(z = p_val), breaks = 0.05, size = 0.1) +
+    stat_subset(aes(subset = p_val <= 0.05 & is.cross(lon, lat, 1)),
+                geom = "point", size = 0.2, alpha = 0.1) +
+    geom_qmap(~ .x[lat <= -20]) +
+    
+    scale_x_longitude() +
+    scale_y_latitude() +
+    facet +
+    coord_polar() +
+    axis_labs_smol
+}
+
+```
+
+
+```{r, fig.cap = "Regresiones con altura geopotencial PC1"}
+plot_regr(regr, "PC1", c(200, 50), "hgt")
+```
+
+
+
+
+```{r, fig.cap = "Regresiones con temperatura y PC1"}
+plot_regr(regr, "PC1", c(200, 50), "t")
+```
+
+
+
+
+```{r, fig.cap = "Regresiones con altura geopotencial y PC2"}
+plot_regr(regr, "PC2", c(200, 50), "hgt")
+```
+
+
+
+```{r, fig.cap = "Regresiones con temperatura y PC2"}
+plot_regr(regr, "PC2", c(200, 50), "t")
+```
+
+
+
+
+
+
+
+
+```{r}
+regr_simpler <- ceof[, eof[[1]]$left, by = season] %>%
+  .[season == "SON"] %>%
+  sep_ReIm(format = "wide") %>%
+  .[, hgt := NULL] %>%
+  .[, `:=`(R = R/sd(R), I = I/sd(I)), by = .(season, PC)] %>%
+  .[era5, on = "time", allow.cartesian = TRUE] %>%
+  .[lev %in% c(200, 50)] %>%
+  .[, FitLm(hgt, I, R, se = TRUE), by = .(lev, lon, lat, PC, season)] %>%
+  rm_intercept()
+```
+
+```{r, fig.cap = "Varianza temporal de altura geopotencial explicada por la variación temporal de cada componente principal."}
+regr_simpler %>%
+  # .[term == "R"] %>%
+  .[lat <= -20] %>%
+  periodic(lon = c(0, 360)) %>%
+  ggplot(aes(lon, lat)) +
+  
+  geom_contour_fill(aes(z = r.squared, fill = ..level..),
+                    breaks = MakeBreaks(0.1, exclude = 0)) +
+  scale_fill_divergent_discretised(NULL, guide = guide_colorsteps_bottom())  +
+  
+  geom_qmap(~.x[lat <= -20]) +
+  scale_x_longitude() +
+  scale_y_latitude() +
+  ggh4x::facet_nested(lev ~ PC, labeller = labeller(lev = lab_lev)) +
+  coord_polar() +
+  axis_labs_smol
+```
+
+
+
+
+
+```{r, fig.cap = "Amplitud de ondas zonales de la regresión con altura geopotencial (figuras anteriores)"}
+regr %>%
+  .[lat <= -20] %>%
+  .[lev %in% c(200, 50)] %>%
+  # .[PC == "PC1"] %>%
+  .[, FitWave(estimate, 1:3), by = .(lev, PC, term, lat)] %>%
+  ggplot(aes(lat, amplitude)) +
+  geom_line(aes(color = factor(k))) +
+  ggh4x::facet_nested(lev + PC ~ term, scales = "free") +
+  scale_color_brewer("Wavenumber", palette = "Dark2") +
+  scale_y_continuous("Amplitude") +
+  scale_x_latitude() +
+  coord_flip()
+```
+
+
+
+Interpretaciones:
+
+* Parte real de EOF1: variabilidady que se proyecta en la dirección del campo medio
+
+* Parte imaginaria de EOF1: variabilidad asociada a la parte simétrica del SAM
+
+* EOF2: PSA1 y PSA2.  
+  - Parte imaginaria: proyecta sobre la parte asimétrica del SAM (PSA2)
+  - Parte real: relativamente independiente del SAM
+
+El primer EOF es esencialmente una medida de la variabilidad proyectada en la dirección el campo medio. La parte importante, de todas formas, es la Real. 
+
+## Relationship with other indices
+
+
+
+```{r}
+sam <- "/home/elio/Documents/CONICET/asymsam/analysis/data/derived_data/indexes.Rds" %>%
+  readRDS() %>%
+  .[, .(time, sam = -estimate_norm, lev, symmetry = term)] %>%
+  .[, sam := sam/sd(sam), by = .(lev, symmetry)] %>%
+  .[season(time) == "SON"] %>%
+  .[, .(sam = mean(sam)), by = .(symmetry, lev, time = seasonally(time))]
+
+
+
+enso <- rsoi::download_oni(TRUE, data_path("raw", "oni.csv")) %>%
+  as.data.table() %>%
+  .[, .(time = lubridate::as_datetime(Date), oni = ONI)] %>%
+  na.omit() %>%
+  .[season(time) == "SON"] %>%
+  .[, .(oni = mean(oni)), by = .(time = seasonally(time))]
+
+plot_with_index <- function(ceof, index) {
+  index_col <- colnames(index)[2]
+  
+  ceof[, eof[[1]]$left] %>%
+    sep_ReIm() %>%
+    .[, hgt := scale(hgt), by = .(PC, part)] %>%
+    index[., on = "time"] %>%
+    na.omit() %>%
+    .[, index := get(index_col)] %>%
+    ggplot(aes(hgt, index)) +
+    geom_point(aes(color = part)) +
+    geom_smooth(aes(color = part), method = "lm") +
+    shadowtext::geom_shadowtext(data = ~.x[, .(cor = cor(index, hgt),
+                                               x = -1.2,
+                                               y = sign(-cor(index, hgt))*.1 + predict(lm(index ~ hgt),
+                                                                                       newdata = data.frame(hgt = -1.2))),
+                                           by = .(PC, part)],
+                                bg.colour = "white", bg.r = 0.2,
+                                size = 5,
+                                aes(x, y, color = part, label = paste0("r² = ", round(cor^2, 2)))) +
+    scale_x_continuous("EOF") +
+    scale_y_continuous(toupper(index_col)) +
+    scale_color_brewer("Part", palette = "Dark2") +
+    facet_grid(part~PC)
+}
+```
+
+
+```{r, fig.cap = "Relación del EOF (estandarizado) con SAM"}
+plot_with_index(ceof, sam[lev == 700 & symmetry == "full"][, .(time, sam)])
+```
+
+
+
+```{r}
+
+time <- ceof[, eof[[1]]$left] %>%
+  sep_ReIm() %>%
+  .[, hgt := scale(hgt), by = .(PC, part)] %>%
+  .[]
+
+
+"/home/elio/Documents/CONICET/asymsam/analysis/data/derived_data/indexes.Rds" %>%
+  readRDS() %>%
+  # .[lev %in% c(200, 50)] %>%
+  # .[term != "full"] %>%
+  rm_singleton() %>%
+  .[season(time) == "SON"] %>%
+  .[, .(estimate_norm = mean(estimate_norm)), by = .(lev, term, time = seasonally(time))] %>%
+  .[time, on =.NATURAL, allow.cartesian = TRUE] %>%
+  na.omit() %>%
+  .[, cor(hgt, estimate_norm)^2, by = .(lev, term, part, PC)] %>%
+  ggplot(aes(lev, V1)) +
+  geom_line(aes(color = term, size = term)) +
+  scale_x_level() +
+  scale_y_continuous("r²") +
+  scale_size_manual(guide = "none",
+                    values = c(full = 1,
+                               asym = 0.5,
+                               sym = 0.5)) +
+  scale_color_brewer(NULL, palette = "Dark2", labels = c(full = "SAM",
+                                                         asym = "Asymmetric SAM",
+                                                         sym = "Symmetric SAM")) +
+  facet_grid(part ~ PC) +
+  coord_flip()
+
+```
+
+
+
+```{r, fig.cap = "Idem anterior pero con ENSO"}
+plot_with_index(ceof, enso)
+```
+
+::: notes
+
+En la tropósfera, la pate imaginaria del PC2 captura la parte asimétrica del SAM.
+La parte real es muy parecida en estructura, pero como está desfasada, no coincide con el SAM y entonces no proyecta fuerte en él.
+
+La Parte imaginaria está muy influenciada por ENSO, como se ve en la relación con el íncide y en la regresión con la SST. La fase Real parece no tener influencia del océano tropical. Sin embargo, los flujos de acción de onda.
+
+A su vez, la parte imaginaria del PC1 captura también parte del SAM, pero principalmente la parte simétrica.
+
+
+:::
+
+
+
+
+```{r}
+psi <- ReadNetCDF(ERA5(), vars = "vo",
+                  subset = list(level = c(50, 200),
+                                time = c("1979-01-01", "2019-12-01"))) %>%
+  normalise_coords() %>%
+  .[season(time) == "SON"] %>%
+  .[, .(vo = mean(vo)), by = .(lon, lat, lev,time = seasonally(time))] %>%
+  .[, solve_poisson(vo, lon, lat), by = .(lev, time)] %>%
+  .[, psi.z := Anomaly(value), by = .(time, lev, lat)] %>%
+  .[, value := NULL]
+```
+
+
+```{r}
+regr_psi <- ceof[, eof[[1]]$left, by = season] %>%
+  sep_ReIm(hgt, "wide") %>%
+  .[, hgt := NULL] %>%
+  .[, `:=`(R = R/sd(R), I = I/sd(I)), by = .(season, PC)] %>%
+  .[psi, on = "time", allow.cartesian = TRUE] %>%
+  .[season(time) == "SON"] %>%
+  .[, FitLm(psi.z, R, I, se = TRUE),by = .(lon, lat, lev, PC, season)] %>%
+  rm_intercept() %>%
+  .[, psi.z := estimate] %>%
+  .[, c("fx", "fy") := shceof::WaveFlux(.SD, p = 200), by = .(lev, PC, season, term)]
+```
+
+
+```{r}
+
+plot_psi <- function(data, which_pc, which_lev) {
+  data %>%
+    .[PC == which_pc] %>%
+    .[lev == which_lev] %>%
+    # .[abs(estimate) > 1, estimate := NA] %>%
+    .[lat %between% c(-90, 10)] %>%
+    .[, p_val := Pvaluate(estimate, std.error, df, "fdr"), by = .(PC, term)] %>%
+    periodic(lon = c(0, 360)) %>%
+    ggplot(aes(lon, lat)) +
+    geom_contour_fill(aes(z = estimate), breaks = AnchorBreaks(exclude = 0)) +
+    
+    geom_contour2(aes(z = p_val), breaks = 0.05, size = 0.1) +
+    stat_subset(aes(subset = p_val <= 0.05 & is.cross(lon, lat, 2)),
+                geom = "point", size = 0.2, alpha = 0.5) +
+    geom_streamline(aes(dx = fx, dy = fy), min.L = 3, L = 10, n = 30,
+                    size = 0.2, res = 2) +
+    geom_qmap(keep = .015) +
+    scale_fill_divergent(guide = "none") +
+    scale_x_longitude() +
+    scale_y_latitude() +
+    scale_mag(guide = "none") +
+    facet_grid(term ~ PC, labeller = labeller(term = lab_cplx)) +
+    coord_quickmap(ylim = c(NA, 10)) +
+    # ggh4x::facet_nested(term ~ PC) +
+    axis_labs_smol
+}
+
+```
+
+
+
+```{r}
+sst <- ERA5_SST() %>%
+  ReadNetCDF(vars = c("t" = "sst")) %>%
+  normalise_coords() %>%
+  .[season(time) == "SON"] %>%
+  .[, .(t = mean(t)), by = .(lon, lat, time = seasonally(time))]
+```
+
+```{r}
+regr_sst <- ceof[, eof[[1]]$left, by = season] %>%
+  sep_ReIm(hgt, "wide") %>%
+  .[, hgt := NULL] %>%
+  .[, `:=`(R = R/sd(R), I = I/sd(I)), by = .(season, PC)] %>%
+  .[sst, on = "time", allow.cartesian = TRUE] %>%
+  .[season(time) == "SON"] %>%
+  .[, FitLm(t, I, R, se = TRUE), by = .(lon, lat, PC, season)] %>%
+  rm_intercept()
+```
+
+```{r}
+plot_sst <- function(data, which_pc) {
+  data %>%
+    .[PC == which_pc] %>%
+    # .[abs(estimate) > 1, estimate := NA] %>%
+    .[lat %between% c(-90, 10)] %>%
+    .[, p_val := Pvaluate(estimate, std.error, df, "fdr"), by = .(PC, term)] %>%
+    periodic(lon = c(0, 360)) %>%
+    ggplot(aes(lon, lat)) +
+    ditto(
+      geom_contour_fill(aes(z = estimate), breaks = AnchorBreaks(exclude = 0)) +
+        geom_contour_tanaka(aes(z = estimate), breaks = AnchorBreaks(exclude = 0)) +
+        scale_fill_divergent(NULL, guide = guide_colorstrip_bottom(width = 15))
+    ) +
+    
+    geom_contour2(aes(z = p_val), breaks = 0.05, size = 0.1) +
+    stat_subset(aes(subset = p_val <= 0.05 & is.cross(lon, lat, 2)),
+                geom = "point", size = 0.2, alpha = 0.5) +
+    geom_qmap(keep = .015) +
+    
+    scale_x_longitude() +
+    scale_y_latitude() +
+    facet_grid(term ~ PC, labeller = labeller(term = lab_cplx)) +
+    axis_labs_smol +
+    coord_quickmap(ylim = c(-90, 10))
+}
+
+```
+
+```{r, fig.cap = "Regresión con PSI en 200 hPa y sst, PC1"}
+plot_psi(regr_psi, "PC1", 200) +
+  plot_sst(regr_sst, "PC1")
+```
+
+
+
+```{r, fig.cap = "Regresión con PSI en 200 hPa y sst, PC2"}
+plot_psi(regr_psi, "PC2", 200) +
+  plot_sst(regr_sst, "PC2")
+```
+
+
+
+
+### Precipitation
+
+
+
+```{r}
+cmap <- ReadNetCDF(CMAP(), vars = c(pp = "precip"),
+                   subset = list(lat = -90:10)) %>%
+  normalise_coords() %>%
+  .[, .(pp = mean(pp, na.rm = TRUE)), by = .(lon, lat, time = seasonally(time))]
+```
+
+```{r}
+regr_pp <- ceof[, eof[[1]]$left, by = season] %>%
+  sep_ReIm(hgt, "wide") %>%
+  .[, hgt := NULL] %>%
+  .[, `:=`(R = R/sd(R), I = I/sd(I)), by = .(season, PC)] %>%
+  .[melt(cmap, id.vars = c("lon", "lat", "time")), on = "time", allow.cartesian = TRUE] %>%
+  .[season == "SON"] %>%
+  .[, FitLm(value, I, R, se = TRUE), by = .(lon, lat, PC, variable, season)] %>%
+  rm_intercept()
+```
+
+
+```{r}
+
+continents <- list(africa  = list(lon = c(0, 60),
+                                  lat = c(-40, 0)),
+                   oceania = list(lon = c(100, 180),
+                                  lat = c(-50, -5)),
+                   america = list(lon = c(265, 325),
+                                  lat = c(-60, -10)))
+
+add_continent <- function(dt) {
+  dt[, continent := fcase(lon %between% continents$africa$lon &
+                            lat %between% continents$africa$lat, "africa",
+                          lon %between% continents$oceania$lon &
+                            lat %between% continents$oceania$lat, "oceania",
+                          lon %between% continents$america$lon &
+                            lat %between% continents$america$lat, "america")] %>%
+    .[, continent := factor(continent, levels = c("africa", "oceania", "america"), ordered = TRUE)] %>%
+    .[]
+}
+
+```
+
+
+```{r}
+plot_pp <- function(data, which_pc, which_term = c("R", "I"), which_continent) {
+  data %>%
+    .[PC %in% which_pc] %>%
+    .[term %in% which_term] %>%
+    .[, lev := "sfc"] %>%
+    add_continent() %>%
+    .[continent == which_continent] %>%
+    .[, p_val := Pvaluate(estimate, std.error, df, "fdr"), by = .(lev, PC, term)] %>%
+    periodic(lon = c(0, 360)) %>%
+    ggplot(aes(lon, lat)) +
+    ditto(
+      geom_contour_fill(aes(z = estimate), breaks = AnchorBreaks(exclude = 0)) +
+        geom_contour_tanaka() +
+        scale_fill_divergent(NULL, guide = guide_colorstrip_bottom(15))
+    ) +
+    
+    geom_contour2(aes(z = p_val), breaks = 0.05, size = 0.1) +
+    stat_subset(aes(subset = p_val <= 0.05),
+                geom = "point", size = 1) +
+    geom_qmap(~.x %>% add_continent() %>% .[continent == which_continent], keep = 1) +
+    
+    scale_x_longitude(ticks = 15) +
+    scale_y_latitude(ticks = 15) +
+    ggh4x::facet_nested(term ~ PC, labeller = labeller(term = lab_cplx)) +
+    axis_labs_smol +
+    coord_quickmap()
+}
+```
+
+
+```{r, fig.cap = "Regresión de cada PC con la precipitación"}
+plot_pp(regr_pp, "PC1", which_continent =  "america")  +
+  plot_pp(regr_pp, "PC2", which_continent =  "america")
+```
+
+
+
+```{r, fig.cap = "Regresión de cada PC con la precipitación"}
+plot_pp(regr_pp, "PC1", which_continent = "africa") +
+  plot_pp(regr_pp, "PC2", which_continent = "africa")
+```
+
+
+
+```{r, fig.cap = "Regresión de cada PC con la precipitación"}
+plot_pp(regr_pp, "PC1", which_continent =  "oceania") +
+  plot_pp(regr_pp, "PC2", which_continent =  "oceania")
+```
+
+
+# Conclusions
+
+
+
+# References
+
+<!-- The following line ensures the references appear here for the MS Word or HTML output files, rather than right at the end of the document (this will not work for PDF files):  -->
+

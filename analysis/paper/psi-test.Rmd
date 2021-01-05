@@ -1,0 +1,94 @@
+---
+title: "Pescaditos"
+author: "Elio Campitelli"
+date: "02/11/2020"
+output: bookdown::html_document2
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(metR)
+library(data.table)
+library(magrittr)
+library(ggplot2)
+library(shceof)
+```
+
+
+Este documento documenta el resultado de usar `solve_poisson()` para obtener la función corriente (en particular, su anomalías zonal) a partir de la vorticidad. 
+
+Dado que ERA provee vorticidad pero no función corriente, tenía que usar NCEP. Pero NCEP tiene función corriente en (algunos) niveles sigma, por lo cual si yo hago el análisis usando ERA5 en niveles de presión, la comparación con la función corriente tiene ya dos incompatibilidades (aunque tampoco tan grandes, preliminarmente, los resultados no varían mucho usando la función corriente de NCEP en sigma 0.2101 o la función corriente derivada de ERA5 en 200 hPa.).
+
+En cualquier caso, antes de usar `solve_poisson()` quiero chequear que funciona correctamente. Lo que voy a hacer es usar la vorticidad de NCEP en sigma 0.2101 para obtener la función corriente y comparar el resultado con el valor descargado de NCEP. 
+
+Como detalle, si a la función corriente se le suma y multiplica constantes, sigue siendo solución de la ecuación de Poisson, por lo que la solución obtenida por `solve_poisson()` puede tener cualquier escala que nada que ver. Para resolver esto, voy a escalar la función corriente derivada con constantes obtenidas a partir de hacer `lm(psi ~ ps_derivada)`. 
+
+```{r}
+psi <- NCEP_PSI() %>% 
+  ReadNetCDF(subset = list(level =  0.2101, 
+                           time = c("1979-01-01", NA))) %>% 
+  rm_singleton()
+
+vor <-  NCEP_VOR() %>% 
+  ReadNetCDF(subset = list(level =  0.2101, 
+                           time = c("1979-01-01", NA))) %>% 
+  rm_singleton()
+
+
+ncep <- vor[psi, on = .NATURAL] %>% 
+  na.omit()
+rm(psi, vor)
+```
+
+```{r}
+psi_derived <- ncep[, solve_poisson(vor, lon, lat), by = time]
+setnames(psi_derived, "value", "psi_derived")
+```
+
+
+```{r}
+ncep <- ncep[psi_derived, on = .NATURAL]
+
+
+scaling <- ncep[, FitLm(psi, psi_derived)]
+ncep[, psi_derived := psi_derived*scaling$estimate[2] + scaling$estimate[1]]
+ncep[, `:=`(psi         = Anomaly(psi),
+           psi_derived = Anomaly(psi_derived)), by = .(lat, time)] 
+```
+
+La Figura \@ref(fig:comparacion) muestra cuatro campos de anomalía zonal de geopotencial tomados al azar. La función corriente derivada con es casi indistinguible de la función corriente "real". La correlación global durante todo el período entre la función corriente real y la derivada es de `r ncep[, cor(psi, psi_derived)]`. Prácticamente perfecto. 
+
+
+
+```{r comparacion, fig.cap = "Anomalía zonal de función corriente provista por NCEP (panel izquierdo) y derivada a partir de la vorticidad (panel derecho)"}
+set.seed(42)
+ncep[time %in% sample(unique(time), 4)] %>% 
+  melt(id.vars = c("lon", "lat", "time"), measure.vars = patterns("^psi")) %>% 
+  ggplot(aes(lon, lat)) +
+  geom_contour_fill(aes(z = value)) +
+  scale_fill_divergent() +
+  facet_grid(factor(time)~variable)
+```
+La correlación es igual de alta para todos los campos (\@ref(fig:cor-tiempo)) y latitudes (\@ref(fig:cor-lat)). 
+
+```{r, cor-tiempo, fig.cap = "Correlación entre función corriente derivada y obtenida por NCEP  travès del tiempo."}
+ncep %>% 
+  .[, cor(psi, psi_derived), by = .(time)] %>% 
+  ggplot(aes(time, V1)) +
+  geom_line() +
+  scale_y_continuous(limits = c(0, 1))
+```
+
+```{r cor-lat, fig.cap = "Correlación entre función corriente derivada y obtenida por NCEP para cada latitud"}
+ncep %>% 
+  .[, cor(psi, psi_derived), by = .(lat)] %>% 
+  ggplot(aes(lat, V1)) +
+  geom_line() +
+  scale_y_continuous(limits = c(0, 1))
+```
+
+## Conclusión
+
+`solve_poisson` funciona perfecto para obtener función corriente a partir de vorticidad! 🥳
+

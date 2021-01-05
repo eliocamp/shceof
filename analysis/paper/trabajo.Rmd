@@ -1,0 +1,1536 @@
+---
+title: ""
+author: "Elio Campitelli"
+output: 
+   # pdf_document:
+   #    latex_engine: xelatex
+   powerpoint_presentation:
+    # ioslides_presentation:
+        fig_height: 7.6
+        fig_width: 12.8
+        reference_doc: template.pptx
+urlcolor: blue
+header_includes:
+   - \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+# Notification
+start.time <- unclass(Sys.time())
+min.time <- 10
+knit_doc <- knitr::knit_hooks$get("document")
+
+
+knitr::knit_hooks$set(document = function(x) {
+   took <- unclass(Sys.time()) - start.time
+   if (unclass(Sys.time()) - start.time >= min.time) {
+      notify("Done knitting!", 
+             paste0("Took ", round(took), " seconds"),
+             time = 5)
+   }  
+   knit_doc(x)
+})
+
+
+
+
+name <- tools::file_path_sans_ext(knitr::current_input())
+knitr::opts_chunk$set(echo = FALSE,
+                      cache = TRUE,
+                      cache.extra = 42, 
+                      dpi = 150,
+                      warning = FALSE, message = FALSE,
+                      # out.extra = "",
+                      fig.width = 19.88/2.45,
+                      fig.height=11.84/2.45,
+                      cache.path = paste0("cache/", name, "/"),
+                      fig.path = paste0("fig/", name, "/")
+                      # fig.align = "center"
+)
+
+# knitr::opts_chunk$set(fig.width = 13, 
+#                       fig.height = 7)
+
+library(metR)
+library(data.table)
+library(ggplot2)
+library(magrittr)
+library(patchwork)
+library(here)
+
+here <- here::here
+
+lev.breaks <- c(1000, 500, 300, 200, 100, 50, 10)
+
+theme_elio <- theme_minimal(base_size = 14) +
+   theme(strip.background = element_rect(fill = NA, color = "gray30"),
+         # text = element_text(family = font_rc),
+         legend.position = "bottom", legend.box = "vertical",
+         panel.spacing.y = unit(5, "mm"),
+         panel.spacing.x = unit(5, "mm"),
+         legend.spacing = unit(2, "mm"), 
+         panel.border = element_rect(colour = "black", fill = NA),
+         plot.margin = grid::unit(rep(3, 4), "mm"),
+         # legend.title = element_blank(),
+         legend.box.spacing = unit(3, "mm"),
+         legend.margin = margin(t = -5),
+         panel.grid = element_line(color = "gray10", size = 0.4, linetype = 3),
+         panel.ontop = TRUE)
+theme_set(theme_elio)
+# theme_set(hrbrthemes::theme_ipsum_rc() + theme(panel.ontop = TRUE))
+
+guide_colorstrip_bottom <- function(width = 25, height = 0.5, ...) {
+   guide_colorstrip(title.position = "top", title.hjust = 0.5,
+                    barheight = height,
+                    barwidth = width, ...)
+}
+
+
+subset_data <- list(lat = c(-90, 0), 
+                    time = lubridate::as_datetime(c("1985-01-01",
+                                                    "2014-12-01")))
+breaks_zero <- AnchorBreaks(0, NULL, 0)
+
+
+
+makeActiveBinding(".", function(value) .Last.value, .GlobalEnv)
+
+setnames <- function(x, ...) {
+   names <- c(...)
+   # print(names)
+   data.table::setnames(x, names(names), unname(names))
+}
+
+ReIm <- function(complex) {
+   list(R = Re(complex), I = Im(complex))
+}
+
+Pvaluate <- function(estimate, std.error, df, adjustement = "none") {
+   p.adjust(2*pt(abs(estimate)/std.error, df, lower.tail = FALSE), method = "fdr")
+}
+
+source(here::here("scripts", "facet_nested.R"))
+source(here::here("scripts", "helperfun.R"))
+
+
+map_simple <- function(wrap = c(0, 360), out = "sf") {
+   map <- maps::map("world", fill = TRUE, 
+                    col = "transparent", plot = FALSE, wrap = wrap)
+   IDs <- vapply(strsplit(map$names, ":"), function(x) x[1], 
+                 "")
+   proj <- sp::CRS("+proj=longlat +datum=WGS84")
+   map <- maptools::map2SpatialPolygons(map, IDs = IDs, 
+                                        proj4string = proj)
+   
+   simple <- rmapshaper::ms_simplify(map, keep = 0.015)
+   simple
+}
+
+map_data <- subset(fortify(map_simple()), lat <= 0)
+
+map <- function(subset = NULL, color = "black", size = 0.2, fill = NA, wrap = c(0, 360), ...) {
+   data <- fortify(map_simple(wrap = wrap))
+   subset <- eval(substitute(subset), envir = data)
+   if (is.null(subset)) subset <- TRUE
+   
+   geom_polygon(data = data[subset, ], 
+                aes(long, lat, group = group), 
+                color = color, 
+                size = size, 
+                fill = fill,
+                ...)
+}
+
+sep_ReIm <- function(dt, col, longer = TRUE) {
+   names <- c("R", "I")
+   expr <- quote(copy(dt)[, (names) := ReIm(col)])
+   expr  <-  do.call(substitute, list(expr, 
+                                      list(col = substitute(col))))
+   data <- eval(expr)
+   
+   if (isTRUE(longer)) {
+      data[, deparse(substitute(col)) := NULL]
+      data <- setDT(tidyr::pivot_longer(data, R:I, names_to = "part", values_to = deparse(substitute(col))))
+   }
+   
+   return(data[])
+}
+
+geom_zero <- function(dir = "h", ...) {
+   switch(dir,
+          h = geom_hline(yintercept = 0, ...),
+          v = geom_vline(xintercept = 0, ...))
+}
+
+```
+
+
+```{r read-data}
+subset <- list(latitude = -90:0, 
+               level = list(50, 200))
+
+
+files <- c(era   = here("datos", "ERA-Interim", "erai.mon.mean.nc"),
+           era20 = here("datos", "ERA-20C", "era20c.mon.mean.nc"),
+           ncep  = here("datos", "NCEP Reanalysis", "hgt.mon.mean.nc"))
+var <- c("z", "z", "hgt")
+labs_datasets <- c(era20 = "ERA20C", era = "ERA-I", ncep = "NCEP")
+names(var) <- files
+subsets <- list(
+   era = subset,
+   era20 = subset,
+   ncep = list(lat = -90:0,
+               level = list(50, 200)))
+names(subsets) <- files
+
+read_nc <- function(f) {
+   nc <- ReadNetCDF(f, c(hgt = unname(var[f])), subset = subsets[[f]]) 
+   
+   if (unname(var[f]) == "z") {
+      nc[, hgt := hgt/9.8] %>% 
+         setnames(longitude = "lon", latitude = "lat", level = "lev") %>% 
+         .[]
+   }
+   
+   if (unname(var[f]) == "hgt") {
+      setnames(nc, level = "lev") %>% 
+         .[]
+   }
+   return(nc)
+}
+
+datos <- lapply(files, read_nc) %>% 
+   rbindlist(idcol = "dataset") %>% 
+   .[, year := year(time[1]), by = time] %>% 
+   .[month(time) == 12, year := year + 1] %>%  # december counts to the next year
+   .[, .(hgt = mean(hgt), n = .N), by = .(dataset, lev, lat, lon, year, season(time))] %>% 
+   .[n == 3] %>%  # keep only full seasons
+   .[, n := NULL] %>% 
+   .[]
+
+
+# datos <- rbind(datos, ipsl, use.names = TRUE)
+
+modern <- range(datos[dataset == "era", year])
+# Surface mask
+pres <- ReadNetCDF(here("datos", "NCEP Reanalysis", "pres.mon.mean.nc"), 
+                   subset = list(lat = -90:0))
+pres.mean <- pres[, .(pres = median(pres)), by = lat]
+pres.mean <- rbind(data.table(lat = 0.0, pres = Inf), 
+                   pres.mean, 
+                   data.table(lat = -90.0, pres = Inf))
+
+censor_ground <- function(df, col = "underground") {
+   df[, c(col) := lev > pres.mean[lat == .BY$lat, pres] , by = lat][]
+}
+
+surface <- function(lats = c(-90:0)) {
+   geom_polygon(data = pres.mean[lat %between% range(lats)], aes(y = pres), fill = "white", 
+                alpha = 0.9, color = "gray10", size = 0.5)
+}
+
+
+labs_part <- c(R = "Real", I = "Imaginary", M = "Module")
+```
+
+<!-- ::: notes -->
+<!-- Vamos a separar las anomalías de geopogential $Z'$ en su partes zonalmente simétricas y asimétricas -->
+
+<!-- $$ -->
+<!-- Z' = Z^{'*} + \left [Z' \right] -->
+<!-- $$ -->
+
+<!-- La varianza de $Z'$ entonces puede descomponserse en: -->
+
+<!-- $$ -->
+<!-- \mathrm{var}\left (Z' \right ) = \mathrm{var}\left (Z^{'*} \right) + \mathrm{var}\left ( \left [Z' \right ] \right ) + 2 \mathrm{cov}\left ( Z^{'*}, \left [ Z' \right ] \right) -->
+<!-- $$ -->
+<!-- ::: -->
+
+<!-- ```{r} -->
+<!-- datos <- datos %>% -->
+<!--    .[, hgt_z := Anomaly(hgt), by = .(lat, lev, dataset, season, year)] %>%  -->
+<!--    .[, prime := Anomaly(hgt), by = .(lon, lat, lev, dataset, season)] %>%  -->
+<!--    .[, prime_mean := mean(prime), by = .(lat, lev, dataset, year, season)] %>%  -->
+<!--    .[, prime_star := prime - prime_mean] -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- varianzas <- datos %>%  -->
+<!--    .[, .(prime      = var(prime),  -->
+<!--          prime_star = var(prime_star), -->
+<!--          prime_mean = var(prime_mean), -->
+<!--          cov2       = 2*cov(prime_star, prime_mean)),  -->
+<!--      by = .(dataset, lev, lon, lat, season)] %>%  -->
+<!--    # .[, prime_z := Anomaly(prime), by = .(dataset, season, lev, lat)] %>% -->
+<!--    melt(id.vars = c("dataset", "lev", "lon", "lat", "season")) %>%  -->
+<!--    .[, variable := factor(variable,  -->
+<!--                           levels = c("prime", "prime_star", "prime_mean", "cov2"), -->
+<!--                           labels = c("Z'", "Z'*", "[Z']", "2*cov(Z'*, [Z'])"))] -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- plot_var <- function(season, lev, dataset = "era") { -->
+<!--    dataset_out <- dataset -->
+<!--    out_season  <- season -->
+<!--    out_lev     <- lev -->
+<!--    varianzas %>% -->
+<!--       ggperiodic::periodic(lon = c(0, 360)) %>%  -->
+<!--       # .[lat < -15] %>%  -->
+<!--       .[dataset == dataset_out] %>%  -->
+<!--       .[season %in% out_season] %>% -->
+<!--       .[lev %in% out_lev] %>% -->
+<!--       ggplot(aes(lon, lat)) + -->
+<!--       geom_contour_fill(aes(z = value), breaks = AnchorBreaks(0, NULL, 0)) + -->
+<!--       map(lat < 0) + -->
+<!--       # geom_contour(aes(z = value), color = "black") + -->
+<!--       # geom_contour2(aes(z = value)) + -->
+<!--       scale_fill_divergent(guide = guide_colorstrip_bottom()) + -->
+<!--       scale_y_latitude(limits = c(-90, -20)) + -->
+<!--       scale_x_longitude() + -->
+<!--       coord_quickmap(ylim = c(NA, -30)) + -->
+<!--       facet_nested(season ~ variable) + -->
+<!--       # theme(legend.position = "right") -->
+<!--       NULL -->
+<!-- } -->
+
+<!-- plot_vars <- function(lev, dataset = "era") { -->
+<!--    seasons <- levels(varianzas$season) -->
+
+<!--    lapply(seasons, plot_var, lev = lev, dataset = dataset) %>%  -->
+<!--       Reduce("+", .) + -->
+<!--       plot_layout(ncol = 1) + -->
+<!--       plot_annotation(title = paste0(lev, "hPa")) -->
+<!-- } -->
+
+<!-- ``` -->
+
+<!-- # División de varianza -->
+
+<!-- --- -->
+
+<!-- ```{r, fig.cap = "Descomposición de la varianza de Z' en 50hPa."} -->
+<!-- # plot_vars(50) -->
+
+<!-- ``` -->
+
+<!-- ::: notes -->
+<!-- La varianza de la parte zonalmente simétrica de geopotencial tiene siempre la misma estructura de máxima varianza en los polos. Esto creo que hay que agarrarlo con pinzas porque podría deberse más que nada a la dependencia con el parámetro de coriolis. Podría estar señalándo que es más razonable manejarse con la función corriente. Lo malo es que no encuentro dónde bajar la función corriente en ERA.  -->
+
+<!-- En cualquier caso, la varianza de Z'* es máxima en latitudes polares y longitudinalmente magimiza al sur de sudamérica y al sur del Índic\o en todas las estaciones, prácticamente. Sin embargo, el campo de varianza total no tiene ese doble máximo salvo en JJA y la razón está en la estructura de la covarianza. En todas las estaciones hay un máximo de covariana negativa cerca de la península antártica que cancela el máximo de varianza de Z'\*. Esta estructura "bipolar" es interesante pero hay que tener cuidado. Por las fórmulas matemáticas, el promedio zonal de la covarianza de Z'\* y [Z^\*] tiene que ser nulo, por lo que es una certeza matemática que zonas con covarianza positiva tienen que estar compensadas por áreascon covarianza negativa.  -->
+<!-- ::: -->
+
+<!-- ```{r, fig.cap = "Descomposición de la varianza de Z' en 200hPa"} -->
+<!-- # plot_vars(200) -->
+<!-- ``` -->
+
+<!-- ::: notes -->
+<!-- En 200hPa hay algunos cambios. La estructura de varianza es tiene escalas espaciales más pequeñas. Esto es de esperarse dado que como las ondas cortas no se propagan verticalmente tanto como las cortas, toda la estructura de la estratósfera es más "suave" que la de la tropósfera. La varianza de [Z'] sigue siendo máxima en el polo sur, salvo en verano, que tiene un máximo en latitudes medias que probablemente corresponda a la variabilidad del jet subtropical. La varianza de Z*' maximiza en latitudes plares igual que en 5hPa, pero en vez de tener dos máximos, tiene uno solo que coincide con la Baja de Amundsen. En cuanto a la covarianza, sigue tieniendo un máximo negativo en el mar de Weddell.  -->
+
+
+<!-- Para analizar con más detalle la relación entre Z y [Z] pero sin los probelmas matemáticos de la covarianza mostrada arriba, abajo muestro directamente la correlación entre Z (sin ningún filtro) y [Z]. -->
+<!-- ::: -->
+
+
+
+<!-- # EOF complejo `r paste(with(datos, common_range(year, dataset)), collapse = "-")` -->
+
+<!-- --- -->
+
+
+<!-- ```{r} -->
+<!-- lats.eof <- c(-80, -20) -->
+<!-- # ceof <- datos[lev %in% c(50, 200) & lat %between% lats.eof] %>% -->
+<!-- #    # .[dataset != "ncep"] %>%  -->
+<!-- #    .[year %between% common_range(year, dataset)] %>% -->
+<!-- #    .[, hgt := Anomaly(hgt), -->
+<!-- #      by  = .(lat, season, year, lev, dataset)] %>% -->
+<!-- #    # .[, hgt := Anomaly(hgt), by = .(lon, lat, season, lev, dataset)] %>%  -->
+<!-- #    .[, hgt := hgt/sd(hgt), by = .(lev, season, dataset)] %>% -->
+<!-- #    .[, hgt := hgt*sqrt(cos(lat*pi/180))] %>% -->
+<!-- #    .[, hgt.cpx := spectral::analyticFunction(hgt), -->
+<!-- #      by = .(lat, season, year, dataset, lev)] %>%  -->
+<!-- #    .[, hgt := hgt.cpx] %>% -->
+<!-- #    .[, list(ceof = list(EOF(hgt ~ year | lon + lat, n = 1:2, suffix = "PC"))), -->
+<!-- #      by = .(dataset, season, lev)] -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- plot_ceof <- function(gdata) { -->
+<!--    gdata %>%     -->
+<!--       ggperiodic::periodic(lon = c(0, 360)) %>%  -->
+<!--       ggplot(aes(lon, lat)) + -->
+<!--       geom_contour_fill(aes(z = abs(hgt)), binwidth = 0.005) + -->
+<!--       map(lat < 10) + -->
+<!--       geom_contour2(data =  ggperiodic::periodic(sep_ReIm(gdata, hgt), lon = c(0, 360)), -->
+<!--                     breaks = AnchorBreaks(0, 0.01, 0), -->
+<!--                     aes(z = hgt, linetype = factor(sign(..level..)), color = part), size = 0.2) + -->
+<!--       scale_fill_distiller(palette = "Oranges", direction = 1,  -->
+<!--                            guide = guide_colorstrip_bottom(),  -->
+<!--                            breaks = MakeBreaks(binwidth = 0.005)) + -->
+<!--       scale_x_longitude() + -->
+<!--       scale_y_latitude() + -->
+<!--       scale_linetype_manual(values = c("1" = 1, "-1" = 2), labels = c("1" = "+", "-1" = "-")) + -->
+<!--       scale_color_manual(values = c(R = "black", I = "blue"), guide = "none") + -->
+<!--       facet_nested(season ~ lev + PC, -->
+<!--                    labeller = labeller(lev = AddSuffix(" hPa"))) + -->
+<!--       coord_quickmap(ylim = c(NA, 0)) -->
+<!-- } -->
+<!-- # gdata <- ceof[, ceof[[1]]$right, by = .(dataset, season, lev)] %>%  -->
+<!-- # .[dataset == "era"]  -->
+<!-- # plot_ceof(gdata) -->
+<!-- ``` -->
+
+<!-- ::: notes -->
+<!-- El PC1 en 50 hPa "va" con el PC2 en 200 tanto en estructura como en series temporales. Abajo se muestra las correlaciónes entre las series temporales de cada componente principal y cada nivel y para la parte imaginaria y real respectivamente. El PC2 en 50hPa tiene una alta correlación con el PC1 en 200hPa en JJA y SON. Entonce está claro que es el mismo modo que tiene una estructura barotrópica equivalente y que se propaga hacia o desde la estratósfera. En DJF y MAM la sincronización entre niveles se da más bien entre el PC1 de ambos niveles (aunque en menor medida). -->
+<!-- ::: -->
+
+
+<!-- ```{r, fig.cap = "Correlaciones entre componentes principales."} -->
+<!-- # ceof[, ceof[[1]]$left, by = .(dataset, season, lev)] %>%  -->
+<!-- #    .[dataset == "era"] %>%  -->
+<!-- #    .[, c("R", "I") := ReIm(hgt)] %>%  -->
+<!-- #    tidyr::pivot_longer(R:I) %>%  -->
+<!-- #    as.data.table() %>%  -->
+<!-- #    .[, item :=  interaction(lev, PC)] %>%  -->
+<!-- #    .[, widyr::pairwise_cor(.SD, item, year, value), by = .(season, name)] %>% -->
+<!-- #    ggplot(aes(item1, item2)) + -->
+<!-- #    geom_raster(aes(fill = correlation)) + -->
+<!-- #    geom_text(aes(label = format(correlation, digits = 1, nsmall = 1))) + -->
+<!-- #    scale_fill_divergent(guide = "none") + -->
+<!-- #    facet_nested(season ~ name)  -->
+<!-- ``` -->
+
+<!-- ::: notes -->
+<!-- Esto motiva hacer el EOF con ambos niveles juntos de manera de obtener modos de oscilación conjuntos. Lo bueno de esto es que reduce la dimensión del problema ya que se reducen las series temporales a la mitad (porque hay una sola serie temporal para cada componente principal para los dos niveles).  -->
+<!-- ::: -->
+
+
+# EOF complejo conjunto
+
+---
+
+```{r define-funs}
+compute_ceof <- function(dt, temporal = FALSE, lats.eof = c(-80, -20), n = 1:2) {
+   # browser()
+   dt <- dt[lev %in% c(50, 200) & lat %between% lats.eof] %>%
+      .[, hgt := Anomaly(hgt),
+        by  = .(lat, year, lev)] 
+   
+   if (temporal) {
+      dt <- dt[, hgt := Anomaly(hgt), by = .(lon, lat, lev)]
+   }
+   
+   dt %>% 
+      .[, hgt := hgt/sd(hgt), by = .(lev)] %>%
+      .[, hgt := hgt*sqrt(cos(lat*pi/180))] %>%
+      .[, hgt.cpx := spectral::analyticFunction(hgt),
+        by = .(lat, year, lev)] %>% 
+      .[, hgt := hgt.cpx] %>%
+      EOF(hgt ~ year | lon + lat + lev, n = n, suffix = "PC", data = .)
+}
+
+plot_ceof <- function(data, eof = 1:2, formula = lev  ~  PC) {
+   
+   gdata <- data[, cut(ceof[[1]], eof)$right, by = .(dataset, season)]
+   
+   var <- data[, cut(ceof[[1]], eof)$sdev, by = .(dataset, season)] %>% 
+      .[, setNames(paste0(PC, " (", scales::percent(r2), ")"), 
+                   PC)]
+   
+   gdata %>%    
+      ggperiodic::periodic(lon = c(0, 360)) %>% 
+      ggplot(aes(lon, lat)) +
+      geom_contour_fill(aes(z = Re(hgt)),
+                        breaks = AnchorBreaks(0, 0.005, exclude = 0)) +
+      geom_contour2(aes(z = Im(hgt),  linetype = factor(sign(..level..))),
+                    breaks = AnchorBreaks(0, 0.005, exclude = 0)) +
+      map(lat < 10) +
+      scale_fill_divergent(guide = guide_colorstrip_bottom(35), 
+                           breaks = AnchorBreaks(0, 0.005, exclude = 0),
+                           limits = pm(0.039)) +
+      scale_x_longitude() +
+      scale_y_latitude() +
+      scale_linetype_manual(values = c("1" = 1, "-1" = 2), labels = c("1" = "+", "-1" = "-"), 
+                            guide = "none") +
+      facet_nested(formula,
+                   labeller = labeller(lev = AddSuffix(" hPa"),
+                                       PC = var,
+                                       dataset = labs_datasets)) +
+      coord_quickmap(ylim = c(NA, -20)) +
+      theme(legend.title = element_blank())
+}
+
+```
+
+
+
+
+```{r calcula-ceof}
+# Sacado de James
+H <- 6.4*1000
+lats.eof <- c(-80, -20)
+
+year_range <- with(datos, common_range(year, dataset))
+
+ceof <- datos %>% 
+   .[year %between% year_range] %>%
+   .[, list(ceof = list(compute_ceof(.SD, temporal = FALSE, n = 1:2))), by = .(dataset, season)]
+
+
+long_ceof <- datos %>% 
+   .[dataset == "era20" & season == "SON"] %>% 
+   compute_ceof(temporal = FALSE)
+```
+
+
+
+```{r hilbert-example}
+datos[dataset == "era" & season == "SON" & year == 1986] %>% 
+   .[, hgt := Anomaly(hgt), by = .(lat, lev)] %>% 
+   .[, H := spectral::analyticFunction(hgt), by = .(lat, lev)] %>%
+   .[lev == 200] %>% 
+   sep_ReIm(H, FALSE) %>% 
+   ggperiodic::periodic(lon = c(0, 360)) %>% 
+   ggplot(aes(lon, lat)) +
+   geom_contour_fill(aes(z = R), 
+                     breaks = AnchorBreaks(0, 25, 0)) +
+   geom_contour2(aes(z = I, linetype = factor(sign(..level..))),
+                 breaks = AnchorBreaks(0, 25, 0)) +
+   map(lat <= 0) +
+   scale_fill_divergent(guide = guide_colorstrip_bottom(), 
+                        breaks = AnchorBreaks(0, 25, exclude = 0)) +
+   scale_linetype_manual(values = c("1" = 1, "-1" = 2), labels = c("1" = "+", "-1" = "-"), 
+                         guide = "none") +
+   scale_x_longitude() +
+   scale_y_latitude() +
+   coord_quickmap() +
+   theme(legend.title = element_blank())
+```
+
+
+
+
+
+```{r eof-espacial, fig.cap = "cEOF calculado usando la anomalía zonal. Parte real en sombreado, parte imaginaria en contornos (dataset = ERA Interim)."}
+# gdata <- ceof[, ceof[[1]]$right, by = .(dataset, season)] %>% 
+#    .[dataset == "era"] 
+plot_ceof(ceof[season == "SON" & dataset == "era"]) 
+```
+
+```{r eof-espacial_comparacion, fig.cap = "PC2 calculado usando la anomalía zonal para distintos reanálisis. Parte real en sombreado, parte imaginaria en contornos."}
+plot_ceof(ceof[season == "SON"], eof = 2, lev + PC ~  dataset) 
+```
+
+
+
+```{r ondas-planetarias, fig.cap = "Amplitud de las ondas zonales de cada componente principal."}
+# ceof[, denormalize(ceof[[1]], "right"), by = .(dataset, season)] %>% 
+ceof[, ceof[[1]]$right, by = .(dataset, season)] %>% 
+   .[dataset == "era"] %>% 
+   .[season == "SON"] %>% 
+   # .[PC == "PC2"] %>% 
+   .[, FitWave(Re(hgt), 1:3), by = .(lat, lev, dataset, PC, season)] %>% 
+   ggplot(aes(lat, amplitude)) +
+   geom_line(aes(color = factor(k))) +
+   scale_y_continuous("Amplitude", expand = expansion(mult = c(0, 0.05))) +
+   scale_x_latitude(ticks = 15) +
+   scale_color_brewer("Wavenumber", palette = "Set1") +
+   facet_nested(lev  ~  PC, 
+                labeller = labeller(lev = AddSuffix(" hPa"))) +
+   coord_flip()
+```
+
+```{r ceof-temporal-largo, fig.cap = "EOF temporal para ERA20", fig.width=18.7/2.45, fig.height=11.13/2.45}
+long_ceof$left %>% 
+   sep_ReIm(hgt) %>% 
+   .[, hgt := scale(hgt), by = .(part, PC)] %>% 
+   .[, part := forcats::fct_rev(part)] %>% 
+   ggplot(aes(year, hgt)) +
+   geom_zero(linetype = 1) +
+   geom_line() +
+   geom_smooth(span = 30/109, se = FALSE, method.args = list(degree = 1), n = 300,
+               method = "loess", color = "#FD005F") +
+   # geom_smooth(method = "lm", linetype = 2, color = "#FD005F", se = TRUE) +
+   scale_color_brewer(palette = "Set1") +
+   scale_x_continuous("Years", breaks = AnchorBreaks(1900, 20)) +
+   scale_y_continuous("") +
+   facet_nested(part ~ PC, labeller = labeller(anomaly = AddPreffix("Anomalía\n"),
+                                               part = labs_part))
+```
+
+
+```{r ceof-temporal-largo-raw, fig.cap = "EOF temporal para ERA20", fig.width=18.7/2.45, fig.height=11.13/2.45}
+long_ceof$left %>% 
+   sep_ReIm(hgt) %>%
+   # .[, hgt := scale(hgt), by = .(part, PC)] %>% 
+   .[, part := forcats::fct_rev(part)] %>% 
+   ggplot(aes(year, hgt)) +
+   geom_zero(linetype = 1) +
+   geom_line() +
+   geom_smooth(span = 30/109, se = FALSE, method.args = list(degree = 1), n = 300,
+               method = "loess", color = "#FD005F") +
+   # geom_smooth(method = "lm", linetype = 2, color = "#FD005F", se = TRUE) +
+   scale_color_brewer(palette = "Set1") +
+   scale_x_continuous("Years", breaks = AnchorBreaks(1900, 20)) +
+   scale_y_continuous("") +
+   facet_nested(part ~ PC, labeller = labeller(anomaly = AddPreffix("Anomalía\n"),
+                                               part = labs_part))
+```
+
+
+```{r ceof-temporal-largo-regr, fig.cap = "EOF temporal para ERA20", fig.width=18.7/2.45, fig.height=11.13/2.45}
+
+long_ceof$left %>% 
+   sep_ReIm(hgt) %>% 
+   # .[, hgt := scale(hgt), by = .(part, PC)] %>% 
+   .[, part := forcats::fct_rev(part)] %>% 
+   # .[, hgt := scale(hgt), by = .(PC, part, anomaly)] %>% 
+   ggplot(aes(year, hgt)) +
+   geom_zero(linetype = 1) +
+   geom_line(alpha = 0.3) +
+   # geom_smooth(span = 30/109, se = FALSE, method.args = list(degree = 1), n = 300,
+   #             method = "loess", color = "#FD005F") +
+   geom_smooth(method = "lm", linetype = 1, color = "#7239b3", se = TRUE) +
+   scale_color_brewer(palette = "Set1") +
+   scale_x_continuous("Years", breaks = AnchorBreaks(1900, 20)) +
+   scale_y_continuous("") +
+   facet_nested(part ~ PC, labeller = labeller(anomaly = AddPreffix("Anomalía\n"),
+                                               part = labs_part))
+```
+
+
+```{r, fig.width=18.7/2.45, fig.height=11.13/2.45}
+linear_ceof <- copy(long_ceof)
+
+linear_ceof$left <- linear_ceof$left %>% 
+   sep_ReIm(hgt) %>% 
+   .[, hgt := predict(lm(hgt ~ year)), by = .(PC, part)] %>% 
+   dcast(year + PC ~ part) %>% 
+   .[, hgt := complex(real = R, imaginary = I)] %>% 
+   .[, `:=`(R = NULL, I = NULL)] %>% 
+   .[]
+
+
+trends <- lapply(list(PC1 = 1, PC2 = 2, "PC1+2" = 1:2), predict, object = linear_ceof) %>% 
+   rbindlist(idcol = "PC")
+
+long_sd <- datos[dataset == "era20" & season == "SON"] %>% 
+   .[, hgt_a := Anomaly(hgt), by  = .(lat, year, lev)] %>% 
+   .[, .(hgt_sd = sd(hgt_a)), by = .(lev)]
+
+trends <- trends %>% 
+   .[long_sd, on = .(lev)] %>% 
+   .[, hgt := hgt*hgt_sd/sqrt(cos(pi/180*lat))]
+
+
+plot_reconstruction <- function(pc = "PC1", binwidth) {
+   trends[year %in% range(year)] %>% 
+      # .[lev == 200] %>% 
+      .[PC == pc] %>%
+      ggperiodic::periodic(lon = c(0, 360)) %>% 
+      ggplot(aes(lon, lat)) +
+      geom_contour_fill(aes(z = Re(hgt)),
+                        breaks = AnchorBreaks(0, binwidth, exclude = 0)) +
+      # geom_contour2(aes(z = Re(hgt)), breaks = 30) +
+      map(lat < 10) +
+      scale_fill_divergent(guide = guide_colorstrip_bottom(),
+                           breaks = AnchorBreaks(0, binwidth, exclude = 0)) +
+      scale_x_longitude() +
+      scale_y_latitude() +
+      scale_linetype_manual(values = c("1" = 1, "-1" = 2), labels = c("1" = "+", "-1" = "-")) +
+      facet_nested(lev  ~ PC + year,
+                   labeller = labeller(lev = AddSuffix(" hPa"),
+                                       PC = AddPreffix("Reconstruction with linear "),
+                                       dataset = labs_datasets)) +
+      coord_quickmap(ylim = c(NA, -20)) +
+      theme(legend.title = element_blank())
+}
+
+
+plot_reconstruction("PC1", 50) 
+```
+
+```{r,  fig.width=18.7/2.45, fig.height=11.13/2.45}
+plot_reconstruction("PC2", 5)  
+
+```
+
+```{r}
+
+trends_full <- datos %>% 
+   .[dataset == "era20" & season == "SON"]  %>% 
+   .[, hgt := Anomaly(hgt), by = .(lat, lev, year)] %>% 
+   # .[, hgt := hgt/sd(hgt), by = .(lev)] %>%
+   .[, FitLm(hgt, year, se = TRUE), by = .(lon, lat, lev)] %>% 
+   .[term == "year"] %>% 
+   .[, p.val := Pvaluate(estimate, std.error, df, "fdr"), by = .(lev)] %>% 
+   .[, PC := "Full Data"]
+
+trends_full %>% 
+   .[lev == 200] %>% 
+   ggplot(aes(lon, lat)) +
+   geom_contour_fill(aes(z = estimate*109),
+                     breaks = AnchorBreaks(0, NULL, exclude = 0)) +
+   
+   map(lat < 10) +
+   scale_fill_divergent(guide = guide_colorstrip_bottom()) +
+   # breaks = AnchorBreaks(0, 0.005, exclude = 0) +
+   scale_x_longitude() +
+   scale_y_latitude() +
+   # scale_linetype_manual(values = c("1" = 1, "-1" = 2), labels = c("1" = "+", "-1" = "-")) +
+   facet_nested(lev  ~ .,
+                labeller = labeller(lev = AddSuffix(" hPa"),
+                                    PC = AddPreffix("Reconstruction with lienar "),
+                                    dataset = labs_datasets)) +
+   coord_quickmap(ylim = c(NA, -20)) +
+   theme(legend.title = element_blank())
+```
+
+```{r}
+long_ceof$left %>% 
+   sep_ReIm(hgt) %>% 
+   .[, hgt := scale(hgt), by = .(part, PC)] %>% 
+   .[, broom::tidy(lm(hgt ~year)), by = .(part, PC)]
+```
+
+
+```{r}
+long_ceof$left %>% 
+   copy() %>% 
+   .[, `:=`(hgt = abs(hgt), 
+            part = "M")] %>% 
+   # .[, hgt := scale(hgt), by = .(part, PC)] %>%
+   # .[, hgt := scale(hgt), by = .(PC, part, anomaly)] %>% 
+   ggplot(aes(year, hgt)) +
+   geom_zero(linetype = 1) +
+   geom_line() +
+   geom_smooth(span = 30/109, se = TRUE, method.args = list(degree = 1), n = 300,
+               method = "loess") +
+   scale_color_brewer(palette = "Set1") +
+   facet_nested(part ~ PC, labeller = labeller(anomaly = AddPreffix("Anomalía\n"),
+                                               part = labs_part))
+```
+
+```{r}
+long_ceof$left %>% 
+   copy() %>% 
+   .[, `:=`(hgt = Arg(hgt), 
+            part = "A")] %>% 
+   # .[, hgt := scale(hgt), by = .(part, PC)] %>%
+   # .[, hgt := scale(hgt), by = .(PC, part, anomaly)] %>% 
+   ggplot(aes(year, hgt)) +
+   geom_zero(linetype = 1) +
+   geom_line() +
+   geom_smooth(span = 30/109, se = TRUE, method.args = list(degree = 1), n = 300,
+               method = "loess") +
+   scale_color_brewer(palette = "Set1") +
+   facet_nested(part ~ PC, labeller = labeller(anomaly = AddPreffix("Anomalía\n"),
+                                               part = labs_part))
+```
+
+
+
+```{r}
+long_ceof$left %>% 
+   copy() %>% 
+   .[, `:=`(hgt = abs(hgt), 
+            part = "M")] %>% 
+   .[, hgt := scale(hgt), by = .(part, PC)] %>% 
+   .[, broom::tidy(lm(hgt ~year)), by = .(part, PC)] 
+```
+
+
+```{r}
+
+my_spectrum <- function(data, spans = NULL, R = 1000, ..., probs = 0.95) {
+   mtm <- spec.pgram(data, spans = spans, ..., plot = FALSE)
+   
+   out <- as.data.table(mtm[c("freq", "spec")])
+   
+   out[, boot_null := null_spec(data, spans = spans, R = R, ..., probs = probs)]
+   
+   return(out[])
+}
+
+
+
+null_spec <- memoise::memoise(function(data, spans, R = 1000, ..., probs = 0.95) {
+   
+   b <- boot::boot(data, function(d, i) spec.pgram(d[i], spans = spans, 
+                                                   ...,
+                                                   plot = FALSE)$spec, 
+                   R = R)
+   
+   apply(b$t, 2, quantile, probs = probs)
+}
+)
+
+long_ceof$left %>% 
+   # .[PC == "PC2"] %>% 
+   sep_ReIm(hgt) %>%
+   .[, hgt := scale(hgt), by = .(PC, part)] %>%
+   .[, my_spectrum(hgt, span = 5, R = 10000, detrend = TRUE, demean = TRUE),
+     by = .(PC, part)] %>% 
+   ggplot(aes(1/freq, spec, color = part)) +
+   geom_line() +
+   # geom_point() +
+   geom_line(aes(y = boot_null), linetype = 2) +
+   scale_x_log10("Period (years)", breaks = c(1:10, (2:10)*10), expand = c(0, 0),
+                 guide = guide_axis(check.overlap = TRUE, n.dodge = 2)) +
+   scale_y_continuous("Spectrum", expand = expansion(mult = c(0, 0.05), add = 0)) +
+   annotation_logticks(sides = "b") +
+   scale_color_brewer("Part", palette = "Set1", labels = labs_part) +
+   facet_nested( ~ PC) 
+```
+
+
+```{r eof-temporales, fig.cap = "Series temporales de eofs"}
+ceof[, ceof[[1]]$left, by = .(dataset, season)] %>% 
+   .[season == "SON"] %>% 
+   sep_ReIm(hgt) %>% 
+   # .[, hgt := scale(hgt), by = .(PC, part, anomaly)] %>% 
+   ggplot(aes(year, hgt)) +
+   geom_zero(linetype = 1) +
+   geom_line(aes(color = dataset)) +
+   # geom_smooth(aes(color = dataset), span = 15/100, se = F, method.args = list(degree = 1), n = 100) +
+   scale_color_brewer(palette = "Set1") +
+   facet_nested(part ~ PC, labeller = labeller(anomaly = AddPreffix("Anomalía\n")))
+```
+
+
+
+```{r pc1}
+erai <- copy(ceof) %>% 
+   .[dataset == "era" & season == "SON"] %>% 
+   .[, ceof[[1]]]
+```
+
+```{r read-temp-psi}
+air <- ReadNetCDF(here::here("datos", "ERA-Interim", "erai.mon.mean.nc"),
+                  vars = "t",
+                  subset = list(latitude = -90:20,
+                                level = list(850, 50))) %>% 
+   setnames(longitude = "lon", latitude = "lat", level = "lev") %>% 
+   .[, year := year(time[1]), by = time] %>% 
+   .[month(time) == 12, year := year + 1L] %>%  # december counts to the next year
+   .[, .(t = mean(t), n = .N), by = .(lev, lat, lon, year, season(time))] %>% 
+   .[n == 3] %>%  # keep only full seasons
+   .[, n := NULL] %>%
+   .[season == "SON"]
+
+psi <- ReadNetCDF("datos/NCEP Reanalysis/psi.mon.mean.nc",
+                  subset = list(lat = c(-90, 20),
+                                level = c(0.2101),
+                                time = c("1979-01-01", "2019-01-01"))) %>% 
+   setnames(level = "lev") %>% 
+   .[, year := year(time[1]), by = time] %>% 
+   .[month(time) == 12, year := year + 1L] %>%  # december counts to the next year
+   .[, .(psi = mean(psi), n = .N), by = .(lev, lat, lon, year, season(time))] %>% 
+   .[n == 3] %>%  # keep only full seasons
+   .[, n := NULL] %>% 
+   .[, psi.z := Anomaly(psi), by = .(lat, season, year, lev)]
+
+
+
+sst <- ReadNetCDF("~/DATOS/ERA-Interim/erai-sfc.mon.mean.nc", 
+                  vars = c("sst"), 
+                  subset = list(latitude = -90:20)) %>% 
+   na.omit() %>% 
+   .[, year := year(time[1]), by = time] %>% 
+   .[month(time) == 12, year := year + 1L] %>%  # december counts to the next year
+   .[, .(sst = mean(sst), n = .N), by = .(latitude, longitude, year, season(time))] %>% 
+   .[n == 3] %>%  # keep only full seasons
+   .[, n := NULL] %>% 
+   setnames(longitude = "lon", latitude = "lat") %>% 
+   .[, sst_a := Anomaly(sst), by = .(lon, lat, season)]
+
+```
+
+```{r}
+
+
+
+binwidths <- c(5e5, 1e6)
+arrows <- c(0.01, 0.03)
+
+```
+
+
+
+
+```{r air-hgt-regr}
+air_reg <- erai$left %>% 
+   sep_ReIm(hgt)  %>% 
+   .[, hgt := scale(hgt), by = .(part, PC)] %>% 
+   .[air[season == "SON"], on = c("year"), allow.cartesian = TRUE] %>% 
+   na.omit() %>%
+   .[, FitLm(t, hgt, se = TRUE),  
+     by = .(lon, lat, PC, part, lev)] %>% 
+   .[term == "hgt"] %>% 
+   .[, p.val := Pvaluate(estimate, std.error, df, "fdr"), by = .(PC, part, lev)]  
+
+air_mean <- air %>% 
+   .[ lev == 50 & season == "SON"] %>% 
+   .[, .(t = mean(t)), by = .(lon, lat, lev)]
+
+hgt_reg <- erai$left %>% 
+   copy() %>% 
+   setnames(hgt = "EOF") %>% 
+   sep_ReIm(EOF) %>% 
+   .[, EOF := scale(EOF), by = .(part, PC)] %>% 
+   
+   .[datos[dataset == "era" & season == "SON"], on = c("year"), allow.cartesian = TRUE] %>%
+   .[lev %in% c(50, 200)] %>% 
+   na.omit() %>% 
+   .[, FitLm(hgt, EOF, se = TRUE), 
+     by = .(lon, lat, lev, season, dataset, PC, part)] %>% 
+   .[term == "EOF"] %>% 
+   .[, p.val := Pvaluate(estimate, std.error, df, "fdr"), by = .(PC, part, lev)]  
+
+hgt_mean <- datos %>% 
+   .[dataset == "era" & season == "SON"] %>% 
+   .[, .(hgt = mean(hgt)), by = .(lon, lat, lev)]
+
+psi_regr <- ceof[dataset == "ncep"] %>% 
+   # .[, denormalize(ceof[[1]], "left"), by = .(season)] %>% 
+   .[, ceof[[1]]$left, by = .(season)] %>% 
+   
+   # .[PC == "PC2"] %>% 
+   sep_ReIm(hgt) %>%
+   .[, hgt := scale(hgt), by = .(part, PC, season)] %>% 
+   .[psi, on = c("year", "season"), allow.cartesian = TRUE] %>% 
+   na.omit() %>% 
+   .[season == "SON"] %>% 
+   .[, FitLm(psi.z, hgt = hgt/sd(hgt), se = TRUE), by = .(lat, lon, season, PC, part, lev)] %>% 
+   .[term == "hgt"] %>%
+   .[, psi.z := estimate] %>%
+   .[, p.val := Pvaluate(estimate, std.error, df, "fdr"), by = .(part, PC, lev)] %>% 
+   .[, c("f.lon", "f.lat") := WaveFlux(.SD), by = .(season, PC, part, lev)] 
+
+
+
+sst_regr <- ceof[season == "SON" & dataset == "era"] %>% 
+   .[, ceof[[1]]$left] %>% 
+   sep_ReIm(hgt) %>% 
+   .[, hgt := scale(hgt), by = .(part, PC)] %>% 
+   .[sst[season == "SON"], on = c("year"), allow.cartesian = TRUE] %>% 
+   na.omit() %>% 
+   .[, FitLm(sst, hgt, se = TRUE), by = .(lon, lat, part, PC)] %>% 
+   .[term == "hgt"] %>% 
+   .[, p.val := Pvaluate(estimate, std.error, df, "fdr"), by = .(PC, part)]
+
+
+plot_reg <- function(reg, variable = "", component = TRUE, 
+                     binwidth = NULL, geom_map = map(lat %between% c(-90, 0))) {
+   reg$var <-  variable
+   
+   if (component) {
+      component <- paste0(reg$PC[1], " - ", labs_part[reg$part[1]], " part")
+   } else {
+      component <- reg$PC[1]
+   }
+   
+   ggperiodic::periodic(reg, lon = c(0, 360)) %>% 
+      ggplot(aes(lon, lat)) +
+      geom_contour_fill(aes(z = estimate), na.fill = TRUE, 
+                        breaks = AnchorBreaks(0, binwidth, exclude = 0)) +
+      geom_contour2(aes(z = p.val), breaks = 0.05, size = 0.2) +
+      stat_subset(aes(subset = p.val <= 0.05 & is.cross(lon, lat, 1)), geom = "point", size = 0.01) +
+      scale_x_longitude() +
+      scale_y_latitude() +
+      scale_fill_divergent(component, guide = guide_colorstrip_bottom(20),
+                           labels = function(x) signif(x, 2),
+                           breaks = AnchorBreaks(0, binwidth, exclude = 0)) +
+      facet_nested(lev ~ var,
+                   labeller = labeller(lev = AddSuffix(" hPa"))) +
+      geom_map +
+      coord_quickmap() 
+   # theme(legend.title = element_blank())
+}
+```
+
+
+# PC1
+
+
+```{r PC1-regr-R, fig.height=11.13/2.45, fig.width = 23/2.45}
+air_reg %>% 
+   .[PC == "PC1"] %>% 
+   .[part == "R"] %>% 
+   .[lat <= 0] %>% 
+   plot_reg("Temperature", binwidth = 0.5) +
+   # geom_contour2(data = air_mean[lat <= 0], aes(z = t)) +
+   
+   hgt_reg %>% 
+   .[PC == "PC1"] %>% 
+   .[part == "R"] %>% 
+   plot_reg("Z", binwidth = 20) 
+# geom_contour2(data = hgt_m0an[lat <= 0], aes(z = hgt))
+```
+
+
+
+```{r PC1-regr-I, fig.height=11.13/2.45, fig.width = 23/2.45}
+air_reg %>% 
+   .[PC == "PC1"] %>% 
+   .[part == "I"] %>% 
+   .[lat <= 0] %>% 
+   plot_reg("Temperature", binwidth = 0.5) +
+   
+   hgt_reg %>% 
+   .[PC == "PC1"] %>% 
+   .[part == "I"] %>% 
+   plot_reg("Z", binwidth = 20)
+```
+
+```{r PC1-regr-psi, fig.height=11.13/2.45, fig.width = 23/2.45}
+binwidth <- 5e5
+psi_regr %>% 
+   .[PC == "PC1"] %>% 
+   .[, part := forcats::fct_rev(part)] %>% 
+   .[, estimate := estimate/1e4] %>% 
+   plot_reg(variable = "Streamfunction/1e4", binwidth = 30, geom_map = map(lat <= 20), 
+            component = FALSE) +
+   facet_nested(part ~ var,
+                labeller = labeller(lev = AddSuffix(" hPa"),
+                                    part = labs_part)) +
+   geom_vector(aes(dx = f.lon, dy = f.lat,
+                   x = ifelse(is.cross(lon, lat, 2), lon, NA)),
+               skip = 0, min.mag = 0, size = 0.3, arrow.angle = 12) +
+   scale_mag(max_size = 1, guide = "none")  +
+   
+   
+   
+   sst_regr %>% 
+   .[PC == "PC1"] %>% 
+   .[, part := forcats::fct_rev(part)] %>% 
+   plot_reg(variable = "SST", binwidth = 0.1, geom_map = map(lat <= 20, fill = "white"),
+            component = FALSE) +
+   facet_nested(part ~ var,
+                labeller = labeller(lev = AddSuffix(" hPa"),
+                                    part = labs_part)) 
+
+```
+
+```{r ampl-eof-r2}
+datos[season == "SON" & dataset == "era"] %>% 
+   .[, FitWave(hgt, 1:3), by = .(dataset, lat, year, season, lev)] %>% 
+   .[ceof[season == "SON" & dataset == "era", ceof[[1]]$left], on = c("year"), allow.cartesian = TRUE] %>% 
+   .[, hgt := abs(hgt)] %>% 
+   .[, cor(amplitude, hgt), by = .(lat, k, PC, lev)] %>%
+   # .[PC == "PC2"] %>%
+   ggplot(aes(lat, V1^2)) +
+   # geom_zero() +
+   annotate("rect", xmin = min(lats.eof), xmax = max(lats.eof), ymin = -Inf, ymax = Inf,
+            color = NA, alpha = 0.1) +
+   geom_line(aes(color = factor(k))) +
+   # geom_line(aes(color = part)) +
+   scale_x_latitude() +
+   scale_y_continuous("R2 amplitud PC") +
+   scale_color_brewer(palette = "Set1") +
+   coord_flip() +
+   # facet_nested(PC + lev ~ k) +
+   facet_nested(lev ~ PC, labeller = labeller(lev = AddSuffix(" hPa")), scales = "free") +
+   NULL
+```
+
+
+# PC2
+
+
+
+
+```{r PC2-regr-R, fig.height=11.13/2.45, fig.width = 23/2.45}
+air_reg %>% 
+   .[PC == "PC2"] %>% 
+   .[part == "R"] %>% 
+   .[lat <= 0] %>% 
+   plot_reg("Temperature", binwidth = 0.25) +
+   
+   
+   hgt_reg %>% 
+   .[PC == "PC2"] %>% 
+   .[part == "R"] %>% 
+   plot_reg("Z", binwidth = 10)
+```
+
+
+
+```{r PC2-regr-I, fig.height=11.13/2.45, fig.width = 23/2.45}
+air_reg %>% 
+   .[PC == "PC2"] %>% 
+   .[part == "I"] %>% 
+   .[lat <= 0] %>% 
+   plot_reg("Temperature", binwidth = 0.1)  +
+   
+   
+   hgt_reg %>% 
+   .[PC == "PC2"] %>% 
+   .[part == "I"] %>% 
+   plot_reg("Z", binwidth = 10)
+```
+
+
+```{r PC2-regr-psi, fig.height=11.13/2.45, fig.width = 23/2.45}
+psi_regr %>% 
+   .[PC == "PC2"] %>% 
+   .[, part := forcats::fct_rev(part)] %>% 
+   .[, estimate := estimate/1e5] %>% 
+   plot_reg(variable = "Streamfunction/1e5", binwidth = 10, geom_map = map(lat <= 20),
+            component = TRUE) +
+   facet_nested(part ~ var,
+                labeller = labeller(lev = AddSuffix(" hPa"),
+                                    part = labs_part)) +
+   geom_vector(aes(dx = f.lon, dy = f.lat,
+                   x = ifelse(is.cross(lon, lat, 2), lon, NA)),
+               skip = 0, min.mag = 0, size = 0.2, arrow.angle = 12) +
+   scale_mag(max_size = 1, guide = "none") +
+   
+   
+   
+   sst_regr %>% 
+   .[, part := forcats::fct_rev(part)] %>% 
+   .[PC == "PC2"] %>% 
+   plot_reg(variable = "SST", binwidth = 0.25, geom_map = map(lat <= 20, fill = "white"),
+            component = TRUE) +
+   facet_nested(part ~ var,
+                labeller = labeller(lev = AddSuffix(" hPa"),
+                                    part = labs_part)) 
+```
+
+
+```{r}
+rsoi::download_enso("oni") %>%
+   as.data.table() %>% 
+   .[, .(enso = mean(dSST3.4)), by = .(year(Date), season(Date))] %>% 
+   .[season == "SON"] -> enso34
+
+ erai$left %>% 
+   sep_ReIm(hgt)  %>% 
+    .[, part := forcats::fct_rev(part)] %>% 
+   .[, hgt := scale(hgt), by = .(part, PC)] %>% 
+   .[enso34, on = c("year"), allow.cartesian = TRUE] %>% 
+   na.omit() %>% 
+    ggplot(aes(hgt, enso)) +
+    geom_point(aes(color = part)) +
+    geom_smooth(aes(color = part), method = "lm") +
+    scale_color_brewer(palette = "Set1") +
+    scale_x_continuous("PC") +
+    scale_y_continuous("ENSO34") +
+    facet_grid(part ~ PC, labeller = labeller(part = labs_part)) 
+```
+
+```{r}
+
+ erai$left %>% 
+   sep_ReIm(hgt)  %>% 
+   .[, hgt := scale(hgt), by = .(part, PC)] %>% 
+   .[enso34, on = c("year"), allow.cartesian = TRUE] %>% 
+   na.omit() %>% 
+   .[, cor(hgt, enso)^2, by = .(PC, part)]
+```
+
+```{r}
+
+
+# f <- cimadata::cmip_available("~/DATOS/CMIP6/")[-2, ]
+# cmip_eof <- lapply(seq_len(nrow(f)), function(i) {
+#    message("Processing ", i)
+#    cmip <- ReadNetCDF(f[i, "file"], c(hgt = "zg"),
+#                       subset = list(ensemble = 1,
+#                                     lat = lats.eof,
+#                                     time = c(paste0(year_range[1], "-01-01"), 
+#                                              paste0(year_range[2], "-12-31")),
+#                                     plev = list(50*100, 200*100))) %>% 
+#       .[season(time) == "SON"] %>% 
+#       data.table::setnames("plev", "lev") %>% 
+#       .[, lev := lev/100] %>% 
+#       .[, year := year(time[1]), by = time] %>% 
+#       .[month(time) == 12, year := year + 1] %>%  # december counts to the next year
+#       .[, .(hgt = mean(hgt), n = .N), by = .(lev, lat, lon, year, season(time))] %>% 
+#       .[n == 3] %>%  # keep only full seasons
+#       .[, n := NULL] %>% 
+#       .[]
+#    
+#    cmip_eof <- cmip %>% compute_ceof()
+#    remove(cmip)
+#    
+#    list(list(ceof = cmip_eof))
+# }) 
+# 
+# names(cmip_eof) <- f[["source_id"]]
+# 
+# cmip_eof <- rbindlist(cmip_eof, idcol = "dataset")
+# setnames(cmip_eof, V1 = "ceof")
+# cmip_eof[, season := "SON"]
+# 
+# lapply(unique(cmip_eof$dataset), function(d) {
+#    plot_ceof(cmip_eof[dataset == d])  +
+#       labs(subtitle = d)
+# }) %>% 
+#    Reduce("+", .) +
+#    plot_layout(ncol = 2)
+
+```
+
+
+---
+
+#sdfsdf
+
+
+
+
+```{r, fig.cap = "Regresión entre sst eofs (dataset = ERAI)."}
+
+sst <- ReadNetCDF("~/DATOS/ERA-Interim/erai-sfc.mon.mean.nc", 
+                  vars = c("sst"), 
+                  subset = list(latitude = -90:20)) %>% 
+   na.omit() %>% 
+   .[, year := year(time[1]), by = time] %>% 
+   .[month(time) == 12, year := year + 1] %>%  # december counts to the next year
+   .[, .(sst = mean(sst), n = .N), by = .(latitude, longitude, year, season(time))] %>% 
+   .[n == 3] %>%  # keep only full seasons
+   .[, n := NULL] %>% 
+   setnames(longitude = "lon", latitude = "lat") %>% 
+   .[, sst_a := Anomaly(sst), by = .(lon, lat, season)]
+
+
+ceof[season == "SON" & dataset == "era"] %>% 
+   .[, ceof[[1]]$left] %>% 
+   sep_ReIm(hgt) %>% 
+   .[sst[season == "SON"], on = c("year"), allow.cartesian = TRUE] %>% 
+   na.omit() %>% 
+   .[, FitLm(sst, hgt, se = TRUE), by = .(lon, lat, part, PC)] %>% 
+   .[term == "hgt"] %>% 
+   .[, p.val := Pvaluate(estimate, std.error, df, "fdr"), by = .(PC, part)] %>% 
+   .[] %>% 
+   .[PC == "PC2"] %>% 
+   ggplot(aes(lon, lat)) +
+   # geom_raster(aes(fill = estimate)) +
+   geom_contour_fill(aes(z = estimate), na.fill = TRUE, breaks = AnchorBreaks(0, NULL, exclude = 0)) +
+   geom_contour2(aes(z = p.val), breaks = 0.05, size = 0.2) +
+   stat_subset(aes(subset = p.val <= 0.05 & is.cross(lon, lat, 1)), geom = "point", size = 0.01) +
+   # scale_fill_divergent(limits = c(-1, 1)) +
+   scale_x_longitude() +
+   scale_y_latitude() +
+   scale_fill_divergent(guide = guide_colorstrip_bottom()) +
+   facet_nested(part ~ PC,
+                labeller = labeller(lev = AddSuffix(" hPa"))) +
+   map(lat <= 20, fill = "white") +
+   coord_quickmap()
+```
+
+
+```{r, fig.cap = "Composiciones de anomalías de SST para cada tercil del PC2"}
+ceof[season == "SON" & dataset == "era"] %>% 
+   .[, ceof[[1]]$left] %>% 
+   .[PC == "PC1"] %>% 
+   sep_ReIm(hgt) %>% 
+   .[, hgt_cut := cut_number(hgt, 3, labels = c("Positive", "Neutral", "Negative")), by = .(part)] %>% 
+   .[] %>% 
+   .[sst[season == "SON"], on = c("year"), allow.cartesian = TRUE] %>% 
+   .[] %>% 
+   na.omit() %>% 
+   .[, t.test(sst_a)[c("p.value", "estimate")], by = .(lon, lat, part, hgt_cut)] %>% 
+   ggplot(aes(lon, lat)) +
+   # geom_raster(aes(fill = sst)) +
+   geom_contour_fill(aes(z = estimate), na.fill = TRUE, breaks = AnchorBreaks(0, 0.25, 0)) +
+   geom_contour2(aes(z = p.value), breaks = 0.05, size = 0.2) +
+   stat_subset(aes(subset = p.value <= 0.05 & is.cross(lon, lat, 1)), geom = "point", size = 0.01) +
+   scale_x_longitude() +
+   scale_y_latitude() +
+   scale_fill_divergent(guide = guide_colorstrip_bottom(), breaks = AnchorBreaks(0, 0.25, 0)) +
+   facet_nested(part ~ hgt_cut,
+                labeller = labeller(lev = AddSuffix(" hPa"))) +
+   map(lat <= 20, fill = "white") +
+   coord_quickmap()
+```
+
+```{r, fig.cap = "Composiciones de anomalías de altura geopotential para cada tercil del PC2 en 200hPa y 50hPa."}
+ceof[season == "SON" & dataset == "era"] %>% 
+   .[, ceof[[1]]$left] %>% 
+   .[PC == "PC2"] %>% 
+   sep_ReIm(hgt) %>% 
+   .[, eof_cut := cut_number(hgt, 3, labels = c("Positive", "Neutral", "Negative")), by = .(part)] %>% 
+   .[, hgt := NULL] %>% 
+   .[datos[season == "SON" & dataset == "era"], on = c("year"), allow.cartesian = TRUE] %>% 
+   na.omit() %>% 
+   .[, hgt := Anomaly(hgt), by = .(lon, lat, lev)] %>% 
+   .[, t.test(hgt)[c("p.value", "estimate")], by = .(lon, lat, part, eof_cut, lev)] %>% 
+   # .[lev == 200] %>%
+   ggplot(aes(lon, lat)) +
+   # geom_raster(aes(fill = sst)) +
+   geom_contour_fill(aes(z = estimate), na.fill = TRUE, breaks = AnchorBreaks(0, NULL, 0)) +
+   geom_contour2(aes(z = p.value), breaks = 0.05, size = 0.2) +
+   stat_subset(aes(subset = p.value <= 0.05 & is.cross(lon, lat, 1)), geom = "point", size = 0.01) +
+   scale_x_longitude() +
+   scale_y_latitude() +
+   scale_fill_divergent(guide = guide_colorstrip_bottom()) +
+   facet_nested(lev + part ~ eof_cut,
+                labeller = labeller(lev = AddSuffix(" hPa"))) +
+   map(lat <= 20) +
+   coord_quickmap()
+```
+
+```{r, fig.cap = "Composiciones de anomalías temporales de anomalía zonal de función corriente para cada tercil del PC2. "}
+ceof[season == "SON" & dataset == "era"] %>% 
+   .[, ceof[[1]]$left] %>% 
+   .[PC == "PC2"] %>% 
+   sep_ReIm(hgt) %>% 
+   .[, eof_cut := cut_number(hgt, 3, labels = c("Positive", "Neutral", "Negative")), by = .(part)] %>% 
+   .[, hgt := NULL] %>% 
+   .[psi[season == "SON"], on = c("year"), allow.cartesian = TRUE] %>% 
+   na.omit() %>% 
+   .[, psi := Anomaly(psi.z), by = .(lon, lat)] %>% 
+   .[, t.test(psi)[c("p.value", "estimate")], by = .(lon, lat, part, eof_cut)] %>% 
+   .[, psi.z := estimate] %>%
+   .[, c("f.lon", "f.lat") := WaveFlux(.SD), by = .(part, eof_cut)] %>%
+   ggperiodic::periodic(lon = c(0, 360))  %>% 
+   ggplot(aes(lon, lat)) +
+   # geom_raster(aes(fill = sst)) +
+   geom_contour_fill(aes(z = estimate), na.fill = TRUE, breaks = AnchorBreaks(0, NULL, 0)) +
+   geom_contour2(aes(z = p.value), breaks = 0.05, size = 0.2) +
+   stat_subset(aes(subset = p.value <= 0.05 & is.cross(lon, lat, 1)), geom = "point", size = 0.01) +
+   geom_vector(aes(dx = f.lon, dy = f.lat,
+                   x = ifelse(is.cross(lon, lat, 2), lon, NA)),
+               skip = 0, min.mag = 0, size = 0.2, arrow.angle = 12) +
+   scale_mag(max_size = 1) + 
+   scale_x_longitude() +
+   scale_y_latitude() +
+   scale_fill_divergent(guide = guide_colorstrip_bottom()) +
+   facet_nested( part ~ eof_cut,
+                 labeller = labeller(lev = AddSuffix(" hPa"))) +
+   map(lat <= 20) +
+   coord_quickmap()
+```
+
+
+Ideas:
+
+El PC2 está influenciado por enso, obviamente, pero sólo la parte Real. La parte imaginaria parece insensible al sst o la temperatura tropical. 
+
+Entonces: tenemos un patrón espacial de ondas planetarias tipo PSA que en una fase (la fase asociada a la parte Real) está asociada al enso y en la otra (la fase asociada a la parte imaginaria), no. La imagen qu ese me viene a la mente, entonces, es que el PSA (o al menos algo parecido al PSA) es relativamente independiente del ENSO cuando está en "fase imaginaria", pero el ENSO positivo o negativo mueve ese patrón a la "fase real".
+Las composiciones de geopotencial parecen mostrar que las ondas planetarias son mucho más zonales en la fase imaginaria y tienen más propagación meridional durante la fase real. Aunque las composición de función corriente contradice eso. 
+
+
+
+
+# Extender antes de 1979
+
+¿Se puede extender antes de 1979?
+
+---
+
+
+
+```{r}
+start_years <- c(1979, 1950, 1900)
+names(start_years) <- paste0(start_years, "-", max(datos[dataset == "era20" & season == "SON"]$year))
+
+ceofs <- lapply(start_years, function(y) {
+   datos[dataset == "era20" & season == "SON"] %>% 
+      # .[, hgt := Detrend(hgt), by = .(lon, lat, lev)] %>% 
+      .[year >= y] %>% 
+      .[, .(ceof = list(compute_ceof(.SD, temporal = TRUE)))]
+}) %>% 
+   rbindlist(idcol = "period")
+```
+
+
+
+
+```{r, fig.cap = "Series temporales del EOFs obtenido a partir de distintos períodos."}
+ceofs %>% 
+   .[, ceof[[1]]$left, by = .(period)] %>% 
+   sep_ReIm(hgt) %>% 
+   ggplot(aes(year, hgt)) +
+   geom_zero() +
+   # geom_line(data = ceof[, ceof[[1]]$left, by = .(dataset, season)] %>%
+   #              .[dataset == "era"] %>%
+   #              .[season == "SON"] %>%
+   #              # .[PC == "PC2"] %>%
+   #              .[, .(year, hgt, PC, period = "ERA-I")] %>%
+   #              sep_ReIm(hgt),
+   #           aes(color = period), color = "black") +
+   geom_line(aes(color = period)) +
+   scale_x_continuous("Year") +
+   scale_y_continuous("HGT") +
+   scale_color_brewer(palette = "Set1") +
+   facet_grid(part ~ PC)
+```
+
+```{r}
+ceofs %>% 
+   .[, ceof[[1]]$left, by = .(period)] %>% 
+   copy() %>% 
+   .[, `:=`(hgt = abs(hgt), part = "M")] %>% 
+   ggplot(aes(year, hgt)) +
+   geom_zero() +
+   # geom_line(data = ceof[, ceof[[1]]$left, by = .(dataset, season)] %>%
+   #              .[dataset == "era"] %>%
+   #              .[season == "SON"] %>%
+   #              # .[PC == "PC2"] %>%
+   #              .[, .(year, hgt, PC, period = "ERA-I")] %>%
+   #              sep_ReIm(hgt),
+   #           aes(color = period), color = "black") +
+   geom_line(aes(color = period)) +
+   scale_x_continuous("Year") +
+   scale_y_continuous("HGT") +
+   scale_color_brewer(palette = "Set1") +
+   facet_grid(part ~ PC)
+```
+
+
+
+```{r, fig.cap = "Patrones espaciales de las componentes principal para distintos períodos."}
+ceofs %>% 
+   .[, ceof[[1]]$right, by = .(period)] %>% 
+   sep_ReIm(hgt, FALSE) %>% 
+   ggplot(aes(lon, lat)) +
+   # geom_contour_fill(aes(z = Re(hgt)), breaks = MakeBreaks(0.005)) +
+   geom_contour_fill(aes(z = R),
+                     breaks = AnchorBreaks(0, 0.005, exclude = 0)) +
+   geom_contour2(aes(z = I,  linetype = factor(sign(..level..))),
+                 breaks = AnchorBreaks(0, 0.005, exclude = 0)) +
+   map(lat <= -20) +
+   scale_fill_divergent(guide = guide_colorstrip_bottom(), breaks = AnchorBreaks(0, 0.005, exclude = 0)) +
+   scale_x_longitude() +
+   scale_y_latitude() +
+   scale_linetype_manual(values = c("1" = 1, "-1" = 2)) +
+   facet_nested(lev + period ~ PC,
+                labeller = labeller(lev = AddSuffix(" hPa"))) +
+   coord_quickmap()
+```
+
+```{r, fig.cap = "Serie tempral de eofs (dataset = ERA-20C)"}
+long_eof <- copy(ceofs[period %like% "1900", ceof[[1]]])
+
+long_eof$left %>% 
+   sep_ReIm(hgt) %>% 
+   # .[, hgt := scale(hgt), by = .(PC, part)] %>% 
+   # .[, pw.lin := predict(SiZer::piecewise.linear(year, hgt)$model), by = .(PC, part)] %>% 
+   ggplot(aes(year, hgt)) +
+   geom_line() +
+   # geom_line(aes(y = pw.lin)) +
+   geom_smooth(method = "lm") +
+   scale_x_continuous("Year") +
+   scale_y_continuous("Hgt") +
+   scale_color_brewer(palette = "Set1") +
+   facet_nested(part ~ PC, scales = "free") 
+```
+
+```{r}
+long_eof$left %>% 
+   copy() %>% 
+   .[, `:=`(hgt = Mod(hgt), part = "M")] %>% 
+   # .[, hgt := scale(hgt), by = .(PC, part)] %>% 
+   ggplot(aes(year, hgt)) +
+   geom_line(aes(color = part)) +
+   geom_smooth(method = "lm", aes(color = part)) +
+   scale_x_continuous("Year") +
+   scale_y_continuous("Hgt") +
+   scale_color_brewer(palette = "Set1") +
+   facet_nested(PC~., scales = "free") 
+```
+
+
+
+```{r, fig.cap = "Tendencia lineal para los campos de geopotencial reconstruidos a partir de la PC1, PC2 y ambas combinadas."}
+
+long_sd <- datos[dataset == "era20" & season == "SON"] %>% 
+   .[, hgt_a := Anomaly(hgt), by  = .(lat, year, lev)] %>% 
+   .[, .(hgt_sd = sd(hgt_a)), by = .(lev)]
+
+trends_full <- datos %>% 
+   .[dataset == "era20" & season == "SON"]  %>% 
+   .[, hgt := Anomaly(hgt), by = .(lat, lev, year)] %>% 
+   .[, hgt := hgt/sd(hgt), by = .(lev)] %>%
+   .[, FitLm(hgt, year, se = TRUE), by = .(lon, lat, lev)] %>% 
+   .[term == "year"] %>% 
+   .[, p.val := Pvaluate(estimate, std.error, df, "fdr"), by = .(lev)] %>% 
+   .[, PC := "Full Data"]
+
+trends <- lapply(list(PC1 = 1, PC2 = 2, "PC1+2" = 1:2), predict, object = long_eof) %>% 
+   rbindlist(idcol = "PC") %>% 
+   # .[long_sd, on = "lev"] %>% 
+   .[, hgt := Re(hgt)/sqrt(cos(lat*pi/180))] %>% 
+   .[, FitLm(hgt, year, se = TRUE), by = .(lon, lat, lev, PC)] %>% 
+   .[term == "year"] %>% 
+   .[, p.val := Pvaluate(estimate, std.error, df, "fdr"), by = .(PC, lev)] %>% 
+   rbind(trends_full) %>% 
+   .[, PC := factor(PC, levels = c("PC1", "PC2", "PC1+2", "Full Data"))]
+
+trends %>% 
+   .[lat %between% lats.eof] %>% 
+   # .[PC != "PC1+2"] %>% 
+   ggperiodic::periodic(lon = c(0, 360)) %>%
+   ggplot(aes(lon, lat)) +
+   geom_contour_fill(aes(z = estimate), breaks = AnchorBreaks(0, 0.002, 0)) + 
+   map(lat <= -20) +
+   # stat_subset(aes(subset = p.val <= 0.05 & is.cross(lon, lat)), geom = "point", size = 0.1) +
+   scale_fill_divergent(guide = guide_colorstrip_bottom(), 
+                        breaks = AnchorBreaks(0, 0.002, 0)) +
+   scale_x_longitude() +
+   scale_y_latitude() +
+   coord_quickmap() +
+   facet_nested(lev ~ PC, labeller = labeller(lev = AddSuffix(" hPa")))
+
+# breaks = AnchorBreaks(0, 0.001, 0), 
+```
+
+
+```{r}
+
+
+```
+
+```{r, fig.cap = "Espectro de eof (dataset = ERA-20C). En linea punteada, el valor de 95% de significancia. "}
+long_eof$left %>% 
+   # .[PC == "PC2"] %>% 
+   sep_ReIm(hgt) %>%
+   .[, hgt := scale(hgt), by = .(PC, part)] %>%
+   .[, my_spectrum(hgt, span = 3, R = 10000, detrend = FALSE, demean = FALSE),
+     by = .(PC, part)] %>% 
+   ggplot(aes(1/freq, spec*freq, color = part)) +
+   geom_line() +
+   # geom_point() +
+   geom_line(aes(y = boot_null*freq), linetype = 2) +
+   scale_x_log10("Period (years)", breaks = c(1:10, (2:10)*10), expand = c(0, 0)) +
+   scale_y_continuous(expand = c(0, 0)) +
+   annotation_logticks(sides = "b") +
+   scale_color_brewer(palette = "Set1") +
+   facet_nested( ~ PC)
+```
+
+
+```{r}
+long_eof$left %>% 
+   copy() %>% 
+   # .[PC == "PC2"] %>% 
+   .[, hgt := abs(hgt)] %>% 
+   .[, part := "M"] %>% 
+   .[, hgt := scale(hgt), by = .(PC, part)] %>%
+   .[, my_spectrum(hgt, spans = c(5), R = 10000, detrend = TRUE, demean = FALSE),
+     by = .(PC, part)] %>% 
+   ggplot(aes(1/freq, spec*freq, color = part)) +
+   geom_line() +
+   # geom_point() +
+   geom_line(aes(y = boot_null*freq), linetype = 2) +
+   scale_x_log10("Period (years)", breaks = c(1:10, (2:10)*10), expand = c(0, 0)) +
+   scale_y_continuous(expand = c(0, 0)) +
+   annotation_logticks(sides = "b") +
+   scale_color_brewer(palette = "Set1") +
+   facet_nested( ~ PC)
+```
+
+```{r}
+long_eof$left %>% 
+   # .[PC == "PC2"] %>% 
+   sep_ReIm(hgt) %>%
+   .[, hgt := scale(hgt), by = .(PC, part)]  %>% 
+   .[PC == "PC1" & part == "R" , hgt]  -> s
+```
+
