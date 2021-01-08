@@ -67,7 +67,7 @@ ERA20C <- data_nc_fun(file = data_path("raw", "era20c.mon.mean.nc"),
 #' @export
 #' @rdname data_locations
 NCEP_PSI <- data_nc_fun(file = data_path("raw", "psi.mon.mean.nc"),
-                        download = "ftp://ftp2.psl.noaa.gov/Datasets/ncep.reanalysis.derived/sigma/vor.mon.mean.nc")
+                        download = "ftp://ftp2.psl.noaa.gov/Datasets/ncep.reanalysis.derived/sigma/psi.mon.mean.nc")
 
 #' @export
 #' @rdname data_locations

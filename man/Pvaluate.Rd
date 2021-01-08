@@ -2,7 +2,7 @@
 % Please edit documentation in R/lm_lite.R
 \name{Pvaluate}
 \alias{Pvaluate}
-\title{Compute p.values}
+\title{Compute p-values}
 \usage{
 Pvaluate(estimate, std.error, df, adjustment = "none")
 }
@@ -16,6 +16,6 @@ Pvaluate(estimate, std.error, df, adjustment = "none")
 \item{adjustment}{method for adjustment, see [stats::p.adjust()].}
 }
 \description{
-Computes p.values from the result of [metR::FitLm()] (or any assumed student-t-distributed
+Computes p-values from the result of [metR::FitLm()] (or any assumed student-t-distributed
 statistic) with optional adjustments.
 }

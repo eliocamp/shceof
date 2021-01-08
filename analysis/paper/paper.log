@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.3.30)  5 JAN 2021 20:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.3.30)  7 JAN 2021 17:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1106,87 +1106,86 @@ LaTeX Font Info:    Try loading font information for TS1+lmr on input line 131.
 
 (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-<../figures/eof1-regr-gh-1.pdf, id=102, 426.59375pt x 516.93124pt>
+) [5 <../figures/extended-series-1.pdf>]
+<../figures/eof1-regr-gh-1.pdf, id=117, 426.59375pt x 516.93124pt>
 File: ../figures/eof1-regr-gh-1.pdf Graphic file (type pdf)
 <use ../figures/eof1-regr-gh-1.pdf>
-Package pdftex.def Info: ../figures/eof1-regr-gh-1.pdf  used on input line 143.
+Package pdftex.def Info: ../figures/eof1-regr-gh-1.pdf  used on input line 147.
 
 (pdftex.def)             Requested size: 426.61873pt x 516.96152pt.
-[5 <../figures/extended-series-1.pdf>]
 <../figures/eof1-regr-t-1.pdf, id=118, 426.59375pt x 516.93124pt>
 File: ../figures/eof1-regr-t-1.pdf Graphic file (type pdf)
 <use ../figures/eof1-regr-t-1.pdf>
-Package pdftex.def Info: ../figures/eof1-regr-t-1.pdf  used on input line 151.
+Package pdftex.def Info: ../figures/eof1-regr-t-1.pdf  used on input line 155.
 (pdftex.def)             Requested size: 426.61873pt x 516.96152pt.
 <../figures/eof2-regr-gh-1.pdf, id=121, 426.59375pt x 516.93124pt>
 File: ../figures/eof2-regr-gh-1.pdf Graphic file (type pdf)
 <use ../figures/eof2-regr-gh-1.pdf>
-Package pdftex.def Info: ../figures/eof2-regr-gh-1.pdf  used on input line 159.
+Package pdftex.def Info: ../figures/eof2-regr-gh-1.pdf  used on input line 163.
 
 (pdftex.def)             Requested size: 426.61873pt x 516.96152pt.
 <../figures/eof2-regr-t-1.pdf, id=124, 426.59375pt x 516.93124pt>
 File: ../figures/eof2-regr-t-1.pdf Graphic file (type pdf)
 <use ../figures/eof2-regr-t-1.pdf>
-Package pdftex.def Info: ../figures/eof2-regr-t-1.pdf  used on input line 167.
+Package pdftex.def Info: ../figures/eof2-regr-t-1.pdf  used on input line 171.
 (pdftex.def)             Requested size: 426.61873pt x 516.96152pt.
 <../figures/zonal-waves-1.pdf, id=127, 882.29625pt x 515.9275pt>
 File: ../figures/zonal-waves-1.pdf Graphic file (type pdf)
 <use ../figures/zonal-waves-1.pdf>
-Package pdftex.def Info: ../figures/zonal-waves-1.pdf  used on input line 173.
+Package pdftex.def Info: ../figures/zonal-waves-1.pdf  used on input line 177.
 (pdftex.def)             Requested size: 469.75536pt x 274.69199pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 185--187
+Underfull \hbox (badness 10000) in paragraph at lines 189--191
 
  []
 
 <../figures/sam-eof-1.pdf, id=128, 903.375pt x 518.93875pt>
 File: ../figures/sam-eof-1.pdf Graphic file (type pdf)
 <use ../figures/sam-eof-1.pdf>
-Package pdftex.def Info: ../figures/sam-eof-1.pdf  used on input line 199.
+Package pdftex.def Info: ../figures/sam-eof-1.pdf  used on input line 203.
 (pdftex.def)             Requested size: 469.7577pt x 269.8497pt.
 <../figures/sam-eof-vertical-1.pdf, id=129, 882.29625pt x 517.935pt>
 File: ../figures/sam-eof-vertical-1.pdf Graphic file (type pdf)
 <use ../figures/sam-eof-vertical-1.pdf>
 Package pdftex.def Info: ../figures/sam-eof-vertical-1.pdf  used on input line 
-207.
+211.
 (pdftex.def)             Requested size: 469.75536pt x 275.76082pt.
 <../figures/oni-eof-1.pdf, id=130, 903.375pt x 518.93875pt>
 File: ../figures/oni-eof-1.pdf Graphic file (type pdf)
 <use ../figures/oni-eof-1.pdf>
-Package pdftex.def Info: ../figures/oni-eof-1.pdf  used on input line 215.
+Package pdftex.def Info: ../figures/oni-eof-1.pdf  used on input line 219.
 (pdftex.def)             Requested size: 469.7577pt x 269.8497pt.
 <../figures/sst-psi-1-1.pdf, id=133, 883.3pt x 433.62pt>
 File: ../figures/sst-psi-1-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-1-1.pdf>
-Package pdftex.def Info: ../figures/sst-psi-1-1.pdf  used on input line 228.
+Package pdftex.def Info: ../figures/sst-psi-1-1.pdf  used on input line 232.
 (pdftex.def)             Requested size: 469.75067pt x 230.60486pt.
 <../figures/sst-psi-2-1.pdf, id=134, 883.3pt x 433.62pt>
 File: ../figures/sst-psi-2-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-2-1.pdf>
-Package pdftex.def Info: ../figures/sst-psi-2-1.pdf  used on input line 234.
+Package pdftex.def Info: ../figures/sst-psi-2-1.pdf  used on input line 238.
 (pdftex.def)             Requested size: 469.75067pt x 230.60486pt.
 <../figures/mean-psi-1.pdf, id=135, 896.34875pt x 391.4625pt>
 File: ../figures/mean-psi-1.pdf Graphic file (type pdf)
 <use ../figures/mean-psi-1.pdf>
-Package pdftex.def Info: ../figures/mean-psi-1.pdf  used on input line 240.
+Package pdftex.def Info: ../figures/mean-psi-1.pdf  used on input line 244.
 (pdftex.def)             Requested size: 469.75584pt x 205.15651pt.
 <../figures/pp-america-1.pdf, id=136, 440.64626pt x 515.9275pt>
 File: ../figures/pp-america-1.pdf Graphic file (type pdf)
 <use ../figures/pp-america-1.pdf>
-Package pdftex.def Info: ../figures/pp-america-1.pdf  used on input line 249.
+Package pdftex.def Info: ../figures/pp-america-1.pdf  used on input line 253.
 (pdftex.def)             Requested size: 440.66533pt x 515.94984pt.
 <../figures/pp-africa-1.pdf, id=137, 608.2725pt x 515.9275pt>
 File: ../figures/pp-africa-1.pdf Graphic file (type pdf)
 <use ../figures/pp-africa-1.pdf>
-Package pdftex.def Info: ../figures/pp-africa-1.pdf  used on input line 255.
+Package pdftex.def Info: ../figures/pp-africa-1.pdf  used on input line 259.
 (pdftex.def)             Requested size: 469.7635pt x 398.44626pt.
 <../figures/pp-oceania-1.pdf, id=138, 806.01125pt x 515.9275pt>
 File: ../figures/pp-oceania-1.pdf Graphic file (type pdf)
 <use ../figures/pp-oceania-1.pdf>
-Package pdftex.def Info: ../figures/pp-oceania-1.pdf  used on input line 261.
+Package pdftex.def Info: ../figures/pp-oceania-1.pdf  used on input line 265.
 (pdftex.def)             Requested size: 469.74982pt x 300.68668pt.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 271.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 275.
 [6] [7 <../figures/eof1-regr-gh-1.pdf>] [8 <../figures/eof1-regr-t-1.pdf>] [9 <
 ../figures/eof2-regr-gh-1.pdf>] [10 <../figures/eof2-regr-t-1.pdf>] [11 <../fig
 ures/zonal-waves-1.pdf> <../figures/sam-eof-1.pdf>] [12 <../figures/sam-eof-ver
@@ -1194,18 +1193,18 @@ tical-1.pdf> <../figures/oni-eof-1.pdf>] [13 <../figures/sst-psi-1-1.pdf> <../f
 igures/sst-psi-2-1.pdf>] [14 <../figures/mean-psi-1.pdf>] [15 <../figures/pp-am
 erica-1.pdf>] [16 <../figures/pp-africa-1.pdf>] [17 <../figures/pp-oceania-1.pd
 f>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 271.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 275.
 (./paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 271.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 271.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 271.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 275.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 275.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 275.
  ) 
 Here is how much of TeX's memory you used:
- 14871 strings out of 492982
- 219547 string characters out of 6134896
- 332249 words of memory out of 5000000
+ 14875 strings out of 492982
+ 219587 string characters out of 6134896
+ 333269 words of memory out of 5000000
  18094 multiletter control sequences out of 15000+600000
- 60293 words of font info for 90 fonts, out of 8000000 for 9000
+ 60459 words of font info for 92 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  44i,10n,51p,899b,429s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/d
@@ -1214,10 +1213,10 @@ e/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/l
 m/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf
 /fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.p
 fb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb>
-Output written on paper.pdf (17 pages, 2332919 bytes).
+Output written on paper.pdf (17 pages, 2334755 bytes).
 PDF statistics:
- 402 PDF objects out of 1000 (max. 8388607)
- 306 compressed objects within 4 object streams
+ 403 PDF objects out of 1000 (max. 8388607)
+ 307 compressed objects within 4 object streams
  57 named destinations out of 1000 (max. 500000)
  14493 words of extra memory for PDF output out of 17280 (max. 10000000)
 

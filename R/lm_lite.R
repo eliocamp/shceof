@@ -44,9 +44,9 @@ Detrend <- function(y, x) {
    return(y + m)
 }
 
-#' Compute p.values
+#' Compute p-values
 #'
-#' Computes p.values from the result of [metR::FitLm()] (or any assumed student-t-distributed
+#' Computes p-values from the result of [metR::FitLm()] (or any assumed student-t-distributed
 #' statistic) with optional adjustments.
 #'
 #' @param estimate estimate of the regression (or other fit)
@@ -59,6 +59,23 @@ Pvaluate <- function(estimate, std.error, df, adjustment = "none") {
   stats::p.adjust(2*stats::pt(abs(estimate)/std.error, df, lower.tail = FALSE), method = adjustment)
 }
 
+#' Report p-values
+#'
+#' Creates a "pretty" string from p-values. Reports p-values (adding an equal sign)
+#' rounded to two  significant if they are greater than 0.001, in which case,
+#' it reports " < 0.001".
+#'
+#' @param p numeric vector of p-values
+#'
+#'
+#' @return
+#' A character vector of the same length as `p` with `" < 0.001"` for values
+#' lower than 0.001 and `" = signif(p, 2)"` otherwise.
+#'
+#' @export
+report_p <- function(p) {
+  ifelse(p < 0.001, " < 0.001", paste0(" = ", signif(p, 2)))
+}
 
 #' Remove intercept
 #'

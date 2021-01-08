@@ -29,7 +29,7 @@ psi <- NCEP_PSI() %>%
   ReadNetCDF(subset = list(level =  0.2101, 
                            time = c("1979-01-01", NA))) %>% 
   rm_singleton()
-
+ 
 vor <-  NCEP_VOR() %>% 
   ReadNetCDF(subset = list(level =  0.2101, 
                            time = c("1979-01-01", NA))) %>% 
