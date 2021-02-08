@@ -13,7 +13,7 @@ theme_shceof <- function(base_size = 16) {
       # text = element_text(family = font_rc),
       legend.position = "bottom", legend.box = "vertical",
       tagger.panel.tag.background = ggplot2::element_rect(color = NA),
-      strip.text = ggplot2::element_text(size = 12),
+      strip.text = ggplot2::element_text(size = ggplot2::rel(12/16)),
       # panel.spacing.y = grid::unit(5, "mm"),
       # panel.spacing.x = grid::unit(5, "mm"),
       # legend.spacing = grid::unit(2, "mm"),

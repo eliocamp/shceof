@@ -66,7 +66,7 @@ request_era5be <- list(
 request_era5 <- list(
   format = "netcdf",
   product_type = "monthly_averaged_reanalysis",
-  variable = c("geopotential", "temperature", "vorticity"),
+  variable = c("geopotential", "temperature", "vorticity", "divergence"),
   pressure_level = c("1", "2", "3", "5", "7", "10", "20", "30", "50",
                      "70", "100", "125", "150", "175", "200", "225",
                      "250", "300", "350", "400", "450", "500", "550",

@@ -86,6 +86,13 @@
       "Repository": "CRAN",
       "Hash": "125dc7a0ed375eb68c0ce533b48d291f"
     },
+    "RcppEigen": {
+      "Package": "RcppEigen",
+      "Version": "0.3.3.9.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "ddfa72a87fdf4c80466a20818be91d00"
+    },
     "RcppProgress": {
       "Package": "RcppProgress",
       "Version": "0.4.2",
@@ -141,6 +148,19 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "50c838a310445e954bc13f26f26a6ecf"
+    },
+    "asymsam": {
+      "Package": "asymsam",
+      "Version": "0.0.0.9000",
+      "Source": "GitHub",
+      "Remotes": "eliocamp/metR@isoband, eliocamp/tagger,\neliocamp/rticles@AMS-V5, tidyverse/ggplot2, boshek/rsoi",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "asymsam",
+      "RemoteUsername": "eliocamp",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "2cc8a02519fefa84dd3d3d3b84cedb9a3ea02d70",
+      "Hash": "5e61f2201e068397652e4313922c7809"
     },
     "backports": {
       "Package": "backports",
@@ -500,6 +520,13 @@
       "Repository": "RSPM",
       "Hash": "07a91f99e56951818ab911366db77700"
     },
+    "ggforce": {
+      "Package": "ggforce",
+      "Version": "0.3.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "4adaf6b01b41f243ba0c62801de3331e"
+    },
     "ggh4x": {
       "Package": "ggh4x",
       "Version": "0.1.0.9000",
@@ -544,6 +571,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "4ded8b439797f7b1693bd3d238d0106b"
+    },
+    "ggridges": {
+      "Package": "ggridges",
+      "Version": "0.5.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "9d028e8f37c84dba356ce3c367a1978e"
     },
     "ggthemes": {
       "Package": "ggthemes",
@@ -750,6 +784,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "d0a62b247165aabf397fded504660d8a"
+    },
+    "latex2exp": {
+      "Package": "latex2exp",
+      "Version": "0.4.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "dad1cdbbe7546e372dd822c4aba9ac75"
     },
     "lattice": {
       "Package": "lattice",
@@ -982,13 +1023,6 @@
       "Repository": "CRAN",
       "Hash": "cb167f328b3ada4ec5cf67a7df4c900a"
     },
-    "ppcor": {
-      "Package": "ppcor",
-      "Version": "1.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "0b26c0c84f22515249dd7915f4214d32"
-    },
     "praise": {
       "Package": "praise",
       "Version": "1.0.0",
@@ -1056,6 +1090,13 @@
       "Source": "Repository",
       "Repository": "RSPM",
       "Hash": "8c8298583adbbe76f3c2220eef71bebc"
+    },
+    "raster": {
+      "Package": "raster",
+      "Version": "3.4-5",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "a3ded548110163cf499d63c3932dd499"
     },
     "rasterImage": {
       "Package": "rasterImage",
@@ -1197,6 +1238,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "06c85365a03fdaf699966cc1d3cf53ea"
+    },
+    "rticles": {
+      "Package": "rticles",
+      "Version": "0.17",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "12e9c0d85a390d72ec84e703ab129a39"
     },
     "rversions": {
       "Package": "rversions",
@@ -1375,6 +1423,13 @@
       "Source": "Repository",
       "Repository": "RSPM",
       "Hash": "847a9d113b78baca4a9a8639609ea228"
+    },
+    "tweenr": {
+      "Package": "tweenr",
+      "Version": "1.0.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "fc77eb5297507cccfa3349a606061030"
     },
     "udunits2": {
       "Package": "udunits2",

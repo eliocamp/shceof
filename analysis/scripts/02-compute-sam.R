@@ -18,9 +18,7 @@ if (file.exists(sam_file)) {
     normalise_coords() %>%
     .[, hgt := Anomaly(hgt), by = .(lon, lat, lev, month(time))] %>%
     .[, asymsam::eof_asym(hgt, lon, lat, time), by = lev] %>%
-    rm_singleton() %>%
-    .[season(time) == "SON"] %>%
-    .[, .(estimate = mean(estimate)), by = .(lev, term, time = seasonally(time))]
+    rm_singleton()
 
   saveRDS(sams, sam_file)
 }

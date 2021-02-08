@@ -39,7 +39,8 @@ sep_ReIm <- function(data, column, format = c("longer", "wider")) {
   if (format[1] == "longer") {
     data[, c(col) := NULL]
     data <- data.table::setDT(tidyr::pivot_longer(data, R:I, names_to = "part", values_to = col))
-    data[, part := factor(part, levels = c("R", "I"), labels = c("Real", "Imaginary"))]
+    data[, part := factor(part, levels = c("R", "I"), labels = c("Real", "Imaginary"),
+                          ordered = TRUE)]
   }
 
   return(data[])

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.3.30)  7 JAN 2021 17:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.3.30)  8 FEB 2021 18:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -56,16 +56,7 @@ LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 (Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 (Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
-) (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-Package: amssymb 2013/01/14 v3.01 AMS font symbols
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
-Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
-\@emptytoks=\toks14
-\symAMSa=\mathgroup4
-\symAMSb=\mathgroup5
-LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
-(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
-)) (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2017/09/02 v2.17a AMS math features
 \@mathmargin=\skip43
 For additional information on amsmath, use the `?' option.
@@ -73,7 +64,7 @@ For additional information on amsmath, use the `?' option.
 Package: amstext 2000/06/29 v2.01 AMS text
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks15
+\@emptytoks=\toks14
 \ex@=\dimen103
 )) (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
@@ -101,21 +92,21 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
 \dotsspace@=\muskip10
 \c@parentequation=\count94
 \dspbrk@lvl=\count95
-\tag@help=\toks16
+\tag@help=\toks15
 \row@=\count96
 \column@=\count97
 \maxfields@=\count98
-\andhelp@=\toks17
+\andhelp@=\toks16
 \eqnshift@=\dimen106
 \alignsep@=\dimen107
 \tagshift@=\dimen108
 \tagwidth@=\dimen109
 \totwidth@=\dimen110
 \lineht@=\dimen111
-\@envbody=\toks18
+\@envbody=\toks17
 \multlinegap=\skip44
 \multlinetaggap=\skip45
-\mathdisplay@stack=\toks19
+\mathdisplay@stack=\toks18
 LaTeX Info: Redefining \[ on input line 2817.
 LaTeX Info: Redefining \] on input line 2818.
 ) (/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
@@ -130,8 +121,8 @@ File: t1enc.def 2017/04/05 v2.0i Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 48.
 )) (/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
 Package: inputenc 2015/03/17 v1.2c Input encoding file
-\inpenc@prehook=\toks20
-\inpenc@posthook=\toks21
+\inpenc@prehook=\toks19
+\inpenc@posthook=\toks20
 (/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def
 File: utf8.def 2017/01/28 v1.1t UTF-8 support for inputenc
 Now handling font encoding OML ...
@@ -594,16 +585,24 @@ Package textcomp Info: Setting pplx sub-encoding to TS1/3 on input line 406.
 Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 407.
 Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 408.
 Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 409.
-) (/usr/share/texlive/texmf-dist/tex/latex/upquote/upquote.sty
+) (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)) (/usr/share/texlive/texmf-dist/tex/latex/upquote/upquote.sty
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.sty
 Package: microtype 2018/01/14 v2.7a Micro-typographical refinements (RS)
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
-\KV@toks@=\toks22
+\KV@toks@=\toks21
 )
-\MT@toks=\toks23
+\MT@toks=\toks22
 \MT@count=\count99
 LaTeX Info: Redefining \textls on input line 793.
 \MT@outer@kern=\dimen112
@@ -778,7 +777,7 @@ Package: geometry 2010/09/12 v5.6 Page Geometry
 \Gm@layoutheight=\dimen122
 \Gm@layouthoffset=\dimen123
 \Gm@layoutvoffset=\dimen124
-\Gm@dimlist=\toks24
+\Gm@dimlist=\toks23
 ) (/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty
 Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
 \LTleft=\skip48
@@ -795,7 +794,7 @@ Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
 \LT@rows=\count117
 \c@LT@tables=\count118
 \c@LT@chunks=\count119
-\LT@p@ftn=\toks25
+\LT@p@ftn=\toks24
 ) (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2016/04/27 v1.618033 publication quality tables
 \heavyrulewidth=\dimen126
@@ -815,13 +814,25 @@ Package: booktabs 2016/04/27 v1.618033 publication quality tables
 \@thisruleclass=\count122
 \@lastruleclass=\count123
 \@thisrulewidth=\dimen138
+) (/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count124
+\calc@Bcount=\count125
+\calc@Adimen=\dimen139
+\calc@Bdimen=\dimen140
+\calc@Askip=\skip52
+\calc@Bskip=\skip53
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count126
+\calc@Cskip=\skip54
 ) (/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
 Package: etoolbox 2018/02/11 v2.5e e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count124
+\etb@tempcnta=\count127
 ) (/usr/share/texlive/texmf-dist/tex/latex/footnotehyper/footnotehyper.sty
 Package: footnotehyper 2018/01/23 v1.1 hyperref aware footnote.sty (JFB)
 \FNH@notes=\box32
-\FNH@width=\dimen139
+\FNH@width=\dimen141
 ) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
@@ -833,14 +844,8 @@ File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 99.
 )
-\Gin@req@height=\dimen140
-\Gin@req@width=\dimen141
-) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grffile.sty
-Package: grffile 2017/06/30 v1.18 Extended file name support for graphics (HO)
-Package grffile Info: Option `multidot' is set to `true'.
-Package grffile Info: Option `extendedchars' is set to `false'.
-Package grffile Info: Option `space' is set to `true'.
-Package grffile Info: \Gin@ii of package `graphicx' fixed on input line 494.
+\Gin@req@height=\dimen142
+\Gin@req@width=\dimen143
 ) (/usr/share/texlive/texmf-dist/tex/latex/subfig/subfig.sty
 Package: subfig 2005/06/28 ver: 1.3 subfig package
 (/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
@@ -848,63 +853,67 @@ Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
 (/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
 Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
 Package caption3 Info: TeX engine: e-TeX on input line 67.
-\captionmargin=\dimen142
-\captionmargin@=\dimen143
-\captionwidth=\dimen144
-\caption@tempdima=\dimen145
-\caption@indent=\dimen146
-\caption@parindent=\dimen147
-\caption@hangindent=\dimen148
+\captionmargin=\dimen144
+\captionmargin@=\dimen145
+\captionwidth=\dimen146
+\caption@tempdima=\dimen147
+\caption@indent=\dimen148
+\caption@parindent=\dimen149
+\caption@hangindent=\dimen150
 )
-\c@ContinuedFloat=\count125
+\c@ContinuedFloat=\count128
 Package caption Info: hyperref package is loaded.
 Package caption Info: longtable package is loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/caption/ltcaption.sty
 Package: ltcaption 2013/06/09 v1.4-94 longtable captions (AR)
 ))
-\c@KVtest=\count126
-\sf@farskip=\skip52
-\sf@captopadj=\dimen149
-\sf@capskip=\skip53
-\sf@nearskip=\skip54
-\c@subfigure=\count127
-\c@subfigure@save=\count128
-\c@lofdepth=\count129
-\c@subtable=\count130
-\c@subtable@save=\count131
-\c@lotdepth=\count132
-\sf@top=\skip55
-\sf@bottom=\skip56
-) (./paper.aux)
+\c@KVtest=\count129
+\sf@farskip=\skip55
+\sf@captopadj=\dimen151
+\sf@capskip=\skip56
+\sf@nearskip=\skip57
+\c@subfigure=\count130
+\c@subfigure@save=\count131
+\c@lofdepth=\count132
+\c@subtable=\count133
+\c@subtable@save=\count134
+\c@lotdepth=\count135
+\sf@top=\skip58
+\sf@bottom=\skip59
+)
+\cslhangindent=\skip60
+\csllabelwidth=\skip61
+(./paper.aux)
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 76.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 76.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 101.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 101.
+
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 76.
-LaTeX Font Info:    ... okay on input line 76.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 76.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 101.
 (/usr/share/texmf/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Info: Redefining \microtypecontext on input line 76.
+LaTeX Info: Redefining \microtypecontext on input line 101.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
@@ -919,17 +928,17 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 (RS)
 ) (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count133
-\scratchdimen=\dimen150
+\scratchcounter=\count136
+\scratchdimen=\dimen152
 \scratchbox=\box33
-\nofMPsegments=\count134
-\nofMParguments=\count135
-\everyMPshowfont=\toks26
-\MPscratchCnt=\count136
-\MPscratchDim=\dimen151
-\MPnumerator=\count137
-\makeMPintoPDFobject=\count138
-\everyMPtoPDFconversion=\toks27
+\nofMPsegments=\count137
+\nofMParguments=\count138
+\everyMPshowfont=\toks25
+\MPscratchCnt=\count139
+\MPscratchDim=\dimen153
+\MPnumerator=\count140
+\makeMPintoPDFobject=\count141
+\everyMPtoPDFconversion=\toks26
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
@@ -946,17 +955,17 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box34
-Package hyperref Info: Link coloring OFF on input line 76.
+Package hyperref Info: Link coloring OFF on input line 101.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count139
+\c@section@level=\count142
 )
-LaTeX Info: Redefining \ref on input line 76.
-LaTeX Info: Redefining \pageref on input line 76.
-LaTeX Info: Redefining \nameref on input line 76.
+LaTeX Info: Redefining \ref on input line 101.
+LaTeX Info: Redefining \pageref on input line 101.
+LaTeX Info: Redefining \nameref on input line 101.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -994,37 +1003,39 @@ LaTeX Info: Redefining \nameref on input line 76.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 78.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 103.
+
 (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 78.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 103.
+
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 78.
-
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 103
+.
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 78.
-
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 103
+.
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 78.
+(Font)              <12> on input line 103.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 78.
+(Font)              <8> on input line 103.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 78.
-LaTeX Font Info:    Try loading font information for U+msa on input line 78.
+(Font)              <6> on input line 103.
+LaTeX Font Info:    Try loading font information for U+msa on input line 103.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 78.
+LaTeX Font Info:    Try loading font information for U+msb on input line 103.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
@@ -1040,183 +1051,193 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 \tf@toc=\write3
 \openout3 = `paper.toc'.
 
-<../figures/cor-eof-naive-1.pdf, id=11, 883.3pt x 428.60126pt>
+<../figures/cor-eof-naive-1.pdf, id=14, 883.3pt x 428.60126pt>
 File: ../figures/cor-eof-naive-1.pdf Graphic file (type pdf)
 <use ../figures/cor-eof-naive-1.pdf>
-Package pdftex.def Info: ../figures/cor-eof-naive-1.pdf  used on input line 103
+Package pdftex.def Info: ../figures/cor-eof-naive-1.pdf  used on input line 130
 .
 (pdftex.def)             Requested size: 469.75067pt x 227.93582pt.
-<../figures/cor-eof-naive-2.pdf, id=12, 874.26625pt x 502.87875pt>
+<../figures/cor-eof-naive-2.pdf, id=15, 874.26625pt x 502.87875pt>
 File: ../figures/cor-eof-naive-2.pdf Graphic file (type pdf)
 <use ../figures/cor-eof-naive-2.pdf>
-Package pdftex.def Info: ../figures/cor-eof-naive-2.pdf  used on input line 103
+Package pdftex.def Info: ../figures/cor-eof-naive-2.pdf  used on input line 130
 .
 (pdftex.def)             Requested size: 469.7622pt x 270.20764pt.
 
-Overfull \hbox (3.32898pt too wide) in paragraph at lines 103--103
+Overfull \hbox (3.32898pt too wide) in paragraph at lines 130--130
 [][] 
  []
 
 
-Overfull \hbox (3.34052pt too wide) in paragraph at lines 103--103
+Overfull \hbox (3.34052pt too wide) in paragraph at lines 130--130
 [][] 
  []
-
-<../figures/corr-ceof-splitted-1.pdf, id=15, 883.3pt x 514.92375pt>
-File: ../figures/corr-ceof-splitted-1.pdf Graphic file (type pdf)
-<use ../figures/corr-ceof-splitted-1.pdf>
-Package pdftex.def Info: ../figures/corr-ceof-splitted-1.pdf  used on input lin
-e 114.
-(pdftex.def)             Requested size: 469.75067pt x 273.84328pt.
-<../figures/ceofs-1.pdf, id=16, 518.93875pt x 489.83pt>
-File: ../figures/ceofs-1.pdf Graphic file (type pdf)
-<use ../figures/ceofs-1.pdf>
-Package pdftex.def Info: ../figures/ceofs-1.pdf  used on input line 119.
-(pdftex.def)             Requested size: 469.78032pt x 443.42899pt.
-<../figures/ceofs-2.pdf, id=17, 903.375pt x 527.9725pt>
-File: ../figures/ceofs-2.pdf Graphic file (type pdf)
-<use ../figures/ceofs-2.pdf>
-Package pdftex.def Info: ../figures/ceofs-2.pdf  used on input line 119.
-(pdftex.def)             Requested size: 469.7577pt x 274.54727pt.
-
-Overfull \hbox (3.35863pt too wide) in paragraph at lines 119--119
-[][] 
- []
-
-
-Overfull \hbox (3.33601pt too wide) in paragraph at lines 119--119
-[][] 
- []
-
-
-LaTeX Warning: Float too large for page by 139.54622pt on input line 120.
 
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2 <../figures/cor-eof-nai
-ve-1.pdf> <../figures/cor-eof-naive-2.pdf>] [3 <../figures/corr-ceof-splitted-1
-.pdf>] [4 <../figures/ceofs-1.pdf> <../figures/ceofs-2.pdf>]
-<../figures/extended-series-1.pdf, id=100, 903.375pt x 517.935pt>
+ve-1.pdf> <../figures/cor-eof-naive-2.pdf>]
+<../figures/corr-ceof-splitted-1.pdf, id=65, 883.3pt x 514.92375pt>
+File: ../figures/corr-ceof-splitted-1.pdf Graphic file (type pdf)
+<use ../figures/corr-ceof-splitted-1.pdf>
+Package pdftex.def Info: ../figures/corr-ceof-splitted-1.pdf  used on input lin
+e 141.
+(pdftex.def)             Requested size: 469.75067pt x 273.84328pt.
+<../figures/ceofs-1.pdf, id=66, 518.93875pt x 489.83pt>
+File: ../figures/ceofs-1.pdf Graphic file (type pdf)
+<use ../figures/ceofs-1.pdf>
+Package pdftex.def Info: ../figures/ceofs-1.pdf  used on input line 146.
+(pdftex.def)             Requested size: 469.78032pt x 443.42899pt.
+<../figures/ceofs-2.pdf, id=67, 903.375pt x 506.89375pt>
+File: ../figures/ceofs-2.pdf Graphic file (type pdf)
+<use ../figures/ceofs-2.pdf>
+Package pdftex.def Info: ../figures/ceofs-2.pdf  used on input line 146.
+(pdftex.def)             Requested size: 469.7577pt x 263.58627pt.
+
+Overfull \hbox (3.35863pt too wide) in paragraph at lines 146--146
+[][] 
+ []
+
+
+Overfull \hbox (3.33601pt too wide) in paragraph at lines 146--146
+[][] 
+ []
+
+
+LaTeX Warning: Float too large for page by 128.58522pt on input line 147.
+
+<../figures/mean-anom-1.pdf, id=73, 874.26625pt x 516.93124pt>
+File: ../figures/mean-anom-1.pdf Graphic file (type pdf)
+<use ../figures/mean-anom-1.pdf>
+Package pdftex.def Info: ../figures/mean-anom-1.pdf  used on input line 155.
+(pdftex.def)             Requested size: 469.7622pt x 277.75836pt.
+<../figures/extended-series-1.pdf, id=74, 903.375pt x 517.935pt>
 File: ../figures/extended-series-1.pdf Graphic file (type pdf)
 <use ../figures/extended-series-1.pdf>
 Package pdftex.def Info: ../figures/extended-series-1.pdf  used on input line 1
-30.
+63.
 (pdftex.def)             Requested size: 469.7577pt x 269.32774pt.
-LaTeX Font Info:    Try loading font information for TS1+lmr on input line 131.
+LaTeX Font Info:    Try loading font information for TS1+lmr on input line 164.
 
 (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [5 <../figures/extended-series-1.pdf>]
-<../figures/eof1-regr-gh-1.pdf, id=117, 426.59375pt x 516.93124pt>
+) [3 <../figures/corr-ceof-splitted-1.pdf>] [4 <../figures/ceofs-1.pdf> <../fig
+ures/ceofs-2.pdf>]
+<../figures/eof1-regr-gh-1.pdf, id=113, 426.59375pt x 516.93124pt>
 File: ../figures/eof1-regr-gh-1.pdf Graphic file (type pdf)
 <use ../figures/eof1-regr-gh-1.pdf>
-Package pdftex.def Info: ../figures/eof1-regr-gh-1.pdf  used on input line 147.
+Package pdftex.def Info: ../figures/eof1-regr-gh-1.pdf  used on input line 180.
 
 (pdftex.def)             Requested size: 426.61873pt x 516.96152pt.
-<../figures/eof1-regr-t-1.pdf, id=118, 426.59375pt x 516.93124pt>
+<../figures/eof1-regr-t-1.pdf, id=115, 426.59375pt x 516.93124pt>
 File: ../figures/eof1-regr-t-1.pdf Graphic file (type pdf)
 <use ../figures/eof1-regr-t-1.pdf>
-Package pdftex.def Info: ../figures/eof1-regr-t-1.pdf  used on input line 155.
+Package pdftex.def Info: ../figures/eof1-regr-t-1.pdf  used on input line 190.
 (pdftex.def)             Requested size: 426.61873pt x 516.96152pt.
-<../figures/eof2-regr-gh-1.pdf, id=121, 426.59375pt x 516.93124pt>
+<../figures/eof2-regr-gh-1.pdf, id=118, 426.59375pt x 516.93124pt>
 File: ../figures/eof2-regr-gh-1.pdf Graphic file (type pdf)
 <use ../figures/eof2-regr-gh-1.pdf>
-Package pdftex.def Info: ../figures/eof2-regr-gh-1.pdf  used on input line 163.
+Package pdftex.def Info: ../figures/eof2-regr-gh-1.pdf  used on input line 198.
 
 (pdftex.def)             Requested size: 426.61873pt x 516.96152pt.
-<../figures/eof2-regr-t-1.pdf, id=124, 426.59375pt x 516.93124pt>
+<../figures/eof2-regr-t-1.pdf, id=121, 426.59375pt x 516.93124pt>
 File: ../figures/eof2-regr-t-1.pdf Graphic file (type pdf)
 <use ../figures/eof2-regr-t-1.pdf>
-Package pdftex.def Info: ../figures/eof2-regr-t-1.pdf  used on input line 171.
+Package pdftex.def Info: ../figures/eof2-regr-t-1.pdf  used on input line 206.
 (pdftex.def)             Requested size: 426.61873pt x 516.96152pt.
-<../figures/zonal-waves-1.pdf, id=127, 882.29625pt x 515.9275pt>
+<../figures/zonal-waves-1.pdf, id=124, 882.29625pt x 515.9275pt>
 File: ../figures/zonal-waves-1.pdf Graphic file (type pdf)
 <use ../figures/zonal-waves-1.pdf>
-Package pdftex.def Info: ../figures/zonal-waves-1.pdf  used on input line 177.
+Package pdftex.def Info: ../figures/zonal-waves-1.pdf  used on input line 212.
 (pdftex.def)             Requested size: 469.75536pt x 274.69199pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 189--191
+Underfull \hbox (badness 10000) in paragraph at lines 224--226
 
  []
 
-<../figures/sam-eof-1.pdf, id=128, 903.375pt x 518.93875pt>
-File: ../figures/sam-eof-1.pdf Graphic file (type pdf)
-<use ../figures/sam-eof-1.pdf>
-Package pdftex.def Info: ../figures/sam-eof-1.pdf  used on input line 203.
-(pdftex.def)             Requested size: 469.7577pt x 269.8497pt.
-<../figures/sam-eof-vertical-1.pdf, id=129, 882.29625pt x 517.935pt>
+[5 <../figures/mean-anom-1.pdf>] [6 <../figures/extended-series-1.pdf>] [7 <../
+figures/eof1-regr-gh-1.pdf>] [8 <../figures/eof1-regr-t-1.pdf>] [9 <../figures/
+eof2-regr-gh-1.pdf>] [10 <../figures/eof2-regr-t-1.pdf>]
+<../figures/sam-eof-vertical-1.pdf, id=215, 882.29625pt x 514.92375pt>
 File: ../figures/sam-eof-vertical-1.pdf Graphic file (type pdf)
 <use ../figures/sam-eof-vertical-1.pdf>
 Package pdftex.def Info: ../figures/sam-eof-vertical-1.pdf  used on input line 
-211.
-(pdftex.def)             Requested size: 469.75536pt x 275.76082pt.
-<../figures/oni-eof-1.pdf, id=130, 903.375pt x 518.93875pt>
-File: ../figures/oni-eof-1.pdf Graphic file (type pdf)
-<use ../figures/oni-eof-1.pdf>
-Package pdftex.def Info: ../figures/oni-eof-1.pdf  used on input line 219.
-(pdftex.def)             Requested size: 469.7577pt x 269.8497pt.
-<../figures/sst-psi-1-1.pdf, id=133, 883.3pt x 433.62pt>
-File: ../figures/sst-psi-1-1.pdf Graphic file (type pdf)
-<use ../figures/sst-psi-1-1.pdf>
-Package pdftex.def Info: ../figures/sst-psi-1-1.pdf  used on input line 232.
-(pdftex.def)             Requested size: 469.75067pt x 230.60486pt.
-<../figures/sst-psi-2-1.pdf, id=134, 883.3pt x 433.62pt>
+243.
+(pdftex.def)             Requested size: 469.75536pt x 274.15756pt.
+<../figures/sst-psi-2-1.pdf, id=220, 883.3pt x 433.62pt>
 File: ../figures/sst-psi-2-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-2-1.pdf>
-Package pdftex.def Info: ../figures/sst-psi-2-1.pdf  used on input line 238.
+Package pdftex.def Info: ../figures/sst-psi-2-1.pdf  used on input line 255.
 (pdftex.def)             Requested size: 469.75067pt x 230.60486pt.
-<../figures/mean-psi-1.pdf, id=135, 896.34875pt x 391.4625pt>
-File: ../figures/mean-psi-1.pdf Graphic file (type pdf)
-<use ../figures/mean-psi-1.pdf>
-Package pdftex.def Info: ../figures/mean-psi-1.pdf  used on input line 244.
-(pdftex.def)             Requested size: 469.75584pt x 205.15651pt.
-<../figures/pp-america-1.pdf, id=136, 440.64626pt x 515.9275pt>
+[11 <../figures/zonal-waves-1.pdf>] [12 <../figures/sam-eof-vertical-1.pdf> <..
+/figures/sst-psi-2-1.pdf>]
+<../figures/enso-phase-1.pdf, id=264, 910.40125pt x 525.965pt>
+File: ../figures/enso-phase-1.pdf Graphic file (type pdf)
+<use ../figures/enso-phase-1.pdf>
+Package pdftex.def Info: ../figures/enso-phase-1.pdf  used on input line 263.
+(pdftex.def)             Requested size: 469.75789pt x 271.39264pt.
+<../figures/pp-america-1.pdf, id=267, 440.64626pt x 515.9275pt>
 File: ../figures/pp-america-1.pdf Graphic file (type pdf)
 <use ../figures/pp-america-1.pdf>
-Package pdftex.def Info: ../figures/pp-america-1.pdf  used on input line 253.
+Package pdftex.def Info: ../figures/pp-america-1.pdf  used on input line 276.
 (pdftex.def)             Requested size: 440.66533pt x 515.94984pt.
-<../figures/pp-africa-1.pdf, id=137, 608.2725pt x 515.9275pt>
+<../figures/pp-africa-1.pdf, id=268, 608.2725pt x 515.9275pt>
 File: ../figures/pp-africa-1.pdf Graphic file (type pdf)
 <use ../figures/pp-africa-1.pdf>
-Package pdftex.def Info: ../figures/pp-africa-1.pdf  used on input line 259.
+Package pdftex.def Info: ../figures/pp-africa-1.pdf  used on input line 282.
 (pdftex.def)             Requested size: 469.7635pt x 398.44626pt.
-<../figures/pp-oceania-1.pdf, id=138, 806.01125pt x 515.9275pt>
+<../figures/pp-oceania-1.pdf, id=269, 806.01125pt x 515.9275pt>
 File: ../figures/pp-oceania-1.pdf Graphic file (type pdf)
 <use ../figures/pp-oceania-1.pdf>
-Package pdftex.def Info: ../figures/pp-oceania-1.pdf  used on input line 265.
+Package pdftex.def Info: ../figures/pp-oceania-1.pdf  used on input line 288.
 (pdftex.def)             Requested size: 469.74982pt x 300.68668pt.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 275.
-[6] [7 <../figures/eof1-regr-gh-1.pdf>] [8 <../figures/eof1-regr-t-1.pdf>] [9 <
-../figures/eof2-regr-gh-1.pdf>] [10 <../figures/eof2-regr-t-1.pdf>] [11 <../fig
-ures/zonal-waves-1.pdf> <../figures/sam-eof-1.pdf>] [12 <../figures/sam-eof-ver
-tical-1.pdf> <../figures/oni-eof-1.pdf>] [13 <../figures/sst-psi-1-1.pdf> <../f
-igures/sst-psi-2-1.pdf>] [14 <../figures/mean-psi-1.pdf>] [15 <../figures/pp-am
-erica-1.pdf>] [16 <../figures/pp-africa-1.pdf>] [17 <../figures/pp-oceania-1.pd
-f>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 275.
+<../figures/rotations-pc1-1.pdf, id=270, 910.40125pt x 505.89pt>
+File: ../figures/rotations-pc1-1.pdf Graphic file (type pdf)
+<use ../figures/rotations-pc1-1.pdf>
+Package pdftex.def Info: ../figures/rotations-pc1-1.pdf  used on input line 303
+.
+(pdftex.def)             Requested size: 469.75789pt x 261.03413pt.
+[13 <../figures/enso-phase-1.pdf>] [14 <../figures/pp-america-1.pdf>] [15 <../f
+igures/pp-africa-1.pdf>]
+<../figures/regr-rotation-1.pdf, id=310, 717.68124pt x 513.92pt>
+File: ../figures/regr-rotation-1.pdf Graphic file (type pdf)
+<use ../figures/regr-rotation-1.pdf>
+Package pdftex.def Info: ../figures/regr-rotation-1.pdf  used on input line 309
+.
+(pdftex.def)             Requested size: 469.76161pt x 336.38872pt.
+<../figures/rotations-pc2-1.pdf, id=311, 910.40125pt x 518.93875pt>
+File: ../figures/rotations-pc2-1.pdf Graphic file (type pdf)
+<use ../figures/rotations-pc2-1.pdf>
+Package pdftex.def Info: ../figures/rotations-pc2-1.pdf  used on input line 315
+.
+(pdftex.def)             Requested size: 469.75789pt x 267.76717pt.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 335.
+[16 <../figures/pp-oceania-1.pdf>] [17 <../figures/rotations-pc1-1.pdf> <../fig
+ures/regr-rotation-1.pdf>] [18 <../figures/rotations-pc2-1.pdf>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 335.
 (./paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 275.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 275.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 275.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 335.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 335.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 335.
  ) 
 Here is how much of TeX's memory you used:
- 14875 strings out of 492982
- 219587 string characters out of 6134896
- 333269 words of memory out of 5000000
- 18094 multiletter control sequences out of 15000+600000
- 60459 words of font info for 92 fonts, out of 8000000 for 9000
+ 14944 strings out of 492982
+ 220260 string characters out of 6134896
+ 330321 words of memory out of 5000000
+ 18125 multiletter control sequences out of 15000+600000
+ 56304 words of font info for 94 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 44i,10n,51p,899b,429s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,10n,51p,899b,437s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/d
 vips/lm/lm-ec.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/shar
 e/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/l
 m/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf
 /fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.p
-fb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb>
-Output written on paper.pdf (17 pages, 2334755 bytes).
+fb>
+Output written on paper.pdf (18 pages, 1995037 bytes).
 PDF statistics:
- 403 PDF objects out of 1000 (max. 8388607)
- 307 compressed objects within 4 object streams
- 57 named destinations out of 1000 (max. 500000)
- 14493 words of extra memory for PDF output out of 17280 (max. 10000000)
+ 441 PDF objects out of 1000 (max. 8388607)
+ 343 compressed objects within 4 object streams
+ 69 named destinations out of 1000 (max. 500000)
+ 12474 words of extra memory for PDF output out of 14400 (max. 10000000)
 
