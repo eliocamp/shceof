@@ -49,8 +49,10 @@ fortify <- ggplot2::fortify
 
 # zzz.R
 .onLoad <- function(pkgname, libname) {
-  map_simple <<- memoise::memoise(map_simple)
-  fortify <<- memoise::memoise(fortify)
+  map_simple <<- memoise::memoise(map_simple,
+                                  cache = memoise::cache_filesystem(here::here("analysis/cache/memoise/")))
+  fortify <<- memoise::memoise(fortify,
+                               cache = memoise::cache_filesystem(here::here("analysis/cache/memoise/")))
 }
 
 

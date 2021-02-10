@@ -10,7 +10,6 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    bookdown,
     here,
     magrittr,
     data.table,
@@ -23,8 +22,16 @@ Imports:
     sp,
     maptools,
     rmapshaper,
-    memoise
-Suggests: devtools,
+    memoise,
+    kableExtra
+Suggests: 
+    devtools,
     git2r,
-    renv
+    renv,
+    asymsam,
+    tagger,
+    bookdown
 RoxygenNote: 7.1.1
+Remotes:
+    - eliocamp/asymsam
+    - eliocamp/tagger
