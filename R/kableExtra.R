@@ -11,24 +11,24 @@
 #' special symbols. See Details.
 #'
 #'
-#' `spec_color` works the same as [kableExtra::spec_color()] with the difference
+#' `spec_color2` works the same as [kableExtra::spec_color()] with the difference
 #' that the `option` argument can be a palette function returned by
 #' `grDevices::colorRampPalette()`.
 #'
-#' For `columns_spec()` (notice the s), the arguments in `...` can use two
+#' For `column_spec2()`, the arguments in `...` can use two
 #' especial symbols. `.table` will refer to the original data.frame object,
 #' and `.col` will refer to each column. The arguments will be evaluated once per
 #' column. This all means that if you have a function `colour_function` that takes
 #' numeric argument and returns assigns a colour to each element, then
-#' `... %>% columns_spec(1:2, colour = colour_function(.table[[.col]])` will
+#' `... %>% column_spec2(1:2, colour = colour_function(.table[[.col]])` will
 #' colourise the first and second column.
 #'
-#' For `columns_spec()` to work, the table must be generated with `shceof::kbl()`, not
+#' For `column_spec2()` to work, the table must be generated with `kbl2()`, not
 #' `kableExtra::kbl()`. Also bear in mind that some kableExtra operations will remove
-#' the formating necesary for it to work, so just to be safe, use `columns_spec()` right after `kbl()`.
+#' the formating necesary for it to work, so just to be safe, use `column_spec2()` right after `kbl2()`.
 #'
 #' @export
-columns_spec <- function(kable_input, columns, ...) {
+column_spec2 <- function(kable_input, columns, ...) {
   a <- match.call(expand.dots = FALSE)
 
   for (col in columns) {
@@ -42,8 +42,8 @@ columns_spec <- function(kable_input, columns, ...) {
 }
 
 #' @export
-#' @rdname columns_spec
-spec_color <- function(x, alpha = 1, begin = 0, end = 1,
+#' @rdname column_spec2
+spec_color2 <- function(x, alpha = 1, begin = 0, end = 1,
                        direction = 1, option = "D",
                        na_color = "#BBBBBB", scale_from = NULL) {
   if (is.function(option)) {
@@ -67,8 +67,8 @@ spec_color <- function(x, alpha = 1, begin = 0, end = 1,
 
 
 #' @export
-#' @rdname columns_spec
-kbl <- function(data, ...) {
+#' @rdname column_spec2
+kbl2 <- function(data, ...) {
   k <- kableExtra::kbl(data, ...)
   attr(k, ".table") <- data
   k

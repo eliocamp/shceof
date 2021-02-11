@@ -61,8 +61,9 @@ library(ggplot2)
 library(tagger)
 library(ggperiodic)
 library(patchwork)
-library(shceof)
 library(kableExtra)
+library(shceof)
+
 
 
 theme_set(theme_shceof(base_size = 16))
@@ -112,6 +113,34 @@ combine_lists <- function(...) {
 }
 ```
 
+
+```{r read-indices}
+enso <- rsoi::download_oni(TRUE, data_path("raw", "oni.csv")) %>%
+  as.data.table() %>%
+  .[, .(time = lubridate::as_datetime(Date), oni = ONI)] %>%
+  na.omit() %>%
+  .[season(time) == "SON"] %>%
+  .[, .(oni = mean(oni)), by = .(time = seasonally(time))]
+
+sams <- readRDS(data_path("derived", "sam.Rds")) %>%
+  .[season(time) == "SON"] %>%
+  .[, dim :=  lubridate::days_in_month(time)] %>%
+  .[, .(estimate = weighted.mean(estimate, dim)),
+    by = .(lev, term, time = seasonally(time))]
+
+levs <- unique(sams$lev)
+
+for (l in seq_along(levs)[-1]) {
+  cor <- sams[lev %in% levs[seq(l - 1, l)]] %>% 
+    .[term == "full"] %>%
+    dcast(time ~ lev, valuev.ar = "estimate") %>% 
+    setnames(., colnames(.), c("time", "old", "new")) %>% 
+    .[, cor(old, new)]
+  
+  sams[lev == levs[l], estimate := sign(cor)*estimate]
+}
+```
+
 ```{r test-irlba}
 has_irlba <- requireNamespace("rilba", quietly = TRUE)
 if (has_irlba) {
@@ -155,7 +184,6 @@ ERA5, ERA5 BE, ERA 20C
 
 No mostrar los EOFs no complejos. No tiene sentido mostralos si no se analizas. 
 
-Las correlaciones entre PCs Podrían ir en una tabla. Quizás suplementaria. 
 
 Relacionar 50hPa con vórtice polar? Temperatura también suma. 
 En 50 el negativo es más intenso que el negativo. ¿Por qué?
@@ -165,11 +193,7 @@ Ver qué pasa con U con el EOF1.
 En 200 no se ve la señal de jet de la temperatura ¿qué pasa más abajo? 
 en 700 la anomalía de temp coincide más o menos con el geopotentical
 
-ondas antes e la tempreatura 
-
 Mostrar EOF espaciales.
-
-Tirar ERA20C a la basura. ERA20c suplementaria?
 
 
 Pp, ¿cuál es la regresión con SAM asim en 200 hPa?
@@ -205,7 +229,7 @@ eof_naive[, eof[[1]]$left, by = lev] %>%
   setnames("item1", "200 hPa") %>% 
   kbl2(booktabs = TRUE, caption = "$R^2$ between pairs of EOFs of each level rounded to two decimals.") %>% 
   # add_header_above(c("", "50 hPa" = 4)) %>% 
-  columns_spec(2:5,  background = spec_color(.table[[.col]], option = background_palette, 
+  column_spec2(2:5,  background = spec_color2(.table[[.col]], option = background_palette, 
                                               scale_from = c(0, 1)),
                color = ifelse(.table[[.col]] > .5, "white", "black")) %>% 
   add_header_above(c("", "50 hPa" = 4)) %>%
@@ -250,7 +274,7 @@ ceof_splitted[, eof[[1]]$left, by = .(lev = levs)] %>%
   dcast(item1 ~ item2, value.var = "r2") %>%
   setnames("item1", "200 hPa") %>%
   kbl2(booktabs = TRUE, caption = "$R^2$ of the absolute magnitude of complex EOFs between 200 hPa and 50 hPa computing EOF separatedly for each level. The high correlation between levels for the two leading EOFs justifies treating the pattern as a mode of covariability between the stratosphere and the troposphere and, thus, computing the EOFs using both levels at the same time.") %>%
-  columns_spec(2:4, background = spec_color(.table[[.col]], option = background_palette,
+  column_spec2(2:4, background = spec_color2(.table[[.col]], option = background_palette,
                                             scale_from = c(0, 1)),
                color = ifelse(.table[[.col]] > .5, "white", "black")) %>% 
   add_header_above(c("", "50 hPa" = 3)) %>%
@@ -289,7 +313,7 @@ rotations_pc1 <- lapply(angles, function(a) {
   rbindlist()
 
 
-best_rotation_pc1 <- rotations_pc1[part == "Imaginary"][which.min(abs(mean))]$rotation
+best_rotation_pc1 <- rotations_pc1[part == "Real"][which.min(mean)]$rotation
 
 
 rotations_pc2 <- lapply(angles, function(a) {
@@ -342,6 +366,34 @@ if (nrow(bad_cells) != 0) {
 
 ceof <- ceof[rotation == "rotated"][, rotation := NULL][]
 ```
+
+
+
+```{r enso_cor}
+enso_cor <-  ceof[, eof[[1]]$left, by = .(season)] %>%
+  sep_ReIm() %>%
+  .[, hgt := scale(hgt), by = .(PC, part)] %>%
+  enso[., on = "time"] %>%
+  na.omit() %>%
+  .[, correlate(hgt, oni), by = .(PC, part)]
+
+# Defines the sign of the 2nd EOF to have a positive correlation 
+# with ENSO
+sign <- sign(enso_cor[PC == "PC2" & part == "Imaginary"]$estimate)
+
+if (sign != 1) {
+  ceof$eof[[1]] <- flip_ceof(ceof$eof[[1]], n = 2)
+}
+
+# Re-run the correlation in case it changed. 
+enso_cor <-  ceof[, eof[[1]]$left, by = .(season)] %>%
+  sep_ReIm() %>%
+  .[, hgt := scale(hgt), by = .(PC, part)] %>%
+  enso[., on = "time"] %>%
+  na.omit() %>%
+  .[, correlate(hgt, oni), by = .(PC, part)]
+```
+
 
 ```{r define-plot_ceof}
 plot_ceof <- function(data, n = 1:2, formula = lev  ~  PC) {
@@ -404,65 +456,29 @@ Both observations motivate the decision of performing complex EOF jointly betwee
 
 The wave patterns described by these complex EOFs match the patterns seen in the navie EOFs of Figure \@ref(fig: cor-eof-naive-1): The first is a wave 1, while the second is a wave 3. Note that in Figure \@ref(fig:ceofs-2), the real part of EOF1 has non zero mean. This is due to th fact that the geopotential fields that enter into the algorithm are anomalies with respect to the zonal mean (shown in Figure \@ref(fig:mean-anom)), not the time mean. The real part of the first EOF is, therefore, capturing the mean zonally anomalous field and the variability that projects onto it.
 
-```{r mean-anom, fig.cap = "Mean SON zonal geopotential height anomalies at (a) 50 hPa and (b) 200 hPa"}
-# era5 %>%
-#   .[, mean(-hgt), by = .(lon, lat, lev)] %>%
-#   .[lev %in% c(50, 200)] %>%
-#   .[lat <= -20] %>%
-#   .[, V2 := V1 - mean(V1), by = .(lat, lev)] %>%
-#   periodic(lon = c(0, 360)) %>%
-#   ggplot(aes(lon, lat)) +
-#   geom_contour_fill(aes(z = V2), global.breaks = FALSE, breaks = AnchorBreaks(exclude = 0)) +
-#   geom_contour_tanaka(aes(z = V2), global.breaks = FALSE, breaks = AnchorBreaks(exclude = 0)) +
-#   geom_qmap(~ .x[lat <= -20]) +
-#   scale_fill_divergent(NULL, breaks = AnchorBreaks(exclude = 0),
-#                        guide = guide_colorstrip_bottom()) +
-#   scale_x_longitude() +
-#   scale_y_latitude() +
-#   facet_grid(~lev, labeller = labeller(lev = lab_lev)) +
-#   coord_polar() +
-#   axis_labs_smol +
-#   tag_facets()
-```
 
-(ref:extended-series-cap) Temporal series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019) and ERA20C (period 1900 -- 2010). Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern. In numbers, the coefficient of determination between the ERA20C-based series and the two ERA5-based series. The ERA5 + ERABC and the ERA20C series are centred and scaled using the mean and standard deviation for their period of overlap (1950 -- 2010).
+(ref:extended-series-cap) Temporal series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern. 
 
 ```{r extended-series, fig.cap = "(ref:extended-series-cap)"}
 pattern <- ceof$eof[[1]]$right %>%
   sep_ReIm() %>%
   setnames("hgt", "EOF")
 
-era20c <- ERA20C() %>%
-  ReadNetCDF(vars = c(hgt = "z"),
-             subset = list(latitude = range(pattern$lat),
-                           level = list(200, 50))) %>%
-  normalise_coords() %>%
-  .[season(time) == "SON"] %>%
-  .[, .(hgt = mean(hgt)), by = .(lev, lon, lat, time = seasonally(time))] %>%
-  .[, season := season(time)] %>%
-  .[, hgt := hgt/sd(hgt), by = .(lev)] %>%
-  .[pattern, on = .NATURAL, allow.cartesian = TRUE] %>%
-  .[, .(hgt = weighted.mean(hgt*EOF, w = cos(lat*pi/180))),  by = .(part, PC, time)]
 
-era_more <- ERA5_BE() %>%
-  ReadNetCDF(vars = c(hgt = "z"),
+era_more <- rbind( 
+  ReadNetCDF(ERA5_BE(), vars = c(hgt = "z"),
              subset = list(latitude = range(pattern$lat),
-                           level = list(200, 50))) %>%
-  rbind(.,
-        ReadNetCDF(ERA5(), vars = c(hgt = "z"),
-                   subset = list(latitude = range(pattern$lat),
-                                 level = list(200, 50)))) %>%
+                           level = list(200, 50))),
+  ReadNetCDF(ERA5(), vars = c(hgt = "z"),
+             subset = list(latitude = range(pattern$lat),
+                           level = list(200, 50)))) %>%
   normalise_coords() %>%
   .[season(time) == "SON"] %>%
   .[, .(hgt = mean(hgt)), by = .(lev, lon, lat, time = seasonally(time))] %>%
   .[, season := season(time)] %>%
   .[, hgt := hgt/sd(hgt), by = .(lev)] %>%
   .[pattern, on = .NATURAL, allow.cartesian = TRUE] %>%
-  .[, .(hgt = weighted.mean(hgt*EOF, w = cos(lat*pi/180))),  by = .(part, PC, time)] %>%
-  era20c[., on = c("part", "PC", "time")] %>%
-  .[, hgt := (i.hgt - mean(i.hgt))/sd(i.hgt)*sd(hgt, na.rm = TRUE) + mean(hgt, na.rm = TRUE),
-    by = .(part, PC)] %>%
-  .[, i.hgt := NULL]
+  .[, .(hgt = weighted.mean(hgt*EOF, w = cos(lat*pi/180))),  by = .(part, PC, time)] 
 
 
 # Check that the extended index coincides with the
@@ -476,95 +492,36 @@ if (any(cors$V1 < 0.98)) {
   stop("Extended indices didn't work!")
 }
 
-extended <- rbindlist(list(era20c = era20c,
-                           era5 = era_more),  use.names = TRUE, idcol = "dataset")
 
-trends <- extended %>%
-  .[time %between% common_range(time, dataset)] %>%
-  .[, FitLm(hgt, time, se = TRUE), by = .(dataset, part, PC)] %>%
+trends <- era_more %>%
+  .[, FitLm(hgt, time, se = TRUE), by = .(part, PC)] %>%
   rm_intercept() %>%
   .[, p_val := Pvaluate(estimate, std.error, df)] %>%
   .[, p_report := report_p(p_val)]
 
-trends_all <- extended %>%
-  .[, FitLm(hgt, time, se = TRUE), by = .(dataset, part, PC)] %>%
-  rm_intercept() %>%
-  .[, p_val := Pvaluate(estimate, std.error, df)] %>%
-  .[, p_report := report_p(p_val)]
 
-periods <- range(extended[time %between% common_range(time, dataset)]$time)
-periods <- c(periods[1], lubridate::as_datetime("1979-01-01"), periods[2])
-
-correlations <- extended %>%
-  dcast(time + PC + part ~ dataset, value.var = "hgt") %>%
-  na.omit() %>% {
-    d <- .
-    rbind(
-      d[, .(correlation = cor(era20c, era5)),
-        by = .(PC, part, time = ifelse(year(time) >= 1979,
-                                       as.character(mean(periods[2:3])),
-                                       as.character(mean(periods[1:2]))))],
-      
-      d[, .(correlation = cor(era20c, era5)),
-        by = .(PC, part)] %>%
-        .[, time := as.character(mean(periods[c(1, 3)]))]
-    )
-  } %>%
-  
-  .[, time := lubridate::as_datetime(time)]
-
-
-
-extended %>%
-  copy() %>%
-  .[, ref := time %between% common_range(time, dataset)] %>%
-  .[, hgt := (hgt - mean(hgt[ref]))/sd(hgt[ref]), by = .(PC, part, dataset)] %>%
-  .[, dataset_o := dataset] %>%
-  # .[dataset == "era5", dataset := ifelse(year(time) < 1979, "era5be", "era5")] %>%
+era_more %>%
+  copy() %>% 
+  # .[, hgt := as.numeric(scale(hgt)), by = .(part, PC)] %>%
   ggplot(aes(time, hgt)) +
   # Zero line + rangeframe
-  geom_hline(yintercept = 0, size = 0.1, color = "gray30") +
+  geom_hline(data = ~.x[, mean(hgt), by  = .(PC, part)], 
+             aes(yintercept = V1), size = 0.1, color = "gray30") +
   ggthemes::geom_rangeframe(sides = "lr", size = 0.1, color = "gray30") +
-  
-  geom_line(aes(color = dataset)) +
+  geom_line() +
   scale_alpha_manual(values = c(1, 0.2)) +
-  # Correlations
-  annotate("errorbarh", xmin = periods[1:2], xmax = periods[2:3], y = -2.7, size = 0.3) +
-  annotate("errorbarh", xmin = periods[1], xmax = periods[3], y = -4, size = 0.3) +
   
-  geom_label(data = correlations[time %in% range(time)],
-             aes(y = -2.7, label = paste0("r²: ", signif(correlation^2, 2))),
-             label.r = grid::unit(0, "lines"), label.size = 0) +
-  geom_label(data = correlations[!(time %in% range(time))],
-             aes(y = -4, label = paste0("r²: ", signif(correlation^2, 2))),
-             label.r = grid::unit(0, "lines"), label.size = 0) +
+  geom_smooth(method = "lm", color = "black") +
   
-  geom_smooth(data = ~.x[dataset == "era20c"],
-              method = "lm", se = FALSE,  aes(color = dataset)) +
-  geom_smooth(data = ~copy(.x)[time %between% common_range(time, dataset)],
-              aes(color = dataset), method = "lm", se = FALSE) +
+  scale_x_datetime(NULL, date_labels = "%Y") +
+  scale_y_continuous("EOF") +
   
-  scale_x_datetime(NULL, date_labels = "%Y",
-                   breaks = function(x) sort(unique(c(scales::pretty_breaks()(x),
-                                                      lubridate::as_datetime("1979-10-01"))))) +
-  scale_y_continuous("Standarised EOF") +
-  scale_color_brewer(NULL, palette = "Dark2", labels = c(era20c = "ERA20C",
-                                                         era5 = "ERA5 BE"),
-                     guide = guide_legend(override.aes = list(size = 1), order = 1)) +
-  facet_grid(part ~ PC, labeller = labeller(PC = lab_PC)) +
+  facet_grid(PC ~ part, labeller = labeller(PC = lab_PC), scales = "free_y") +
   theme(panel.spacing = grid::unit(1.5, "lines"))  +
   tag_facets("cr")
 ```
 
-```{r}
-
-```
-
-Figure \@ref(fig:extended-series) shows temporal series of the two complex EOFs extended beyond the satellite era using the preliminary ERA5 back extension going back to 1950 (which we call the "hybrid ERA5" reanalysis) and using ERA20C for the period 1900 -- 2010. The hybrid ERA5 series and the ERE20C series agree relatively well during the period of overlap, although correlations are higher in the satellite period. There is a downward trend in the real part of EOF1 in the hybrid reanalysis (Figure \@ref(fig:extended-series)a.1, p-value `r trends[part == "Real" & PC == "PC1" & dataset != "era20c"]$p_report` for the period 1950 -- 2010) that appears to be part of a long-term signal, judging by the statistically significant trend observed in the ERA20C reanalysis from 1900 to 2010 (p-value `r trends_all[part == "Real" & PC == "PC1" & dataset == "era20c"]$p_report`) with similar magnitude during the period of overlap.
-
-The ERA20C time-series has a also significant upward linear trend in the imaginary part of EOF1 (Figure \@ref(fig:extended-series)a.2, p-value `r trends[part == "Imaginary" & PC == "PC1" & dataset == "era20c"]$p_report`. However, there is no trend in the hybrid dataset during the period of overlap (p-value `r trends[part == "Imaginary" & PC == "PC1" & dataset != "era20c"]$p_report`) and the correlations between the old and modern series are much poorer for this variable. This suggests that the observed trend is not robust.
-
-There is no significant trend in any of the complex parts of EOF2. The correlations between the hybrid and ERA20C datasets are much higher than for the EOF1, which suggests that ERA20C could be used as a valid dataset to study this index in the past.
+Figure \@ref(fig:extended-series) shows temporal series of the two complex EOFs extended beyond the satellite era using the preliminary ERA5 back extension going back to 1950 (which we call the "hybrid ERA5" reanalysis). There is a downward trend in the real part of EOF1 in the hybrid reanalysis (Figure \@ref(fig:extended-series)a.1, p-value `r trends[part == "Real" & PC == "PC1"]$p_report`). There is no significant trend in any of the complex parts of EOF2.
 
 ## Regression
 
@@ -643,22 +600,12 @@ plot_regr(regr, "PC1", c(200, 50), "hgt")
 
 Figure \@ref(fig:eof1-regr-gh) shows regression patterns of SON geopotential height on the real and imaginary part of the first EOF at 50 hPa and 200 hPa.
 
-(ref:eof1-regr-t-cap) Same as Figure \@ref(fig:eof1-regr-gh) but for air temperature.
 
-```{r eof1-regr-t, fig.cap = "(ref:eof1-regr-t-cap)"}
-plot_regr(regr, "PC1", c(200, 50), "t")
-```
 
 (ref:eof2-regr-gh-cap) Same as Figure \@ref(fig:eof1-regr-gh) but for the second EOF.
 
 ```{r eof2-regr-gh, fig.cap = "(ref:eof2-regr-gh-cap)"}
 plot_regr(regr, "PC2", c(200, 50), "hgt")
-```
-
-(ref:eof2-regr-t-cap) Same as Figure \@ref(fig:eof1-regr-gh) but for the second EOF and temperature.
-
-```{r eof2-regr-t, fig.cap = "(ref:eof2-regr-t-cap)"}
-plot_regr(regr, "PC2", c(200, 50), "t")
 ```
 
 ```{r zonal-waves, fig.cap = "Amplitud de ondas zonales de la regresión con altura geopotencial (figuras anteriores)"}
@@ -690,79 +637,39 @@ Interpretaciones:
 
 El primer EOF es esencialmente una medida de la variabilidad proyectada en la dirección el campo medio. La parte importante, de todas formas, es la Real.
 
+(ref:eof1-regr-t-cap) Same as Figure \@ref(fig:eof1-regr-gh) but for air temperature.
+
+```{r eof1-regr-t, fig.cap = "(ref:eof1-regr-t-cap)"}
+plot_regr(regr, "PC1", c(200, 50), "t")
+```
+
+(ref:eof2-regr-t-cap) Same as Figure \@ref(fig:eof1-regr-gh) but for the second EOF and temperature.
+
+```{r eof2-regr-t, fig.cap = "(ref:eof2-regr-t-cap)"}
+plot_regr(regr, "PC2", c(200, 50), "t")
+```
+
 ## Relationship with other indices
 
 ### SAM
 
-```{r read-indices}
-sam <- "/home/elio/Documents/CONICET/asymsam/analysis/data/derived_data/indexes.Rds" %>%
-  readRDS() %>%
-  .[, .(time, sam = -estimate_norm, lev, symmetry = term)] %>%
-  .[, sam := sam/sd(sam), by = .(lev, symmetry)] %>%
-  .[season(time) == "SON"] %>%
-  .[, .(sam = mean(sam)), by = .(symmetry, lev, time = seasonally(time))]
-
-
-
-enso <- rsoi::download_oni(TRUE, data_path("raw", "oni.csv")) %>%
-  as.data.table() %>%
-  .[, .(time = lubridate::as_datetime(Date), oni = ONI)] %>%
-  na.omit() %>%
-  .[season(time) == "SON"] %>%
-  .[, .(oni = mean(oni)), by = .(time = seasonally(time))]
-
-plot_with_index <- function(ceof, index) {
-  index_col <- colnames(index)[2]
-  
-  ceof[, eof[[1]]$left] %>%
-    sep_ReIm() %>%
-    .[, hgt := scale(hgt), by = .(PC, part)] %>%
-    index[., on = "time"] %>%
-    na.omit() %>%
-    .[, index := get(index_col)] %>%
-    ggplot(aes(hgt, index)) +
-    geom_point(aes(color = part)) +
-    geom_smooth(aes(color = part), method = "lm") +
-    shadowtext::geom_shadowtext(data = ~.x[, .(cor = cor(index, hgt),
-                                               x = -1.2,
-                                               y = sign(-cor(index, hgt))*.1 + predict(lm(index ~ hgt),
-                                                                                       newdata = data.frame(hgt = -1.2))),
-                                           by = .(PC, part)],
-                                bg.colour = "white", bg.r = 0.2,
-                                size = 5, show.legend = FALSE,
-                                aes(x, y, color = part, label = paste0("r² = ", round(cor^2, 2)))) +
-    scale_x_continuous("EOF") +
-    scale_y_continuous(toupper(index_col)) +
-    scale_color_brewer("Part", palette = "Dark2") +
-    facet_grid(part ~ PC, labeller = labeller(PC = c(PC1 = "EOF1", PC2 = "EOF2")))
-}
-```
 
 (ref:sam-eof-vertical-cap) Coefficient of determination between the real and imaginary part of each EOF and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level according to @campitelli2021. Points mark estimates with p-value \< 0.01 corrected for False Detection Rate [@benjamini1995].
 
 ```{r sam-eof-vertical, fig.cap = "(ref:sam-eof-vertical-cap)"}
 time <- ceof[, eof[[1]]$left, by = .(season)] %>%
   sep_ReIm() %>%
-  .[, hgt := scale(hgt), by = .(PC, part)] %>%
-  .[]
-
-sams <- readRDS(data_path("derived", "sam.Rds")) %>%
-  .[season(time) == "SON"] %>%
-  .[, dim :=  lubridate::days_in_month(time)] %>%
-  .[, .(estimate = weighted.mean(estimate, dim)),
-    by = .(lev, term, time = seasonally(time))]
+  .[, hgt := scale(hgt), by = .(PC, part)]
 
 sam_r2 <- sams %>%
   .[time, on = .NATURAL, allow.cartesian = TRUE] %>%
   .[, correlate(hgt, estimate), by = .(lev, term, part, PC)]
 
-max_r2 <- sam_r2[part == "Imaginary" & term == "asym"][, .SD[which.max(estimate^2)],
-                                                       by = .(PC)]
+max_r2 <- sam_r2[part == "Imaginary" & term == "asym"] %>% 
+  .[, .SD[which.max(estimate^2)], by = .(PC)]
 
 sam_r2 %>%
   ggplot(aes(lev, estimate^2)) +
-  # geom_ribbon(data =  ~.x[p.adjust(p_value, "fdr") < 0.001],
-  # aes(ymin = low2, ymax = high2, color = term), alpha= 0.1) +
   geom_point(data = ~.x[p.adjust(p.value, "fdr") < 0.01], aes(color = term)) +
   geom_line(aes(color = term, size = term)) +
   scale_x_level() +
@@ -870,38 +777,33 @@ plot_sst_psi <- function(which_pc, which_lev) {
 }
 ```
 
-```{r enso_cor}
-enso_cor <-  ceof[, eof[[1]]$left, by = .(season)] %>%
-  sep_ReIm() %>%
-  .[, hgt := scale(hgt), by = .(PC, part)] %>%
-  enso[., on = "time"] %>%
-  na.omit() %>%
-  .[, correlate(hgt, oni), by = .(PC, part)]
-```
 
 ```{r sst-psi-2,  fig.cap = "Regresión con PSI en 200 hPa y sst, PC1"}
 plot_sst_psi(which_pc = "PC2", which_lev = 200)
 ```
 
-??? -\> esta intro hay que cambiarla. Figure \@ref(fig:sst-psi-2) shows regression maps between EOF2 and Sea Surface Temperatures (SST) Streamfunction at 200 hPa. The Imaginary EOF2 is associated with strong negative SST anomalies on the Central Pacific and positive anomalies on an area across the North of Australia and New Zealand, the South Pacific Convergence Zone (SPCZ) (Figure \@ref(fig:sst-psi-2).a2). This pattern is almost canonically negative ENSO and indeed, the correlation between the Imaginary EOF2 and the Oceanic ENSO Index ([@bamston1997]) is `r enso_cor[PC == "PC2" & part == "Imaginary"]$cor_text`. Streamfunction anomalies show a coherent picture. The Imaginary EOF2 is associated with strong wave-like streamfunction anomalies emanating from the tropics (Figure \@ref(fig:sst-psi-2).b2). . This is consistent with what we know of the effect of ENSO on the extratropics: SST anomalies initiate anomalous convection that excites meridionally-moving Rossby waves.
+??? -\> esta intro hay que cambiarla. Figure \@ref(fig:sst-psi-2) shows regression maps between EOF2 and Sea Surface Temperatures (SST) Streamfunction at 200 hPa. The Imaginary EOF2 is associated with strong positive SST anomalies on the Central Pacific and negative anomalies on an area across the North of Australia and New Zealand, the South Pacific Convergence Zone (SPCZ) (Figure \@ref(fig:sst-psi-2).a2). This pattern is almost canonically positive ENSO and indeed, the correlation between the Imaginary EOF2 and the Oceanic ENSO Index ([@bamston1997]) is very high `r enso_cor[PC == "PC2" & part == "Imaginary"]$text`. Streamfunction anomalies show a coherent picture. The Imaginary EOF2 is associated with strong wave-like streamfunction anomalies emanating from the tropics (Figure \@ref(fig:sst-psi-2).b2). . This is consistent with what we know of the effect of ENSO on the extratropics: SST anomalies initiate anomalous convection that excites meridionally-moving Rossby waves.
 
-One could expect that the Real EOF2, being just a different phase of the same wave train would show a similar pattern but, perhaps with a slight translation of the main tropical sources. However, the Real EOF2 is associated neither with any significant SST (Figure \@ref(fig:sst-psi-2).a1) nor streamfunction anomalies in the tropics. The correlation between the Real EOF2 and ENSO is also not significant (`r enso_cor[PC == "PC2" & part == "Real"]$cor_text`).
+Since the Real EOF2 represents just a different phase of the same wave train, one would expect that t would show a similar forcing pattern to the Imaginary EOF with a slight translation of its location. However, Figure \@ref(fig:sst-psi-2).a1 and b1 show that the Real EOF2 is not associated either with any significant SST nor streamfunction anomalies in the tropics. The correlation between the Real EOF2 and ENSO is also not significant (`r enso_cor[PC == "PC2" & part == "Real"]$cor_text`). This lack of tropical signal suggests a radically different nature of the different phases of the EOF2 wave train. 
 
 ```{r enso-phase, fig.cap = "Relationship between ENSO and phase of EOF2 for the period 1979 -- 2019. Colours denote years with magnitude of EOF2 greater or smaller than the 50th percentile. Black line is the fit ONI ~ cos(phase) + sin(phase) computed by OLS weighted by the magnitude of EOF2."}
-cor_enso_mag <- ceof[, eof[[1]]$left, by = .(season)] %>%
+gdata <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[, arg := Arg(hgt)] %>%
   .[, mag := Mod(hgt)] %>%
   .[enso, on = "time"] %>%
   na.omit() %>%
-  .[PC == "PC2"] %>%
-  .[, correlate(mag, abs(oni))]
+  .[PC == "PC2"]
 
-ceof[, eof[[1]]$left, by = .(season)] %>%
-  .[, arg := Arg(hgt)] %>%
-  .[, mag := Mod(hgt)] %>%
-  .[enso, on = "time"] %>%
-  na.omit() %>%
-  .[PC == "PC2"] %>%
+
+cor_enso_mag <- gdata[, correlate(mag, abs(oni))]
+
+cos_model <- gdata %>% 
+  qwrap(arg = c(-pi, pi) ~ c(-2*pi, 2*pi)) %>% 
+  .[, lm(oni ~ I(sin(arg)) - 1, weights = mag )]
+
+
+
+gdata %>% 
   ggplot(aes(arg, oni)) +
   geom_hline(yintercept = c(-0.5, 0, 0.5), size = 0.2, color = "gray50") +
   geom_vline(xintercept = 0, size = 0.2, color = "gray50") +
@@ -913,12 +815,12 @@ ceof[, eof[[1]]$left, by = .(season)] %>%
   
   geom_smooth(data = ~qwrap(.x, arg = c(-pi, pi) ~ c(-2*pi, 2*pi)),
               method = "lm", aes(weight = mag),
-              formula = y ~  I(cos(x)) + I(sin(x)),
+              formula = y ~ I(sin(x)) -1,
               se = FALSE, color = "black", size = 0.5) +
   geom_point(aes(colour = mag >= quantile(mag, 0.5),
                  shape  = mag >= quantile(mag, 0.5)),
              size = 4) +
-  
+
   scale_color_brewer(NULL, palette = "Dark2",
                      labels = c("TRUE"  = "|EOF2| > 50%",
                                 "FALSE" = "|EOF2| < 50%")) +
@@ -933,26 +835,16 @@ ceof[, eof[[1]]$left, by = .(season)] %>%
   coord_cartesian(xlim = c(-pi, pi))
 ```
 
-We show a more complete picture of the relationship between ENSO and EOF2 in Figure \@ref(fig:enso-phase), which plots the ONI index value and the phase of the EOF2 for each year between 1979 and 2019 highlighting years in which the magnitude of EOF2 was higher than 50% of the years. In years with positive ENSO, the phase of the EOF2 is always around -90º (corresponding with negative imaginary part) and vice versa. In years with near neutral ENSO, the phase of the EOF2 is much more variable between 0º and -180º. There is also a relationship between the magnitude of the EOF2 and the magnitude of the ENSO. The strong EOF2 years are almost invariably associated with strong ENSO years. The correlation between the absolute magnitude of the ONI and the magnitude of the EOF2 is `r cor_enso_mag$cor_text`.
+To better explore the relationship between tropical forcing and phase of the EOF2, Figure \@ref(fig:enso-phase) plots the ONI index and the phase of the EOF2 for each year between 1979 and 2019, highlighting years in which the magnitude of EOF2 was higher than 50% of the years. In years with positive ENSO, the phase of the EOF2 is always around +90º (corresponding with positive imaginary part) and vice versa. In years with near neutral ENSO, the phase of the EOF2 is much more variable. The black line in Fiure \@ref(fig:enso-phase) represents the equation $ONI = `r coef(cos_model)[1]`\sin{phase}$, with coefficient fitted by ordinary least squares and $r^2=`r summary(cos_model)$r.squared`$.
 
-All this suggests that the wave train represented by EOF2 can be both forced by tropical SSTs and also a part of the internal variability of the extratropical atmosphere. When internally forced, there is little phase preference and amplitudes are relatively low. However, this same wave train, when excited by tropical SST anomalies will prefer the imaginary phase, with the sign of the geopotential anomalies depending on the sign of the tropical SSTs anomalies, and can reach higher magnitudes.
+There is also a relationship between the magnitude of the EOF2 and the magnitude of the ENSO. The strong EOF2 years tend to coincide with strong ENSO years. The correlation between the absolute magnitude of the ONI and the magnitude of the EOF2 is `r cor_enso_mag$text`.
+
+All this suggests that the wave train represented by EOF2 can be both forced by tropical SSTs and also a part of the internal variability of the extratropical atmosphere. When internally forced, the wave train has little phase preference and its amplitude is relatively low. When excited by tropical SST anomalies, it tends to remain locked to the imaginary phase, with the sign of the geopotential anomalies depending on the sign of the tropical SSTs anomalies, and with larger amplitude.
 
 ```{r  sst-psi-1, fig.cap = "Same as figure befoe but for EOF1"}
 plot_sst_psi(which_pc = "PC1", which_lev = 200)
 ```
 
-```{r}
-psi %>%
-  .[lev == 200] %>%
-  .[, .(psi.z = mean(psi.z)), by = .(lon, lat)] %>%
-  .[, c("fx", "fy") := WaveFlux(.SD)] %>%
-  .[lat <= 0] %>%
-  ggplot(aes(lon, lat)) +
-  geom_contour_fill(aes(z = psi.z)) +
-  geom_streamline(aes(dx = fx, dy = fy)) +
-  geom_qmap(~.x[lat<0], keep = .015) +
-  scale_fill_divergent()
-```
 
 ## Precipitation
 
@@ -1022,7 +914,7 @@ plot_pp <- function(data, which_pc, which_term = c("R", "I"), which_continent = 
     # scale_fill_divergent() +
     scale_fill_divergent_discretised(NULL, guide = guide_colorsteps_bottom(15)) +
     geom_contour2(aes(z = p_val), breaks = 0.05, size = 0.1) +
-    stat_subset(aes(subset = p_val <= 0.05),
+    stat_subset(aes(subset = p_val <= 0.05 & is.cross(lon, lat)),
                 geom = "point", size = 0.2) +
     geom_qmap(~.x %>% .[lat %between% c(-60, max(data$lat))] %>% add_continent() %>% filter_continent(),
               keep = 1) +
@@ -1036,7 +928,7 @@ plot_pp <- function(data, which_pc, which_term = c("R", "I"), which_continent = 
 ```
 
 ```{r pp-america, fig.cap = "Regresión de cada PC con la precipitación"}
-plot_pp(data = regr_pp, which_pc= c("PC1", "PC2"), which_continent =  "america")
+plot_pp(data = regr_pp, which_pc = c("PC1", "PC2"), which_continent = "america")
 ```
 
 ```{r pp-africa, fig.cap = "Regresión de cada PC con la precipitación"}
