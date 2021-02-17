@@ -47,7 +47,7 @@ knitr::opts_chunk$set(
   echo = FALSE,
   cache = TRUE,
   comment = "#>",
-  cache.extra = 43,
+  cache.extra = 42,
   cache.path = "../cache/paper/",
   fig.path = "../figures/",
   dpi = 300,
@@ -113,7 +113,6 @@ combine_lists <- function(...) {
 }
 ```
 
-
 ```{r read-indices}
 enso <- rsoi::download_oni(TRUE, data_path("raw", "oni.csv")) %>%
   as.data.table() %>%
@@ -168,33 +167,50 @@ psi <- ReadNetCDF(ERA5(), vars = "vo",
   .[season(time) == "SON"] %>%
   .[, .(vo = mean(vo)), by = .(lon, lat, lev,time = seasonally(time))] %>%
   .[, solve_poisson(vo, lon, lat), by = .(lev, time)] %>%
-  .[, psi.z := Anomaly(value), by = .(time, lev, lat)] %>%
-  .[, value := NULL]
+  setnames("value", "psi") %>% 
+  .[, psi.z := Anomaly(psi), by = .(time, lev, lat)] 
+```
+
+```{r psa}
+psa <- ReadNetCDF(ERA5(), vars = c(hgt = "z"),
+                   subset = list(level = list(500),
+                                 latitude = -90:0)) %>% 
+  normalise_coords() %>% 
+  .[, .(hgt = mean(hgt)), by = .(lon, lat, time = seasonally(time))] %>% 
+  .[, value := Anomaly(hgt)*sqrt(cos(lat*pi/180)), by = .(lon, lat, season(time))] %>%
+  EOF(value ~ time | lon + lat, n = 1:3, data = .)
+
+psa <- lapply(psa, function(x) {
+  copy(x)[, PC := fcase(PC == "PC1", "SAM", 
+                        PC == "PC2", "PSA1", 
+                        PC == "PC3", "PSA2")] 
+})
+
+
+psa_time <- psa$left[season(time) == "SON"]
 ```
 
 # Introduction
 
 # Data & Methods
 
-Whereas for traditional "real" PCA, each principal component is defined up to it's sign. In complex PCA, principal components are defined up to their phase [@horel1984].
+The phase of principal components is defined up to an additive constant. For real principal components, this constant can be either 0 or $\pi$, corresponding to a change in sign. For complex principal components, it can be any number between 0 and $2\pi$ [@horel1984]. In this paper we chose the phase of each of the two complex principal components so that the real and imaginary part are easier to interpret. For the first complex principal component, the phase was chosen so that the time series corresponding to the imaginary part had a time mean of zero.
 
-ERA5, ERA5 BE, ERA 20C
+For the second complex principal component, the phase was chosen so that the coefficent of determination between the Oceanic Niño Index [@bamston1997] and the real part was minimised. It's important to reassure the reader that this procedure does not create a spurious correlation, it only takes whatever relationship that already exist and aligns it with a specific phase. If the relationship is very weak, the rotation cannot generate a strong relationship.
+
+ERA5, ERA5 BE,
 
 # Results
 
-No mostrar los EOFs no complejos. No tiene sentido mostralos si no se analizas. 
+No mostrar los EOFs no complejos. No tiene sentido mostralos si no se analizas.
 
-
-Relacionar 50hPa con vórtice polar? Temperatura también suma. 
-En 50 el negativo es más intenso que el negativo. ¿Por qué?
+Relacionar 50hPa con vórtice polar? Temperatura también suma. En 50 el negativo es más intenso que el negativo. ¿Por qué?
 
 Ver qué pasa con U con el EOF1.
 
-En 200 no se ve la señal de jet de la temperatura ¿qué pasa más abajo? 
-en 700 la anomalía de temp coincide más o menos con el geopotentical
+En 200 no se ve la señal de jet de la temperatura ¿qué pasa más abajo? en 700 la anomalía de temp coincide más o menos con el geopotentical
 
 Mostrar EOF espaciales.
-
 
 Pp, ¿cuál es la regresión con SAM asim en 200 hPa?
 
@@ -210,7 +226,7 @@ explained <- eof_naive[, eof[[1]]$sdev, by = lev] %>%
 
 ```
 
-```{r}
+```{r corr-eofs}
 
 background_palette <- grDevices::colorRampPalette(c("white", scales::muted("red")), 
                                                   space = "Lab")
@@ -286,21 +302,7 @@ rotate <- function(z, angle = 0) {
   complex(real = cos(angle), imaginary = sin(angle)) * z
 }
 
-
-box <- list(lon = c(150, 195),
-            lat = c(-25, -5))
-
-psi_box <- psi %>%
-  .[lev == 200] %>%
-  .[lat %between% box$lat & lon %between% box$lon] %>%
-  .[, .(psi.z = weighted.mean(psi.z, cos(lat*pi/180))), by = .(time, lev)]
-
-psi_box <- cut(ceof$eof[[1]], 2)$left %>%
-  copy() %>%
-  .[psi_box, on = "time"]
-
-
-angles <- seq(-pi, pi, by = 1*pi/180)
+angles <- seq(-pi, pi, by = .5*pi/180)
 
 rotations_pc1 <- lapply(angles, function(a) {
   ceof$eof[[1]]$left[PC == "PC1"] %>%
@@ -315,17 +317,21 @@ rotations_pc1 <- lapply(angles, function(a) {
 
 best_rotation_pc1 <- rotations_pc1[part == "Real"][which.min(mean)]$rotation
 
-
+with_enso <-  cut(ceof$eof[[1]], 2)$left %>%
+  copy() %>%
+  .[enso, on = "time"] %>% 
+  na.omit() 
+  
 rotations_pc2 <- lapply(angles, function(a) {
-  psi_box %>%
+  with_enso %>%
     .[, hgt2 := rotate(hgt, a)] %>%
-    .[, .(R = cor(Re(hgt2), psi.z),
-          I = cor(Im(hgt2), psi.z))] %>%
+    .[, .(R = cor(Re(hgt2), oni),
+          I = cor(Im(hgt2), oni))] %>%
     .[, rotation := a]
 }) %>%
   rbindlist()
 
-best_rotation_pc2 <- rotations_pc2[which.min(abs(R^2))]$rotation
+best_rotation_pc2 <- rotations_pc2[I > 0][which.min(abs(R))]$rotation
 
 
 eof_rotated_left <- ceof$eof[[1]]$left %>%
@@ -366,34 +372,6 @@ if (nrow(bad_cells) != 0) {
 
 ceof <- ceof[rotation == "rotated"][, rotation := NULL][]
 ```
-
-
-
-```{r enso_cor}
-enso_cor <-  ceof[, eof[[1]]$left, by = .(season)] %>%
-  sep_ReIm() %>%
-  .[, hgt := scale(hgt), by = .(PC, part)] %>%
-  enso[., on = "time"] %>%
-  na.omit() %>%
-  .[, correlate(hgt, oni), by = .(PC, part)]
-
-# Defines the sign of the 2nd EOF to have a positive correlation 
-# with ENSO
-sign <- sign(enso_cor[PC == "PC2" & part == "Imaginary"]$estimate)
-
-if (sign != 1) {
-  ceof$eof[[1]] <- flip_ceof(ceof$eof[[1]], n = 2)
-}
-
-# Re-run the correlation in case it changed. 
-enso_cor <-  ceof[, eof[[1]]$left, by = .(season)] %>%
-  sep_ReIm() %>%
-  .[, hgt := scale(hgt), by = .(PC, part)] %>%
-  enso[., on = "time"] %>%
-  na.omit() %>%
-  .[, correlate(hgt, oni), by = .(PC, part)]
-```
-
 
 ```{r define-plot_ceof}
 plot_ceof <- function(data, n = 1:2, formula = lev  ~  PC) {
@@ -456,8 +434,7 @@ Both observations motivate the decision of performing complex EOF jointly betwee
 
 The wave patterns described by these complex EOFs match the patterns seen in the navie EOFs of Figure \@ref(fig: cor-eof-naive-1): The first is a wave 1, while the second is a wave 3. Note that in Figure \@ref(fig:ceofs-2), the real part of EOF1 has non zero mean. This is due to th fact that the geopotential fields that enter into the algorithm are anomalies with respect to the zonal mean (shown in Figure \@ref(fig:mean-anom)), not the time mean. The real part of the first EOF is, therefore, capturing the mean zonally anomalous field and the variability that projects onto it.
 
-
-(ref:extended-series-cap) Temporal series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern. 
+(ref:extended-series-cap) Temporal series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern.
 
 ```{r extended-series, fig.cap = "(ref:extended-series-cap)"}
 pattern <- ceof$eof[[1]]$right %>%
@@ -600,8 +577,6 @@ plot_regr(regr, "PC1", c(200, 50), "hgt")
 
 Figure \@ref(fig:eof1-regr-gh) shows regression patterns of SON geopotential height on the real and imaginary part of the first EOF at 50 hPa and 200 hPa.
 
-
-
 (ref:eof2-regr-gh-cap) Same as Figure \@ref(fig:eof1-regr-gh) but for the second EOF.
 
 ```{r eof2-regr-gh, fig.cap = "(ref:eof2-regr-gh-cap)"}
@@ -651,8 +626,43 @@ plot_regr(regr, "PC2", c(200, 50), "t")
 
 ## Relationship with other indices
 
-### SAM
 
+### PSA1 and PSA2
+
+
+```{r}
+pc2 <- ceof$eof[[1]]$left[PC == "PC2"] %>% 
+  copy() %>% 
+  .[, PC := NULL] %>% 
+  .[]
+
+psa2 <- psa$left[PC == "PSA2"][season(time) == "SON"]
+
+rotations_psa <- lapply(angles, function(a) {
+  pc2 %>% 
+    copy() %>% 
+    .[, hgt := rotate(hgt, a)] %>% 
+    .[psa2, on = "time"] %>% 
+    .[, cor(value, Re(hgt))] 
+}) 
+
+psa_angle <- angles[which.min(unlist(rotations_psa))]
+
+
+
+pc2[psa_time, on = "time"] %>% 
+  .[PC != "SAM"] %>% 
+  copy() %>% 
+  .[, hgt := rotate(hgt, psa_angle)] %>%
+  sep_ReIm() %>% 
+  .[] %>% 
+  ggplot(aes(value, hgt)) +
+  geom_point() +
+  facet_grid(part ~ PC)
+```
+ 
+
+### SAM
 
 (ref:sam-eof-vertical-cap) Coefficient of determination between the real and imaginary part of each EOF and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level according to @campitelli2021. Points mark estimates with p-value \< 0.01 corrected for False Detection Rate [@benjamini1995].
 
@@ -690,7 +700,41 @@ Figure \@ref(fig:sam-eof-vertical) shows the coefficient of determination betwee
 
 Both EOFs bear some modest relationship with the SAM index (thick green line in Figure \@ref(fig:sam-eof-vertical)), although not statistically significant at every level. The split between A-SAM and S-SAM gives more insight into the nature of the relationship. The relationship between the SAM and the imaginary EOF1 (Figure \@ref(fig:sam-eof-vertical).b1) is mediated by S-SAM in the troposphere, but by the A-SAM in the stratosphere.
 
-The Imaginary EOF2 is related with the SAM through the A-SAM in the troposphere, with up to `r scales::percent(max_r2[PC == "PC2"]$estimate, 2)` of shared variance, reached at `r max_r2[PC == "PC2"]$lev` hPa (Figure \@ref(fig:sam-eof-vertical).b2). The Imaginary EOF2 is, then, an almost a pure representation of the tropospheric asymmetric part of the SAM. Since the Real EOF2 represents a quarter-wavelength rotation of the same zonal wave 3 structure, the Imaginary part is the phase that coincides with the SAM. As a corollary, this means that the asymmetric component of the SAM represents only one phase of a zonally varying zonal wave.
+The Imaginary EOF2 is related with the SAM through the A-SAM in the troposphere, with up to `r scales::percent(max_r2[PC == "PC2"]$estimate, 2)` of shared variance, reached at `r max_r2[PC == "PC2"]$lev` hPa (Figure \@ref(fig:sam-eof-vertical).b2). 
+
+```{r eof-filtered, fig.cap = "Spatial pattern of the leading EOF of 200 hPa geopotential height with the variability of EOF2 filtered out South of 20º. Arbitrary scale."}
+eof_filtered <- era5 %>% 
+  .[sep_ReIm(pc2, format = "wide")[, hgt := NULL], on = .NATURAL] %>% 
+  .[lev == 200] %>% 
+  .[lat <= -20] %>% 
+  .[season(time) == "SON"] %>% 
+  .[, hgt := resid(.lm.fit(cbind(1, R, I), hgt)), .(lon, lat, lev, season(time))] %>%
+  .[, eof := Anomaly(hgt)*sqrt(cos(lat*pi/180)), by = .(lon, lat, lev, season(time))] %>% 
+  EOF(eof ~ lon + lat | time, n = 1, data = .) 
+
+
+eof_filtered_cor <- eof_filtered$right[sams, on = "time"] %>% 
+  .[lev == 200] %>% 
+  .[, correlate(estimate, eof), by = term]
+
+eof_filtered %>% 
+  .$left %>%
+  periodic(lon = c(0, 360)) %>% 
+  ggplot(aes(lon, lat)) +
+  geom_contour_fill(aes(z = eof), breaks = AnchorBreaks(0, exclude = 0)) +
+  geom_contour_tanaka(aes(z = eof), breaks = AnchorBreaks(0, exclude = 0)) +
+  scale_fill_divergent(guide = "none") +
+  geom_qmap(~.x[lat <= -20]) +  
+  scale_x_longitude() +
+  scale_y_latitude() +
+  coord_polar() +
+  axis_labs_smol 
+```
+
+As a further illustration, Figure \@ref(fig:eof-filtered) shows the spatial pattern of the leading EOF of 200 hPa geopotential height when the variability associated with EOF2 is removed. The resulting pattern is an nearly zonally symmetrical annular mode. This mode is highly correlated with SAM (`r eof_filtered_cor[term == "full"]$text`), but only with the symmetrical part (`r eof_filtered_cor[term == "sym"]$text`). Note that the usual definition of the PSA modes as the second and third EOFs creates modes orthogonal to the SAM (defined as the first EOF) and thus impedes this kind of filtering.  
+ 
+This suggests that the separation between the asymmetric and symmetric part of the SAM is not only statistically possible, but physically plausible. The asymmetric part of the SAM might be statistical contamination from one phase of the PSA mode. 
+
 
 ```{r regr_psi}
 regr_psi <- ceof[, eof[[1]]$left, by = .(season)] %>%
@@ -701,7 +745,7 @@ regr_psi <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[season(time) == "SON"] %>%
   .[, FitLm(psi.z, R, I, se = TRUE),by = .(lon, lat, lev, PC, season)] %>%
   rm_intercept() %>%
-  .[, psi.z := estimate] %>%
+  .[, psi.z := Anomaly(estimate), by = .(PC, season, lev, lat)] %>%
   .[, c("fx", "fy") := shceof::WaveFlux(.SD, p = 200), by = .(lev, PC, season, term)] %>%
   .[, term := factor(term, levels = c("R", "I"), labels = c("Real", "Imaginary"),
                      ordered = TRUE)]
@@ -726,6 +770,15 @@ regr_sst <- ceof[, eof[[1]]$left, by = .(season)] %>%
   rm_intercept() %>%
   .[, term := factor(term, levels = c("R", "I"), labels = c("Real", "Imaginary"),
                      ordered = TRUE)]
+```
+
+```{r enso_cor}
+enso_cor <-  ceof[, eof[[1]]$left, by = .(season)] %>%
+  sep_ReIm() %>%
+  .[, hgt := scale(hgt), by = .(PC, part)] %>%
+  enso[., on = "time"] %>%
+  na.omit() %>%
+  .[, correlate(hgt, oni), by = .(PC, part)]
 ```
 
 ```{r plot_sst_psi}
@@ -777,28 +830,40 @@ plot_sst_psi <- function(which_pc, which_lev) {
 }
 ```
 
+(ref:sst-psi-2-cap) Regression maps of EOF2 with SST (column a) and streamfunction zonal anomalies with their corresponding activity wave flux (column b). Areas marked with dots have p-values smaller than 0.05 adjusted for FDR.
 
-```{r sst-psi-2,  fig.cap = "Regresión con PSI en 200 hPa y sst, PC1"}
+```{r sst-psi-2,  fig.cap = "(ref:sst-psi-2-cap)"}
 plot_sst_psi(which_pc = "PC2", which_lev = 200)
 ```
 
-??? -\> esta intro hay que cambiarla. Figure \@ref(fig:sst-psi-2) shows regression maps between EOF2 and Sea Surface Temperatures (SST) Streamfunction at 200 hPa. The Imaginary EOF2 is associated with strong positive SST anomalies on the Central Pacific and negative anomalies on an area across the North of Australia and New Zealand, the South Pacific Convergence Zone (SPCZ) (Figure \@ref(fig:sst-psi-2).a2). This pattern is almost canonically positive ENSO and indeed, the correlation between the Imaginary EOF2 and the Oceanic ENSO Index ([@bamston1997]) is very high `r enso_cor[PC == "PC2" & part == "Imaginary"]$text`. Streamfunction anomalies show a coherent picture. The Imaginary EOF2 is associated with strong wave-like streamfunction anomalies emanating from the tropics (Figure \@ref(fig:sst-psi-2).b2). . This is consistent with what we know of the effect of ENSO on the extratropics: SST anomalies initiate anomalous convection that excites meridionally-moving Rossby waves.
 
-Since the Real EOF2 represents just a different phase of the same wave train, one would expect that t would show a similar forcing pattern to the Imaginary EOF with a slight translation of its location. However, Figure \@ref(fig:sst-psi-2).a1 and b1 show that the Real EOF2 is not associated either with any significant SST nor streamfunction anomalies in the tropics. The correlation between the Real EOF2 and ENSO is also not significant (`r enso_cor[PC == "PC2" & part == "Real"]$cor_text`). This lack of tropical signal suggests a radically different nature of the different phases of the EOF2 wave train. 
+Figure \@ref(fig:sst-psi-2) shows regression maps between EOF2 and Sea Surface Temperatures (SST) Streamfunction at 200 hPa. The Imaginary EOF2 is associated with strong positive SST anomalies on the Central Pacific and negative anomalies on an area across the North of Australia and New Zealand, the South Pacific Convergence Zone (SPCZ) (Figure \@ref(fig:sst-psi-2).a2). This pattern is almost canonically positive ENSO and indeed, the correlation between the Imaginary EOF2 and the Oceanic Niño Index ([@bamston1997]) is very high `r enso_cor[PC == "PC2" & part == "Imaginary"]$text`. Streamfunction anomalies show a coherent picture. The Imaginary EOF2 is associated with strong wave-like streamfunction anomalies emanating from the tropics (Figure \@ref(fig:sst-psi-2).b2). This is consistent with what we know of the effect of ENSO on the extratropics: SST anomalies initiate anomalous convection that excites Rossby waves that propagate meridionally towards higher latitudes.
+
+?? Compare with Figura 1 b and c (Streamfunction) and Figure 2 d and FIgure 3 d (SST) from [@mo2001] and Figure 7 [@irving2016].
+
+Imaginary more global than real -> is that why it appears mixed with SAM?
+
+Since the Real EOF2 represents just a different phase of the same wave train, one would expect that it would show a similar forcing pattern to the Imaginary EOF with a slight translation of its location. However, Figure \@ref(fig:sst-psi-2).a1 and b1 show that the Real EOF2 is not associated either with any significant SST nor streamfunction anomalies in the tropics. The correlation between the Real EOF2 and ENSO is also not significant (`r enso_cor[PC == "PC2" & part == "Real"]$cor_text`). This lack of tropical signal suggests a radically different nature of the different phases of the EOF2 wave train.
 
 ```{r enso-phase, fig.cap = "Relationship between ENSO and phase of EOF2 for the period 1979 -- 2019. Colours denote years with magnitude of EOF2 greater or smaller than the 50th percentile. Black line is the fit ONI ~ cos(phase) + sin(phase) computed by OLS weighted by the magnitude of EOF2."}
 gdata <- ceof[, eof[[1]]$left, by = .(season)] %>%
+  .[PC == "PC2"] %>% 
+  # .[, hgt := Anomaly(hgt)] %>% 
   .[, arg := Arg(hgt)] %>%
   .[, mag := Mod(hgt)] %>%
   .[enso, on = "time"] %>%
-  na.omit() %>%
-  .[PC == "PC2"]
+  na.omit()
+  
 
 
 cor_enso_mag <- gdata[, correlate(mag, abs(oni))]
 
+cor_enso_spearman <- gdata[, cor.test(mag, abs(oni), method = "spearman")]
+
+cor_enso_mag_outlier <- gdata[oni < 1.5][, correlate(mag, abs(oni))]
+
+
 cos_model <- gdata %>% 
-  qwrap(arg = c(-pi, pi) ~ c(-2*pi, 2*pi)) %>% 
   .[, lm(oni ~ I(sin(arg)) - 1, weights = mag )]
 
 
@@ -835,16 +900,19 @@ gdata %>%
   coord_cartesian(xlim = c(-pi, pi))
 ```
 
-To better explore the relationship between tropical forcing and phase of the EOF2, Figure \@ref(fig:enso-phase) plots the ONI index and the phase of the EOF2 for each year between 1979 and 2019, highlighting years in which the magnitude of EOF2 was higher than 50% of the years. In years with positive ENSO, the phase of the EOF2 is always around +90º (corresponding with positive imaginary part) and vice versa. In years with near neutral ENSO, the phase of the EOF2 is much more variable. The black line in Fiure \@ref(fig:enso-phase) represents the equation $ONI = `r coef(cos_model)[1]`\sin{phase}$, with coefficient fitted by ordinary least squares and $r^2=`r summary(cos_model)$r.squared`$.
+To better explore the relationship between tropical forcing and phase of the EOF2, Figure \@ref(fig:enso-phase) plots the ONI index and the phase of the EOF2 for each year between 1979 and 2019, highlighting years in which the magnitude of EOF2 was higher than 50% of the years. In years with positive ENSO, the phase of the EOF2 is always around +90º (corresponding with positive imaginary part) and vice versa. In years with near neutral ENSO, the phase of the EOF2 is much more variable. The black line in Figure \@ref(fig:enso-phase) tries to quantify this relationship. Is the equation $ONI = `r signif(coef(cos_model)[1], 2)`\sin{phase}$, whose coefficient we fitted by weighted least squares using the magnitude of the EFO2 as weight. The $r^2$ corresponding to the fit is `r signif(summary(cos_model)$r.squared, 2)`, with p-value `r report_p(coef(summary(cos_model))[4])`.
 
-There is also a relationship between the magnitude of the EOF2 and the magnitude of the ENSO. The strong EOF2 years tend to coincide with strong ENSO years. The correlation between the absolute magnitude of the ONI and the magnitude of the EOF2 is `r cor_enso_mag$text`.
+Figure \@ref(fig:enso-phase) suggest that strong EOF2 years tend to coincide with strong ENSO years. The correlation between the absolute magnitude of the ONI and the magnitude of the EOF2 is `r cor_enso_mag$text`. This relationship appears to be driven only by the three years with strongest ENSO events in the period (`r knitr::combine_words(year(gdata[order(-oni)][1:3]$time))`) which also coindice with the three years with strongest EOF2 magnitude. If those years are removed, the correlation becomes non-significant (`r cor_enso_mag_outlier$text`). Furthermore, the Spearman correlation, which is robust to outliers is also non-significant (`r signif(cor_enso_spearman$estimate, 2)`, p-value = `r report_p(cor_enso_spearman$p.value)`). Therefore, the relationship between the magnitude of the EOF2 train wave and ENSO remains uncertain.
 
-All this suggests that the wave train represented by EOF2 can be both forced by tropical SSTs and also a part of the internal variability of the extratropical atmosphere. When internally forced, the wave train has little phase preference and its amplitude is relatively low. When excited by tropical SST anomalies, it tends to remain locked to the imaginary phase, with the sign of the geopotential anomalies depending on the sign of the tropical SSTs anomalies, and with larger amplitude.
+All this suggests that the wave train represented by EOF2 can be both forced by tropical SSTs and also a part of the internal variability of the extratropical atmosphere. When internally forced, the wave train has little phase preference. When excited by tropical SST anomalies, it tends to remain locked to the imaginary phase, with the sign of the geopotential anomalies depending on the sign of the tropical SSTs anomalies.
 
-```{r  sst-psi-1, fig.cap = "Same as figure befoe but for EOF1"}
+(ref:sst-psi-1-cap) Same as Figure \@ref(fig:sst-psi-2) but for EOF1.
+
+```{r sst-psi-1, fig.cap = "(ref:sst-psi-1-cap)"}
 plot_sst_psi(which_pc = "PC1", which_lev = 200)
 ```
 
+Figure \@ref(fig:sst-psi-1) shows SST and streamfunction regression maps for EOF1. There is no significant pattern of SST anomalies associated with either the Real or Imaginary EOF1. Consistently, streamfunction anomalies don't show any tropical influence. On the contrary, the Real EOF1 is associated with wave activity fluxes that flow equatorward from the coast of Antarctica around 150ºE along with wave activity fluxes that move between the positive and negative of Streamfunction anomalies along Antarctica.
 
 ## Precipitation
 
@@ -908,11 +976,18 @@ plot_pp <- function(data, which_pc, which_term = c("R", "I"), which_continent = 
     periodic(lon = c(0, 360)) %>%
     ggplot(aes(lon, lat)) +
     # geom_raster(aes(fill = estimate)) +
-    geom_contour_fill(aes(z = estimate, fill = ..level..), breaks = AnchorBreaks(exclude = 0)) +
+    geom_contour_fill(aes(z = estimate, fill = ..level..), 
+                      breaks = AnchorBreaks(exclude = 0)) +
     geom_contour_tanaka(aes(z = estimate), breaks = AnchorBreaks(exclude = 0)) +
     
     # scale_fill_divergent() +
-    scale_fill_divergent_discretised(NULL, guide = guide_colorsteps_bottom(15)) +
+    scale_fill_divergent_discretised(NULL, 
+                         # limits = c(-.8, .8),
+                         # oob = scales::squish,
+                         low = "#8E521C",
+                         high = "#00665E",
+                         guide = guide_colorsteps_bottom(15)) +
+    # scale_fill_divergent_discretised(NULL, guide = guide_colorsteps_bottom(15)) +
     geom_contour2(aes(z = p_val), breaks = 0.05, size = 0.1) +
     stat_subset(aes(subset = p_val <= 0.05 & is.cross(lon, lat)),
                 geom = "point", size = 0.2) +
@@ -923,19 +998,39 @@ plot_pp <- function(data, which_pc, which_term = c("R", "I"), which_continent = 
     scale_y_latitude(ticks = 15) +
     ggh4x::facet_nested(term ~ PC, labeller = labeller(term = lab_cplx)) +
     axis_labs_smol +
+    tag_facets("cr") +
     coord_quickmap()
 }
 ```
 
-```{r pp-america, fig.cap = "Regresión de cada PC con la precipitación"}
-plot_pp(data = regr_pp, which_pc = c("PC1", "PC2"), which_continent = "america")
+```{r sesa}
+sesa <- list(lon = c(300, 315),
+             lat = c(-35, -22))
 ```
 
-```{r pp-africa, fig.cap = "Regresión de cada PC con la precipitación"}
+(ref:pp-america-cap) Regression of SON mean precipitation anomalies in South America (mm per day, shaded) and (column a) EOF1 the (row 1) Imaginary and (column 1) Real phase. For the 1979 -- 2018 period. Black contours with dots indicate areas with p-value smaller than 0.05 controlling for False Detection Rate.
+
+
+```{r pp-america, fig.cap = "(ref:pp-america-cap)"}
+plot_pp(data = regr_pp, which_pc = c("PC1", "PC2"), which_continent = "america") 
+  # annotate("rect", xmin = min(sesa$lon), xmax = max(sesa$lon), 
+  #          ymin = min(sesa$lat), ymax = max(sesa$lat),
+  #          fill = NA, color = "gray50", size = 0.3)
+```
+
+Figure \@ref(fig:pp-america) shows regression maps of seasonal precipitation with each EOF in South America. EOF1 (Figure \@ref(fig:pp-america) column a) is associated with increased precipitation over Paraguay and and some parts of Brazil. Although these positive anomalies are not very strong. The strongest precipitation anomalies are the ones associated with the Imaginary EOF2. The positive anomalies on Southeaster South America (SESA) and Chile, and negative anomalies over Southern Brazil is a well known springtime precipitation signature of ENSO [@cai2020a] and it's also virtually identical to the precipitation anomalies associated with the Asymmetric SAM [@campitelli2021]. This is not surprising considering the close relationship between the ONI, the Asymmetric SAM index and the Imaginary EOF2 shown previously. The Real EOF2, on the other hand, is associated with negative precipitation anomalies in a smaller area of SESA. The relationship between precipitation anomalies in SESA and the phase of EOF2 follows a curve similar to that of Figure \@ref(fig:enso-phase) (not shown). 
+
+
+
+(ref:pp-africa-cap) Same as Figure \@ref(fig:pp-america) but for South of Africa.
+
+```{r pp-africa, fig.cap = "(ref:pp-africa-cap)"}
 plot_pp(regr_pp, c("PC1", "PC2"), which_continent = "africa")
 ```
 
-```{r pp-oceania, fig.cap = "Regresión de cada PC con la precipitación"}
+(ref:pp-oceania-cap) Same as Figure \@ref(fig:pp-america) but for New Zealand and neighbouring islands.
+
+```{r pp-oceania, fig.cap = "(ref:pp-oceania-cap)"}
 plot_pp(regr_pp, c("PC1", "PC2"), which_continent =  "oceania")
 ```
 
@@ -992,8 +1087,11 @@ eof_naive[, eof[[1]]$left, by = lev] %>%
 ## Chosen rotations of the EOFs
 
 ```{r rotations-pc1, fig.cap = "Rotations of PC1"}
+
+
 rotations_pc1 %>%
   ggplot(aes(rotation, mean)) +
+  geom_vline(xintercept = best_rotation_pc1) +
   geom_hline(yintercept = 0, color = "gray") +
   geom_line(aes(color = part), size = 1) +
   scale_x_continuous("Rotation", breaks = seq(-pi, pi, by = 30*pi/180),
@@ -1002,38 +1100,12 @@ rotations_pc1 %>%
   scale_color_brewer(NULL, palette = "Dark2", labels = lab_cplx)
 ```
 
-```{r regr-rotation, fig.cap = "Regression with streamfunction PC2"}
-regr_psi %>%
-  .[PC == "PC2"] %>%
-  .[lev == 200] %>%
-  .[lat %between% c(-90, 10)] %>%
-  periodic(lon = c(0, 360)) %>%
-  ggplot(aes(lon, lat)) +
-  geom_contour_fill(aes(z = estimate*1e8, fill = ..level..),
-                    breaks = AnchorBreaks(exclude = 0)) +
-  geom_contour_tanaka(aes(z = estimate*1e8),
-                      breaks = AnchorBreaks(exclude = 0)) +
-  
-  geom_qmap(keep = .015) +
-  scale_fill_divergent_discretised("Streamfunction", guide = "none") +
-  
-  scale_x_longitude() +
-  scale_y_latitude() +
-  scale_mag(guide = "none") +
-  facet_grid(term ~ ., labeller = labeller(PC = c(PC1 = "EOF1", PC2 = "EOF2"))) +
-  coord_quickmap(ylim = c(NA, 10)) +
-  theme(legend.box = "horizontal") +
-  axis_labs_smol +
-  annotate("rect",
-           xmin = box$lon[1], xmax = box$lon[2],
-           ymin = box$lat[1], ymax = box$lat[2], color = "black", fill = NA)
-```
-
-```{r rotations-pc2, fig.cap = "R2 between EOF2 Real and Imaginary parts and zonal anomalies of streamfunction at BOX?? for different rotation parameters of the real and imaginary parts."}
+```{r rotations-pc2, fig.cap = "R2 between EOF2 Real and Imaginary parts and ONI index for different rotation parameters of the real and imaginary parts."}
 rotations_pc2 %>%
   melt(id.vars = "rotation") %>%
   ggplot(aes(rotation, value^2)) +
   geom_hline(yintercept = 0, color = "gray") +
+  geom_vline(xintercept = best_rotation_pc2) +
   geom_line(aes(color = variable), size = 1) +
   scale_x_continuous("Rotation", breaks = seq(-pi, pi, by = 30*pi/180),
                      labels = function(x) paste0(round(x*180/pi, 5), "º")) +
