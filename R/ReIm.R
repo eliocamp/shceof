@@ -14,7 +14,7 @@ ReIm <- function(complex) {
 #' @rdname ReIm
 sep_ReIm <- function(data, column, format = c("longer", "wider")) {
   R <- part <- I <- NULL
-  names <- c("R", "I")
+  names <- c("Real", "Imaginary")
 
 
   if (missing(column)) {
@@ -38,10 +38,16 @@ sep_ReIm <- function(data, column, format = c("longer", "wider")) {
 
   if (format[1] == "longer") {
     data[, c(col) := NULL]
-    data <- data.table::setDT(tidyr::pivot_longer(data, R:I, names_to = "part", values_to = col))
-    data[, part := factor(part, levels = c("R", "I"), labels = c("Real", "Imaginary"),
-                          ordered = TRUE)]
+    data <- data.table::setDT(tidyr::pivot_longer(data, Real:Imaginary, names_to = "part", values_to = col))
+    data[, part := factor(part, levels = names, ordered = TRUE)]
   }
 
   return(data[])
+}
+
+#' @param part Character vector with elements "Real" and "Imaginary"
+#' @export
+#' @rdname ReIm
+factor_ReIm <- function(part) {
+  factor(part, levels = c("Real", "Imaginary"), ordered = TRUE)
 }

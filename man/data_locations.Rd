@@ -10,6 +10,7 @@
 \alias{NCEP_VOR}
 \alias{HADSST}
 \alias{CMAP}
+\alias{O3}
 \title{Data locations}
 \usage{
 data_path(type = c("raw", "derived"), ...)
@@ -29,6 +30,8 @@ NCEP_VOR(force_download = FALSE)
 HADSST(force_download = FALSE)
 
 CMAP(force_download = FALSE)
+
+O3(force_download = FALSE)
 }
 \arguments{
 \item{type}{character indicating the type of data. The resulting base will be type_data}

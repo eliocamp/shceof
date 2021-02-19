@@ -39,6 +39,23 @@ data_nc_fun <- function(file, download) {
 }
 
 
+data_rds_fun <- function(file, download) {
+   force(file)
+
+   if (is.character(download)) {
+      download <- simple_download(download)
+   }
+
+   function(force_download = FALSE) {
+      if (force_download || !file.exists(file)) {
+         file <- download(file)
+      }
+      return(file)
+   }
+}
+
+
+
 #' @param force_download Logical indicating wether to force download of data.
 #' @export
 #' @rdname data_locations
@@ -85,3 +102,8 @@ HADSST <- data_nc_fun(file = data_path("raw", "hadsst.mon.mean.nc"),
 CMAP <- data_nc_fun(file = data_path("raw", "cmap.mon.mean.nc"),
                     download = "ftp://ftp.cdc.noaa.gov/Datasets/cmap/std/precip.mon.mean.nc" )
 
+#' @param force_download Logical indicating wether to force download of data.
+#' @export
+#' @rdname data_locations
+O3 <- data_rds_fun(file = data_path("raw", "o3.mon.mean.Rds"),
+                    download = download_ozone(request_o3))

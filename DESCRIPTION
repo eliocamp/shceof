@@ -30,8 +30,10 @@ Suggests:
     renv,
     asymsam,
     tagger,
-    bookdown
+    bookdown,
+    ggpatern
 RoxygenNote: 7.1.1
 Remotes:
     - eliocamp/asymsam
     - eliocamp/tagger
+    - coolbutuseless/ggpattern

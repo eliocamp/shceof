@@ -1,4 +1,3 @@
-library(magrittr)
 library(shceof)
 
 force <- FALSE
@@ -22,3 +21,6 @@ ERA5_SST(force)
 
 # Download ERA20C -----------------------------------------------------------
 ERA20C(force)
+
+# Download O3 --------------------------------
+O3(force)
