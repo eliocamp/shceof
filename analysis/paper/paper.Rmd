@@ -99,7 +99,7 @@ ggplot2::update_geom_defaults(pattern_dots,
 
 geom_contour_pval <- function(mapping, p.value = 0.01, size = 0.1) {
   list(
-    stat_contour2(mapping, breaks = p.value, geom = pattern_dots),
+    stat_contour_fill(mapping, breaks = c(0, p.value), fill = NA, geom = pattern_dots),
     geom_contour2(mapping, breaks = p.value, size = size)
   )
 }
@@ -215,7 +215,9 @@ psa_time <- psa$left[season(time) == "SON"]
 
 The phase of principal components is defined up to an additive constant. For real principal components, this constant can be either 0 or $\pi$, corresponding to a change in sign. For complex principal components, it can be any number between 0 and $2\pi$ [@horel1984]. In this paper we chose the phase of each of the two complex principal components so that the real and imaginary part are easier to interpret. For the first complex principal component, the phase was chosen so that the time series corresponding to the imaginary part had a time mean of zero.
 
-For the second complex principal component, the phase was chosen so that the coefficent of determination between the Oceanic Niño Index [@bamston1997] and the real part was minimised. It's important to reassure the reader that this procedure does not create a spurious correlation, it only takes whatever relationship that already exist and aligns it with a specific phase. If the relationship is very weak, the rotation cannot generate a strong relationship.
+For the second complex principal component, the phase was chosen so that the coefficient of determination between the Oceanic Niño Index [@bamston1997] and the real part was minimised. It's important to reassure the reader that this procedure does not create a spurious correlation, it only takes whatever relationship that already exist and aligns it with a specific phase. If the relationship is very weak, the rotation cannot generate a strong relationship.
+
+We calculated the PSA1 and PSA2 modes as the third and fourth leading EOF of seasonal mean 500 hPa geopotential height with all seasons together following @mo2001. 
 
 ERA5, ERA5 BE,
 
@@ -813,12 +815,10 @@ rotations_psa <- lapply(angles, function(a) {
 
 psa_angle <- angles[which.min(unlist(rotations_psa))]
 
-
-
 pc2[psa_time, on = "time"] %>% 
   .[PC != "SAM"] %>% 
   copy() %>% 
-  .[, hgt := rotate(hgt, psa_angle)] %>%
+  # .[, hgt := rotate(hgt, psa_angle)] %>%
   sep_ReIm() %>% 
   ggplot(aes(value, hgt)) +
   geom_point() +
@@ -846,6 +846,7 @@ max_r2 <- sam_r2[part == "Imaginary" & term == "asym"] %>%
 
 sam_r2 %>%
   ggplot(aes(lev, estimate^2)) +
+  geom_vline(xintercept = c(50, 200),  size = 0.2, color = "gray50") +
   geom_point(data = ~.x[p.adjust(p.value, "fdr") < 0.01], aes(color = term)) +
   geom_line(aes(color = term, size = term)) +
   scale_x_level() +
@@ -1252,7 +1253,7 @@ eof_naive[, eof[[1]]$left, by = lev] %>%
 rotations_o3 %>%
   ggplot(aes(rotation, cor)) +
   geom_vline(xintercept = best_rotation_pc1) +
-  geom_hline(yintercept = 0, color = "gray") +
+  geom_hline(yintercept = 0,  size = 0.2, color = "gray50") +
   geom_line(aes(color = part), size = 1) +
   scale_x_continuous("Rotation", breaks = seq(-pi, pi, by = 30*pi/180),
                      labels = function(x) paste0(round(x*180/pi, 5), "º")) +
@@ -1264,7 +1265,7 @@ rotations_o3 %>%
 rotations_pc2 %>%
   melt(id.vars = "rotation") %>%
   ggplot(aes(rotation, value^2)) +
-  geom_hline(yintercept = 0, color = "gray") +
+  geom_hline(yintercept = 0,  size = 0.2, color = "gray50") +
   geom_vline(xintercept = best_rotation_pc2) +
   geom_line(aes(color = variable), size = 1) +
   scale_x_continuous("Rotation", breaks = seq(-pi, pi, by = 30*pi/180),

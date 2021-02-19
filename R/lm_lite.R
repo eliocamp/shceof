@@ -28,7 +28,8 @@ lm_lite <- function(y, x, weights = rep(1, length(y)), r2 = FALSE) {
 #' @keywords internal
 var.wt <- function(x, w, na.rm = FALSE) {
   if (na.rm) {
-    w <- w[i <- !is.na(x)]
+    i <- !is.na(x)
+    w <- w[i]
     x <- x[i]
   }
   sum.w <- sum(w)

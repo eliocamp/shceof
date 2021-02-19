@@ -106,7 +106,7 @@ request_era5 <- list(
                      "600", "650", "700", "750", "775", "800", "825",
                      "850", "875", "900", "925", "950", "975", "1000"),
   year = as.character(1979:2019),
-  month =  c("09", "10", "11"),
+  month = formatC(1:12, width = 2, flag = 0),   # Need all months to compute PSA
   time = "00:00",
   grid = c("2.5", "2.5"),
   dataset_short_name = "reanalysis-era5-pressure-levels-monthly-means"

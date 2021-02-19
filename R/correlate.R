@@ -15,12 +15,9 @@ correlate <- function(x, y, signif = 2) {
                    low = conf.int[1],
                    hig = conf.int[2]))
 
-
-
   out$text <- with(out,
                    paste0(signif(estimate, signif), " (CI: ",
                           signif(low, signif), " -- ", signif(hig, signif), ")"))
 
   out
-
 }
