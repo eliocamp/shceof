@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.3.30)  18 FEB 2021 21:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.3.30)  26 FEB 2021 19:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1140,11 +1140,11 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ) (./paper.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 4.
+(Font)              <10> on input line 3.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 4.
+(Font)              <7> on input line 3.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 4.
+(Font)              <5> on input line 3.
 )
 \tf@toc=\write3
 \openout3 = `paper.toc'.
@@ -1152,215 +1152,241 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<../figures/ceofs-1.pdf, id=44, 518.93875pt x 489.83pt>
+<../figures/ceofs-1.pdf, id=49, 518.93875pt x 489.83pt>
 File: ../figures/ceofs-1.pdf Graphic file (type pdf)
 <use ../figures/ceofs-1.pdf>
-Package pdftex.def Info: ../figures/ceofs-1.pdf  used on input line 189.
+Package pdftex.def Info: ../figures/ceofs-1.pdf  used on input line 201.
 (pdftex.def)             Requested size: 469.78032pt x 443.42899pt.
-<../figures/ceofs-2.pdf, id=45, 903.375pt x 473.77pt>
+<../figures/ceofs-2.pdf, id=50, 903.375pt x 524.96124pt>
 File: ../figures/ceofs-2.pdf Graphic file (type pdf)
 <use ../figures/ceofs-2.pdf>
-Package pdftex.def Info: ../figures/ceofs-2.pdf  used on input line 189.
-(pdftex.def)             Requested size: 469.7577pt x 246.36182pt.
+Package pdftex.def Info: ../figures/ceofs-2.pdf  used on input line 201.
+(pdftex.def)             Requested size: 469.7577pt x 272.98141pt.
 
-Overfull \hbox (3.35863pt too wide) in paragraph at lines 189--189
+Overfull \hbox (3.35863pt too wide) in paragraph at lines 201--201
 [][] 
  []
 
 
-Overfull \hbox (3.33601pt too wide) in paragraph at lines 189--189
+Overfull \hbox (3.33601pt too wide) in paragraph at lines 201--201
 [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 111.36076pt on input line 190.
+LaTeX Warning: Float too large for page by 137.98036pt on input line 202.
 
 [2] [3 <../figures/ceofs-1.pdf> <../figures/ceofs-2.pdf>]
 
-LaTeX Warning: Reference `fig:mean-anom' on page 4 undefined on input line 194.
+LaTeX Warning: Reference `fig:mean-anom' on page 4 undefined on input line 206.
 
 
-<../figures/extended-series-1.pdf, id=81, 903.375pt x 523.9575pt>
+<../figures/extended-series-1.pdf, id=87, 903.375pt x 523.9575pt>
 File: ../figures/extended-series-1.pdf Graphic file (type pdf)
 <use ../figures/extended-series-1.pdf>
 Package pdftex.def Info: ../figures/extended-series-1.pdf  used on input line 2
-00.
+12.
 (pdftex.def)             Requested size: 469.7577pt x 272.45947pt.
-LaTeX Font Info:    Try loading font information for TS1+lmr on input line 201.
+LaTeX Font Info:    Try loading font information for TS1+lmr on input line 213.
 
 (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-<../figures/eof1-regr-gh-1.pdf, id=84, 426.59375pt x 516.93124pt>
+<../figures/eof1-regr-gh-1.pdf, id=91, 426.59375pt x 516.93124pt>
 File: ../figures/eof1-regr-gh-1.pdf Graphic file (type pdf)
 <use ../figures/eof1-regr-gh-1.pdf>
-Package pdftex.def Info: ../figures/eof1-regr-gh-1.pdf  used on input line 213.
+Package pdftex.def Info: ../figures/eof1-regr-gh-1.pdf  used on input line 227.
 
 (pdftex.def)             Requested size: 426.61873pt x 516.96152pt.
-<../figures/eof2-regr-gh-1.pdf, id=86, 426.59375pt x 516.93124pt>
+
+LaTeX Warning: Reference `(' on page 4 undefined on input line 232.
+
+[4] [5 <../figures/extended-series-1.pdf>] [6 <../figures/eof1-regr-gh-1.pdf>]
+<../figures/eof2-regr-gh-1.pdf, id=132, 426.59375pt x 516.93124pt>
 File: ../figures/eof2-regr-gh-1.pdf Graphic file (type pdf)
 <use ../figures/eof2-regr-gh-1.pdf>
-Package pdftex.def Info: ../figures/eof2-regr-gh-1.pdf  used on input line 223.
+Package pdftex.def Info: ../figures/eof2-regr-gh-1.pdf  used on input line 242.
 
 (pdftex.def)             Requested size: 426.61873pt x 516.96152pt.
-<../figures/zonal-waves-1.pdf, id=89, 882.29625pt x 515.9275pt>
-File: ../figures/zonal-waves-1.pdf Graphic file (type pdf)
-<use ../figures/zonal-waves-1.pdf>
-Package pdftex.def Info: ../figures/zonal-waves-1.pdf  used on input line 229.
-(pdftex.def)             Requested size: 469.75536pt x 274.69199pt.
-[4 <../figures/extended-series-1.pdf>] [5 <../figures/eof1-regr-gh-1.pdf>] [6 <
-../figures/eof2-regr-gh-1.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 241--243
-
- []
-
-<../figures/eof1-regr-t-1.pdf, id=131, 426.59375pt x 516.93124pt>
+<../figures/eof1-regr-t-1.pdf, id=136, 426.59375pt x 516.93124pt>
 File: ../figures/eof1-regr-t-1.pdf Graphic file (type pdf)
 <use ../figures/eof1-regr-t-1.pdf>
-Package pdftex.def Info: ../figures/eof1-regr-t-1.pdf  used on input line 254.
+Package pdftex.def Info: ../figures/eof1-regr-t-1.pdf  used on input line 260.
 (pdftex.def)             Requested size: 426.61873pt x 516.96152pt.
-<../figures/t-vertical-1.pdf, id=134, 890.32625pt x 515.9275pt>
+<../figures/t-vertical-1.pdf, id=139, 890.32625pt x 515.9275pt>
 File: ../figures/t-vertical-1.pdf Graphic file (type pdf)
 <use ../figures/t-vertical-1.pdf>
-Package pdftex.def Info: ../figures/t-vertical-1.pdf  used on input line 262.
+Package pdftex.def Info: ../figures/t-vertical-1.pdf  used on input line 266.
 (pdftex.def)             Requested size: 469.75137pt x 272.21217pt.
-<../figures/o3-regr-1.pdf, id=135, 844.15375pt x 515.9275pt>
+
+LaTeX Warning: Reference `(' on page 7 undefined on input line 270.
+
+<../figures/o3-regr-1.pdf, id=141, 844.15375pt x 515.9275pt>
 File: ../figures/o3-regr-1.pdf Graphic file (type pdf)
 <use ../figures/o3-regr-1.pdf>
-Package pdftex.def Info: ../figures/o3-regr-1.pdf  used on input line 268.
+Package pdftex.def Info: ../figures/o3-regr-1.pdf  used on input line 274.
 (pdftex.def)             Requested size: 469.76031pt x 287.10677pt.
-<../figures/wave1-o3-1.pdf, id=136, 903.375pt x 525.965pt>
+<../figures/wave1-o3-1.pdf, id=144, 859.21pt x 506.89375pt>
 File: ../figures/wave1-o3-1.pdf Graphic file (type pdf)
 <use ../figures/wave1-o3-1.pdf>
-Package pdftex.def Info: ../figures/wave1-o3-1.pdf  used on input line 276.
-(pdftex.def)             Requested size: 469.7577pt x 273.50336pt.
-<../figures/eof2-regr-t-1.pdf, id=137, 426.59375pt x 516.93124pt>
-File: ../figures/eof2-regr-t-1.pdf Graphic file (type pdf)
-<use ../figures/eof2-regr-t-1.pdf>
-Package pdftex.def Info: ../figures/eof2-regr-t-1.pdf  used on input line 282.
-(pdftex.def)             Requested size: 426.61873pt x 516.96152pt.
-<../figures/psa-eof2-1.pdf, id=140, 903.375pt x 522.95375pt>
+Package pdftex.def Info: ../figures/wave1-o3-1.pdf  used on input line 282.
+(pdftex.def)             Requested size: 469.76132pt x 277.13722pt.
+<../figures/psa-eof2-1.pdf, id=146, 903.375pt x 522.95375pt>
 File: ../figures/psa-eof2-1.pdf Graphic file (type pdf)
 <use ../figures/psa-eof2-1.pdf>
-Package pdftex.def Info: ../figures/psa-eof2-1.pdf  used on input line 294.
+Package pdftex.def Info: ../figures/psa-eof2-1.pdf  used on input line 295.
 (pdftex.def)             Requested size: 469.7577pt x 271.93752pt.
-<../figures/sam-eof-vertical-1.pdf, id=141, 882.29625pt x 514.92375pt>
+
+LaTeX Warning: Reference `(' on page 7 undefined on input line 299.
+
+
+LaTeX Warning: Reference `(' on page 7 undefined on input line 299.
+
+
+LaTeX Warning: Reference `(' on page 7 undefined on input line 299.
+
+
+LaTeX Warning: Reference `(' on page 7 undefined on input line 299.
+
+
+LaTeX Warning: Reference `(' on page 7 undefined on input line 299.
+
+[7] [8 <../figures/eof2-regr-gh-1.pdf>] [9 <../figures/eof1-regr-t-1.pdf>] [10 
+<../figures/t-vertical-1.pdf> <../figures/o3-regr-1.pdf>] [11 <../figures/wave1
+-o3-1.pdf> <../figures/psa-eof2-1.pdf>]
+<../figures/phase-histogram-1.pdf, id=227, 884.30376pt x 508.90125pt>
+File: ../figures/phase-histogram-1.pdf Graphic file (type pdf)
+<use ../figures/phase-histogram-1.pdf>
+Package pdftex.def Info: ../figures/phase-histogram-1.pdf  used on input line 3
+05.
+(pdftex.def)             Requested size: 469.75824pt x 270.33759pt.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 318.
+
+(/usr/share/texmf/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+<../figures/sam-eof-vertical-1.pdf, id=228, 882.29625pt x 514.92375pt>
 File: ../figures/sam-eof-vertical-1.pdf Graphic file (type pdf)
 <use ../figures/sam-eof-vertical-1.pdf>
 Package pdftex.def Info: ../figures/sam-eof-vertical-1.pdf  used on input line 
-305.
+324.
 (pdftex.def)             Requested size: 469.75536pt x 274.15756pt.
-[7 <../figures/zonal-waves-1.pdf>] [8 <../figures/eof1-regr-t-1.pdf>] [9 <../fi
-gures/t-vertical-1.pdf> <../figures/o3-regr-1.pdf>]
-<../figures/eof-filtered-1.pdf, id=198, 507.8975pt x 460.72125pt>
+[12 <../figures/phase-histogram-1.pdf>] [13 <../figures/sam-eof-vertical-1.pdf>
+]
+<../figures/eof-filtered-1.pdf, id=261, 507.8975pt x 460.72125pt>
 File: ../figures/eof-filtered-1.pdf Graphic file (type pdf)
 <use ../figures/eof-filtered-1.pdf>
-Package pdftex.def Info: ../figures/eof-filtered-1.pdf  used on input line 317.
+Package pdftex.def Info: ../figures/eof-filtered-1.pdf  used on input line 336.
 
 (pdftex.def)             Requested size: 469.7746pt x 426.13939pt.
-<../figures/sst-psi-2-1.pdf, id=200, 883.3pt x 433.62pt>
+<../figures/fake-eof-1.pdf, id=263, 882.29625pt x 290.08376pt>
+File: ../figures/fake-eof-1.pdf Graphic file (type pdf)
+<use ../figures/fake-eof-1.pdf>
+Package pdftex.def Info: ../figures/fake-eof-1.pdf  used on input line 344.
+(pdftex.def)             Requested size: 469.75536pt x 154.44743pt.
+[14 <../figures/eof-filtered-1.pdf>]
+<../figures/sst-psi-2-1.pdf, id=278, 883.3pt x 433.62pt>
 File: ../figures/sst-psi-2-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-2-1.pdf>
-Package pdftex.def Info: ../figures/sst-psi-2-1.pdf  used on input line 329.
+Package pdftex.def Info: ../figures/sst-psi-2-1.pdf  used on input line 359.
 (pdftex.def)             Requested size: 469.75067pt x 230.60486pt.
-[10 <../figures/wave1-o3-1.pdf>] [11 <../figures/eof2-regr-t-1.pdf>] [12 <../fi
-gures/psa-eof2-1.pdf> <../figures/sam-eof-vertical-1.pdf>] [13 <../figures/eof-
-filtered-1.pdf>]
-<../figures/enso-phase-1.pdf, id=265, 910.40125pt x 525.965pt>
+<../figures/enso-phase-1.pdf, id=283, 910.40125pt x 525.965pt>
 File: ../figures/enso-phase-1.pdf Graphic file (type pdf)
 <use ../figures/enso-phase-1.pdf>
-Package pdftex.def Info: ../figures/enso-phase-1.pdf  used on input line 343.
+Package pdftex.def Info: ../figures/enso-phase-1.pdf  used on input line 369.
 (pdftex.def)             Requested size: 469.75789pt x 271.39264pt.
-<../figures/sst-psi-1-1.pdf, id=269, 883.3pt x 433.62pt>
+[15 <../figures/fake-eof-1.pdf>] [16 <../figures/sst-psi-2-1.pdf> <../figures/e
+nso-phase-1.pdf>]
+<../figures/sst-psi-1-1.pdf, id=324, 883.3pt x 433.62pt>
 File: ../figures/sst-psi-1-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-1-1.pdf>
-Package pdftex.def Info: ../figures/sst-psi-1-1.pdf  used on input line 357.
+Package pdftex.def Info: ../figures/sst-psi-1-1.pdf  used on input line 383.
 (pdftex.def)             Requested size: 469.75067pt x 230.60486pt.
-[14 <../figures/sst-psi-2-1.pdf>] [15 <../figures/enso-phase-1.pdf> <../figures
-/sst-psi-1-1.pdf>]
-<../figures/pp-america-1.pdf, id=309, 440.64626pt x 515.9275pt>
+<../figures/pp-america-1.pdf, id=328, 440.64626pt x 515.9275pt>
 File: ../figures/pp-america-1.pdf Graphic file (type pdf)
 <use ../figures/pp-america-1.pdf>
-Package pdftex.def Info: ../figures/pp-america-1.pdf  used on input line 370.
+Package pdftex.def Info: ../figures/pp-america-1.pdf  used on input line 396.
 (pdftex.def)             Requested size: 440.66533pt x 515.94984pt.
-<../figures/pp-africa-1.pdf, id=313, 608.2725pt x 515.9275pt>
+<../figures/pp-africa-1.pdf, id=332, 608.2725pt x 515.9275pt>
 File: ../figures/pp-africa-1.pdf Graphic file (type pdf)
 <use ../figures/pp-africa-1.pdf>
-Package pdftex.def Info: ../figures/pp-africa-1.pdf  used on input line 380.
+Package pdftex.def Info: ../figures/pp-africa-1.pdf  used on input line 406.
 (pdftex.def)             Requested size: 469.7635pt x 398.44626pt.
-<../figures/pp-oceania-1.pdf, id=316, 806.01125pt x 515.9275pt>
+<../figures/pp-oceania-1.pdf, id=335, 806.01125pt x 515.9275pt>
 File: ../figures/pp-oceania-1.pdf Graphic file (type pdf)
 <use ../figures/pp-oceania-1.pdf>
-Package pdftex.def Info: ../figures/pp-oceania-1.pdf  used on input line 388.
+Package pdftex.def Info: ../figures/pp-oceania-1.pdf  used on input line 414.
 (pdftex.def)             Requested size: 469.74982pt x 300.68668pt.
-<../figures/cor-eof-naive-1.pdf, id=319, 883.3pt x 428.60126pt>
+<../figures/cor-eof-naive-1.pdf, id=338, 883.3pt x 428.60126pt>
 File: ../figures/cor-eof-naive-1.pdf Graphic file (type pdf)
 <use ../figures/cor-eof-naive-1.pdf>
-Package pdftex.def Info: ../figures/cor-eof-naive-1.pdf  used on input line 408
+Package pdftex.def Info: ../figures/cor-eof-naive-1.pdf  used on input line 434
 .
 (pdftex.def)             Requested size: 469.75067pt x 227.93582pt.
-<../figures/cor-eof-naive-2.pdf, id=320, 874.26625pt x 502.87875pt>
+<../figures/cor-eof-naive-2.pdf, id=339, 874.26625pt x 502.87875pt>
 File: ../figures/cor-eof-naive-2.pdf Graphic file (type pdf)
 <use ../figures/cor-eof-naive-2.pdf>
-Package pdftex.def Info: ../figures/cor-eof-naive-2.pdf  used on input line 408
+Package pdftex.def Info: ../figures/cor-eof-naive-2.pdf  used on input line 434
 .
 (pdftex.def)             Requested size: 469.7622pt x 270.20764pt.
 
-Overfull \hbox (3.32898pt too wide) in paragraph at lines 408--408
+Overfull \hbox (3.32898pt too wide) in paragraph at lines 434--434
 [][] 
  []
 
 
-Overfull \hbox (3.34052pt too wide) in paragraph at lines 408--408
+Overfull \hbox (3.34052pt too wide) in paragraph at lines 434--434
 [][] 
  []
 
-<../figures/rotations-pc1-1.pdf, id=321, 910.40125pt x 524.96124pt>
+[17 <../figures/sst-psi-1-1.pdf>] [18 <../figures/pp-america-1.pdf>] [19 <../fi
+gures/pp-africa-1.pdf>]
+<../figures/rotations-pc1-1.pdf, id=379, 910.40125pt x 524.96124pt>
 File: ../figures/rotations-pc1-1.pdf Graphic file (type pdf)
 <use ../figures/rotations-pc1-1.pdf>
-Package pdftex.def Info: ../figures/rotations-pc1-1.pdf  used on input line 416
+Package pdftex.def Info: ../figures/rotations-pc1-1.pdf  used on input line 442
 .
 (pdftex.def)             Requested size: 469.75789pt x 270.87473pt.
-<../figures/rotations-pc2-1.pdf, id=322, 910.40125pt x 524.96124pt>
+<../figures/rotations-pc2-1.pdf, id=380, 910.40125pt x 524.96124pt>
 File: ../figures/rotations-pc2-1.pdf Graphic file (type pdf)
 <use ../figures/rotations-pc2-1.pdf>
-Package pdftex.def Info: ../figures/rotations-pc2-1.pdf  used on input line 422
+Package pdftex.def Info: ../figures/rotations-pc2-1.pdf  used on input line 448
 .
 (pdftex.def)             Requested size: 469.75789pt x 270.87473pt.
-[16] [17 <../figures/pp-america-1.pdf>] [18 <../figures/pp-africa-1.pdf>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 457.
-[19 <../figures/pp-oceania-1.pdf>] [20 <../figures/cor-eof-naive-1.pdf> <../fig
-ures/cor-eof-naive-2.pdf>] [21 <../figures/rotations-pc1-1.pdf> <../figures/rot
+[20 <../figures/pp-oceania-1.pdf>] [21 <../figures/cor-eof-naive-1.pdf> <../fig
+ures/cor-eof-naive-2.pdf>] [22 <../figures/rotations-pc1-1.pdf> <../figures/rot
 ations-pc2-1.pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 457.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 498.
+[23]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 498.
 (./paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 457.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 457.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 498.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 498.
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 457.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 498.
  ) 
 Here is how much of TeX's memory you used:
- 16298 strings out of 492982
- 239350 string characters out of 6134896
- 361285 words of memory out of 5000000
- 19393 multiletter control sequences out of 15000+600000
- 56825 words of font info for 100 fonts, out of 8000000 for 9000
+ 16384 strings out of 492982
+ 240534 string characters out of 6134896
+ 361550 words of memory out of 5000000
+ 19440 multiletter control sequences out of 15000+600000
+ 62295 words of font info for 111 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 44i,10n,51p,1139b,440s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/d
-vips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/te
+ 44i,10n,51p,1139b,444s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dv
+ips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/te
 xmf/fonts/enc/dvips/lm/lm-mathit.enc}</usr/share/texmf/fonts/type1/public/lm/lm
 bx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/f
 onts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.p
 fb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/ty
 pe1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/
-share/texmf/fonts/type1/public/lm/lmr8.pfb>
-Output written on paper.pdf (21 pages, 2756776 bytes).
+share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public
+/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb>
+Output written on paper.pdf (23 pages, 2843014 bytes).
 PDF statistics:
- 519 PDF objects out of 1000 (max. 8388607)
- 404 compressed objects within 5 object streams
- 86 named destinations out of 1000 (max. 500000)
- 12497 words of extra memory for PDF output out of 14400 (max. 10000000)
+ 578 PDF objects out of 1000 (max. 8388607)
+ 460 compressed objects within 5 object streams
+ 101 named destinations out of 1000 (max. 500000)
+ 14569 words of extra memory for PDF output out of 17280 (max. 10000000)
 

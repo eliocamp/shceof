@@ -20,7 +20,7 @@ data_path <- function(type = c("raw", "derived"), ...) {
 }
 
 
-data_nc_fun <- function(file, download) {
+data_nc_fun <- function(file, download, citation = NULL) {
    force(file)
 
    if (is.character(download)) {
@@ -30,6 +30,10 @@ data_nc_fun <- function(file, download) {
    function(force_download = FALSE) {
       if (force_download || !file.exists(file)) {
          file <- download(file)
+         if (!is.null(citation)) {
+            write_citation(citation)
+         }
+
       }
 
       checkmate::assert_access(file, access = "r")
@@ -39,11 +43,14 @@ data_nc_fun <- function(file, download) {
 }
 
 
-data_rds_fun <- function(file, download) {
+data_rds_fun <- function(file, download, citation = NULL) {
    force(file)
 
    if (is.character(download)) {
       download <- simple_download(download)
+      if (!is.null(citation)) {
+         write_citation(citation)
+      }
    }
 
    function(force_download = FALSE) {
@@ -60,14 +67,16 @@ data_rds_fun <- function(file, download) {
 #' @export
 #' @rdname data_locations
 ERA5 <- data_nc_fun(file = data_path("raw", "era5.mon.mean.nc"),
-                    download = download_cds(request_era5))
+                    download = download_cds(request_era5),
+                    citation = citation_era5)
 
 
 #' @param force_download Logical indicating wether to force download of data.
 #' @export
 #' @rdname data_locations
 ERA5_BE <- data_nc_fun(file = data_path("raw", "era5be.mon.mean.nc"),
-                       download = download_cds(request_era5be))
+                       download = download_cds(request_era5be),
+                       citation = citation_era5be)
 
 
 #' @export
@@ -100,7 +109,8 @@ HADSST <- data_nc_fun(file = data_path("raw", "hadsst.mon.mean.nc"),
 #' @export
 #' @rdname data_locations
 CMAP <- data_nc_fun(file = data_path("raw", "cmap.mon.mean.nc"),
-                    download = "ftp://ftp.cdc.noaa.gov/Datasets/cmap/std/precip.mon.mean.nc" )
+                    download = "ftp://ftp.cdc.noaa.gov/Datasets/cmap/std/precip.mon.mean.nc",
+                    citation = citation_cmap)
 
 #' @param force_download Logical indicating wether to force download of data.
 #' @export
