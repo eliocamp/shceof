@@ -1,6 +1,5 @@
 write_citation <- function(citation) {
-  date <- format(Sys.Date(), "%d-%m-%Y")
-  text <- citation(date)
+  text <- citation()
 
   lines <- strsplit(text, "\n")[[1]]
   line_start <- lines[1]
@@ -30,7 +29,8 @@ write_citation <- function(citation) {
 }
 
 
-citation_era5be <- function(date) {
+citation_era5be <- function() {
+  date <- format(Sys.Date(), "%d-%m-%Y")
   paste0(
 r"(--start ERA5BE
 @article{era5be,
@@ -45,7 +45,8 @@ r"(--start ERA5BE
   )
 }
 
-citation_era5 <- function(date) {
+citation_era5 <- function() {
+  date <- format(Sys.Date(), "%d-%m-%Y")
   paste0(
 r"(--start ERA5
 @article{era5,
@@ -61,7 +62,28 @@ r"(--start ERA5
   )
 }
 
+
+citation_o3_era5 <- function() {
+  date <- format(Sys.Date(), "%d-%m-%Y")
+  paste0(
+r"(--start o3-ERA5
+@article{o3-era5,
+    title = {{{ERA5}} monthly averaged data on single levelss from 1979 to present},
+    author = {Hersbach, H. and Bell, B. and Berrisford, P. and Biavati, G. and Horányi, A. and Muñoz Sabater, J. and Nicolas, J. and Peubey, C. and Radu, R. and Rozum, I. and Schepers, D. and Simmons, A. and Soci, C. and Dee, D. and Thépaut, J-N.},
+    year = {2019},
+    journal = {{{Copernicus Climate Change Service}} ({{C3S}}) {{Climate Data Store}} ({{CDS}})},
+    volume = {(Accessed on {$<$})", date, r"({$>$})},
+    doi = {10.24381/cds.f17050d7}
+    }
+--end o3-ERA5
+)"
+  )
+}
+
+
+
 citation_cmap <- function() {
+  date <- format(Sys.Date(), "%d-%m-%Y")
   paste0(
 r"(--start CMAP
 @article{cmap,
@@ -70,7 +92,7 @@ r"(--start CMAP
     author = {Xie, Pingping and Arkin, Phillip A.},
     year = {1997},
     month = nov,
-    volume = {78},
+    volume = {78 (Accessed on {$<$})", date, r"({$>$})},
     pages = {2539--2558},
     publisher = {{American Meteorological Society}},
     issn = {0003-0007},

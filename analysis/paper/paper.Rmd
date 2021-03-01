@@ -1,36 +1,61 @@
 ---
 title: "Title Goes Here"
-author:
-  - Myfirstname Mylastname:
-      email: fl@oneplace.edu
-      institute: [UofO]
-      correspondence: true
-  - Yourfirstname Yourlastname:
-      email: fl@another.edu
-      institute: [UofA]
-      correspondence: false
-institute:
-  - UofO: University of One Place
-  - UofA: University of Another Place
+titlerunning:  Title
+authors: 
+- name: Elio Campitelli
+  address: |
+    Universidad de Buenos Aires, Facultad de Ciencias Exactas y Naturales, Departamento de Ciencias de la Atmósfera y los Océanos, Buenos Aires, Argentina
+    CONICET – Universidad de Buenos Aires, Centro de Investigaciones del Mar y la Atmósfera (CIMA), Buenos Aires, Argentina
+    CNRS – IRD – CONICET – UBA, Instituto Franco‐Argentino para el Estudio del Clima y sus Impactos (UMI 3351 IFAECI), Buenos Aires, Argentina
+  email: elio.campitelli@cima.fcen.uba.ar
+  
+- name:  Leandro B. Díaz
+  address: |
+    Universidad de Buenos Aires, Facultad de Ciencias Exactas y Naturales, Departamento de Ciencias de la Atmósfera y los Océanos, Buenos Aires, Argentina
+    CONICET – Universidad de Buenos Aires, Centro de Investigaciones del Mar y la Atmósfera (CIMA), Buenos Aires, Argentina
+    CNRS – IRD – CONICET – UBA, Instituto Franco‐Argentino para el Estudio del Clima y sus Impactos (UMI 3351 IFAECI), Buenos Aires, Argentina
+  
+- name:  Carolina Vera
+  address: |
+    Universidad de Buenos Aires, Facultad de Ciencias Exactas y Naturales, Departamento de Ciencias de la Atmósfera y los Océanos, Buenos Aires, Argentina
+    CONICET – Universidad de Buenos Aires, Centro de Investigaciones del Mar y la Atmósfera (CIMA), Buenos Aires, Argentina
+    CNRS – IRD – CONICET – UBA, Instituto Franco‐Argentino para el Estudio del Clima y sus Impactos (UMI 3351 IFAECI), Buenos Aires, Argentina
+
+thanks: | 
+  The research was supported by UBACyT20020170100428BA and the CLIMAX Project funded by Belmont Forum/ANR-15-JCL/-0002-01. Elio Campitelli was supported by a PhD grant from CONICET, Argentina.
+
+
+ 
+keywords:
+
+abstract: |
+  abstract
+
+
+
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output:
-  bookdown::pdf_document2:
-    fig_height: 7.6
-    fig_width: 12.8
-  powerpoint_presentation:
-    fig_height: 7.6
-    fig_width: 12.8
-    reference_doc: ../templates/template.pptx
-bibliography: [references.bib, data.bib]
-csl: "../templates/journal-of-archaeological-science.csl" # Insert path for the bib-style
-header-includes:
-  - \usepackage{subfig}
-# abstract: |
-#   Text of abstract
-# keywords: |
-#   keyword 1; keyword 2; keyword 3
-# highlights: |
-#   These are the highlights. 
+
+bibliography: 
+  - references.bib
+  - data.bib
+  - packages.bib
+
+bibstyle: spbasic
+# bibstyle options spbasic(default), spphys, spmpsci
+output: 
+  bookdown::pdf_book: 
+      base_format: rticles::springer_article
+      latex_engine: "xelatex"
+      citation_package: "natbib"
+      # pandoc_args: ["--lua-filter=abstract-to-meta.lua"]
+header-includes: 
+ - \usepackage{gensymb}
+ - \usepackage{subfig}
+ - \usepackage[inline]{showlabels}
+ - \usepackage{chngcntr}
+ - \usepackage{natbib}
+ - \usepackage{lineno}
+ - \linenumbers 
 ---
 
 <!-- cambiarn nomenclatura. Imaginario / real -> pasarlo a nombrar la fase -->
@@ -54,6 +79,39 @@ knitr::opts_chunk$set(
   dev = c("pdf", "png")
 )
 
+
+
+## Figure classes
+DefineClass <- function(class.opts) {
+    class.name <- deparse(substitute(class.opts))
+    class.fun <- function(options) {
+        class <- options[[class.name]]
+        class <- class.opts[[class]]
+        options[names(class)] <- class
+        options
+    }
+    invisible(knitr::opts_hooks$set(
+        setNames(list(class.fun), class.name)))
+}
+
+page.width <- 210 - 30 - 25
+text.width <- page.width - 20
+text.height <- page.height <- 297 - 25 - 25
+
+fig.class <- list(
+    pagewidth = list(
+        fig.width = page.width/25.4,
+        out.width = paste0(page.width, "mm"),
+        # fig.align = "center",
+        fig.env = "figure*",
+        out.extra = " "
+    )
+)
+
+DefineClass(fig.class)
+
+
+
 library(metR)
 library(data.table)
 library(magrittr)
@@ -69,6 +127,7 @@ library(shceof)
 theme_set(theme_shceof(base_size = 16))
 
 grid <- theme(panel.grid = element_line(color = "gray10", size = 0.4, linetype = 3))
+no_grid <- theme(panel.grid = element_blank())
 
 panel_background <- theme(panel.background = element_rect(fill = "#fbfbfb", color = NA), 
                           panel.ontop = FALSE,
@@ -190,11 +249,14 @@ psi <- ReadNetCDF(ERA5(), vars = "vo",
 
 ```{r o3}
 o3 <- O3() %>% 
-  readRDS() %>% 
+  ReadNetCDF(vars = c(toc = "tco3")) %>% 
+  normalise_coords() %>% 
+  .[, lon := ConvertLongitude(lon)] %>% 
   .[lat <= -20] %>% 
-  .[, .(toc = mean(total_ozone_column, na.rm = TRUE)), by = .(lon, lat, time = seasonally(time))] %>% 
-  unique(by = c("lon", "lat", "time"))
-o3[, time := year(time)]
+  .[, toc := toc/2.1415e-5] %>%    # transform to Dobson Units (https://sacs.aeronomie.be/info/dobson.php)
+  .[, .(toc = mean(toc, na.rm = TRUE)), by = .(lon, lat, time = seasonally(time))]
+
+o3wave_lats <- c(-70, -45)
 ```
 
 
@@ -219,32 +281,26 @@ psa_time <- psa$left[season(time) == "SON"]
 
 # Introduction
 
-# Data & Methods
+# Methods
 
-@era5 and @era5be
+## Data
 
-The phase of principal components is defined up to an additive constant. For real principal components, this constant can be either 0 or $\pi$, corresponding to a change in sign. For complex principal components, it can be any number between 0 and $2\pi$ [@horel1984]. In this paper we chose the phase of each of the two complex principal components so that the real and imaginary part are easier to interpret. For the first complex principal component, the phase was chosen so that the time series corresponding to the imaginary part had a time mean of zero.
+We used monthly geopotential height, air temperature and Total Ozone COlumn (TOC) at 2.5\degree\ longitude by 2.5\degree\ latitude of horizontal resolution and 37 vertical isobaric levels from ERA5 [@era5] for the period 1979 to 2019. We restrict most of our analysis to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also use the preliminary back extension of ERA5 from 1950 to 1978 [@era5be] to look at long-term trends. We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK [@fishpack] and computed horizontal wave activity fluxes following @plumb1985 (Equation 5.7).
 
-For the second complex principal component, the phase was chosen so that the coefficient of determination between the Oceanic Niño Index [@bamston1997] and the real part was minimised. It's important to reassure the reader that this procedure does not create a spurious correlation, it only takes whatever relationship that already exist and aligns it with a specific phase. If the relationship is very weak, the rotation cannot generate a strong relationship.
+Precipitation data we used monthly data from the CPC Merged Analysis of Precipitation [@cmap]. 
 
-We calculated the PSA1 and PSA2 modes as the third and fourth leading EOF of seasonal mean 500 hPa geopotential height with all seasons together following @mo2001. 
+We compute the amplitude and phase of the zonal wave 1 by averaging SON TOC between `r knitr::combine_words(LatLabel(o3wave_lats))` for each spring  and computing the Fourier spectrum. 
 
-ERA5, ERA5 BE,
+We explore the relationship with the Southern Annular Mode (SAM). We compute the level-dependent SAM index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period [@baldwin2009]. We further split the SAM into its zonally symmetric and zonally asymmetric components (S-SAM and A-SAM indices respectively). These are obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields [@campitelli2021]. Since the analysis here is only for the SON trimester, monthly values were averaged across trimesters. 
+
+We also calculated the Pacific South American patterns (PSA1 and PSA2) as the third and fourth leading EOF of seasonal mean 500 hPa geopotential height with all seasons together following @mo2001. 
 
 
-No mostrar los EOFs no complejos. No tiene sentido mostralos si no se analizas.
+## Complex Empirical Orthogonal Functions 
 
-Relacionar 50hPa con vórtice polar? Temperatura también suma. En 50 el negativo es más intenso que el negativo. ¿Por qué?
+(ref:eof-naive-cap) Spatial patterns of the leading 4 EOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009. (arbitrary units). The numbers at the top-left of each panel is the variance explained by each EOF.
 
-Ver qué pasa con U con el EOF1.
 
-En 200 no se ve la señal de jet de la temperatura ¿qué pasa más abajo? en 700 la anomalía de temp coincide más o menos con el geopotentical
-
-Mostrar EOF espaciales.
-
-Pp, ¿cuál es la regresión con SAM asim en 200 hPa?
-
-## Motivation to use complex EOF
 
 ```{r compute-eof-naive}
 eof_naive <- era5[lev %in% c(50, 200) & lat %between% c(-90, -20)] %>% 
@@ -258,35 +314,58 @@ explained <- eof_naive[, eof[[1]]$sdev, by = lev] %>%
 
 ```
 
-```{r corr-eofs}
-
-background_palette <- grDevices::colorRampPalette(c("white", scales::muted("red")), 
-                                                  space = "Lab")
-
-eof_naive[, eof[[1]]$left, by = lev] %>% 
-  .[, item := paste(lev, EOF, sep = "_")] %>% 
-  widyr::pairwise_cor(item, time, hgt) %>% 
-  setDT() %>%
-  # .[]
-  .[tstrsplit(item1, "_")[[1]] != tstrsplit(item2, "_")[[1]], ] %>% 
-  .[tstrsplit(item1, "_")[[1]] != 50] %>% 
-  .[, item1 := tstrsplit(item1, "_")[[2]]] %>%
-  .[, item2 := tstrsplit(item2, "_")[[2]]] %>% 
-  .[, r2 := round(correlation^2, 2)] %>% 
-  dcast(item1 ~ item2, value.var = "r2") %>% 
-  setnames("item1", "200 hPa") %>% 
-  kbl2(booktabs = TRUE, caption = "$R^2$ between pairs of EOFs of each level rounded to two decimals.") %>% 
-  # add_header_above(c("", "50 hPa" = 4)) %>% 
-  column_spec2(2:5,  background = spec_color2(.table[[.col]], option = background_palette, 
-                                              scale_from = c(0, 1)),
-               color = ifelse(.table[[.col]] > .5, "white", "black")) %>% 
-  add_header_above(c("", "50 hPa" = 4)) %>%
-  kable_classic()
+```{r eof-naive, fig.cap = "(ref:eof-naive-cap)"}
+eof_naive[, eof[[1]]$right, by = lev] %>%
+  periodic(lon = c(0, 360)) %>%
+  ggplot(aes(lon, lat)) +
+  geom_contour_fill(aes(z = hgt, fill = ..level..),
+                    breaks = AnchorBreaks(0, 0.01, exclude = 0)) +
+  geom_contour_tanaka(aes(z = hgt), breaks = AnchorBreaks(0, 0.01, exclude = 0)) +
+  
+  geom_qmap(~.x[lat <= -20]) +
+  scale_fill_divergent_discretised(guide = "none")  +
+  scale_y_latitude() +
+  scale_x_longitude() +
+  coord_polar() +
+  theme(axis.text = element_blank()) +
+  facet_grid(lev~EOF, labeller = labeller(lev = lab_lev))  +
+  tagger::tag_facets(tag = "panel", tag_pool = explained, tag_suffix = "")
 ```
 
-Figure \@ref(fig:cor-eof-naive-1) show the spatial pattern of the 4 leading EOF of zonal anomalies of geopotential height for 50 hPa and 200 hPa computed separately. The percentages XXX . At 50 hPa, EOF1 and EOF2 on one hand, and EOF3 and EOF4 on the other are clearly pairs of zonal waves with wave numbers 1 and 2-3 respectively shifted by 1/4 wavelength. That is, each group of two EOFs represents the same zonal wave structure that changes in magnitude and location. Similarly, at 200 hPa EOF2 and EOF3 represent the same zonal wave structure with wave number \~3.
+In traditional EOF analysis zonal waves appear as pairs of EOFs, usually degenerate, that represent similar patterns but shifted in phase. For instance, Figure \@ref(fig:eof-naive) shows the leading 4 EOFs of zonally anomalous September through October geopotential height at 50 hPa and 100 hPa. It is clear that at 50 hPa the first two EFS represent the same zonal wave 1 pattern and the last 2 represent the same zonal wave 3 pattern shifted by 1/4 wavelength. Since these pairs of EOFs seem to represent the same phase-varying structure, it would be desirable to combine them into a single index with amplitude and phase. 
 
-Furthermore, the wave 1 pattern represented by the first two EOFs at 50 hPa is similar to the wave 1 pattern shown as the leading EOF at 200 hPa, and the wave 2-3 pattern represented by the third and fourth EOF at 50 hPa is similar to the wave 3 pattern present in EOF2 and EOF3 at 200 hPa. These similarities suggest some level of joint variability across levels. Figure \@ref(fig:cor-eof-naive-2) shows the coefficient of determination between temporal series of each EOF at each level. EOF3 and EOF4 at 50 hPa are highly correlated with EOF2 and EOF3 at 200 hPa. Not only each pair of EOFs represent a single structure within each level, but they represent a coherent pattern of variability between levels. Similarly, the leading EOF of each level are relatively highly correlated, again suggesting an unique mode of joint variability.
+
+Complex Empirical Orthogonal Functions (cEOF) is a useful method to characterise these waves [@horel1984]. This methods involves augmenting the original fields with the Hilbert transform of the data and then computing the Singular Value Decomposition of it. In this work, instead of applying the Hilbert transform to the time series at each point, we apply it to each latitude circle at each moment in time. Since the latitude circle is a periodic domain, this procedure does not suffer from edge effects. 
+
+The result of the cEOF is a set of complex spatial patterns and complex time series. The real and imaginary part of each spatial pattern represent two phases wave-like spatial pattern that are in quadrature. The magnitude and argument of each complex time series represent the amplitude and phase of each zonal wave. 
+
+
+```{r corr-eofs}
+
+background_palette <- grDevices::colorRampPalette(c("white", scales::muted("red")),
+                                                  space = "Lab")
+# 
+# eof_naive[, eof[[1]]$left, by = lev] %>% 
+#   .[, item := paste(lev, EOF, sep = "_")] %>% 
+#   widyr::pairwise_cor(item, time, hgt) %>% 
+#   setDT() %>%
+#   # .[]
+#   .[tstrsplit(item1, "_")[[1]] != tstrsplit(item2, "_")[[1]], ] %>% 
+#   .[tstrsplit(item1, "_")[[1]] != 50] %>% 
+#   .[, item1 := tstrsplit(item1, "_")[[2]]] %>%
+#   .[, item2 := tstrsplit(item2, "_")[[2]]] %>% 
+#   .[, r2 := round(correlation^2, 2)] %>% 
+#   dcast(item1 ~ item2, value.var = "r2") %>% 
+#   setnames("item1", "200 hPa") %>% 
+#   kbl2(booktabs = TRUE, caption = "$R^2$ between pairs of EOFs of each level rounded to two decimals.") %>% 
+#   # add_header_above(c("", "50 hPa" = 4)) %>% 
+#   column_spec2(2:5,  background = spec_color2(.table[[.col]], option = background_palette, 
+#                                               scale_from = c(0, 1)),
+#                color = ifelse(.table[[.col]] > .5, "white", "black")) %>% 
+#   add_header_above(c("", "50 hPa" = 4)) %>%
+#   kable_classic()
+```
+
 
 ```{r compute-ceof}
 invisible(
@@ -321,7 +400,7 @@ ceof_splitted[, eof[[1]]$left, by = .(lev = levs)] %>%
   .[, r2 := round(correlation^2, 2)] %>%
   dcast(item1 ~ item2, value.var = "r2") %>%
   setnames("item1", "200 hPa") %>%
-  kbl2(booktabs = TRUE, caption = "$R^2$ of the absolute magnitude of complex EOFs between 200 hPa and 50 hPa computing EOF separatedly for each level. The high correlation between levels for the two leading EOFs justifies treating the pattern as a mode of covariability between the stratosphere and the troposphere and, thus, computing the EOFs using both levels at the same time.") %>%
+  kbl2(booktabs = TRUE, caption = "$R^2$ of the absolute magnitude of complex EOFs between 200 hPa and 50 hPa computing EOF separatedly for each level.") %>%
   column_spec2(2:4, background = spec_color2(.table[[.col]], option = background_palette,
                                             scale_from = c(0, 1)),
                color = ifelse(.table[[.col]] > .5, "white", "black")) %>% 
@@ -329,7 +408,20 @@ ceof_splitted[, eof[[1]]$left, by = .(lev = levs)] %>%
   kable_classic() 
 ```
 
+Another characteristic seen in Figure \@ref(fig:eof-naive) is that EOF1 at 200 hPa is very similar to EFO1 at 50 hPa. The zonal wave 3 structure in EOF2 and EOF3 at 200 hPa are also very similar to the one in EOF3 and EOF4 at 50 hPa. Furthermore, Table \@ref(tab:corr-ceof-splitted) shows the coefficient of determination between temporal series of the amplitude of each complex EOF across levels. There's a high degree of correlation between the respective EOF1 and EOF2 at each level. Both the spatial similarities and temporal correlations suggest some level of joint variability between levels.
+
 Both observations motivate the decision of performing complex EOF jointly between levels. The computation of the EOFs was carried out using data from both levels at the same time, therefore, each complex EOF has a spatial part that depends on longitude, latitude and level, an a temporal part that depends only on time. 
+
+The phase of principal components is defined up to an additive constant. For real principal components, this constant can be either 0 or $\pi$, corresponding to a change in sign. For complex principal components, it can be any number between 0 and $2\pi$ [@horel1984]. Since any choice is arbitrary and equally valid, we chose the phase of each EOF so that the real and imaginary parts are aligned with meaningful phases in our analysis. This was done after some exploratory analysis. 
+
+For the first complex principal component, the phase was chosen so that the time series corresponding to the real part has the maximum correlation with the zonal wave 1 of Total Ozone Column between `r knitr::combine_words(LatLabel(o3wave_lats))`. This also nearly minimises the correlation with the imaginary part (\@ref(fig:rotations-pc1)).
+
+For the second complex principal component, the phase was chosen so that the coefficient of determination between the Oceanic Niño Index [@bamston1997] and the real part was minimised, which also nearly maximises the correlation with the imaginary part (\@ref(fig:rotations-pc2)). It's important to reassure the reader that this procedure does not create a spurious correlation, it only takes whatever relationship that already exist and aligns it with a specific phase. If the relationship is very weak, the rotation cannot generate a strong relationship.
+
+
+## Computation procedures
+
+We performed all analysis in this paper using the R programming language [@rcoreteam2020], using the data.table package [@dowle2020] and the metR package [@campitelli2020]. All graphics are made using ggplot2 [@wickham2009]. We downloaded data from reanalysis using the ecmwfr package [@hufkens2020] and indices of the ENSO with the rsoi package [@albers2020]. The paper was rendered using knitr and rmarkdown [@xie2015;@allaire2019].
 
 
 # Results
@@ -359,13 +451,12 @@ angles <- seq(-pi, pi, by = .5*pi/180)
 
 
 wave1_o3 <- o3 %>% 
-  .[lat %between% c(-70, -45)] %>% 
+  .[lat %between% o3wave_lats] %>% 
   .[, .(toc = weighted.mean(toc, w = cos(lat*pi/180), na.rm = TRUE)), by = .(time, lon)] %>% 
   .[, FitWave(toc, 1), by = .(time)] 
 
 with_o3 <- ceof$eof[[1]]$left %>% 
   .[PC == "PC1"] %>% 
-  .[, time := year(time)] %>% 
   .[wave1_o3, on = "time"]
   
 
@@ -474,13 +565,15 @@ plot_ceof <- function(data, n = 1:2, formula = lev  ~  PC) {
 }
 ```
 
-```{r ceofs, fig.cap = "Leading 2 EOFs of zonal anomalies of geopotential height in 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009.", fig.subcap = c("Spatial patterns. Real part in shading, imaginary part in contours.", "Temproal series."), fig.ncol = 1}
+```{r ceofs-1, fig.cap = "Leading 2 EOFs of zonal anomalies of geopotential height in 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009. Spatial patterns. Real part in shading, imaginary part in contours"}
 ceof[season == "SON"] %>%
   plot_ceof() +
   coord_polar() +
   axis_labs_smol +
   tag_facets(tag = "cr")
+```
 
+```{r ceofs-2, fig.cap = "Temproal series."}
 ceof %>%
   .[, eof[[1]]$left, by = season] %>%
   sep_ReIm(hgt) %>%
@@ -498,10 +591,9 @@ ceof %>%
   panel_background
 ```
 
-
 Figures \@ref(fig:ceofs-1) and \@ref(fig:ceofs-2) show, respectively, the spatial and temporal parts of the first two leading complex EOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa. In the spatial patterns in Figure \@ref(fig:ceofs-1), the real (in shading) and the imaginary parts (in contour) are in quadrature by construction, so that each EOF describe a single wave-like pattern whose amplitude and position (i.e. phase) is controlled by the magnitude and phase of the complex temporal EOF.
 
-The wave patterns described by these complex EOFs match the patterns seen in the navie EOFs of Figure \@ref(fig: cor-eof-naive-1): The first is a wave 1, while the second is a wave 3. Note that in Figure \@ref(fig:ceofs-2), both parts of the EOF1 have non zero mean. This is due to th fact that the geopotential fields that enter into the algorithm are anomalies with respect to the zonal mean (shown in Figure \@ref(fig:mean-anom)), not the time mean. The variability associated with the first EOF is variability that projects onto the mean zonally anomalous field.
+The wave patterns described by these complex EOFs match the patterns seen in the traditional EOFs of Figure \@ref(fig:eof-naive): The first is a wave 1, while the second is a wave 3. Note that in Figure \@ref(fig:ceofs-2), both parts of the EOF1 have non zero mean. This is due to th fact that the geopotential fields that enter into the algorithm are anomalies with respect to the zonal mean, not the time mean. The variability associated with the first EOF includes variability that projects onto the mean zonally anomalous field.
 
 (ref:extended-series-cap) Temporal series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern and scaled to zero mean and unit standard deviation.
 
@@ -660,7 +752,7 @@ plot_regr(regr, "PC1", c(200, 50), "hgt") +
 ```
 
 Figure \@ref(fig:eof1-regr-gh) shows regression patterns of EOF1 and geopotential height. At 50 hPa (Figure \@ref(fig:eof1-regr-gh) row a), both the Real and Imaginary EOF1 are associated with planetary wave 1 patterns, that are 90º off phase. Their phases coincide with the ones shown in Figure \@ref(fig:ceofs-1)a.1, with the positive centre of the Real EOF1 located towards the dateline, and the one of the Imaginary EOF1 located over Eastern Antarctica. However, the Real EOF1 pattern is substantially altered by the zonally symmetric circulation. Instead of a clear wave 1 pattern, the regression pattern can be better describes as a monopole with its centre displaced from the South Pole. 
-Similarly affected are the regression patterns at 200 hPa (Figure \@ref(fig:eof1-regr-gh) row b). It is only possible to distinguish some of the wave 1 pattern in relation with the Real EOF1 (Figure @\ref(fig:eof1-regr-gh)b.1). The Imaginary EOF1 shows a much more zonally symmetrical pattern resembling a negative Southern Annular Mode. 
+Similarly affected are the regression patterns at 200 hPa (Figure \@ref(fig:eof1-regr-gh) row b). It is only possible to distinguish some of the wave 1 pattern in relation with the Real EOF1 (Figure \@ref(fig:eof1-regr-gh)b.1). The Imaginary EOF1 shows a much more zonally symmetrical pattern resembling a negative Southern Annular Mode. 
 
 With the exception of the Imaginary EFO1, it's clear that these patterns are very different than the idealised versions shown in Figure \@ref(fig:ceofs-1), particularly at 200 hPa. Moreover, only in the stratosphere these patterns actually show a distinguishable wave 1 pattern shifted in phase by 90º. This should not be utterly surprising, since the spatial patterns of the *naive* EOFs only show this feature at 50 hPa, suggesting that using the complex EOF method is "forcing" a wave structure where there is none. 
 
@@ -740,7 +832,7 @@ t %>%
   axis_labs_smol
 ```
 
-Figure \@ref(fig:eof1-regr-t) shows regression patterns of EOF1 with air temperature. In both levels, the distribution of temperature anomalies mirror the geopotential height anomalies in 50 hPa. To understand the vertical distribution of these anomalies, Figure @\ref(fig:t-vertical)) shows the regression pattern of EOF1 and zonal anomalies of air temperature averaged between 80ºS and 35ºS. Both pars of EOF1 are associated with a temperature wave 1 pattern which changes phase around 10 hPa. This switch in the sign of the correlation in temperature at 10 hPa suggest a relationship with Ozone, since its indicative of the effects of planetary waves in the advection of Ozone [@hartmann1979;@rood1985;@smith1995]. 
+Figure \@ref(fig:eof1-regr-t) shows regression patterns of EOF1 with air temperature. In both levels, the distribution of temperature anomalies mirror the geopotential height anomalies in 50 hPa. To understand the vertical distribution of these anomalies, Figure \@ref(fig:t-vertical)) shows the regression pattern of EOF1 and zonal anomalies of air temperature averaged between 80ºS and 35ºS. Both pars of EOF1 are associated with a temperature wave 1 pattern which changes phase around 10 hPa. This switch in the sign of the correlation in temperature at 10 hPa suggest a relationship with Ozone, since its indicative of the effects of planetary waves in the advection of Ozone [@hartmann1979;@rood1985;@smith1995]. 
 
 ```{r o3_regr} 
 temp <- ceof$eof[[1]]$left %>% 
@@ -749,8 +841,7 @@ temp <- ceof$eof[[1]]$left %>%
   sep_ReIm(format = "wider") %>% 
   .[, `:=`(Real = as.numeric(scale(Real)), 
            Imaginary = as.numeric(scale(Imaginary))),
-    by = .(PC)] %>%
-  .[, time := year(time)] 
+    by = .(PC)]
 
 o3_regr <- temp %>% 
   o3[., on = "time", allow.cartesian = TRUE] %>% 
@@ -762,6 +853,7 @@ o3_regr <- temp %>%
 
 ```{r o3-regr, fig.cap = "Regression of standarised EOF1 and Total Ozone column."}
 o3_regr %>% 
+  periodic(lon = c(0, 360)) %>% 
   .[, p.value := Pvaluate(estimate, std.error, df, "fdr"), by = .(PC, term)] %>% 
   ggplot(aes(lon, lat)) +
   geom_contour_fill(aes(z = estimate, fill = ..level..),
@@ -783,13 +875,12 @@ To confirm this possibility, Figure \@ref(fig:o3-regr) shows regression maps of 
 
 ```{r wave1-o3, fig.cap = "EOF1 and wave1 o3 amplitude."}
 wave1_o3 <- o3 %>% 
-  .[lat %between% c(-70, -45)] %>% 
+  .[lat %between% o3wave_lats] %>% 
   .[, .(toc = mean(toc, na.rm = TRUE)), by = .(time, lon)] %>% 
   .[, FitWave(toc, 1), by = .(time)] 
 
 temp <- ceof$eof[[1]]$left %>% 
   .[PC == "PC1"] %>% 
-  .[, time := year(time)] %>% 
   .[wave1_o3, on = "time"]
   
 # temp %>% 
@@ -900,7 +991,7 @@ pc2[psa_time, on = "time"] %>%
   tag_facets("rc")
 ```
 
-Figure @\ref(fig:psa-eof2) shows the relationship between the two PSA indices and the Real and Imaginary phase of EOF2. As anticipated by Figure @\ref(fig: eof2-regr-gh), there is a strong correlation between PSA1 and Imaginary EOF2 (Figure @\ref(fig:psa-eof2)b.1), and between PSA2 and Real EOF2 (Figure @\ref(fig:psa-eof2)a.2). Conversely, there is no relationship between PSA1 and Real EOF2, and between PSA2 and Imaginary EOF2 (Figure @\ref(fig:psa-eof2) panels a.1 and b.2). So not only this EOF2 represents well both the spatial structure and temporal evolution of the PSA modes, but it's also possible to make a rather clean association between its two phases and the two PSA modes. 
+Figure \@ref(fig:psa-eof2) shows the relationship between the two PSA indices and the Real and Imaginary phase of EOF2. As anticipated by Figure \@ref(fig: eof2-regr-gh), there is a strong correlation between PSA1 and Imaginary EOF2 (Figure \@ref(fig:psa-eof2)b.1), and between PSA2 and Real EOF2 (Figure \@ref(fig:psa-eof2)a.2). Conversely, there is no relationship between PSA1 and Real EOF2, and between PSA2 and Imaginary EOF2 (Figure \@ref(fig:psa-eof2) panels a.1 and b.2). So not only this EOF2 represents well both the spatial structure and temporal evolution of the PSA modes, but it's also possible to make a rather clean association between its two phases and the two PSA modes. 
 
 This particular rotation of EOF2 is the one which maximises the relationship between ENSO and Imaginary EOF2. It is also the same that maximises this clean association between EFO2 parts and PSA modes. The reason that the "naive" principal component analysis arrives naturally to this optimal separation is that the imaginary phase is the most common phase (Figure \@ref(fig:phase-histogram)), so it naturally appears first when performing a Principal Component Analysis. 
 
@@ -963,7 +1054,7 @@ sam_r2 %>%
   panel_background
 ```
 
-Figure \@ref(fig:sam-eof-vertical) shows the coefficient of determination between the EOFs and three SAM indices. The SAM index represents the leading EOF of monthly geopotential height fields south of 20ºS at each level. The A-SAM and S-SAM indices represent, respectively, the zonally asymmetric and symmetric component of the SAM and are obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields (@campitelli2021). Since the analysis here is only for the SON trimester, monthly values were averaged across semesters (weighted by the number of days in each month).
+Figure \@ref(fig:sam-eof-vertical) shows the coefficient of determination between the EOFs and three SAM indices. 
 
 Both EOFs bear some modest relationship with the SAM index (thick green line in Figure \@ref(fig:sam-eof-vertical)), although not statistically significant at every level. The split between A-SAM and S-SAM gives more insight into the nature of the relationship. The relationship between the SAM and the imaginary EOF1 (Figure \@ref(fig:sam-eof-vertical).b1) is mediated by S-SAM in the troposphere, but by the A-SAM in the stratosphere.
 
@@ -1244,9 +1335,9 @@ gdata %>%
 
 To better explore the relationship between tropical forcing and phase of the EOF2, Figure \@ref(fig:enso-phase) plots the ONI index and the phase of the EOF2 for each year between 1979 and 2019, highlighting years in which the magnitude of EOF2 was higher than 50% of the years. In years with positive ENSO, the phase of the EOF2 is always around +90º (corresponding with positive imaginary part) and vice versa. In years with near neutral ENSO, the phase of the EOF2 is much more variable. The black line in Figure \@ref(fig:enso-phase) tries to quantify this relationship. Is the equation $ONI = `r signif(coef(cos_model)[1], 2)`\sin{phase}$, whose coefficient we fitted by weighted least squares using the magnitude of the EFO2 as weight. The $r^2$ corresponding to the fit is `r signif(summary(cos_model)$r.squared, 2)`, with p-value `r report_p(coef(summary(cos_model))[4])`.
 
-Figure \@ref(fig:enso-phase) suggest that strong EOF2 years tend to coincide with strong ENSO years. The correlation between the absolute magnitude of the ONI and the magnitude of the EOF2 is `r cor_enso_mag$text`. This relationship appears to be driven only by the three years with strongest ENSO events in the period (`r knitr::combine_words(year(gdata[order(-oni)][1:3]$time))`) which also coindice with the three years with strongest EOF2 magnitude. If those years are removed, the correlation becomes non-significant (`r cor_enso_mag_outlier$text`). Furthermore, the Spearman correlation, which is robust to outliers is also non-significant (`r signif(cor_enso_spearman$estimate, 2)`, p-value = `r report_p(cor_enso_spearman$p.value)`). Therefore, the relationship between the magnitude of the EOF2 train wave and ENSO remains uncertain.
+Figure \@ref(fig:enso-phase) suggest that strong EOF2 years tend to coincide with strong ENSO years. The correlation between the absolute magnitude of the ONI and the magnitude of the EOF2 is `r cor_enso_mag$text`. This relationship, however, appears to be driven only by the three years with strongest ENSO events in the period (`r knitr::combine_words(year(gdata[order(-oni)][1:3]$time))`) which also coincide with the three years with strongest EOF2 magnitude. If those years are removed, the correlation becomes non-significant (`r cor_enso_mag_outlier$text`). Furthermore, even when using all the datapoints, the Spearman correlation --which is robust to outliers-- is also non-significant (`r signif(cor_enso_spearman$estimate, 2)`, p-value = `r report_p(cor_enso_spearman$p.value)`). Therefore, the relationship between the magnitude of the EOF2 train wave and ENSO remains uncertain.
 
-All this suggests that the wave train represented by EOF2 can be both forced by tropical SSTs and also a part of the internal variability of the extratropical atmosphere. When internally forced, the wave train has little phase preference. When excited by tropical SST anomalies, it tends to remain locked to the imaginary phase, with the sign of the geopotential anomalies depending on the sign of the tropical SSTs anomalies.
+All this suggests that the wave train represented by EOF2 can be both forced by tropical SSTs and also a part of the internal variability of the extratropical atmosphere. When internally forced, the wave train has little phase preference. When excited by tropical SST anomalies, it tends to remain locked to the imaginary phase, with the sign of the geopotential anomalies depending on the sign of the tropical SSTs anomalies. This explains the relative overabundance of years with EOF2 near positive and negative imaginary phase in Figure \@ref(fig:phase-histogram). 
 
 (ref:sst-psi-1-cap) Same as Figure \@ref(fig:sst-psi-2) but for EOF1.
 
@@ -1379,51 +1470,7 @@ plot_pp(regr_pp, c("PC1", "PC2"), which_continent =  "oceania")
 
 # Appendix
 
-## Naive EOFs
 
-(ref:cap-eof-naive) Leading 4 EOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009.
-
-(ref:subcap-eof-naive) Spatial patterns (arbitrary units). The numbers at the top-left of each panel is the variance explained by each EOF.
-
-(ref:subcap-cor-eof-naive) Coefficient of determination of the temporal index of each EOF between levels.
-
-```{r cor-eof-naive, fig.cap = "(ref:cap-eof-naive)", fig.subcap = c("(ref:subcap-eof-naive)", "(ref:subcap-cor-eof-naive)"), fig.ncol = 1}
-eof_naive[, eof[[1]]$right, by = lev] %>%
-  periodic(lon = c(0, 360)) %>%
-  ggplot(aes(lon, lat)) +
-  
-  geom_contour_fill(aes(z = hgt, fill = ..level..),
-                    breaks = AnchorBreaks(0, 0.01, exclude = 0)) +
-  geom_contour_tanaka(aes(z = hgt), breaks = AnchorBreaks(0, 0.01, exclude = 0)) +
-  
-  geom_qmap(~.x[lat <= -20]) +
-  scale_fill_divergent_discretised(guide = "none")  +
-  scale_y_latitude() +
-  scale_x_longitude() +
-  coord_polar() +
-  facet_grid(lev~EOF, labeller = labeller(lev = lab_lev))  +
-  axis_labs_smol +
-  tagger::tag_facets(tag = "panel", tag_pool = explained, tag_suffix = "")
-
-
-eof_naive[, eof[[1]]$left, by = lev] %>%
-  .[, item := paste(lev, EOF, sep = "_")] %>%
-  widyr::pairwise_cor(item, time, hgt) %>%
-  setDT() %>%
-  # .[]
-  .[tstrsplit(item1, "_")[[1]] != tstrsplit(item2, "_")[[1]], ] %>%
-  .[tstrsplit(item1, "_")[[1]] != 50] %>%
-  .[, item1 := tstrsplit(item1, "_")[[2]]] %>%
-  .[, item2 := tstrsplit(item2, "_")[[2]]] %>%
-  ggplot(aes(item1, item2)) +
-  geom_raster(aes(fill = correlation^2)) +
-  shadowtext::geom_shadowtext(aes(label = round(correlation^2, 2)),
-                              color = "black", bg.colour = "white", bg.r = 0.2) +
-  scale_fill_gradient(guide = "none", low = "white", high = scales::muted("red"), limits = c(0, 1)) +
-  scale_x_discrete("200 hPa") +
-  scale_y_discrete("50 hPa") +
-  plot_layout(ncol = 1)
-```
 
 ## Chosen rotations of the EOFs
 
@@ -1451,6 +1498,12 @@ rotations_pc2 %>%
   scale_y_continuous("r^2") +
   scale_color_brewer(NULL, palette = "Dark2", labels = lab_cplx)
 ```
+
+
+## Code availability {-}
+
+A version-controlled repository of the code used to create this analysis, including the code used to download the data can be found at https://github.com/eliocamp/shceof.
+
 
 # References
 

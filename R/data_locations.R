@@ -115,5 +115,6 @@ CMAP <- data_nc_fun(file = data_path("raw", "cmap.mon.mean.nc"),
 #' @param force_download Logical indicating wether to force download of data.
 #' @export
 #' @rdname data_locations
-O3 <- data_rds_fun(file = data_path("raw", "o3.mon.mean.Rds"),
-                    download = download_ozone(request_o3))
+O3 <- data_nc_fun(file = data_path("raw", "o3.mon.mean.nc"),
+                    download = download_cds(request_o3_era5),
+                    citation = citation_o3_era5)

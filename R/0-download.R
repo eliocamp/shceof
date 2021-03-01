@@ -99,7 +99,7 @@ request_era5be <- list(
 request_era5 <- list(
   format = "netcdf",
   product_type = "monthly_averaged_reanalysis",
-  variable = c("geopotential", "temperature", "vorticity", "divergence", "total_column_ozone"),
+  variable = c("geopotential", "temperature", "vorticity", "divergence"),
   pressure_level = c("1", "2", "3", "5", "7", "10", "20", "30", "50",
                      "70", "100", "125", "150", "175", "200", "225",
                      "250", "300", "350", "400", "450", "500", "550",
@@ -111,6 +111,20 @@ request_era5 <- list(
   grid = c("2.5", "2.5"),
   dataset_short_name = "reanalysis-era5-pressure-levels-monthly-means"
 )
+
+request_o3_era5 <- list(
+  format = "netcdf",
+  variable = "total_column_ozone",
+  product_type = "monthly_averaged_reanalysis",
+  year = as.character(1979:2019),
+  month = formatC(9:11, width = 2, flag = 0),
+  time = "00:00",
+  area = c(0, -180, -90, 180),
+  grid = c("2.5", "2.5"),
+  dataset_short_name = "reanalysis-era5-single-levels-monthly-means",
+  target = "ozone.era5.nc"
+)
+
 
 request_era5_sst <- list(
   format = "netcdf",
@@ -158,6 +172,8 @@ request_o3 <- list(
   dataset_short_name = "satellite-ozone-v1",
   target = "ozone.zip"
 )
+
+
 
 simple_download <- function(url) {
   force(url)
