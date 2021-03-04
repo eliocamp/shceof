@@ -815,10 +815,15 @@
     },
     "metR": {
       "Package": "metR",
-      "Version": "0.9.1",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "b2138387cd60bd07542c4705e485b734"
+      "Version": "0.9.1.9000",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "metR",
+      "RemoteUsername": "eliocamp",
+      "RemoteRef": "dev",
+      "RemoteSha": "60a9019f65dd70186a4ba66fd229a33b67e3389a",
+      "Hash": "e478e6500b72591bdc6138fefe94efff"
     },
     "mgcv": {
       "Package": "mgcv",

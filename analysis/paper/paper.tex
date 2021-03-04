@@ -123,7 +123,7 @@ We used monthly geopotential height, air temperature and Total Ozone COlumn (TOC
 
 Precipitation data we used monthly data from the CPC Merged Analysis of Precipitation \citep{cmap}.
 
-We compute the amplitude and phase of the zonal wave 1 by averaging SON TOC between 70°S and 45°S for each spring and computing the Fourier spectrum.
+We compute the amplitude and phase of the zonal wave 1 by averaging SON TOC between 70°S and 45°S for each Spring and computing the Fourier spectrum.
 
 We explore the relationship with the Southern Annular Mode (SAM). We compute the level-dependent SAM index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period \citep{baldwin2009}. We further split the SAM into its zonally symmetric and zonally asymmetric components (S-SAM and A-SAM indices respectively). These are obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields \citep{campitelli2021}. Since the analysis here is only for the SON trimester, monthly values were averaged across trimesters.
 
@@ -137,7 +137,7 @@ We also calculated the Pacific South American patterns (PSA1 and PSA2) as the th
 \begin{figure}
 \centering
 \includegraphics{../figures/eof-naive-1.pdf}
-\caption{\label{fig:eof-naive}Spatial patterns of the leading 4 EOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009. (arbitrary units). The numbers at the top-left of each panel is the variance explained by each EOF.}
+\caption{\label{fig:eof-naive}Spatial patterns of the leading 4 EOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009 (arbitrary units). The numbers at the top-left of each panel ate the variance explained by each EOF.}
 \end{figure}
 
 In traditional EOF analysis zonal waves appear as pairs of EOFs, usually degenerate, that represent similar patterns but shifted in phase. For instance, Figure \ref{fig:eof-naive} shows the leading 4 EOFs of zonally anomalous September through October geopotential height at 50 hPa and 100 hPa. It is clear that at 50 hPa the first two EFS represent the same zonal wave 1 pattern and the last 2 represent the same zonal wave 3 pattern shifted by 1/4 wavelength. Since these pairs of EOFs seem to represent the same phase-varying structure, it would be desirable to combine them into a single index with amplitude and phase.
@@ -163,15 +163,23 @@ PC3 & \cellcolor[HTML]{FFFFFF}{\textcolor{black}{0.00}} & \cellcolor[HTML]{FFFFF
 \end{tabular}
 \end{table}
 
-Another characteristic seen in Figure \ref{fig:eof-naive} is that EOF1 at 200 hPa is very similar to EFO1 at 50 hPa. The zonal wave 3 structure in EOF2 and EOF3 at 200 hPa are also very similar to the one in EOF3 and EOF4 at 50 hPa. Furthermore, Table \ref{tab:corr-ceof-splitted} shows the coefficient of determination between temporal series of the amplitude of each complex EOF across levels. There's a high degree of correlation between the respective EOF1 and EOF2 at each level. Both the spatial similarities and temporal correlations suggest some level of joint variability between levels.
+Another characteristic seen in Figure \ref{fig:eof-naive} is that EOF1 at 200 hPa is very similar to EFO1 at 50 hPa. The zonal wave 3 structure in EOF2 and EOF3 at 200 hPa are also very similar to the one in EOF3 and EOF4 at 50 hPa. Furthermore, Table \ref{tab:corr-ceof-splitted} shows the coefficient of determination between time series of the amplitude of each complex EOF across levels. There's a high degree of correlation between the respective EOF1 and EOF2 at each level. Both the spatial similarities and temporal correlations suggest some level of joint variability between levels.
 
 Both observations motivate the decision of performing complex EOF jointly between levels. The computation of the EOFs was carried out using data from both levels at the same time, therefore, each complex EOF has a spatial part that depends on longitude, latitude and level, an a temporal part that depends only on time.
 
 The phase of principal components is defined up to an additive constant. For real principal components, this constant can be either 0 or \(\pi\), corresponding to a change in sign. For complex principal components, it can be any number between 0 and \(2\pi\) \citep{horel1984}. Since any choice is arbitrary and equally valid, we chose the phase of each EOF so that the real and imaginary parts are aligned with meaningful phases in our analysis. This was done after some exploratory analysis.
 
-For the first complex principal component, the phase was chosen so that the time series corresponding to the real part has the maximum correlation with the zonal wave 1 of Total Ozone Column between 70°S and 45°S. This also nearly minimises the correlation with the imaginary part (\ref{fig:rotations-pc1}).
 
-For the second complex principal component, the phase was chosen so that the coefficient of determination between the Oceanic Niño Index \citep{bamston1997} and the real part was minimised, which also nearly maximises the correlation with the imaginary part (\ref{fig:rotations-pc2}). It's important to reassure the reader that this procedure does not create a spurious correlation, it only takes whatever relationship that already exist and aligns it with a specific phase. If the relationship is very weak, the rotation cannot generate a strong relationship.
+
+\begin{figure}
+\centering
+\includegraphics{../figures/rotations-1.pdf}
+\caption{\label{fig:rotations}a) Correlation of the Real and Imaginary EOF1 with wave 1 amplitude of Total Ozone Column averaged between 70°S and 45°S and b) \(R^2\) between the Real and Imaginary EOF2 and the ONI index for different values of rotation. The vertical line marks the selected rotation, which maximises de correlation.}
+\end{figure}
+
+For the first complex principal component, the phase was chosen so that the time series corresponding to the real part has the maximum correlation with the zonal wave 1 of Total Ozone Column between 70°S and 45°S. This also nearly minimises the correlation with the imaginary part (Figure \ref{fig:rotations}a).
+
+For the second complex principal component, the phase was chosen so that the coefficient of determination between the Oceanic Niño Index \citep{bamston1997} and the real part was minimised, which also nearly maximises the correlation with the imaginary part (Figure \ref{fig:rotations}b). It's important to reassure the reader that this procedure does not create a spurious correlation, it only takes whatever relationship that already exist and aligns it with a specific phase. If the relationship is very weak, the rotation cannot generate a strong relationship.
 
 \hypertarget{computation-procedures}{%
 \subsection{Computation procedures}\label{computation-procedures}}
@@ -187,13 +195,13 @@ We performed all analysis in this paper using the R programming language \citep{
 \begin{figure}
 \centering
 \includegraphics{../figures/ceofs-1-1.pdf}
-\caption{\label{fig:ceofs-1}Leading 2 EOFs of zonal anomalies of geopotential height in 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009. Spatial patterns. Real part in shading, imaginary part in contours}
+\caption{\label{fig:ceofs-1}Spatial patterns of the leading 2 complex EOFs of zonal anomalies of geopotential height in 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009. Real part in shading, imaginary part in contours}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics{../figures/ceofs-2-1.pdf}
-\caption{\label{fig:ceofs-2}Temproal series.}
+\caption{\label{fig:ceofs-2}Time series of the leading 2 complex EOFs of zonal anomalies of geopotential height in 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009.}
 \end{figure}
 
 Figures \ref{fig:ceofs-1} and \ref{fig:ceofs-2} show, respectively, the spatial and temporal parts of the first two leading complex EOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa. In the spatial patterns in Figure \ref{fig:ceofs-1}, the real (in shading) and the imaginary parts (in contour) are in quadrature by construction, so that each EOF describe a single wave-like pattern whose amplitude and position (i.e.~phase) is controlled by the magnitude and phase of the complex temporal EOF.
@@ -205,10 +213,10 @@ The wave patterns described by these complex EOFs match the patterns seen in the
 \begin{figure}
 \centering
 \includegraphics{../figures/extended-series-1.pdf}
-\caption{\label{fig:extended-series}Temporal series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern and scaled to zero mean and unit standard deviation.}
+\caption{\label{fig:extended-series}Time series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern and scaled to zero mean and unit standard deviation.}
 \end{figure}
 
-Figure \ref{fig:extended-series} shows temporal series of the two complex EOFs extended beyond the satellite era using the preliminary ERA5 back extension going back to 1950 (which we call the ``hybrid ERA5'' reanalysis). There is a downward trend in the real part of EOF1 in the hybrid reanalysis (Figure \ref{fig:extended-series}a.1, p-value = 0.0011). There is no significant trend in any of the complex parts of EOF2.
+Figure \ref{fig:extended-series} shows time series of the two complex EOFs extended beyond the satellite era using the preliminary ERA5 back extension going back to 1950 (which we call the ``hybrid ERA5'' reanalysis). There is a downward trend in the real part of EOF1 in the hybrid reanalysis (Figure \ref{fig:extended-series}a.1, p-value \textless{} 0.001). There is no significant trend in any of the complex parts of EOF2.
 
 \hypertarget{regressions}{%
 \subsection{Regressions}\label{regressions}}
@@ -256,49 +264,59 @@ EOF2 then represents a equivalent barotropic wave train that is very similar to 
 \caption{\label{fig:eof1-regr-t}Same as Figure \ref{fig:eof1-regr-gh} but for air temperature.}
 \end{figure}
 
+
+
 \begin{figure}
 \centering
 \includegraphics{../figures/t-vertical-1.pdf}
-\caption{\label{fig:t-vertical}Regression of EOF1 with mean air temperature between 80ºS and 25ºS.}
+\caption{\label{fig:t-vertical}Regression of EOF1 with mean air temperature averaged between 80ºS and 25ºS for the period 1979 -- 2019.}
 \end{figure}
 
 Figure \ref{fig:eof1-regr-t} shows regression patterns of EOF1 with air temperature. In both levels, the distribution of temperature anomalies mirror the geopotential height anomalies in 50 hPa. To understand the vertical distribution of these anomalies, Figure \ref{fig:t-vertical}) shows the regression pattern of EOF1 and zonal anomalies of air temperature averaged between 80ºS and 35ºS. Both pars of EOF1 are associated with a temperature wave 1 pattern which changes phase around 10 hPa. This switch in the sign of the correlation in temperature at 10 hPa suggest a relationship with Ozone, since its indicative of the effects of planetary waves in the advection of Ozone \citep{hartmann1979, rood1985, smith1995}.
 
+(raf:o3-regr-cap) Regression coefficients of the real and imaginary part of the first complex EOF on SON mean Total Ozone Column for the 1979 -- 2019 period.
+
 \begin{figure}
 \centering
 \includegraphics{../figures/o3-regr-1.pdf}
-\caption{\label{fig:o3-regr}Regression of standarised EOF1 and Total Ozone column.}
+\caption{\label{fig:o3-regr}(raf:o3-regr-cap)}
 \end{figure}
 
 To confirm this possibility, Figure \ref{fig:o3-regr} shows regression maps of EOF1 with fields of Total Ozone Column (TOC). It shows zonal wave 1 pattens in TOC associated with both phases of EOF1. Climatologically, the springtime Ozone minimum is located off the South Pole and towards the Weddell Sea \citep{wirth1993}. Thus, the Real EOF1 regression pattern (Figure \ref{fig:o3-regr}a) coincides with the climatological position of the ozone whole while the one for the Imaginary EOF1 is shifted by 90º. This suggest that the EOF1 can be a complete description of the TOC zonal wave 1.
 
+
+
 \begin{figure}
 \centering
 \includegraphics{../figures/wave1-o3-1.pdf}
-\caption{\label{fig:wave1-o3}EOF1 and wave1 o3 amplitude.}
+\caption{\label{fig:wave1-o3}Relationship between EOF1 amplitude and phase with amplitude and phase of the zonal wave 1 in Total Ozone Column averaged between 70°S and 45°S for the period 1979 -- 2019.}
 \end{figure}
 
-Indeed, Figure \ref{fig:o3-regr} shows the relationship between amplitude and phase of the planetary wave 1 in Total Ozone Column between 70ºS and 45ºS and amplitude and phase of the EOF1. The correlation between the zonal wave 1 of ozone and EOF1 (computed as the mean cosine of the difference in phase) is 0.87 (CI: 0.76 -- 0.93). As expected from the location of anomalies in Figure @ref(fig: o3-regr), the Real EOF1 drives the relationship with amplitude and the Imaginary EOF1 drives the relationship with phase (not shown).
+Indeed, Figure \ref{fig:o3-regr} shows the relationship between amplitude and phase of the planetary wave 1 in Total Ozone Column between 70ºS and 45ºS and amplitude and phase of the EOF1. The correlation between the zonal wave 1 of ozone and EOF1 (computed as the mean cosine of the difference in phase) is 0.86 (CI: 0.76 -- 0.93). As expected from the location of anomalies in Figure @ref(fig: o3-regr), the Real EOF1 drives the relationship with amplitude and the Imaginary EOF1 drives the relationship with phase (not shown).
 
 \hypertarget{psa}{%
 \subsubsection{PSA}\label{psa}}
 
 We will show that the EOF2 offers an alternative way of representing the PSA which has several advantages over using the second and third principal components .
 
+
+
 \begin{figure}
 \centering
 \includegraphics{../figures/psa-eof2-1.pdf}
-\caption{\label{fig:psa-eof2}EFO2 and PSA}
+\caption{\label{fig:psa-eof2}Relationship between the Real and Imaginary parts of EOF2 and the PSA1 and PSA2 modes computed as the second and third EOFs of seasonal geopotential height anomalies \citep{mo2001}. For the period 1979 -- 2019.}
 \end{figure}
 
 Figure \ref{fig:psa-eof2} shows the relationship between the two PSA indices and the Real and Imaginary phase of EOF2. As anticipated by Figure @ref(fig: eof2-regr-gh), there is a strong correlation between PSA1 and Imaginary EOF2 (Figure \ref{fig:psa-eof2}b.1), and between PSA2 and Real EOF2 (Figure \ref{fig:psa-eof2}a.2). Conversely, there is no relationship between PSA1 and Real EOF2, and between PSA2 and Imaginary EOF2 (Figure \ref{fig:psa-eof2} panels a.1 and b.2). So not only this EOF2 represents well both the spatial structure and temporal evolution of the PSA modes, but it's also possible to make a rather clean association between its two phases and the two PSA modes.
 
 This particular rotation of EOF2 is the one which maximises the relationship between ENSO and Imaginary EOF2. It is also the same that maximises this clean association between EFO2 parts and PSA modes. The reason that the ``naive'' principal component analysis arrives naturally to this optimal separation is that the imaginary phase is the most common phase (Figure \ref{fig:phase-histogram}), so it naturally appears first when performing a Principal Component Analysis.
 
+
+
 \begin{figure}
 \centering
 \includegraphics{../figures/phase-histogram-1.pdf}
-\caption{\label{fig:phase-histogram}Histogram of phase distributions of EOF2.}
+\caption{\label{fig:phase-histogram}Histogram showing phase distribution of EOF2 for the period 1979 -- 2019.}
 \end{figure}
 
 By aligning he imaginary phase with the direction with maximum relationship with ENSO, we also aligned it with the phase of maximum occurrence. This is analogous to the method in \citet{irving2016}, who used reprojection and Fourier filtering to detect ``PSA-like'' variability and defined as the proper PSA using the peaks of the phase distribution (Compare our Figure @ref:(phase-histogram) with their Figure 6).
@@ -330,10 +348,12 @@ The Imaginary EOF2 is related with the SAM through the A-SAM in the troposphere,
 
 As a further illustration, Figure \ref{fig:eof-filtered} shows the spatial pattern of the leading EOF of 200 hPa geopotential height when the variability associated with EOF2 is removed. The resulting pattern is an nearly zonally symmetrical annular mode. This mode is highly correlated with SAM (0.75 (CI: 0.58 -- 0.86)), but only with the symmetrical part (0.88 (CI: 0.79 -- 0.94)). Note that the usual definition of the PSA modes as the second and third EOFs creates modes orthogonal to the SAM (defined as the first EOF) and thus impedes this kind of filtering.
 
+
+
 \begin{figure}
 \centering
 \includegraphics{../figures/fake-eof-1.pdf}
-\caption{\label{fig:fake-eof}Principal compomnents of a sinthetic data set of geopotential height as the sum of the fields predicted by the EOF2 plus perfectly zonally symmetric SAM-like annomalies with random amplitude.}
+\caption{\label{fig:fake-eof}EOFs of a synthetic data set of 41 times steps of geopotential height fields as the sum of the fields predicted by the EOF2 plus perfectly zonally symmetric SAM-like anomalies with random amplitude.}
 \end{figure}
 
 This suggests that the asymmetric part of the SAM might be statistical contamination from one phase of the PSA. Figure \ref{fig:fake-eof} serves as an illustration of this kind of statistical mixing of independent modes. If shows the leading (and only) EOFs of a synthetic dataset if 41 years created by adding a perfectly zonally symmetrical SAM-like pattern with random amplitudes taken from the real SAM, and geopotential height anomalies predicted by EFO2. Even though by construction this dataset has a perfectly symmetric SAM, the EOF decomposition mixes this mode with parts of the the zonally asymmetric EOF2 pattern, resulting in a pattern eerily similar to the real SAM pattern.
@@ -361,9 +381,9 @@ Since the Real EOF2 represents just a different phase of the same wave train, on
 \caption{\label{fig:enso-phase}Relationship between ENSO and phase of EOF2 for the period 1979 -- 2019. Colours denote years with magnitude of EOF2 greater or smaller than the 50th percentile. Black line is the fit ONI \textasciitilde{} cos(phase) + sin(phase) computed by OLS weighted by the magnitude of EOF2.}
 \end{figure}
 
-To better explore the relationship between tropical forcing and phase of the EOF2, Figure \ref{fig:enso-phase} plots the ONI index and the phase of the EOF2 for each year between 1979 and 2019, highlighting years in which the magnitude of EOF2 was higher than 50\% of the years. In years with positive ENSO, the phase of the EOF2 is always around +90º (corresponding with positive imaginary part) and vice versa. In years with near neutral ENSO, the phase of the EOF2 is much more variable. The black line in Figure \ref{fig:enso-phase} tries to quantify this relationship. Is the equation \(ONI = 1.1\sin{phase}\), whose coefficient we fitted by weighted least squares using the magnitude of the EFO2 as weight. The \(r^2\) corresponding to the fit is 0.56, with p-value \textless{} 0.001.
+To better explore the relationship between tropical forcing and phase of the EOF2, Figure \ref{fig:enso-phase} plots the ONI index and the phase of the EOF2 for each year between 1979 and 2019, highlighting years in which the magnitude of EOF2 was higher than 50\% of the years. In years with positive ENSO, the phase of the EOF2 is always around +90º (corresponding with positive imaginary part) and vice versa. In years with near neutral ENSO, the phase of the EOF2 is much more variable. The black line in Figure \ref{fig:enso-phase} tries to quantify this relationship. Is the equation \(ONI = 1.1\sin{(phase)}\), whose coefficient we fitted by weighted least squares using the magnitude of the EFO2 as weight. The \(r^2\) corresponding to the fit is 0.56, with p-value \textless{} 0.001.
 
-Figure \ref{fig:enso-phase} suggest that strong EOF2 years tend to coincide with strong ENSO years. The correlation between the absolute magnitude of the ONI and the magnitude of the EOF2 is 0.44 (CI: 0.16 -- 0.66). This relationship, however, appears to be driven only by the three years with strongest ENSO events in the period (2015, 1997, and 1982) which also coincide with the three years with strongest EOF2 magnitude. If those years are removed, the correlation becomes non-significant (0.044 (CI: -0.28 -- 0.36)). Furthermore, even when using all the datapoints, the Spearman correlation --which is robust to outliers-- is also non-significant (0.2, p-value = = 0.2). Therefore, the relationship between the magnitude of the EOF2 train wave and ENSO remains uncertain.
+Figure \ref{fig:enso-phase} suggest that strong EOF2 years tend to coincide with strong ENSO years. The correlation between the absolute magnitude of the ONI and the magnitude of the EOF2 is 0.44 (CI: 0.16 -- 0.66). This relationship, however, appears to be driven only by the three years with strongest ENSO events in the period (2015, 1997, and 1982) which also coincide with the three years with strongest EOF2 magnitude. If those years are removed, the correlation becomes non-significant (0.044 (CI: -0.28 -- 0.36)). Furthermore, even when using all the datapoints, the Spearman correlation --which is robust to outliers-- is also non-significant (0.2, p-value = 0.2). Therefore, the relationship between the magnitude of the EOF2 train wave and ENSO remains uncertain.
 
 All this suggests that the wave train represented by EOF2 can be both forced by tropical SSTs and also a part of the internal variability of the extratropical atmosphere. When internally forced, the wave train has little phase preference. When excited by tropical SST anomalies, it tends to remain locked to the imaginary phase, with the sign of the geopotential anomalies depending on the sign of the tropical SSTs anomalies. This explains the relative overabundance of years with EOF2 near positive and negative imaginary phase in Figure \ref{fig:phase-histogram}.
 
@@ -388,15 +408,7 @@ Figure \ref{fig:sst-psi-1} shows SST and streamfunction regression maps for EOF1
 \caption{\label{fig:pp-america}Regression of SON mean precipitation anomalies in South America (mm per day, shaded) and (column a) EOF1 the (row 1) Imaginary and (column 1) Real phase. For the 1979 -- 2018 period. Black contours with dots indicate areas with p-value smaller than 0.05 controlling for False Detection Rate.}
 \end{figure}
 
-Figure \ref{fig:pp-america} shows regression maps of seasonal precipitation with each EOF in South America. EOF1 (Figure \ref{fig:pp-america} column a) is associated with increased precipitation over Paraguay and and some parts of Brazil. Although these positive anomalies are not very strong. The strongest precipitation anomalies are the ones associated with the Imaginary EOF2. The positive anomalies on Southeaster South America (SESA) and Chile, and negative anomalies over Southern Brazil is a well known springtime precipitation signature of ENSO \citep{cai2020a} and it's also virtually identical to the precipitation anomalies associated with the Asymmetric SAM \citep{campitelli2021}. This is not surprising considering the close relationship between the ONI, the Asymmetric SAM index and the Imaginary EOF2 shown previously. The Real EOF2, on the other hand, is associated with negative precipitation anomalies in a smaller area of SESA. The relationship between precipitation anomalies in SESA and the phase of EOF2 follows a curve similar to that of Figure \ref{fig:enso-phase} (not shown).
-
-
-
-\begin{figure}
-\centering
-\includegraphics{../figures/pp-africa-1.pdf}
-\caption{\label{fig:pp-africa}Same as Figure \ref{fig:pp-america} but for South of Africa.}
-\end{figure}
+Figure \ref{fig:pp-america} shows regression maps of seasonal precipitation with each EOF in South America. EOF1 is associated with slight decreases in precipitation in Southern Brazil and Paraguay, although these are not statistically significant \ref{fig:pp-america} column a. The strongest precipitation anomalies are the ones associated with the Imaginary EOF2. The positive anomalies on Southeaster South America (SESA) and Chile, and negative anomalies over Southern Brazil is a well known springtime precipitation signature of ENSO \citep{cai2020a} and it's also virtually identical to the precipitation anomalies associated with the Asymmetric SAM \citep{campitelli2021}. This is not surprising considering the close relationship between the ONI, the Asymmetric SAM index and the Imaginary EOF2 shown previously, but further consolidates the identification of this mode with the PSA pattern. The Real EOF2, on the other hand, is associated with negative precipitation anomalies in a smaller area of SESA. The relationship between precipitation anomalies in SESA and the phase of EOF2 follows a curve similar to that of Figure \ref{fig:enso-phase} (not shown).
 
 
 
@@ -406,26 +418,22 @@ Figure \ref{fig:pp-america} shows regression maps of seasonal precipitation with
 \caption{\label{fig:pp-oceania}Same as Figure \ref{fig:pp-america} but for New Zealand and neighbouring islands.}
 \end{figure}
 
+On the antipodes, precipitation anomalies in New Zealand and neighbouring islands associated with EOF1 are also weak and not statistically significant (Figure \ref{fig:pp-oceania} column a) whereas EFO2 is associated with large and expansive anomalies. The Real EOF2 is associated with positive seasonal anomalies in Northern and Eastern Australia, and negative ones over New Zealand, while precipitation anomalies associated with Imaginary EOF2 are negative over all Eastern Australia. Again, these negative anomalies are similar to the springtime precipitation anomalies observed in relation with the Asymmetric SAM \citep{campitelli2021}.
+
+
+
+\begin{figure}
+\centering
+\includegraphics{../figures/australia-pp-phase-1.pdf}
+\caption{\label{fig:australia-pp-phase}Same as Figure \ref{fig:enso-phase} but for precipitacion anomalies averaged between 130°E and 155°E and 40°S and 15°S (box shown in Figure \ref{fig:pp-oceania} column b).}
+\end{figure}
+
+To better understand the relationship between precipitation anomalies over Western Australia and the EOF2, Figure \ref{fig:australia-pp-phase} plots precipitation anomalies averaged over Eastern Australia (box in Figure \ref{fig:pp-oceania}) as a function of EOF2 phase. The black line is the equation \(\mathrm{Precipitation} = -0.26\sin{(\mathrm{phase})} + 0.22\cos{(\mathrm{phase})}\), whose coefficient we fitted by weighted least squares using the magnitude of the EFO2 as weight. The \(r^2\) corresponding to the fit is 0.37, with p-value \textless{} 0.001. There is a strong relationship between the phase of the EOF2 and precipitation anomalies in Eastern Australia, but Real and Imaginary phases we chose are not aligned with the direction that maximises this relationship. If one were to perform a more in-depth analysis of the relationship between this pattern and precipitation in this region, one would conceivably align one of the axis (either the Real or the Imaginary) to the one that maximises it.
+
+
+
 \hypertarget{conclusions}{%
 \section{Conclusions}\label{conclusions}}
-
-\hypertarget{appendix}{%
-\section{Appendix}\label{appendix}}
-
-\hypertarget{chosen-rotations-of-the-eofs}{%
-\subsection{Chosen rotations of the EOFs}\label{chosen-rotations-of-the-eofs}}
-
-\begin{figure}
-\centering
-\includegraphics{../figures/rotations-pc1-1.pdf}
-\caption{\label{fig:rotations-pc1}Rotations of PC1}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{../figures/rotations-pc2-1.pdf}
-\caption{\label{fig:rotations-pc2}R2 between EOF2 Real and Imaginary parts and ONI index for different rotation parameters of the real and imaginary parts.}
-\end{figure}
 
 \hypertarget{code-availability}{%
 \subsection*{Code availability}\label{code-availability}}

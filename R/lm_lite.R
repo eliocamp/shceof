@@ -75,7 +75,7 @@ Pvaluate <- function(estimate, std.error, df, adjustment = "none") {
 #'
 #' @export
 report_p <- function(p) {
-  ifelse(p < 0.001, " < 0.001", paste0(" = ", signif(p, 2)))
+  ifelse(p < 0.001, "\ <\ 0.001", paste0("\ =\ ", signif(p, 2)))
 }
 
 #' Remove intercept
