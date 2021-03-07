@@ -839,17 +839,17 @@ EOF2 then represents a equivalent barotropic wave train that is very similar to 
 
 ```{r eof1-regr-t, fig.cap = "(ref:eof1-regr-t-cap)",  fig.height=5.4, fig.width=5}
 plot_regr(regr, "PC1", c(200, 50), "t")
-
 ```
 
 
 ```{r t}
 t <- ERA5() %>% 
-  ReadNetCDF(vars = "t", 
+  ReadNetCDF(vars = c("t", hgt = "z"), 
              subset = list(latitude = c(-90, -20))) %>% 
   normalise_coords() %>% 
-    .[season(time) == "SON"] %>%
-  .[, .(t = mean(t)), by = .(lev, lon, lat, time = seasonally(time))]
+  .[season(time) == "SON"] %>%
+  .[, .(t = mean(t),
+        hgt = mean(hgt)), by = .(lev, lon, lat, time = seasonally(time))]
 ```
 
 (ref:t-vertical-cap) Regression of EOF1 with mean air temperature averaged between 80ºS and 25ºS for the period 1979 -- 2019.
@@ -857,29 +857,47 @@ t <- ERA5() %>%
 ```{r t-vertical, fig.cap = "(ref:t-vertical-cap)", fig.height=3.5, fig.width=5}
 t %>% 
   .[lat %between% c(-80, -35)] %>% 
-  .[, .(t = weighted.mean(t, cos(lat*pi/180))), by = .(lev, time, lon)] %>%  
-  .[, t := Anomaly(t), by = .(time, lev)] %>% 
+  .[, .(hgt = weighted.mean(hgt, cos(lat*pi/180)),
+        t = weighted.mean(t, cos(lat*pi/180))), by = .(lev, time, lon)] %>%  
+  melt(id.vars = c("lev", "time", "lon")) %>% 
+  .[, value := Anomaly(value), by = .(time, lev, variable)] %>% 
   .[cut(ceof$eof[[1]], 1)$left, on = "time"] %>% 
   sep_ReIm(format = "wider") %>% 
   .[, ":="(Real = as.numeric(scale(Real)), Imaginary = as.numeric(scale(Imaginary))), by = .(PC)] %>% 
-  .[, FitLm(t, Real, Imaginary, se = TRUE), by = .(lev, lon)] %>% 
+  .[, FitLm(value, Real, Imaginary, se = TRUE), by = .(lev, lon, variable)] %>% 
   rm_intercept() %>% 
   .[, term := factor_ReIm(term)] %>% 
-  .[, p.value := Pvaluate(estimate, std.error, df, "fdr"), by = .(term)] %>%
+  # .[, z := metR:::standard_atmosphere$altitude(lev*100)] %>% 
+  # .[, dz1 := c(NA, diff(estimate)/diff(z)) , by = .(term, lon, variable)] %>% 
+  # .[, dz2 := c(diff(estimate)/diff(z), NA) , by = .(term, lon, variable)] %>% 
+  # .[, dz := (dz1 + dz2)/2] %>% 
+  # .[, p.value := Pvaluate(estimate, std.error, df, "fdr"), by = .(term, variable)] %>%
+  # .[lev < 900] %>% 
   ggplot(aes(lon, lev)) +
-  geom_contour_fill(aes(z = estimate, fill = ..level..),
-                    breaks = AnchorBreaks(0, 0.25, exclude = 0)) +
-  geom_contour_tanaka(aes(z = estimate), 
-                      breaks = AnchorBreaks(0, 0.25, exclude = 0)) +
-  geom_contour_pval(aes(z = p.value)) +
+  geom_contour_fill(data = ~.x[variable == "t"],
+                    aes(z = estimate, fill = ..level..),
+                    breaks = AnchorBreaks(0, binwidth = 0.25, exclude = 0)) +
+  geom_contour_tanaka(data = ~.x[variable == "t"],
+                      aes(z = estimate),
+                      breaks = AnchorBreaks(0, binwidth = 0.25, exclude = 0)) +
+  geom_contour2(data = ~.x[variable == "hgt"], 
+                aes(z = estimate, linetype = factor(-sign(..level..))), 
+                breaks = AnchorBreaks(0, exclude = 0)) +
+  geom_text_contour(data = ~.x[variable == "hgt"], 
+                aes(z = estimate), skip = 1, stroke = 0.15, stroke.colour = "white",
+                breaks = AnchorBreaks(0, exclude = 0)) +
+ 
   scale_fill_divergent_discretised("Air temperature", guide = guide_colorsteps_bottom(20)) + 
   scale_y_level() +
+  scale_linetype(guide = "none") +
   scale_x_longitude(ticks = 60) +
   facet_grid(~term) +
-  axis_labs_smol
+  axis_labs_smol +
+  coord_cartesian(clip = "off")
 ```
 
-Figure \@ref(fig:eof1-regr-t) shows regression patterns of EOF1 with air temperature. In both levels, the distribution of temperature anomalies mirror the geopotential height anomalies in 50 hPa. To understand the vertical distribution of these anomalies, Figure \@ref(fig:t-vertical)) shows the regression pattern of EOF1 and zonal anomalies of air temperature averaged between 80ºS and 35ºS. Both pars of EOF1 are associated with a temperature wave 1 pattern which changes phase around 10 hPa. This switch in the sign of the correlation in temperature at 10 hPa suggest a relationship with Ozone, since its indicative of the effects of planetary waves in the advection of Ozone [@hartmann1979;@rood1985;@smith1995]. 
+Figure \@ref(fig:eof1-regr-t) shows regression patterns of EOF1 with air temperature. In both levels, the distribution of temperature anomalies mirror the geopotential height anomalies in 50 hPa. To understand the vertical distribution of these anomalies, Figure \@ref(fig:t-vertical)) shows the regression pattern of EOF1 with zonal anomalies of air temperature and zonal anomalies of geopotential height averaged between 80ºS and 35ºS. The zonal wave 1 in geopotential height reach its maximum at around 10 hPa with some westerly tilt. Temperature anomalies are positive below geopotential height maximum, negative above, and vice versa for geopotential height minimums. This reflects the thermodynamic relationship between temperature and layer width.
+
 
 ```{r o3_regr} 
 temp <- ceof$eof[[1]]$left %>% 
@@ -920,7 +938,18 @@ o3_regr %>%
 
 ```
 
-To confirm this possibility, Figure \@ref(fig:o3-regr) shows regression maps of EOF1 with fields of Total Ozone Column (TOC). It shows zonal wave 1 pattens in TOC associated with both phases of EOF1. Climatologically, the springtime Ozone minimum is located off the South Pole and towards the Weddell Sea [@wirth1993]. Thus, the Real EOF1 regression pattern (Figure \@ref(fig:o3-regr)a) coincides with the climatological position of the ozone whole while the one for the Imaginary EOF1 is shifted by 90º. This suggest that the EOF1 can be a complete description of the TOC zonal wave 1. 
+Planetary waves that penetrate into the stratosphere are known to affect ozone distribution [@hartmann1979]. Figure \@ref(fig:o3-regr) shows regression maps of EOF1 with fields of Total Ozone Column (TOC). It shows zonal wave 1 pattens in TOC associated with both phases of EOF1. Climatologically, the springtime Ozone minimum is located off the South Pole and towards the Weddell Sea [@wirth1993]. Thus, the Real EOF1 regression pattern (Figure \@ref(fig:o3-regr)a) coincides with the climatological position of the ozone whole while the one for the Imaginary EOF1 is shifted by 90º. THe maximum TOC anomalies are co-located with the minimum temperature anomalies above 10 hPa and mix the maximum temperature anomalies below 10 hPa; that is, the TOC zonal wave 1 is anticorrelated with the temperature zonal wave 1 in the upper stratosphere, and directly correlated in the upper stratosphere. These phase differences are due to the change between the photochemically-dominated upper stratosphere, where cold temperatures inhibit the destruction of ozone, and the advectively-dominated lower stratosphere [@hartmann1979;@smith1995].  
+
+This is explained by the inverse temperature dependence of the photochemical desctruction of ozone. 
+
+This suggest that the EOF1 can be a complete description of the TOC zonal wave 1. 
+
+Temperature anomalies in 
+
+Both pars of EOF1 are associated with a temperature wave 1 pattern which changes phase around 10 hPa. This switch in the sign of the correlation in temperature at 10 hPa suggest a relationship with Ozone, since its indicative of the effects of planetary waves in the advection of Ozone [@hartmann1979;@rood1985;@smith1995]. 
+
+
+To confirm this possibility, 
 
 (ref:wave1-o3-cap) Relationship between EOF1 amplitude and phase with amplitude and phase of the zonal wave 1 in Total Ozone Column averaged between `r knitr::combine_words(LatLabel(o3wave_lats))` for the period 1979 -- 2019. 
 
