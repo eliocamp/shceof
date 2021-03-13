@@ -81,38 +81,39 @@ knitr::opts_chunk$set(
 
 
 
-## Figure classes
-DefineClass <- function(class.opts) {
-    class.name <- deparse(substitute(class.opts))
-    class.fun <- function(options) {
-        class <- options[[class.name]]
-        class <- class.opts[[class]]
-        options[names(class)] <- class
-        options
-    }
-    invisible(knitr::opts_hooks$set(
-        setNames(list(class.fun), class.name)))
-}
+# ## Figure classes
+# DefineClass <- function(class.opts) {
+#     class.name <- deparse(substitute(class.opts))
+#     class.fun <- function(options) {
+#         class <- options[[class.name]]
+#         class <- class.opts[[class]]
+#         options[names(class)] <- class
+#         options
+#     }
+#     invisible(knitr::opts_hooks$set(
+#         setNames(list(class.fun), class.name)))
+# }
+# 
+# page.width <- 210 - 30 - 25
+# text.width <- page.width - 20
+# text.height <- page.height <- 297 - 25 - 25
+# 
+# fig.class <- list(
+#   colwidth = list(
+#     fig.width = 5
+#   ),
+#     pagewidth = list(
+#         fig.width = page.width/25.4,
+#         out.width = paste0(page.width, "mm"),
+#         # fig.align = "center",
+#         fig.env = "figure*",
+#         out.extra = " "
+#     )
+# )
+# 
+# DefineClass(fig.class)
 
-page.width <- 210 - 30 - 25
-text.width <- page.width - 20
-text.height <- page.height <- 297 - 25 - 25
-
-fig.class <- list(
-  colwidth = list(
-    fig.width = 5
-  ),
-    pagewidth = list(
-        fig.width = page.width/25.4,
-        out.width = paste0(page.width, "mm"),
-        # fig.align = "center",
-        fig.env = "figure*",
-        out.extra = " "
-    )
-)
-
-DefineClass(fig.class)
-
+width_column <- 3.6
 
 
 library(metR)
@@ -127,7 +128,7 @@ library(shceof)
 
 
 
-theme_set(theme_shceof(base_size = 12))
+theme_set(theme_shceof(base_size = 10))
 
 grid <- theme(panel.grid = element_line(color = "gray10", size = 0.4, linetype = 3))
 no_grid <- theme(panel.grid = element_blank())
@@ -137,13 +138,13 @@ panel_background <- theme(panel.background = element_rect(fill = "#fbfbfb", colo
                           tagger.panel.tag.background = ggplot2::element_rect(color = NA, 
                                                                               fill = "#fbfbfb"))
 
-guide_colorstrip_bottom <- function(width = 25, height = 0.5, ...) {
+guide_colorstrip_bottom <- function(width = 15, height = 0.5, ...) {
   guide_colorstrip(title.position = "top", title.hjust = 0.5,
                    barheight = height,
                    barwidth = width, ...)
 }
 
-guide_colorsteps_bottom <- function(width = 20, height = 0.5, even.steps = FALSE, ...) {
+guide_colorsteps_bottom <- function(width = 15, height = 0.5, even.steps = FALSE, ...) {
   guide_colorsteps(show.limits = TRUE, even.steps = even.steps,
                    title.position = "top", title.hjust = 0.5,
                    barheight = height,
@@ -290,20 +291,18 @@ psa_time <- psa$left[season(time) == "SON"]
 
 ## Data
 
-We used monthly geopotential height, air temperature, ozone mixing ratio, and Total Ozone COlumn (TOC) at 2.5\degree\ longitude by 2.5\degree\ latitude of horizontal resolution and 37 vertical isobaric levels from ERA5 [@era5] for the period 1979 to 2019. We restrict most of our analysis to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also use the preliminary back extension of ERA5 from 1950 to 1978 [@era5be] to look at long-term trends. We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK [@fishpack] and computed horizontal wave activity fluxes following @plumb1985 (Equation 5.7).
+We used monthly geopotential height, air temperature, ozone mixing ratio, and Total Ozone COlumn (TOC) at 2.5\degree\ longitude by 2.5\degree\ latitude of horizontal resolution and 37 vertical isobaric levels from ERA5 [@era5] for the period 1979 to 2019. We restricted most of our analysis to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 [@era5be] to look at long-term trends. We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK [@fishpack] and computed horizontal wave activity fluxes following @plumb1985 (Equation 5.7). For precipitation data we used monthly data from the CPC Merged Analysis of Precipitation [@cmap]. 
 
-Precipitation data we used monthly data from the CPC Merged Analysis of Precipitation [@cmap]. 
+We computed the amplitude and phase of the zonal wave 1 by averaging variables (temperature, geopotential height, ozone mixing ratio and Total Ozone Column) `r knitr::combine_words(LatLabel(o3wave_lats))` for each Spring and computing the Fourier spectrum. 
 
-We compute the amplitude and phase of the zonal wave 1 by averaging SON TOC between `r knitr::combine_words(LatLabel(o3wave_lats))` for each Spring and computing the Fourier spectrum. 
-
-We explore the relationship with the Southern Annular Mode (SAM). We compute the level-dependent SAM index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period [@baldwin2009]. We further split the SAM into its zonally symmetric and zonally asymmetric components (S-SAM and A-SAM indices respectively). These are obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields [@campitelli2021]. Since the analysis here is only for the SON trimester, monthly values were averaged across trimesters. 
+We computed the level-dependent Southern Annular Mode index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period [@baldwin2009]. We further split the SAM into its zonally symmetric and zonally asymmetric components (S-SAM and A-SAM indices respectively). These are obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields [@campitelli2021]. Since the analysis here is only for the SON trimester, monthly values were averaged across trimesters. 
 
 We also calculated the Pacific South American patterns (PSA1 and PSA2) as the third and fourth leading EOF of seasonal mean 500 hPa geopotential height with all seasons together following @mo2001. 
 
 
 ## Complex Empirical Orthogonal Functions 
 
-(ref:eof-naive-cap) Spatial patterns of the leading 4 EOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009 (arbitrary units). The numbers at the top-left of each panel ate the variance explained by each EOF.
+(ref:eof-naive-cap) Spatial patterns of the leading 4 EOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009 (arbitrary units). The numbers at the top-left of each panel ate the zonal variance explained by each EOF.
 
 
 ```{r compute-eof-naive}
@@ -318,22 +317,24 @@ explained <- eof_naive[, eof[[1]]$sdev, by = lev] %>%
 
 ```
 
-```{r eof-naive, fig.cap = "(ref:eof-naive-cap)"}
+```{r eof-naive, fig.cap = "(ref:eof-naive-cap)", fig.width=3.7, fig.height=2.2}
 eof_naive[, eof[[1]]$right, by = lev] %>%
   periodic(lon = c(0, 360)) %>%
   ggplot(aes(lon, lat)) +
   geom_contour_fill(aes(z = hgt, fill = ..level..),
                     breaks = AnchorBreaks(0, 0.01, exclude = 0)) +
-  geom_contour_tanaka(aes(z = hgt), breaks = AnchorBreaks(0, 0.01, exclude = 0)) +
+  geom_contour_tanaka(aes(z = hgt), breaks = AnchorBreaks(0, 0.01, exclude = 0), 
+                    range = c(0.01, 0.2)) +
   
-  geom_qmap(~.x[lat <= -20]) +
+  geom_qmap(~.x[lat <= -20], size = 0.1) +
   scale_fill_divergent_discretised(guide = "none")  +
   scale_y_latitude() +
   scale_x_longitude() +
   coord_polar() +
   theme(axis.text = element_blank()) +
   facet_grid(lev~EOF, labeller = labeller(lev = lab_lev))  +
-  tagger::tag_facets(tag = "panel", tag_pool = explained, tag_suffix = "")
+  tagger::tag_facets("rc")  +
+  theme(panel.spacing = grid::unit(-.7, "lines"))
 ```
 
 In traditional EOF analysis zonal waves appear as pairs of EOFs, usually degenerate, that represent similar patterns but shifted in phase. For instance, Figure\ \@ref(fig:eof-naive) shows the leading 4 EOFs of zonally anomalous September through October geopotential height at 50 hPa and 100 hPa. It is clear that at 50 hPa the first two EFS represent the same zonal wave 1 pattern and the last 2 represent the same zonal wave 3 pattern shifted by 1/4 wavelength. Since these pairs of EOFs seem to represent the same phase-varying structure, it would be desirable to combine them into a single index with amplitude and phase. 
@@ -525,7 +526,7 @@ ceof <- ceof[rotation == "rotated"][, rotation := NULL][]
 (ref:rotations-cap) a) Correlation of the Real and Imaginary EOF1 with wave 1 amplitude of  Total Ozone Column averaged between `r knitr::combine_words(LatLabel(o3wave_lats))` and b) $R^2$ between the Real and Imaginary EOF2 and the ONI index for different values of rotation. The vertical line marks the selected rotation, which maximises de correlation.
 
 
-```{r rotations, fig.cap = "(ref:rotations-cap)", fig.width=5, fig.height=2.5}
+```{r rotations, fig.cap = "(ref:rotations-cap)", fig.width=width_column, fig.height=2.5}
 r2 <- expression(`$r^2$` = paste("", "r", phantom()^{
     paste("2")
 }, "", ""))
@@ -605,7 +606,7 @@ plot_ceof <- function(data, n = 1:2, formula = lev  ~  PC) {
 }
 ```
 
-```{r ceofs-1, fig.cap = "Spatial patterns of the leading 2 complex EOFs of zonal anomalies of geopotential height in 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009. Real part in shading, imaginary part in contours", fig.width=5, fig.height=5}
+```{r ceofs-1, fig.cap = "Spatial patterns of the leading 2 complex EOFs of zonal anomalies of geopotential height in 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009. Real part in shading, imaginary part in contours", fig.width=width_column, fig.height=width_column}
 ceof[season == "SON"] %>%
   plot_ceof() +
   coord_polar() +
@@ -613,7 +614,7 @@ ceof[season == "SON"] %>%
   tag_facets(tag = "cr")
 ```
 
-```{r ceofs-2, fig.cap = "Time series of the leading 2 complex EOFs of zonal anomalies of geopotential height in 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009.", fig.height=4, fig.width = 5}
+```{r ceofs-2, fig.cap = "Time series of the leading 2 complex EOFs of zonal anomalies of geopotential height in 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009.", fig.height=width_column, fig.width = width_column}
 ceof %>%
   .[, eof[[1]]$left, by = season] %>%
   sep_ReIm(hgt) %>%
@@ -661,7 +662,7 @@ era_more <- rbind(
 
 (ref:extended-series-cap) Time series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern and scaled to zero mean and unit standard deviation.
 
-```{r extended-series, fig.cap = "(ref:extended-series-cap)", fig.height=4, fig.width = 5}
+```{r extended-series, fig.cap = "(ref:extended-series-cap)", fig.height=3, fig.width = 7, fig.env = "figure*"}
 # Check that the extended index coincides with the
 # original index.
 cors <- era_more %>%
@@ -686,21 +687,20 @@ trends <- era_more %>%
 #   .[season == "SON"] %>% 
 #   .[, hgt := as.numeric(scale(hgt)), by = .(part, PC)] 
 
+
 era_more %>%
   copy() %>% 
   .[, ref := year(time) > 1979] %>% 
-  .[, hgt := scale(hgt), by = .(part, PC)] %>%
-  ggplot(aes(time, hgt)) +
+   # .[, hgt := scale(hgt, center = FALSE, scale = sd(hgt[ref])), by = .(part, PC)] %>%
+  ggplot(aes(time, hgt*1e3)) +
   # Zero line + rangeframe
-  geom_hline(data = ~.x[, mean(hgt), by  = .(PC, part)], 
+  geom_hline(data = ~.x[, mean(hgt)*1e3, by  = .(PC, part)], 
              aes(yintercept = V1), size = 0.1, color = "gray30") +
   ggthemes::geom_rangeframe(sides = "lr", size = 0.1, color = "gray30") +
   geom_line() +
   # geom_line(data = era_less) +
   scale_alpha_manual(values = c(1, 0.2)) +
-  
   geom_smooth(method = "lm", color = "black") +
-  
   scale_x_datetime(NULL, date_labels = "%Y") +
   scale_y_continuous("EOF") +
   
@@ -710,7 +710,8 @@ era_more %>%
   panel_background
 ```
 
-Figure\ \@ref(fig:extended-series) shows time series of the two complex EOFs extended beyond the satellite era using the preliminary ERA5 back extension going back to 1950 (which we call the "hybrid ERA5" reanalysis). There is a downward trend in the real part of EOF1 in the hybrid reanalysis (Figure\ \@ref(fig:extended-series)a.1, p-value `r trends[part == "Real" & PC == "PC1"]$p_report`). There is no significant trend in any of the complex parts of EOF2.
+Figure\ \@ref(fig:extended-series) shows time series of the two complex EOFs extended beyond the satellite era using the preliminary ERA5 back extension going back to 1950.There is an upward trend in the real part of EOF1 (Figure\ \@ref(fig:extended-series)a.1, p-value `r trends[part == "Real" & PC == "PC1"]$p_report`) and no significant trend in any of the complex parts of EOF2. The positive trend in the Real EOF1 translates into a positive trend in EOF1 magnitude, but not in phase (not shown).
+
 
 ## Regressions
 
@@ -736,7 +737,7 @@ regr <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[, term := factor_ReIm(term)]
 ```
 
-```{r define-plot_regr}
+```{r plot_regr}
 plot_regr <- function(data, which_PC, which_levs, which_var) {
   data <- data %>%
     .[ PC %in% which_PC] %>%
@@ -768,7 +769,7 @@ plot_regr <- function(data, which_PC, which_levs, which_var) {
     geom_contour_fill(aes(z = estimate), breaks = AnchorBreaks(exclude = 0), global.breaks = FALSE) +
     geom_contour_tanaka(aes(z = estimate), breaks = AnchorBreaks(exclude = 0), global.breaks = FALSE) +
     scale_fill_divergent(var_title, breaks = AnchorBreaks(0, exclude = 0),
-                         guide = guide_colorstrip_bottom(20)) +
+                         guide = guide_colorstrip_bottom(15)) +
     geom_contour_pval(aes(z = p.value)) +
     
     geom_qmap(~ .x[lat <= -20]) +
@@ -784,8 +785,8 @@ plot_regr <- function(data, which_PC, which_levs, which_var) {
 
 (ref:eof1-regr-gh-cap) Regression coefficients of the real and imaginary part of the first complex EOF on SON geopotential height for the 1979 -- 2019 period. These coefficients come from multiple linear regression involving the real and imaginary part of both EFO2.
 
-```{r eof1-regr-gh, fig.cap = "(ref:eof1-regr-gh-cap)", fig.height=5.4, fig.width=5}
-plot_regr(regr, "PC1", c(200, 50), "hgt") +
+```{r eof1-regr-gh, fig.cap = "(ref:eof1-regr-gh-cap)", fig.height=1.2*width_column, fig.width=width_column, dependson="plot_regr"}
+plot_regr(regr , "PC1", c(200, 50), "hgt") +
   # geom_contour2(data = ~copy(.x)[, estimate := Anomaly(estimate), by = .(term, lev, lat)],
   #              aes(z = estimate, linetype = factor(-sign(..level..))), 
   #              global.breaks = FALSE, breaks = AnchorBreaks(0, bins = 2, exclude = 0)) +
@@ -804,7 +805,7 @@ Therefore, the magnitude and phase of the EOF1 are associated with the magnitude
 
 (ref:eof2-regr-gh-cap) Same as Figure\ \@ref(fig:eof1-regr-gh) but for the second EOF.
 
-```{r eof2-regr-gh, fig.cap = "(ref:eof2-regr-gh-cap)", fig.height=5.4, fig.width=5}
+```{r eof2-regr-gh, fig.cap = "(ref:eof2-regr-gh-cap)", fig.height=1.3*width_column, fig.width=width_column, dependson="plot_regr"}
 plot_regr(regr, "PC2", c(200, 50), "hgt") 
 
 ```
@@ -838,7 +839,7 @@ EOF2 then represents a equivalent barotropic wave train that is very similar to 
 
 (ref:eof1-regr-t-cap) Same as Figure\ \@ref(fig:eof1-regr-gh) but for air temperature.
 
-```{r eof1-regr-t, fig.cap = "(ref:eof1-regr-t-cap)",  fig.height=5.4, fig.width=5}
+```{r eof1-regr-t, fig.cap = "(ref:eof1-regr-t-cap)",  dependson="plot_regr", fig.height=1.3*width_column, fig.width=width_column}
 plot_regr(regr, "PC1", c(200, 50), "t")
 ```
 
@@ -870,7 +871,7 @@ lable_placement_min <- function(direction = c("vertical", "horizontal"))  {
 }
 ```
 
-```{r t-vertical, fig.cap = "(ref:t-vertical-cap)", fig.height=3.5, fig.width=5}
+```{r t-vertical, fig.cap = "(ref:t-vertical-cap)", fig.height=2.5, fig.width=width_column}
 t %>% 
   .[lat %between% c(-80, -35)] %>% 
   .[, .(hgt = weighted.mean(hgt, cos(lat*pi/180)),
@@ -902,12 +903,12 @@ t %>%
                 breaks = AnchorBreaks(0, exclude = 0)) +
   geom_text_contour(data = ~.x[variable == "o3"], 
                 aes(z = estimate*1e9, label = signif(..level.., 2)),
-                size = 3,
+                size = 2,
                 skip = 1, stroke = 0.15, stroke.colour = "white", 
                 label.placement = lable_placement_min(),
                 breaks = AnchorBreaks(0, exclude = 0)) +
  
-  scale_fill_divergent_discretised("Air temperature", guide = guide_colorsteps_bottom(20)) + 
+  scale_fill_divergent_discretised("Air temperature", guide = guide_colorsteps_bottom(15)) + 
   scale_y_level() +
   scale_linetype(guide = "none") +
   scale_x_longitude(ticks = 60) +
@@ -966,8 +967,7 @@ o3_regr <- temp %>%
 
 (ref:o3-regr-cap) Regression coefficients of the real and imaginary part of the first complex EOF on SON mean Total Ozone Column. On contours, the mean zonal anomaly of Total OZone Column (negative contours in dashed lines). For  the 1979 -- 2019 period. 
  
-```{r o3-regr, fig.cap = "(ref:o3-regr-cap)", fig.height=4, fig.width = 5}
-
+```{r o3-regr, fig.cap = "(ref:o3-regr-cap)", fig.height=3, fig.width = width_column}
 o3_regr %>% 
   periodic(lon = c(0, 360)) %>% 
   .[, p.value := Pvaluate(estimate, std.error, df, "fdr"), by = .(PC, term)] %>% 
@@ -975,14 +975,15 @@ o3_regr %>%
   geom_contour_fill(aes(z = estimate, fill = ..level..),
                     breaks = AnchorBreaks(0, exclude = 0)) +
   geom_contour2(data = periodic(o3_mean, lon = c(0, 360)),
-                aes(z = toc_z, linetype = factor(-sign(..level..))), breaks = AnchorBreaks(0, exclude = 0), 
+                aes(z = toc_z, linetype = factor(-sign(..level..))), 
+                breaks = AnchorBreaks(0, exclude = 0), 
                 bins = 5) +
   geom_contour_tanaka(aes(z = estimate), breaks = AnchorBreaks(0, exclude = 0)) +
   geom_contour_pval(aes(z = p.value)) +
   
   geom_qmap(~.x[lat <= -20]) +
   scale_fill_divergent_discretised("Total Ozone Column", 
-                                   guide = guide_colorsteps_bottom(20)) + 
+                                   guide = guide_colorsteps_bottom(15)) + 
   scale_x_longitude() +
   scale_y_latitude() +
   scale_linetype(guide = "none") +
@@ -999,7 +1000,7 @@ Figure\ \@ref(fig:o3-regr) shows regression maps of EOF1 with fields of Total Oz
 
 (ref:wave1-o3-cap) Relationship between EOF1 amplitude and phase with amplitude and phase of the zonal wave 1 in Total Ozone Column averaged between `r knitr::combine_words(LatLabel(o3wave_lats))` for the period 1979 -- 2019. 
 
-```{r wave1-o3, fig.cap = "(ref:wave1-o3-cap)", fig.width=5, fig.height=3}
+```{r wave1-o3, fig.cap = "(ref:wave1-o3-cap)", fig.width=width_column, fig.height=width_column*.7}
 wave1_o3 <- o3 %>% 
   .[lat %between% o3wave_lats] %>% 
   .[, .(toc = mean(toc, na.rm = TRUE)), by = .(time, lon)] %>% 
@@ -1088,7 +1089,7 @@ We will show that the EOF2 offers an alternative way of representing the PSA whi
 
 (ref:psa-eof2-cap) Relationship between the Real and Imaginary parts of EOF2 and the PSA1 and PSA2 modes computed as the second and third EOFs of seasonal geopotential height anomalies [@mo2001]. For the period 1979 -- 2019.
 
-```{r psa-eof2, fig.cap = "(ref:psa-eof2-cap)", fig.width=5, fig.height=4}
+```{r psa-eof2, fig.cap = "(ref:psa-eof2-cap)", fig.width=7, fig.height=3, fig.env="figure*"}
 pc2 <- ceof$eof[[1]]$left[PC == "PC2"] %>% 
   copy() %>% 
   .[, PC := NULL] %>% 
@@ -1130,7 +1131,7 @@ This particular rotation of EOF2 is the one which maximises the relationship bet
 
 (ref:phase-histogram-cap) Histogram showing phase distribution of EOF2 for the period 1979 -- 2019.
 
-```{r phase-histogram, fig.cap = "(ref:phase-histogram-cap)", fig.width=2.5, fig.height=2.5}
+```{r phase-histogram, fig.cap = "(ref:phase-histogram-cap)", fig.width=width_column*.8, fig.height=2.5}
 cut(ceof$eof[[1]], 2)$left %>% 
   .[, arg := Arg(hgt)] %>% 
   .[, w := Mod(hgt)/sum(Mod(hgt))] %>% 
@@ -1156,7 +1157,7 @@ The advantage of our method is that it is much simpler to implement, it provides
 
 (ref:sam-eof-vertical-cap) Coefficient of determination between the real and imaginary part of each EOF and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level according to @campitelli2021. Points mark estimates with p-value < 0.01 corrected for False Detection Rate [@benjamini1995].
 
-```{r sam-eof-vertical, fig.cap = "(ref:sam-eof-vertical-cap)", fig.height=4, fig.width=5}
+```{r sam-eof-vertical, fig.cap = "(ref:sam-eof-vertical-cap)", fig.height=4, fig.width=width_column}
 time <- ceof[, eof[[1]]$left, by = .(season)] %>%
   sep_ReIm() %>%
   .[, hgt := scale(hgt), by = .(PC, part)]
@@ -1195,7 +1196,7 @@ Both EOFs bear some modest relationship with the SAM index (thick green line in 
 
 The Imaginary EOF2 is related with the SAM through the A-SAM in the troposphere, with up to `r scales::percent(max_r2[PC == "PC2"]$estimate, 2)` of shared variance, reached at `r max_r2[PC == "PC2"]$lev` hPa (Figure\ \@ref(fig:sam-eof-vertical).b2). 
 
-```{r eof-filtered, fig.cap = "Spatial pattern of the leading EOF of 200 hPa geopotential height with the variability of EOF2 filtered out South of 20º. Arbitrary scale.", fig.width=2.5, fig.height=2.5}
+```{r eof-filtered, fig.cap = "Spatial pattern of the leading EOF of 200 hPa geopotential height with the variability of EOF2 filtered out South of 20º. Arbitrary units.", fig.width=2.5, fig.height=2.5}
 eof_filtered <- era5 %>% 
   .[sep_ReIm(pc2, format = "wide")[, hgt := NULL], on = .NATURAL] %>% 
   .[lev == 200] %>% 
@@ -1228,7 +1229,7 @@ As a further illustration, Figure\ \@ref(fig:eof-filtered) shows the spatial pat
 
 (ref:fake-eof-cap) EOFs of a synthetic data set of 41 times steps of geopotential height fields as the sum of the fields predicted by the EOF2 plus perfectly zonally symmetric SAM-like anomalies with random amplitude.
 
-```{r fake-eof, fig.cap = "(ref:fake-eof-cap)", fig.width=5, fig.height=2.5}
+```{r fake_eof}
 pattern <- eof_filtered$right %>% 
   .[era5[lev == 200], on = "time"] %>% 
   .[, FitLm(hgt, eof), by = .(lon, lat)] %>% 
@@ -1262,7 +1263,9 @@ fake_eof <- era5 %>%
   .[, hgt := hgt + sam] %>% 
   .[, eof := Anomaly(hgt)*sqrt(cos(lat*pi/180)), by = .(lon, lat, season(time))] %>% 
   EOF(eof ~ lon + lat | time, n = 1:3, data = .)  
+```
 
+```{r fake-eof, fig.cap = "(ref:fake-eof-cap)", fig.width=3.7, fig.height=1.7}
 # era5 %>% 
 #   .[sep_ReIm(pc2, format = "wide")[, hgt := NULL], on = .NATURAL] %>% 
 #   .[lev == 200] %>% 
@@ -1397,7 +1400,7 @@ plot_sst_psi <- function(which_pc, which_lev) {
 
 (ref:sst-psi-2-cap) Regression maps of EOF2 with SST (column a) and streamfunction zonal anomalies with their corresponding activity wave flux (column b). Areas marked with dots have p-values smaller than 0.05 adjusted for FDR.
 
-```{r sst-psi-2,  fig.cap = "(ref:sst-psi-2-cap)", fig.width = 6, fig.height=4, dependson="plot_sst_psi"}
+```{r sst-psi-2,  fig.cap = "(ref:sst-psi-2-cap)", fig.width = 7, fig.height=4, dependson="plot_sst_psi", fig.env="figure*"}
 plot_sst_psi(which_pc = "PC2", which_lev = 200)
 ```
 
@@ -1407,7 +1410,7 @@ Figure\ \@ref(fig:sst-psi-2) shows regression maps between EOF2 and Sea Surface 
 
 Since the Real EOF2 represents just a different phase of the same wave train, one would expect that it would show a similar forcing pattern to the Imaginary EOF with a slight translation of its location. However, Figure\ \@ref(fig:sst-psi-2).a1 and b1 show that the Real EOF2 is not associated either with any significant SST nor streamfunction anomalies in the tropics. The correlation between the Real EOF2 and ENSO is also not significant (`r enso_cor[PC == "PC2" & part == "Real"]$cor_text`). This lack of tropical signal suggests a radically different nature of the different phases of the EOF2 wave train.
 
-```{r enso-phase, fig.cap = "Relationship between ENSO and phase of EOF2 for the period 1979 -- 2019. Colours denote years with magnitude of EOF2 greater or smaller than the 50th percentile. Black line is the fit ONI ~ cos(phase) + sin(phase) computed by OLS weighted by the magnitude of EOF2.", fig.width = 5, fig.height=3}
+```{r enso-phase, fig.cap = "Relationship between ENSO and phase of EOF2 for the period 1979 -- 2019. Colours denote years with magnitude of EOF2 greater or smaller than the 50th percentile. Black line is the fit ONI ~ cos(phase) + sin(phase) computed by OLS weighted by the magnitude of EOF2.", fig.width = width_column, fig.height=3}
 gdata <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[PC == "PC2"] %>% 
   # .[, hgt := Anomaly(hgt)] %>% 
@@ -1471,7 +1474,7 @@ All this suggests that the wave train represented by EOF2 can be both forced by 
 
 (ref:sst-psi-1-cap) Same as Figure\ \@ref(fig:sst-psi-2) but for EOF1.
 
-```{r sst-psi-1, fig.cap = "(ref:sst-psi-1-cap)", fig.width = 6, fig.height=4, dependson="plot_sst_psi"}
+```{r sst-psi-1, fig.cap = "(ref:sst-psi-1-cap)", fig.width = 7, fig.height=4, dependson="plot_sst_psi", fig.env = "figure*"}
 plot_sst_psi(which_pc = "PC1", which_lev = 200)
 ```
 
@@ -1573,7 +1576,7 @@ sesa <- list(lon = c(300, 315),
 (ref:pp-america-cap) Regression of SON mean precipitation anomalies in South America (mm per day, shaded) and (column a) EOF1 the (row 1) Imaginary and (column 1) Real phase. For the 1979 -- 2018 period. Black contours with dots indicate areas with p-value smaller than 0.05 controlling for False Detection Rate.
 
 
-```{r pp-america, fig.cap = "(ref:pp-america-cap)", fig.width=5, fig.height=6}
+```{r pp-america, fig.cap = "(ref:pp-america-cap)", fig.width=width_column, fig.height=width_column*1.1}
 plot_pp(data = regr_pp, which_pc = c("PC1", "PC2"), which_continent = "america") 
   # annotate("rect", xmin = min(sesa$lon), xmax = max(sesa$lon), 
   #          ymin = min(sesa$lat), ymax = max(sesa$lat),
@@ -1592,7 +1595,7 @@ box_australia <- data.frame(PC = "PC2",
                             lat = c(-40, -15))
 ```
 
-```{r pp-oceania, fig.cap = "(ref:pp-oceania-cap)", fig.width=5, fig.height=4}
+```{r pp-oceania, fig.cap = "(ref:pp-oceania-cap)", fig.width=width_column, fig.height=width_column*.8}
 plot_pp(regr_pp, c("PC1", "PC2"), which_continent =  "oceania") +
   geom_rect(data = box_australia, aes(xmin = min(lon), xmax = max(lon),
                                       ymin = min(lat), ymax = max(lat)),
@@ -1603,7 +1606,7 @@ On the antipodes, precipitation anomalies in New Zealand and neighbouring island
 
 (ref:australia-pp-phase-cap) Same as Figure\ \@ref(fig:enso-phase) but for precipitacion anomalies averaged between  `r knitr::combine_words(LonLabel(box_australia$lon))` and `r knitr::combine_words(LatLabel(box_australia$lat))` (box shown in Figure\ \@ref(fig:pp-oceania) column b).
 
-```{r australia-pp-phase, fig.cap = "(ref:australia-pp-phase-cap)", fig.width = 5, fig.height=3}
+```{r australia-pp-phase, fig.cap = "(ref:australia-pp-phase-cap)", fig.width = width_column, fig.height=3}
 gdata <- cmap %>% 
   .[lon %between% box_australia$lon  & lat %between% box_australia$lat] %>% 
   .[, .(pp = weighted.mean(pp, cos(lat*pi/180))), by = time] %>% 

@@ -119,13 +119,11 @@ abstract
 \hypertarget{data}{%
 \subsection{Data}\label{data}}
 
-We used monthly geopotential height, air temperature, ozone mixing ratio, and Total Ozone COlumn (TOC) at 2.5\degree~longitude by 2.5\degree~latitude of horizontal resolution and 37 vertical isobaric levels from ERA5 \citep{era5} for the period 1979 to 2019. We restrict most of our analysis to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also use the preliminary back extension of ERA5 from 1950 to 1978 \citep{era5be} to look at long-term trends. We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK \citep{fishpack} and computed horizontal wave activity fluxes following \citet{plumb1985} (Equation 5.7).
+We used monthly geopotential height, air temperature, ozone mixing ratio, and Total Ozone COlumn (TOC) at 2.5\degree~longitude by 2.5\degree~latitude of horizontal resolution and 37 vertical isobaric levels from ERA5 \citep{era5} for the period 1979 to 2019. We restricted most of our analysis to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 \citep{era5be} to look at long-term trends. We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK \citep{fishpack} and computed horizontal wave activity fluxes following \citet{plumb1985} (Equation 5.7). For precipitation data we used monthly data from the CPC Merged Analysis of Precipitation \citep{cmap}.
 
-Precipitation data we used monthly data from the CPC Merged Analysis of Precipitation \citep{cmap}.
+We computed the amplitude and phase of the zonal wave 1 by averaging variables (temperature, geopotential height, ozone mixing ratio and Total Ozone Column) 70°S and 45°S for each Spring and computing the Fourier spectrum.
 
-We compute the amplitude and phase of the zonal wave 1 by averaging SON TOC between 70°S and 45°S for each Spring and computing the Fourier spectrum.
-
-We explore the relationship with the Southern Annular Mode (SAM). We compute the level-dependent SAM index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period \citep{baldwin2009}. We further split the SAM into its zonally symmetric and zonally asymmetric components (S-SAM and A-SAM indices respectively). These are obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields \citep{campitelli2021}. Since the analysis here is only for the SON trimester, monthly values were averaged across trimesters.
+We computed the level-dependent Southern Annular Mode index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period \citep{baldwin2009}. We further split the SAM into its zonally symmetric and zonally asymmetric components (S-SAM and A-SAM indices respectively). These are obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields \citep{campitelli2021}. Since the analysis here is only for the SON trimester, monthly values were averaged across trimesters.
 
 We also calculated the Pacific South American patterns (PSA1 and PSA2) as the third and fourth leading EOF of seasonal mean 500 hPa geopotential height with all seasons together following \citet{mo2001}.
 
@@ -137,7 +135,7 @@ We also calculated the Pacific South American patterns (PSA1 and PSA2) as the th
 \begin{figure}
 \centering
 \includegraphics{../figures/eof-naive-1.pdf}
-\caption{\label{fig:eof-naive}Spatial patterns of the leading 4 EOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009 (arbitrary units). The numbers at the top-left of each panel ate the variance explained by each EOF.}
+\caption{\label{fig:eof-naive}Spatial patterns of the leading 4 EOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2009 (arbitrary units). The numbers at the top-left of each panel ate the zonal variance explained by each EOF.}
 \end{figure}
 
 In traditional EOF analysis zonal waves appear as pairs of EOFs, usually degenerate, that represent similar patterns but shifted in phase. For instance, Figure~\ref{fig:eof-naive} shows the leading 4 EOFs of zonally anomalous September through October geopotential height at 50 hPa and 100 hPa. It is clear that at 50 hPa the first two EFS represent the same zonal wave 1 pattern and the last 2 represent the same zonal wave 3 pattern shifted by 1/4 wavelength. Since these pairs of EOFs seem to represent the same phase-varying structure, it would be desirable to combine them into a single index with amplitude and phase.
@@ -210,13 +208,11 @@ The wave patterns described by these complex EOFs match the patterns seen in the
 
 
 
-\begin{figure}
-\centering
-\includegraphics{../figures/extended-series-1.pdf}
-\caption{\label{fig:extended-series}Time series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern and scaled to zero mean and unit standard deviation.}
-\end{figure}
+\begin{figure*}
+\includegraphics{../figures/extended-series-1} \caption{Time series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern and scaled to zero mean and unit standard deviation.}\label{fig:extended-series}
+\end{figure*}
 
-Figure~\ref{fig:extended-series} shows time series of the two complex EOFs extended beyond the satellite era using the preliminary ERA5 back extension going back to 1950 (which we call the ``hybrid ERA5'' reanalysis). There is a downward trend in the real part of EOF1 in the hybrid reanalysis (Figure~\ref{fig:extended-series}a.1, p-value \textless{} 0.001). There is no significant trend in any of the complex parts of EOF2.
+Figure~\ref{fig:extended-series} shows time series of the two complex EOFs extended beyond the satellite era using the preliminary ERA5 back extension going back to 1950.There is an upward trend in the real part of EOF1 (Figure~\ref{fig:extended-series}a.1, p-value \textless{} 0.001) and no significant trend in any of the complex parts of EOF2. The positive trend in the Real EOF1 translates into a positive trend in EOF1 magnitude, but not in phase (not shown).
 
 \hypertarget{regressions}{%
 \subsection{Regressions}\label{regressions}}
@@ -304,11 +300,9 @@ We will show that the EOF2 offers an alternative way of representing the PSA whi
 
 
 
-\begin{figure}
-\centering
-\includegraphics{../figures/psa-eof2-1.pdf}
-\caption{\label{fig:psa-eof2}Relationship between the Real and Imaginary parts of EOF2 and the PSA1 and PSA2 modes computed as the second and third EOFs of seasonal geopotential height anomalies \citep{mo2001}. For the period 1979 -- 2019.}
-\end{figure}
+\begin{figure*}
+\includegraphics{../figures/psa-eof2-1} \caption{Relationship between the Real and Imaginary parts of EOF2 and the PSA1 and PSA2 modes computed as the second and third EOFs of seasonal geopotential height anomalies \citep{mo2001}. For the period 1979 -- 2019.}\label{fig:psa-eof2}
+\end{figure*}
 
 Figure~\ref{fig:psa-eof2} shows the relationship between the two PSA indices and the Real and Imaginary phase of EOF2. As anticipated by Figure~\ref{fig:eof2-regr-gh}, there is a strong correlation between PSA1 and Imaginary EOF2 (Figure~\ref{fig:psa-eof2}b.1), and between PSA2 and Real EOF2 (Figure~\ref{fig:psa-eof2}a.2). Conversely, there is no relationship between PSA1 and Real EOF2, and between PSA2 and Imaginary EOF2 (Figure~\ref{fig:psa-eof2} panels a.1 and b.2). So not only this EOF2 represents well both the spatial structure and temporal evolution of the PSA modes, but it's also possible to make a rather clean association between its two phases and the two PSA modes.
 
@@ -346,7 +340,7 @@ The Imaginary EOF2 is related with the SAM through the A-SAM in the troposphere,
 \begin{figure}
 \centering
 \includegraphics{../figures/eof-filtered-1.pdf}
-\caption{\label{fig:eof-filtered}Spatial pattern of the leading EOF of 200 hPa geopotential height with the variability of EOF2 filtered out South of 20º. Arbitrary scale.}
+\caption{\label{fig:eof-filtered}Spatial pattern of the leading EOF of 200 hPa geopotential height with the variability of EOF2 filtered out South of 20º. Arbitrary units.}
 \end{figure}
 
 As a further illustration, Figure~\ref{fig:eof-filtered} shows the spatial pattern of the leading EOF of 200 hPa geopotential height when the variability associated with EOF2 is removed. The resulting pattern is an nearly zonally symmetrical annular mode. This mode is highly correlated with SAM (0.75 (CI: 0.58 -- 0.86)), but only with the symmetrical part (0.88 (CI: 0.79 -- 0.94)). Note that the usual definition of the PSA modes as the second and third EOFs creates modes orthogonal to the SAM (defined as the first EOF) and thus impedes this kind of filtering.
@@ -368,11 +362,9 @@ This demonstrates that the zonal asymmetries of the SAM could very well be mostl
 
 
 
-\begin{figure}
-\centering
-\includegraphics{../figures/sst-psi-2-1.pdf}
-\caption{\label{fig:sst-psi-2}Regression maps of EOF2 with SST (column a) and streamfunction zonal anomalies with their corresponding activity wave flux (column b). Areas marked with dots have p-values smaller than 0.05 adjusted for FDR.}
-\end{figure}
+\begin{figure*}
+\includegraphics{../figures/sst-psi-2-1} \caption{Regression maps of EOF2 with SST (column a) and streamfunction zonal anomalies with their corresponding activity wave flux (column b). Areas marked with dots have p-values smaller than 0.05 adjusted for FDR.}\label{fig:sst-psi-2}
+\end{figure*}
 
 Figure~\ref{fig:sst-psi-2} shows regression maps between EOF2 and Sea Surface Temperatures (SST) Streamfunction at 200 hPa. The Imaginary EOF2 is associated with strong positive SST anomalies on the Central Pacific and negative anomalies on an area across the North of Australia and New Zealand, the South Pacific Convergence Zone (SPCZ) (Figure~\ref{fig:sst-psi-2}.a2). This pattern is almost canonically positive ENSO and indeed, the correlation between the Imaginary EOF2 and the Oceanic Niño Index (\citep{bamston1997}) is very high 0.76 (CI: 0.59 -- 0.86). Streamfunction anomalies show a coherent picture. The Imaginary EOF2 is associated with strong wave-like streamfunction anomalies emanating from the tropics (Figure~\ref{fig:sst-psi-2}.b2). This is consistent with what we know of the effect of ENSO on the extratropics: SST anomalies initiate anomalous convection that excites Rossby waves that propagate meridionally towards higher latitudes.
 
@@ -392,11 +384,9 @@ All this suggests that the wave train represented by EOF2 can be both forced by 
 
 
 
-\begin{figure}
-\centering
-\includegraphics{../figures/sst-psi-1-1.pdf}
-\caption{\label{fig:sst-psi-1}Same as Figure~\ref{fig:sst-psi-2} but for EOF1.}
-\end{figure}
+\begin{figure*}
+\includegraphics{../figures/sst-psi-1-1} \caption{Same as Figure~\ref{fig:sst-psi-2} but for EOF1.}\label{fig:sst-psi-1}
+\end{figure*}
 
 Figure~\ref{fig:sst-psi-1} shows SST and streamfunction regression maps for EOF1. There is no significant pattern of SST anomalies associated with either the Real or Imaginary EOF1. Consistently, streamfunction anomalies don't show any tropical influence. On the contrary, the Real EOF1 is associated with wave activity fluxes that flow equatorward from the coast of Antarctica around 150ºE along with wave activity fluxes that move between the positive and negative of Streamfunction anomalies along Antarctica.
 
