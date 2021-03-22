@@ -40,6 +40,7 @@
 \usepackage{natbib}
 \usepackage{lineno}
 \linenumbers
+\usepackage{pdfcomment}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -113,6 +114,22 @@ abstract
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
+One typical way of describing the zonally asymmetric circulation is by the amplitude and phase of zonal waves obtained by Fourier decomposition of geopotential height at each latitude \citep[e.g.][]{vanloon1972, trenberth1980}. These methodologies rely on the assumption that the circulation can be meaningfully understood in terms of zonal waves of constant amplitude along a latitude circle. This is not valid for meridionally propagating waves or zonal waves with localised amplitudes. In the case of the wave 3, for example, \citet{trenberth1985} observed that wave 3 played a role in blocking events, but that in many cases, this was due to increased amplitude of a longitudinally localised wave train and not a hemispheric-scale zonal wave 3.
+
+Another approach to characterising the Southern Hemisphere circulation is by using Empirical Orthogonal Functions (EOF, also known as Principal Component Analysis). Within the EOF framework, the Southern Annular Mode appears as the leading mode of variability of the Southern Hemisphere (SAM) \citep{fogt2020} followed by the two Pacific--South American Patterns (PSA) \citep{mo2001}. The SAM represents a relatively zonally symmetric pattern of alternating low pressures in polar latitude and a ring of high pressures in high latitudes with an embedded wave 3 pattern that is more prominent in the Pacific sector. The PSA1 and PSA2 describe the two out-of-phase sides of a meridionally propagating wave train that originates in the Eastern equatorial Pacific and travels towards the South Atlantic following a great-circle arch along the Antarctic Peninsula. These patterns are derived by applying EOF to temporal anomalies, but \citet{raphael2003} applied EOF methods specifically to zonal anomalies.
+
+EOFs are more flexible in the sense that they can characterise a richer set of spatial patterns, but they are restricted to standing oscillation modes and have difficulty dealing with propagating or phase-varying modes such as zonal waves. A single EOF can also represent a mixture of two or more physical modes.
+
+The inability of a single EOF to describe travelling waves is what forces the PSA pattern to be described by two EOFs. \citet{irving2016} characterises the Pacific--South American Pattern in a Fourier framework. Being a meridionally propagating mode, the PSA cannot be correctly characterised by Fourier decomposition at each latitude circle, so they reprojected meridional wind fields so that the path of the PSA laid on the equator. On this new projection, they could identify the PSA using Fourier decomposition.
+
+Finally, another, hybrid, methodology consist on identifying particular features of interest and creating indices using simple methods such as averages and differences. The Marshal SAM Index \citep{marshall2003}, for example, tries to characterise the SAM by the average difference of sea level pressure between 40ºS and 65ºS, following \citet{gong1999}. \citet{raphael2004} used a similar methodology to describe the wave 3 in the Southern Hemisphere. Instead of using Fourier to compute the amplitude and phase of the zonal wave, they averaged standardised geopotential height anomalies in three points representing the location of the ridges of the zonal wave 3 of the climatological mean. This is equivalent to an index of the amplitude of the zonal wave 3 that projects into the phase of the zonal wave 3 of the mean field. Similarly, \citet{hobbs2010} posit that the zonally asymmetric circulation in the Southern Hemisphere can be described by the strength and location of two anticyclones located in the sub-Antarctic western hemisphere.
+
+These ``feature-based'' methods are grounded on other methods to identify the interesting features and can be useful to characterise features that are not readily apparent with Fourier or EOF methods but that nonetheless interesting or important. The use of data of single points, which makes them suitable for extending into the data-poor past also makes them not very robust.
+
+In this paper we propose using complex Empirical Orthogonal Functions \citep{horel1984} as a robust extension of EOF analysis that is capable of describing rich structures with meridional and zonal propagation, and amplitude modulation such as the PSA. We apply this method to characterise the Springtime zonally asymmetric circulation of the extratopical Southern Hemisphere.
+
+\pdfcomment[]{¿Agrego algo sobre impactos? Por ejemplo, impactos de PSA /SAM.}
+
 \hypertarget{methods}{%
 \section{Methods}\label{methods}}
 
@@ -163,7 +180,7 @@ PC3 & \cellcolor[HTML]{FFFFFF}{\textcolor{black}{0.00}} & \cellcolor[HTML]{FFFFF
 
 Another characteristic seen in Figure~\ref{fig:eof-naive} is that EOF1 at 200 hPa is very similar to EFO1 at 50 hPa. The zonal wave 3 structure in EOF2 and EOF3 at 200 hPa are also very similar to the one in EOF3 and EOF4 at 50 hPa. Furthermore, Table \ref{tab:corr-ceof-splitted} shows the coefficient of determination between time series of the amplitude of each complex EOF across levels. There's a high degree of correlation between the respective EOF1 and EOF2 at each level. Both the spatial similarities and temporal correlations suggest some level of joint variability between levels.
 
-Both observations motivate the decision of performing complex EOF jointly between levels. The computation of the EOFs was carried out using data from both levels at the same time, therefore, each complex EOF has a spatial part that depends on longitude, latitude and level, an a temporal part that depends only on time.
+Both observations motivate the decision of performing complex EOF jointly between levels. Since the variability of the stratosphere is far greater in magnitude than the variability of the troposphere, we standardised the values by the standard deviation of each level. The computation of the EOFs was carried out using data from both levels at the same time, therefore, each complex EOF has a spatial part that depends on longitude, latitude and level, an a temporal part that depends only on time.
 
 The phase of principal components is defined up to an additive constant. For real principal components, this constant can be either 0 or \(\pi\), corresponding to a change in sign. For complex principal components, it can be any number between 0 and \(2\pi\) \citep{horel1984}. Since any choice is arbitrary and equally valid, we chose the phase of each EOF so that the real and imaginary parts are aligned with meaningful phases in our analysis. This was done after some exploratory analysis.
 
@@ -212,7 +229,7 @@ The wave patterns described by these complex EOFs match the patterns seen in the
 \includegraphics{../figures/extended-series-1} \caption{Time series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern and scaled to zero mean and unit standard deviation.}\label{fig:extended-series}
 \end{figure*}
 
-Figure~\ref{fig:extended-series} shows time series of the two complex EOFs extended beyond the satellite era using the preliminary ERA5 back extension going back to 1950.There is an upward trend in the real part of EOF1 (Figure~\ref{fig:extended-series}a.1, p-value \textless{} 0.001) and no significant trend in any of the complex parts of EOF2. The positive trend in the Real EOF1 translates into a positive trend in EOF1 magnitude, but not in phase (not shown).
+Figure~\ref{fig:extended-series} shows time series of the two complex EOFs extended beyond the satellite era using the preliminary ERA5 back extension going back to 1950.There is an upward trend in the real part of EOF1 (Figure~\ref{fig:extended-series}a.1, p-value~ \textless{} 0.001) and no significant trend in any of the complex parts of EOF2. The positive trend in the Real EOF1 translates into a positive trend in EOF1 magnitude, but not in phase (not shown).
 
 \hypertarget{regressions}{%
 \subsection{Regressions}\label{regressions}}
@@ -278,7 +295,7 @@ The maximum ozone anomalies are co-located with the minimum temperature anomalie
 \begin{figure}
 \centering
 \includegraphics{../figures/o3-regr-1.pdf}
-\caption{\label{fig:o3-regr}Regression coefficients of the real and imaginary part of the first complex EOF on SON mean Total Ozone Column. On contours, the mean zonal anomaly of Total OZone Column (negative contours in dashed lines). For the 1979 -- 2019 period.}
+\caption{\label{fig:o3-regr}Regression coefficients of the real and imaginary part of the first complex EOF on SON mean Total Ozone Column. On contours, the mean zonal anomaly of Total Ozone Column (negative contours in dashed lines). For the 1979 -- 2019 period.}
 \end{figure}
 
 Figure~\ref{fig:o3-regr} shows regression maps of EOF1 with fields of Total Ozone Column (TOC). It shows zonal wave 1 pattens in TOC associated with both phases of EOF1. Climatologically, the springtime Ozone minimum is located off the South Pole and towards the Weddell Sea \citep{wirth1993}. Thus, the Real EOF1 regression pattern (Figure~\ref{fig:o3-regr}a) coincides with the climatological position of the ozone whole while the one for the Imaginary EOF1 is shifted by 90º.
@@ -316,7 +333,7 @@ This particular rotation of EOF2 is the one which maximises the relationship bet
 \caption{\label{fig:phase-histogram}Histogram showing phase distribution of EOF2 for the period 1979 -- 2019.}
 \end{figure}
 
-By aligning he imaginary phase with the direction with maximum relationship with ENSO, we also aligned it with the phase of maximum occurrence. This is analogous to the method in \citet{irving2016}, who used reprojection and Fourier filtering to detect ``PSA-like'' variability and defined as the proper PSA using the peaks of the phase distribution (Compare our Figure~@ref:(phase-histogram) with their Figure 6).
+By aligning he imaginary phase with the direction with maximum relationship with ENSO, we also aligned it with the phase of maximum occurrence. This is analogous to the method in \citet{irving2016}, who used reprojection and Fourier filtering to detect ``PSA-like'' variability and defined as the proper PSA using the peaks of the phase distribution (Compare our Figure~\ref{fig:phase-histogram} with their Figure 6).
 
 The advantage of our method is that it is much simpler to implement, it provides magnitude and phase naturally, and it facilitates the description of this mode as a propagating wave instead of as standing oscillation.
 
@@ -328,7 +345,7 @@ The advantage of our method is that it is much simpler to implement, it provides
 \begin{figure}
 \centering
 \includegraphics{../figures/sam-eof-vertical-1.pdf}
-\caption{\label{fig:sam-eof-vertical}Coefficient of determination between the real and imaginary part of each EOF and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level according to \citet{campitelli2021}. Points mark estimates with p-value \textless{} 0.01 corrected for False Detection Rate \citep{benjamini1995}.}
+\caption{\label{fig:sam-eof-vertical}Coefficient of determination between the real and imaginary part of each EOF and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level according to \citet{campitelli2021}. Points mark estimates with p-value~\textless~0.01 corrected for False Detection Rate \citep{benjamini1995}.}
 \end{figure}
 
 Figure~\ref{fig:sam-eof-vertical} shows the coefficient of determination between the EOFs and three SAM indices.
@@ -378,7 +395,7 @@ Since the Real EOF2 represents just a different phase of the same wave train, on
 
 To better explore the relationship between tropical forcing and phase of the EOF2, Figure~\ref{fig:enso-phase} plots the ONI index and the phase of the EOF2 for each year between 1979 and 2019, highlighting years in which the magnitude of EOF2 was higher than 50\% of the years. In years with positive ENSO, the phase of the EOF2 is always around +90º (corresponding with positive imaginary part) and vice versa. In years with near neutral ENSO, the phase of the EOF2 is much more variable. The black line in Figure~\ref{fig:enso-phase} tries to quantify this relationship. Is the equation \(ONI = 1.1\sin{(phase)}\), whose coefficient we fitted by weighted least squares using the magnitude of the EFO2 as weight. The \(r^2\) corresponding to the fit is 0.56, with p-value \textless{} 0.001.
 
-Figure~\ref{fig:enso-phase} suggest that strong EOF2 years tend to coincide with strong ENSO years. The correlation between the absolute magnitude of the ONI and the magnitude of the EOF2 is 0.44 (CI: 0.16 -- 0.66). This relationship, however, appears to be driven only by the three years with strongest ENSO events in the period (2015, 1997, and 1982) which also coincide with the three years with strongest EOF2 magnitude. If those years are removed, the correlation becomes non-significant (0.044 (CI: -0.28 -- 0.36)). Furthermore, even when using all the datapoints, the Spearman correlation --which is robust to outliers-- is also non-significant (0.2, p-value = 0.2). Therefore, the relationship between the magnitude of the EOF2 train wave and ENSO remains uncertain.
+Figure~\ref{fig:enso-phase} suggest that strong EOF2 years tend to coincide with strong ENSO years. The correlation between the absolute magnitude of the ONI and the magnitude of the EOF2 is 0.44 (CI: 0.16 -- 0.66). This relationship, however, appears to be driven only by the three years with strongest ENSO events in the period (2015, 1997, and 1982) which also coincide with the three years with strongest EOF2 magnitude. If those years are removed, the correlation becomes non-significant (0.044 (CI: -0.28 -- 0.36)). Furthermore, even when using all the datapoints, the Spearman correlation --which is robust to outliers-- is also non-significant (0.2, p-value= 0.2). Therefore, the relationship between the magnitude of the EOF2 train wave and ENSO remains uncertain.
 
 All this suggests that the wave train represented by EOF2 can be both forced by tropical SSTs and also a part of the internal variability of the extratropical atmosphere. When internally forced, the wave train has little phase preference. When excited by tropical SST anomalies, it tends to remain locked to the imaginary phase, with the sign of the geopotential anomalies depending on the sign of the tropical SSTs anomalies. This explains the relative overabundance of years with EOF2 near positive and negative imaginary phase in Figure~\ref{fig:phase-histogram}.
 
@@ -427,6 +444,22 @@ To better understand the relationship between precipitation anomalies over Weste
 
 \hypertarget{conclusions}{%
 \section{Conclusions}\label{conclusions}}
+
+We studied the two leading modes of co-variability of September-October-November tropospheric and stratospheric zonal anomaliesby applying complex Empirical Orthogonal Functions.
+
+The first complex EOF represents the variability of the zonal wave 1 in the stratosphere, but represents a more zonally symmetric monopole in the troposphere. There is a statistically positive trend in the magnitude of this EOF, which is consistent with previous studies which showed secular changes in springtime wave-1-like patterns \citep[e.g.][]{raphael2003}. This mode is closely related to anomalies in Total Ozone Column.
+
+THe second complex EOF represents a wave-3 pattern with maximum magnitude in the Pacific sector. Essentially, it is an alternate representation of the PSA1 and PSA2 patterns \citep{mo2001}. We show that the Imaginary EOF2 can be identified with the PSA1 and the Real EOF2 with the PSA2.
+
+We show that this EOF prefers a phase aligned with the Imaginary EOF2. This is because the when ENSO is active, it forces the EOF2 to be in the Imaginary phase; positive for El Niño and negative for La Niña. When ENSO is neutral, the EOF2 is still active, but with no particular phase. This mirrors the results of \citet{cai2002}, who showed that the CSIRO Model can create PSA-like variability even in the absence of ENSO forcing (with a climatological run), but the variability of one of the PSA modes was enhanced when adding the ENSO signal.
+
+We further show that the Imaginary EOF2 is closely related to the Southern Annular Mode in the troposphere. In fact, it is a virtually perfect indicator of the zonally asymmetric portion of the SAM. To the extreme that the leading EOF of geopotential height with the EOF2 removes results in an annular mode that has none of the typical zonal asymmetries of the observed SAM.
+
+This raises the possibility that the asymmetric component of the SAM is actually a statistical contamination of the PSA mode.
+
+Precipitation anomalies in South America associated with the Imaginary EOF2 show a clear ENSO-like impact, with positive anomalies in South-Eastern Southamerica, negative anomalies in Southern Brazil and positive anomalies in central Chile. Precipitation anomalies associated with the Real EOF2 are low and not statistically significant, showing that the Imaginary phase is optimally aligned with the direction of maximum precipitation impacts.
+
+On the other hand, over Australia, both the Real and Imaginary phase are associated with significant precipitation anomalies, and we further show that the direction of maximum impact is not aligned with our chosen rotation of EOF2. However, this underscore the benefit of using complex EOF, since it would trivial to rotate it.
 
 \hypertarget{code-availability}{%
 \subsection*{Code availability}\label{code-availability}}
