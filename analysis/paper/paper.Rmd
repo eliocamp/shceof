@@ -312,6 +312,7 @@ We used monthly geopotential height, air temperature, ozone mixing ratio, and To
 ## Methods
 
 
+We computed the amplitude and phase of the zonal wave 1 by averaging (area-weighted) variables (temperature, geopotential height, ozone mixing ratio and Total Ozone Column) between `r knitr::combine_words(LatLabel(o3wave_lats))` for each SON and extracting the wave-1 component of the Fourier spectrum. We chose this latitude band because it is wide enough to capture most of the relevant anomalies. 
 
 \textcolor{red}{Aclarar qué a lo largo del trabajo se utilizan los datos de primavera y cómo se calcula eso. Tambień creo que acá se podría aclarar que el análisis se concentra en dos niveles para representar la estratósfera y la troposféra alta}
 
