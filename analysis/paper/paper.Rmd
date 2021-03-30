@@ -287,14 +287,31 @@ psa_time <- psa$left[season(time) == "SON"]
 
 # Introduction
 
+One typical way of describing the zonally asymmetric circulation is by the amplitude and phase of zonal waves obtained by Fourier decomposition of geopotential height at each latitude [e.g. @vanloon1972;@trenberth1980]. These methodologies rely on the assumption that the circulation can be meaningfully understood in terms of zonal waves of constant amplitude along a latitude circle. This is not valid for meridionally propagating waves or zonal waves with localised amplitudes. In the case of the wave 3, for example, @trenberth1985 observed that wave 3 played a role in blocking events, but that in many cases, this was due to increased amplitude of a longitudinally localised wave train and not a hemispheric-scale zonal wave 3. 
+
+Another approach to characterising the Southern Hemisphere circulation is by using Empirical Orthogonal Functions (EOF, also known as Principal Component Analysis). Within the EOF framework, the Southern Annular Mode appears as the leading mode of variability of the Southern Hemisphere (SAM) [@fogt2020] followed by the two Pacific–South American Patterns (PSA) [@mo2001]. The SAM represents a relatively zonally symmetric pattern of alternating low pressures in polar latitude and a ring of high pressures in high latitudes with an embedded wave 3 pattern that is more prominent in the Pacific sector. The PSA1 and PSA2 describe the two out-of-phase sides of a meridionally propagating wave train that originates in the Eastern equatorial Pacific and travels towards the South Atlantic following a great-circle arch along the Antarctic Peninsula. These patterns are derived by applying EOF to temporal anomalies, but @raphael2003 applied EOF methods specifically to zonal anomalies. 
+
+EOFs are more flexible in the sense that they can characterise a richer set of spatial patterns, but they are restricted to standing oscillation modes and have difficulty dealing with propagating or phase-varying modes such as zonal waves. A single EOF can also represent a mixture of two or more physical modes. 
+
+The inability of a single EOF to describe travelling waves is what forces the PSA pattern to be described by two EOFs. @irving2016 characterises the Pacific–South American Pattern in a Fourier framework. Being a meridionally propagating mode, the PSA cannot be correctly characterised by Fourier decomposition at each latitude circle, so they reprojected meridional wind fields so that the path of the PSA laid on the equator. On this new projection, they could identify the PSA using Fourier decomposition.  
+
+Finally, another, hybrid, methodology consist on identifying particular features of interest and creating indices using simple methods such as averages and differences. The Marshal SAM Index [@marshall2003], for example, tries to characterise the SAM by the average difference of sea level pressure between 40ºS and 65ºS, following @gong1999. @raphael2004 used a similar methodology to describe the wave 3 in the Southern Hemisphere. Instead of using Fourier to compute the amplitude and phase of the zonal wave, they averaged standardised geopotential height anomalies in three points representing the location of the ridges of the zonal wave 3 of the climatological mean. This is equivalent to an index of the amplitude of the zonal wave 3 that projects into the phase of the zonal wave 3 of the mean field. Similarly, @hobbs2010 posit that the zonally asymmetric circulation in the Southern Hemisphere can be described by the strength and location of two anticyclones located in the sub-Antarctic western hemisphere.
+
+These "feature-based" methods are grounded on other methods to identify the interesting features and can be useful to characterise features that are not readily apparent with Fourier or EOF methods but that nonetheless interesting or important. The use of data of single points, which makes them suitable for extending into the data-poor past also makes them not very robust. 
+
+In this paper we propose using complex Empirical Orthogonal Functions [@horel1984] as a robust extension of EOF analysis that is capable of describing rich structures with meridional and zonal propagation, and amplitude modulation such as the PSA. We apply this method to characterise the Springtime zonally asymmetric circulation of the extratopical Southern Hemisphere. 
+
+
 # Data and Methods
 
 ## Data
 
-We used monthly geopotential height, air temperature, ozone mixing ratio, and Total Ozone COlumn (TOC) at 2.5\degree\ longitude by 2.5\degree\ latitude of horizontal resolution and 37 vertical isobaric levels from ERA5 [@era5] for the period 1979 to 2019. We restricted most of our analysis to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 [@era5be] to look at long-term trends. We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK [@fishpack] and computed horizontal wave activity fluxes following @plumb1985. For precipitation data we used monthly data from the CPC Merged Analysis of Precipitation [@cmap], with a 2.5\degree\ resolution in latitude and longitude. This rainfall gridded dataset is based on information from different sources such as rain gauge observations, satellite
-inferred estimations and the NCEP-NCAR reanalysis, and it is available since 1979 to present.
+We used monthly geopotential height, air temperature, ozone mixing ratio, and Total Ozone COlumn (TOC) at 2.5\degree\ longitude by 2.5\degree\ latitude of horizontal resolution and 37 vertical isobaric levels from ERA5 [@era5] for the period 1979 to 2019. We restricted most of our analysis to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 [@era5be] to look at long-term trends. We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK [@fishpack] and computed horizontal wave activity fluxes following @plumb1985. For precipitation data we used monthly data from the CPC Merged Analysis of Precipitation [@cmap], with a 2.5\degree\ resolution in latitude and longitude. This rainfall gridded dataset is based on information from different sources such as rain gauge observations, satellite inferred estimations and the NCEP-NCAR reanalysis, and it is available since 1979 to present.
+
 
 ## Methods
+
+
 
 \textcolor{red}{Aclarar qué a lo largo del trabajo se utilizan los datos de primavera y cómo se calcula eso. Tambień creo que acá se podría aclarar que el análisis se concentra en dos niveles para representar la estratósfera y la troposféra alta}
 
@@ -1674,6 +1691,25 @@ The $r^2$ corresponding to the fit is `r signif(summary(model)$r.squared, 2)`, w
 
 
 # Conclusions
+
+We studied the two leading modes of co-variability of September-October-November tropospheric and stratospheric zonal anomaliesby applying complex Empirical Orthogonal Functions. 
+
+The first complex EOF represents the variability of the zonal wave 1 in the stratosphere, but represents a more zonally symmetric monopole in the troposphere. There is a statistically positive trend in the magnitude of this EOF, which is consistent with previous studies which showed secular changes in springtime wave-1-like patterns [e.g. @raphael2003]. This mode is closely related to anomalies in Total Ozone Column.
+
+
+THe second complex EOF represents a wave-3 pattern with maximum magnitude in the Pacific sector. Essentially, it is an alternate representation of the PSA1 and PSA2 patterns [@mo2001]. We show that the Imaginary EOF2 can be identified with the PSA1 and the Real EOF2 with the PSA2. 
+
+We show that this EOF prefers a phase aligned with the Imaginary EOF2. This is because the when ENSO is active, it forces the EOF2 to be in the Imaginary phase; positive for El Niño and negative for La Niña. When ENSO is neutral, the EOF2 is still active, but with no particular phase. This mirrors the results of @cai2002, who showed that the CSIRO Model can create PSA-like variability even in the absence of ENSO forcing (with a climatological run), but the variability of one of the PSA modes was enhanced when adding the ENSO signal. 
+
+We further show that the Imaginary EOF2 is closely related to the Southern Annular Mode in the troposphere. In fact, it is a virtually perfect indicator of the zonally asymmetric portion of the SAM. To the extreme that the leading EOF of geopotential height with the EOF2 removes results in an annular mode that has none of the typical zonal asymmetries of the observed SAM. 
+
+This raises the possibility that the asymmetric component of the SAM is actually a statistical contamination of the PSA mode. 
+
+
+Precipitation anomalies in South America associated with the Imaginary EOF2 show a clear ENSO-like impact, with positive anomalies in South-Eastern Southamerica, negative anomalies in Southern Brazil and positive anomalies in central Chile. Precipitation anomalies associated with the Real EOF2 are low and not statistically significant, showing that the Imaginary phase is optimally aligned with the direction of maximum precipitation impacts. 
+
+On the other hand, over Australia, both the Real and Imaginary phase are associated with significant precipitation anomalies, and we further show that the direction of maximum impact is not aligned with our chosen rotation of EOF2. However, this underscore the benefit of using complex EOF, since it would trivial to rotate it. 
+
 
 
 
