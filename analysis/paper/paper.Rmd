@@ -1098,8 +1098,6 @@ Indeed, Figure\ \@ref(fig:wave1-o3) shows the relationship between amplitude and
 
 ### PSA 
 
-We will show that the EOF2 offers an alternative way of representing the PSA which has several advantages over using the second and third principal components. \textcolor{red}{(Esto queda raro porque estas adelantando la conclusión)}
-
 (ref:psa-eof2-cap) Relationship between the Real and Imaginary parts of EOF2 and the PSA1 and PSA2 modes computed as the second and third EOFs of seasonal geopotential height anomalies [@mo2001]. For the period 1979 -- 2019.
 
 ```{r psa-eof2, fig.cap = "(ref:psa-eof2-cap)", fig.width=7, fig.height=3, fig.env="figure*"}
