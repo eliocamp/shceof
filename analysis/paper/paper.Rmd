@@ -246,7 +246,7 @@ psi <- ReadNetCDF(ERA5(), vars = "vo",
                                 time = c("1979-01-01", "2019-12-01"))) %>%
   normalise_coords() %>%
   .[season(time) == "SON"] %>%
-  .[, .(vo = mean(vo)), by = .(lon, lat, lev,time = seasonally(time))] %>%
+  .[, .(vo = mean(vo)), by = .(lon, lat, lev, time = seasonally(time))] %>%
   .[, solve_poisson(vo, lon, lat), by = .(lev, time)] %>%
   setnames("value", "psi") %>% 
   .[, psi.z := Anomaly(psi), by = .(time, lev, lat)] 
@@ -330,7 +330,8 @@ We also calculated the Pacific South American patterns (PSA1 and PSA2) as the th
 eof_naive <- era5[lev %in% c(50, 200) & lat %between% c(-90, -20)] %>% 
   # .[, hgt := Anomaly(hgt), by = .(season(time), lon, lat, lev)] %>%
   .[, hgt  := Anomaly(hgt)*sqrt(cos(lat*pi/180)), by = .(time, lev, lat)] %>% 
-  .[, .(eof = list(EOF(hgt ~ time | lon + lat, n = 1:4, data = .SD, suffix = "EOF"))), by = lev]
+  .[, .(eof = list(EOF(hgt ~ time | lon + lat, n = 1:4, data = .SD, suffix = "EOF"))), 
+    by = lev]
 
 explained <- eof_naive[, eof[[1]]$sdev, by = lev] %>% 
   .[order(lev, EOF)] %>% 
