@@ -982,7 +982,7 @@ o3_regr <- temp %>%
   .[, term := factor_ReIm(term)]
 ```
 
-(ref:o3-regr-cap) Regression coefficients of SON mean Total Ozone Column anomalies onto the real (a) and imaginary (b) components of the cEOF1. On contours, the mean zonal anomaly of Total OZone Column (negative contours in dashed lines). ¿Units? For  the 1979 -- 2019 period. 
+(ref:o3-regr-cap) Regression coefficients of SON mean Total Ozone Column anomalies onto the real (a) and imaginary (b) components of the cEOF1. On contours, the mean zonal anomaly of Total OZone Column (negative contours in dashed lines, Dobson Units). For  the 1979 -- 2019 period. 
  
 ```{r o3-regr, fig.cap = "(ref:o3-regr-cap)", fig.height=3, fig.width = width_column}
 o3_regr %>% 
