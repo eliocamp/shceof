@@ -736,10 +736,10 @@ Figure\ \@ref(fig:extended-series) shows time series of the two complex EOFs ext
 ## Regressions  (me parece que habría que decirlo de una forma más precisa o juntarlo a la sección anterior)
 
 
-The spatial patterns shown in Figure\ \@ref(fig:ceofs-1) are derived by removing the zonally symmetric circulation, so they might not include all the variability that is actually associated with the cEOF time series. They are also idealised in that they are forced by construction, to be Hilbert transforms of each other \textcolor{red}{(¿Cómo se interpretaría esto?, la oración no es muy clara)}. To get a more realistic view of the real-world variability described by these cEOFs, we computed regression patterns of each cEOF with the complete geopotential fields. 
+## Regressions  
 
-\textcolor{red}{(El parráfo anterior quizás hay que trabajarlo un poco más, porque tiene algunos términos que pueden no entenderse bien o que no son los más correctos ("real-world"). También quizás esto conviene directamente contarlo cuando se describe la metodología.)}
 
+The spatial patterns shown in Figure\ \@ref(fig:ceofs-1) are derived by removing the zonally symmetric circulation, so they might not include all the variability that is actually associated with the cEOF time series. To understand the full geopotential height field changes associated with each cEOF, we computed regression patterns of each cEOF with the complete geopotential fields. 
 ```{r compute-regression}
 regr <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[season == "SON"] %>%
