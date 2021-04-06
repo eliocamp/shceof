@@ -261,7 +261,7 @@ o3 <- O3() %>%
   .[, toc := toc/2.1415e-5] %>%    # transform to Dobson Units (https://sacs.aeronomie.be/info/dobson.php)
   .[, .(toc = mean(toc, na.rm = TRUE)), by = .(lon, lat, time = seasonally(time))]
 
-o3wave_lats <- c(-70, -45)
+o3wave_lats <- c(-75, -45)
 ```
 
 
@@ -876,7 +876,7 @@ t <- ERA5() %>%
         hgt = mean(hgt)), by = .(lev, lon, lat, time = seasonally(time))]
 ```
 
-(ref:t-vertical-cap) Regression coefficients between cEOF1 and zonal anomalies of mean air temperature (shaded) and ozone mixing ratio (contours, negative contours with dashed lines, labels in parts per billion by mass) averaged between 80ºS and 35ºS for the period 1979 -- 2019.
+(ref:t-vertical-cap) Regression coefficients between cEOF1 and zonal anomalies of mean air temperature (shaded) and ozone mixing ratio (contours, negative contours with dashed lines, labels in parts per billion by mass) averaged between `r knitr::combine_words(LatLabel(o3wave_lats))` for the period 1979 -- 2019.
 
 ```{r lable_placement_min}
 lable_placement_min <- function(direction = c("vertical", "horizontal"))  {
@@ -894,7 +894,7 @@ lable_placement_min <- function(direction = c("vertical", "horizontal"))  {
 
 ```{r t-vertical, fig.cap = "(ref:t-vertical-cap)", fig.height=2.5, fig.width=width_column}
 t %>% 
-  .[lat %between% c(-80, -35)] %>% 
+  .[lat %between% o3wave_lats] %>% 
   .[, .(hgt = weighted.mean(hgt, cos(lat*pi/180)),
         o3 = weighted.mean(o3, cos(lat*pi/180)),
         t = weighted.mean(t, cos(lat*pi/180))), by = .(lev, time, lon)] %>%  
@@ -940,7 +940,7 @@ t %>%
 
 Figure\ \@ref(fig:eof1-regr-t) shows regression patterns of air temperature at 50hPa and 200hPa onto cEOF1. In both levels, the Real cEOF1 is associated with positive monopole over the South Pole with its centre moved slightly towards 150ºE (Fig.\ \@ref(fig:eof1-regr-t) column 1). Regression maps on the Imaginary cEOF1, on the other hand, show a more clear wae 1 pattern with its maximum around 60ºE. The distribution of temperature regression coefficients at 50 hPa and at 200 hPa mirror the geopotential height regression maps at 50 hPa (Fig.\ \@ref(fig:eof1-regr-gh)). 
 
-The vertical distribution of these patterns is shown in Figure\ \@ref(fig:t-vertical)) that shows the regression coefficientes between cEOF1 and zonal anomalies of air temperature and zonal anomalies of ozone mixing ratio averaged between 80ºS and 35ºS. Temperature zonal anomalies associated with cEOF1 show a clear wave 1 pattern for both real and imaginary components throughout the atmosphere above 250 hPa  with a change in sign above 10 hPa. Following hydrostatic balance, this is the level in which the geopotential anomaly have maximum amplitude (not shown). 
+The vertical distribution of these patterns is shown in Figure\ \@ref(fig:t-vertical)) that shows the regression coefficientes between cEOF1 and zonal anomalies of air temperature and zonal anomalies of ozone mixing ratio averaged between `r knitr::combine_words(LatLabel(o3wave_lats))`. Temperature zonal anomalies associated with cEOF1 show a clear wave 1 pattern for both real and imaginary components throughout the atmosphere above 250 hPa  with a change in sign above 10 hPa. Following hydrostatic balance, this is the level in which the geopotential anomaly have maximum amplitude (not shown). 
 
 The maximum ozone anomalies are co-located with the minimum temperature anomalies above 10 hPa and with the maximum temperature anomalies below 10 hPa (Fig.\ \@ref(fig:t-vertical))); that is, the ozone zonal wave 1 is anticorrelated with the temperature zonal wave 1 in the upper stratosphere, and directly correlated in the upper stratosphere . This change in phase is observed in ozone anomalies forced by planetary waves that reach the stratosphere. In the photochemically-dominated upper stratosphere, cold temperatures inhibit the destruction of ozone, and the advectively-dominated lower stratosphere, ozone anomalies are 90º out of phase with horizontal and vertical transport, which is 90º our of phase with temperature anomalies [@hartmann1979;@wirth1993;@smith1995].
 
@@ -997,13 +997,14 @@ o3_regr %>%
   ggplot(aes(lon, lat)) +
   geom_contour_fill(aes(z = estimate, fill = ..level..),
                     breaks = AnchorBreaks(0, exclude = 0)) +
+  geom_contour_tanaka(aes(z = estimate), breaks = AnchorBreaks(0, exclude = 0)) +
   geom_contour2(data = periodic(o3_mean, lon = c(0, 360)),
                 aes(z = toc_z, linetype = factor(-sign(..level..))), 
                 breaks = AnchorBreaks(0, exclude = 0), 
                 bins = 5) +
-  geom_contour_tanaka(aes(z = estimate), breaks = AnchorBreaks(0, exclude = 0)) +
-  geom_contour_pval(aes(z = p.value)) +
   
+  geom_contour_pval(aes(z = p.value)) +
+  geom_hline(yintercept = o3wave_lats, size = 0.3, alpha = 0.5) +
   geom_qmap(~.x[lat <= -20]) +
   scale_fill_divergent_discretised("Total Ozone Column", 
                                    guide = guide_colorsteps_bottom(15)) + 
@@ -1011,6 +1012,7 @@ o3_regr %>%
   scale_y_latitude() +
   scale_linetype(guide = "none") +
   coord_polar() +
+  
   facet_grid(cEOF~term) +
   axis_labs_smol +
   tag_facets("panel")
@@ -1102,7 +1104,7 @@ temp %>%
 
 ```
 
-Indeed, Figure\ \@ref(fig:wave1-o3) shows the relationship between amplitude and phase of the planetary wave 1 in Total Ozone Column between 70ºS and 45ºS \textcolor{red}{(Habría que justifica mejor estas elecciones de bandas latitudinales a paritr del gráfico anterior)} and amplitude and phase of the EOF1. The correlation between the zonal wave 1 of ozone and EOF1 (computed as the mean cosine of the difference in phase) is `r wave_correlation$text`. As expected from the location of anomalies in Figure\ \@ref(fig:wave1-o3), the Real EOF1 drives the relationship with amplitude and the Imaginary EOF1 drives the relationship with phase (not shown). 
+Indeed, Figure\ \@ref(fig:wave1-o3) shows the relationship between amplitude and phase of the cEOF1 and the amplitude and phase of the planetary wave 1 in Total Ozone Column between `r knitr::combine_words(LatLabel(o3wave_lats))`; as shown in Figure\ \@ref(fig:o3-regr), this is a wide latitude band that captures most of the area with significant regression coefficients. The correlation between the zonal wave 1 of ozone and EOF1 (computed as the mean cosine of the difference in phase) is `r wave_correlation$text`. As expected from the location of anomalies in Figure\ \@ref(fig:wave1-o3), the Real EOF1 drives the relationship with amplitude and the Imaginary EOF1 drives the relationship with phase (not shown). 
 
 
 ### PSA 
