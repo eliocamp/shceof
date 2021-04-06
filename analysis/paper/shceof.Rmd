@@ -1156,7 +1156,7 @@ The reason that the EOF analysis arrives to this optimal separation is that the 
 
 The reason the conventional EOF analysis arrives at the same separation than our particular cEOF rotation is probably the fact that not all phases are equal. Figure\ \@ref(fig:phase-histogram) is an histogram that counts the number of SON years in which the cEOF2 was near a particular phase with the observations marked as rugs on the horizontal axis. For instance, years with cEOF2 phase within 45º of 0º are nearest the "positive Real" phase. About two thirds of time cEOF2 has a phase similar to either the negative or positive Imaginary phase. 
 
-(ref:phase-histogram-cap) Histogram showing phase distribution of EOF2 for the period 1979 -- 2019. \textcolor{red}{(También ampliar)} 
+(ref:phase-histogram-cap) Histogram of phase distribution of cEOF2 for the period 1979 -- 2019. Bins are centred at 90º, 0º, -90º, -180º with a binwidth of 90º. 
 
 ```{r phase-histogram, fig.cap = "(ref:phase-histogram-cap)", fig.width=width_column*.8, fig.height=2.5}
 N <- nrow(cut(ceof$eof[[1]], 2)$left)
