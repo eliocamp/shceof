@@ -1150,10 +1150,6 @@ The relationship between PSAs and the modes described from the cEOFs is also stu
 
 This particular rotation of cEOF2 is the one which maximises the relationship between ENSO and Imaginary cEOF2. It is also the same that maximises this clean association between cEOF2 parts and PSA modes. 
 
-\textcolor{red}{(Lo del histograma habría que explicarlo con un pocoo más detalle porque no es tan trivial. Primero decir para qué se hace, qué se hace exactamente y después recien decir cuál es el resultado y qué información aporta)} 
-
-The reason that the EOF analysis arrives to this optimal separation is that the Imaginary cEOF is the most common phase (either negative or positive)
-
 The reason the conventional EOF analysis arrives at the same separation than our particular cEOF rotation is probably the fact that not all phases are equal. Figure\ \@ref(fig:phase-histogram) is an histogram that counts the number of SON years in which the cEOF2 was near a particular phase with the observations marked as rugs on the horizontal axis. For instance, years with cEOF2 phase within 45º of 0º are nearest the "positive Real" phase. About two thirds of time cEOF2 has a phase similar to either the negative or positive Imaginary phase. 
 
 (ref:phase-histogram-cap) Histogram of phase distribution of cEOF2 for the period 1979 -- 2019. Bins are centred at 90º, 0º, -90º, -180º with a binwidth of 90º. 
@@ -1165,7 +1161,8 @@ cut(ceof$eof[[1]], 2)$left %>%
   .[, w := Mod(hgt)/mean(Mod(hgt))] %>% 
   qwrap(arg = c(-pi, pi) ~  c(-pi - 1/4*pi, pi - 1/4*pi)) %>% 
   ggplot(aes(arg)) +
-  geom_histogram(binwidth = 90*pi/180, center = 0, color = "black", fill = "gray70") +
+  geom_histogram(binwidth = 90*pi/180, center = 0, size = 0.2,
+                 color = "black", fill = "gray70") +
   annotate("text",
            label = c("- Real", "- Imaginary", "+ Real", "+ Imaginary"),
            color = "black", size = 3,
@@ -1175,9 +1172,10 @@ cut(ceof$eof[[1]], 2)$left %>%
                      sec.axis = sec_axis(~.x/N, 
                                          name = "Proportion of years", 
                                          labels = scales::percent)) +
-  scale_x_continuous("Phase",
-                     breaks = seq(-pi - 1/4*pi, pi - 1/4*pi, by = 90*pi/180),
-                     labels = function(x) paste0(round(x*180/pi, 5), "º")) 
+  scale_x_continuous("Phase", trans = scales::reverse_trans(),
+                     breaks = seq(-pi - 1/4*pi, pi - 1/4*pi, by = 45*pi/180),
+                     labels = function(x) paste0(round(x*180/pi, 5), "º")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 This phase-locking behaviour indicates that the Imaginary phase both is the direction that has the maximum relationship with ENSO and is also the most common phase. Therefore, the Imaginary cEOF2 explains more variance than the Real cEOF2 and conventional EOF analysis will tend to separate the two. 
