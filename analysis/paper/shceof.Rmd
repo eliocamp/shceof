@@ -1148,19 +1148,21 @@ cEOF2[psa_time, on = "time"] %>%
 
 The relationship between PSAs and the modes described from the cEOFs is also studied. Figure\ \@ref(fig:psa-eof2) shows the relationship between the two PSA indices and the Real and Imaginary phase of EOF2. As anticipated by Figure\ \@ref(fig:eof2-regr-gh), there is a strong correlation between PSA1 and Imaginary EOF2 (Figure\ \@ref(fig:psa-eof2)b.1), and between PSA2 and Real EOF2 (Figure\ \@ref(fig:psa-eof2)a.2). Conversely, there is no relationship between PSA1 and Real EOF2, and between PSA2 and Imaginary EOF2 (Figure\ \@ref(fig:psa-eof2) panels a.1 and b.2). So not only this EOF2 represents well both the spatial structure and temporal evolution of the PSA modes, but it's also possible to make a rather clean association between its two phases and the two PSA modes. 
 
-This particular rotation of EOF2 is the one which maximises the relationship between ENSO and Imaginary EOF2. It is also the same that maximises this clean association between EFO2 parts and PSA modes. 
+This particular rotation of cEOF2 is the one which maximises the relationship between ENSO and Imaginary cEOF2. It is also the same that maximises this clean association between cEOF2 parts and PSA modes. 
 
 \textcolor{red}{(Lo del histograma habría que explicarlo con un pocoo más detalle porque no es tan trivial. Primero decir para qué se hace, qué se hace exactamente y después recien decir cuál es el resultado y qué información aporta)} 
 
-The reason that the EOF analysis arrives to this optimal separation is that the imaginary cEOF is the most common phase (Figure\ \@ref(fig:phase-histogram)), so it naturally appears first when performing a Principal Component Analysis. 
+The reason that the EOF analysis arrives to this optimal separation is that the Imaginary cEOF is the most common phase (either negative or positive)
 
+The reason the conventional EOF analysis arrives at the same separation than our particular cEOF rotation is probably the fact that not all phases are equal. Figure\ \@ref(fig:phase-histogram) is an histogram that counts the number of SON years in which the cEOF2 was near a particular phase with the observations marked as rugs on the horizontal axis. For instance, years with cEOF2 phase within 45º of 0º are nearest the "positive Real" phase. About two thirds of time cEOF2 has a phase similar to either the negative or positive Imaginary phase. 
 
 (ref:phase-histogram-cap) Histogram showing phase distribution of EOF2 for the period 1979 -- 2019. \textcolor{red}{(También ampliar)} 
 
 ```{r phase-histogram, fig.cap = "(ref:phase-histogram-cap)", fig.width=width_column*.8, fig.height=2.5}
+N <- nrow(cut(ceof$eof[[1]], 2)$left)
 cut(ceof$eof[[1]], 2)$left %>% 
   .[, arg := Arg(hgt)] %>% 
-  .[, w := Mod(hgt)/sum(Mod(hgt))] %>% 
+  .[, w := Mod(hgt)/mean(Mod(hgt))] %>% 
   qwrap(arg = c(-pi, pi) ~  c(-pi - 1/4*pi, pi - 1/4*pi)) %>% 
   ggplot(aes(arg)) +
   geom_histogram(binwidth = 90*pi/180, center = 0, color = "black", fill = "gray70") +
@@ -1169,13 +1171,22 @@ cut(ceof$eof[[1]], 2)$left %>%
            color = "black", size = 3,
            y = 0.5, x = c(-pi, -pi/2, 0, pi/2), angle = 90, hjust = 0) +
   geom_rug() +
-  scale_y_continuous("Number of years") +
+  scale_y_continuous("Number of years", 
+                     sec.axis = sec_axis(~.x/N, 
+                                         name = "Proportion of years", 
+                                         labels = scales::percent)) +
   scale_x_continuous("Phase",
                      breaks = seq(-pi - 1/4*pi, pi - 1/4*pi, by = 90*pi/180),
                      labels = function(x) paste0(round(x*180/pi, 5), "º")) 
 ```
 
-By aligning he imaginary phase with the direction with maximum relationship with ENSO, we also aligned it with the phase of maximum occurrence of XXX. This is analogous to the method of @irving2016, who used reprojection and Fourier filtering to detect "PSA-like" variability and defined as the proper PSA using the peaks of the phase distribution (Compare our Figure\ \@ref:(phase-histogram) with their Figure 6). \textcolor{red}{(Amplia un poco la oración anterior que no queda del todo clara)} The advantage of our method is that it is much simpler to implement, it provides magnitude and phase naturally, and it facilitates the description of this mode as a propagating wave instead of as standing oscillation. As a consequence, the cEOF2 offers an alternative way of representing the PSA which has several advantages over using the second and third EOFs.
+This phase-locking behaviour indicates that the Imaginary phase both is the direction that has the maximum relationship with ENSO and is also the most common phase. Therefore, the Imaginary cEOF2 explains more variance than the Real cEOF2 and conventional EOF analysis will tend to separate the two. 
+
+This is analogous to the method of @irving2016, who used reprojection and Fourier filtering to detect "PSA-like" variability and defined as the proper PSA using the peaks of the phase distribution (Compare our Figure\ \@ref(fig:phase-histogram) with their Figure 6).
+
+\textcolor{red}{(Amplia un poco la oración anterior que no queda del todo clara)} 
+
+The advantage of our method is that it is much simpler to implement, it provides magnitude and phase naturally, and it facilitates the description of this mode as a propagating wave instead of as standing oscillation. As a consequence, the cEOF2 offers an alternative way of representing the PSA which has several advantages over using the second and third EOFs.
 
 ### SAM
 
