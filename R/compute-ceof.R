@@ -27,7 +27,7 @@ compute_ceof <- function(hgt, lon, lat, lev, temporal = FALSE, lats.eof = c(-90,
     .[, hgt.cpx := spectral::analyticFunction(hgt),
       by = .(lat, time, lev)] %>%
     .[, hgt := hgt.cpx] %>%
-    EOF(hgt ~ time | lon + lat + lev, n = n, suffix = "PC", data = .)
+    EOF(hgt ~ time | lon + lat + lev, n = n, suffix = "cEOF", data = .)
 }
 
 # compute_ceof <- function(dt, temporal = FALSE, lats = c(-80, -20), n = 1:2) {
