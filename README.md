@@ -23,7 +23,7 @@ if (!require("devtools")) {
 devtools::install()
 ```
 
-The main manuscript is located at `analysis/paper/paper.Rmd`. Knitting it should work, including automatically downloading the relevant datasets. However, bear in mind that this could literally take hours, since many datasets are downloaded from the [Climate Data Service](https://cds.climate.copernicus.eu/), which does some conversion. 
+The main manuscript is located at `analysis/paper/shceof.Rmd`. Knitting it should work, including automatically downloading the relevant datasets. However, bear in mind that this could literally take hours, since many datasets are downloaded from the [Climate Data Service](https://cds.climate.copernicus.eu/), which does some conversion. 
 
 To get the data you'll need to set create a user [here](https://cds.climate.copernicus.eu/user/register?destination=/). Once you have your user ready, to to your [user page](https://cds.climate.copernicus.eu/user/) copy your UID and API Key and set them in the environmental variables CDSKEY and CDSUSER. You can do this by creating a file called `.Renviron` on the root folder of this project with 
 
