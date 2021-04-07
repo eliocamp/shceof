@@ -1186,7 +1186,7 @@ The advantage of our method is that it is much simpler to implement, it provides
 
 ### SAM
 
-(ref:sam-eof-vertical-cap) Coefficient of determination between the real and imaginary part of each cEOF and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level according to @campitelli2021. Points mark estimates with p-value < 0.01 corrected for False Detection Rate [@benjamini1995].
+(ref:sam-eof-vertical-cap) Coefficient of determination between the real and imaginary part of each cEOF and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level according to @campitelli2021. Thick lines represent estimates with p-value < 0.01 corrected for False Detection Rate [@benjamini1995].
 
 ```{r sam-eof-vertical, fig.cap = "(ref:sam-eof-vertical-cap)", fig.height=4, fig.width=width_column}
 time <- ceof[, eof[[1]]$left, by = .(season)] %>%
@@ -1202,16 +1202,16 @@ max_r2 <- sam_r2[part == "Imaginary" & term == "asym"] %>%
   .[, .SD[which.max(estimate^2)], by = .(cEOF)]
 
 sam_r2 %>%
+  .[, p.value_a := p.adjust(p.value, "fdr")] %>% 
   ggplot(aes(lev, estimate^2)) +
   geom_vline(xintercept = c(50, 200),  size = 0.2, color = "gray50") +
-  geom_point(data = ~.x[p.adjust(p.value, "fdr") < 0.01], aes(color = term)) +
-  geom_line(aes(color = term, size = term)) +
+  # geom_point(data = ~.x[p.adjust(p.value, "fdr") < 0.01], aes(color = term)) +
+  geom_line(aes(color = term, group = term, size = p.value_a <= 0.01)) +
   scale_x_level() +
   scale_y_continuous(r2, limits = c(0, 1)) +
-  scale_size_manual(guide = "none",
-                    values = c(full = 1.2,
-                               asym = 0.5,
-                               sym = 0.5)) +
+  scale_size_manual("p-value", values = c("TRUE" = 1, 
+                                      "FALSE" = 0.5), 
+                    guide = "none") +
   scale_color_brewer(NULL, palette = "Dark2", labels = c(full = "SAM",
                                                          asym = "A-SAM",
                                                          sym = "S-SAM")) +
@@ -1221,13 +1221,11 @@ sam_r2 %>%
   panel_background
 ```
 
-To explore the relationship between SAM and the modes described from the cEOF, it is computed the coefficient of determination between the cEOFs timeseries and the three SAM indices (SAM, A-SAM and S-SAM) at each level (Fig.\ \@ref(fig:sam-eof-vertical)). Both cEOFs bear some modest relationship with the full SAM index (thick green line in Figure\ \@ref(fig:sam-eof-vertical)), although not statistically significant at every level. 
+To explore the relationship between SAM and the modes described from the cEOF, we compute. the coefficient of determination between the cEOFs timeseries and the three SAM indices (SAM, A-SAM and S-SAM) at each level (Fig.\ \@ref(fig:sam-eof-vertical)). The SAM index is moderately correlated with the Real cEOF1 in all levels, and with the Imaginary cEOF1 and Imaginary cEOF2 in the troposphere. It is not correlated with the Real cEOF2 at any level. 
 
+The relationship between the tropospheric SAM and cEOF1 is explained entirely by the zonally symmetric component of the SAM as shown by the low and statistically non-significant correlations between the A-SAM and either the Real or Imaginary cEOF1 and the high correlation with the S-SAM below 100 hPa. In the stratosphere, the Real cEOF1 is correlated with both A-SAM and S-SAM, while the Imaginary cEOF1 is highly correlated only with the A-SAM. These correlations are consistent with the regression patterns of geopotential height in Figure\ \@ref(fig:eof1-regr-gh). 
 
- \textcolor{red}{(Esta explicación habría que hacerla más detallada. Explicar más sobre lo que se ve en cada panel y después ir interpretando.  )}
-The split between A-SAM and S-SAM gives more insight into the nature of the relationship. The relationship between the SAM and ¿the imaginary cEOF1? (Figure\ \@ref(fig:sam-eof-vertical).b1) is mediated by S-SAM in the troposphere, but by the A-SAM in the stratosphere.
-
-The Imaginary cEOF2 is related with the SAM through the A-SAM in the troposphere, with up to `r scales::percent(max_r2[cEOF == "cEOF2"]$estimate^2, 2)` of shared variance, reached at `r max_r2[cEOF == "cEOF2"]$lev` hPa (Figure\ \@ref(fig:sam-eof-vertical).b2). 
+In the case of cEOF2, the moderate correlation between SAM and Imaginary cEOF2 becomes extremely high when only the zonally asymmetric variability of the SAM is considered. The Imaginary cEOF2 and the A-SAM share up to `r scales::percent(max_r2[cEOF == "cEOF2"]$estimate^2, 2)` of their variance, reached at `r max_r2[cEOF == "cEOF2"]$lev` hPa (Figure\ \@ref(fig:sam-eof-vertical).b2). 
 
 ```{r eof-filtered, fig.cap = "Spatial pattern of the leading EOF of 200 hPa geopotential height with the variability of cEOF2 filtered out South of 20º. Arbitrary units.", fig.width=2.5, fig.height=2.5}
 eof_filtered <- era5 %>% 
