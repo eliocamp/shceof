@@ -156,7 +156,7 @@ We also calculated the Pacific South American patterns (PSA1 and PSA2) as the th
 \begin{figure}
 \centering
 \includegraphics{../figures/eof-naive-1.pdf}
-\caption{\label{fig:eof-naive}Spatial patterns of the leading 4 EOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2019 (arbitrary units). The numbers at the top-left of each panel ate the zonal variance explained by each EOF.}
+\caption{\label{fig:eof-naive}Spatial patterns of the leading 4 EOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2019 (arbitrary units).}
 \end{figure}
 
 In traditional EOF analysis zonal waves appear as pairs of EOFs, usually degenerate, that represent similar patterns but shifted in phase \citep{horel1984}. For instance, Figure~\ref{fig:eof-naive} shows the leading 4 EOFs of zonally anomalous SON geopotential height at 50 hPa and 200 hPa. It is clear that at 50 hPa the first two EOFs represent the same zonal wave 1 pattern and the last 2 represent the same zonal wave pattern with shorter wavenumber shifted by 1/4 wavelength. A similar EOF structure can be seen in 200 hPa (not shown). Since each pair of EOFs seem to represent the same phase-varying structure, it would be desirable to combine them into a single index with amplitude and phase.
@@ -337,9 +337,7 @@ The reason the conventional EOF analysis arrives at the same separation than our
 
 This phase-locking behaviour indicates that the Imaginary phase both is the direction that has the maximum relationship with ENSO and is also the most common phase. Therefore, the Imaginary cEOF2 explains more variance than the Real cEOF2 and conventional cEOF analysis will tend to separate the two.
 
-This is analogous to the method of \citet{irving2016}, who used reprojection and Fourier filtering to detect ``PSA-like'' variability and defined as the proper PSA using the peaks of the phase distribution (Compare our Figure~\ref{fig:phase-histogram} with their Figure 6).
-
-\textcolor{red}{(Amplia un poco la oración anterior que no queda del todo clara)}
+This is similar to the method used by \citet{irving2016}. From their Fourier decomposition of reprojected meridional wind fields, they show that the phase distribution is bimodal and isolate the PSA pattern from the rest of the PSA-like variability by selecting events that are near the peacks of the distribution (compare our Figure~\ref{fig:phase-histogram} with their Figure 6).
 
 The advantage of our method is that it is much simpler to implement, it provides magnitude and phase naturally, and it facilitates the description of this mode as a propagating wave instead of as standing oscillation. As a consequence, the cEOF2 offers an alternative way of representing the PSA which has several advantages over using the second and third EOFs.
 
@@ -351,35 +349,28 @@ The advantage of our method is that it is much simpler to implement, it provides
 \begin{figure}
 \centering
 \includegraphics{../figures/sam-eof-vertical-1.pdf}
-\caption{\label{fig:sam-eof-vertical}Coefficient of determination between the real and imaginary part of each cEOF and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level according to \citet{campitelli2021}. Points mark estimates with p-value \textless{} 0.01 corrected for False Detection Rate \citep{benjamini1995}.}
+\caption{\label{fig:sam-eof-vertical}Coefficient of determination between the real and imaginary part of each cEOF and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level according to \citet{campitelli2021}. Thick lines represent estimates with p-value \textless{} 0.01 corrected for False Detection Rate \citep{benjamini1995}.}
 \end{figure}
 
-To explore the relationship between SAM and the modes described from the cEOF, it is computed the coefficient of determination between the cEOFs timeseries and the three SAM indices (SAM, A-SAM and S-SAM) at each level (Fig.~\ref{fig:sam-eof-vertical}). Both cEOFs bear some modest relationship with the full SAM index (thick green line in Figure~\ref{fig:sam-eof-vertical}), although not statistically significant at every level.
+To explore the relationship between SAM and the modes described from the cEOF, we compute. the coefficient of determination between the cEOFs timeseries and the three SAM indices (SAM, A-SAM and S-SAM) at each level (Fig.~\ref{fig:sam-eof-vertical}). The SAM index is moderately correlated with the Real cEOF1 in all levels, and with the Imaginary cEOF1 and Imaginary cEOF2 in the troposphere. It is not correlated with the Real cEOF2 at any level.
 
-\textcolor{red}{(Esta explicación habría que hacerla más detallada. Explicar más sobre lo que se ve en cada panel y después ir interpretando.  )}
-The split between A-SAM and S-SAM gives more insight into the nature of the relationship. The relationship between the SAM and ¿the imaginary cEOF1? (Figure~\ref{fig:sam-eof-vertical}.b1) is mediated by S-SAM in the troposphere, but by the A-SAM in the stratosphere.
-
-The Imaginary cEOF2 is related with the SAM through the A-SAM in the troposphere, with up to \textcolor{red}{(Acá aparece un -)} -96\% of shared variance, reached at 225 hPa (Figure~\ref{fig:sam-eof-vertical}.b2).
-
-\begin{figure}
-\centering
-\includegraphics{../figures/eof-filtered-1.pdf}
-\caption{\label{fig:eof-filtered}Spatial pattern of the leading EOF of 200 hPa geopotential height with the variability of cEOF2 filtered out South of 20º. Arbitrary units.}
-\end{figure}
+The relationship between the tropospheric SAM and cEOF1 is explained entirely by the zonally symmetric component of the SAM as shown by the low and statistically non-significant correlations between the A-SAM and either the Real or Imaginary cEOF1 and the high correlation with the S-SAM below 100 hPa. In the stratosphere, the Real cEOF1 is correlated with both A-SAM and S-SAM, while the Imaginary cEOF1 is highly correlated only with the A-SAM. These correlations are consistent with the regression patterns of geopotential height in Figure~\ref{fig:eof1-regr-gh}.
 
 \textcolor{red}{(La discusión de los próximos parráfos me resulta confusa. Deberías aclarar mejor por qué mostras cada cosa que mostras y cómo se relaciona con lo que mostraste antes. También me resulta como un resultado que se va un poco de tema, por eso creo que debería estar mejor contada esta parte para poder incluirla)}
 
-As a further illustration \textcolor{red}{(¿De qué?)}, Figure~\ref{fig:eof-filtered} shows the spatial pattern of the leading EOF of 200 hPa geopotential height when the variability associated with cEOF2 is removed. The resulting pattern is an nearly zonally symmetrical annular mode. This mode is highly correlated with SAM (0.75 (CI: 0.58 -- 0.86)), but only with the symmetrical part (0.88 (CI: 0.79 -- 0.94)). Note that the usual definition of the PSA modes as the second and third EOFs creates modes orthogonal to the SAM (defined as the first EOF) and thus impedes this kind of filtering.
+In the case of cEOF2, the moderate correlation between SAM and Imaginary cEOF2 becomes extremely high when only the zonally asymmetric variability of the SAM is considered. The Imaginary cEOF2 and the A-SAM share up to 92\% of their variance, reached at 225 hPa (Figure~\ref{fig:sam-eof-vertical}.b2). Such extremely high correlation between the asymmetric SAM and the Imaginary cEOF2 suggests that these are not different features that share a causal link, but that they might be different ways of characterising the same phenomenon. And, in fact, suggests that the asymmetric part of the SAM might be statistical contamination from one phase of the PSA.
 
 
 
 \begin{figure}
 \centering
 \includegraphics{../figures/fake-eof-1.pdf}
-\caption{\label{fig:fake-eof}EOFs of a synthetic data set of 41 times steps of geopotential height fields as the sum of the fields predicted by the cEOF2 plus perfectly zonally symmetric SAM-like anomalies with random amplitude.}
+\caption{\label{fig:fake-eof}Row a: The three components used to create a synthetic dataset of 41 years of geopotential height at 200 hPa. Row b: The three EOF computed from the synthetic dataset with the variance explained by each EOF in parenthesis. Units are arbitrary. Negative values in blue and positive values in red.}
 \end{figure}
 
-This suggests that the asymmetric part of the SAM might be statistical contamination from one phase of the PSA. Figure~\ref{fig:fake-eof} serves as an illustration of this kind of statistical mixing of independent modes. If shows the leading (and only) EOFs of a synthetic dataset if 41 years created by adding a perfectly zonally symmetrical SAM-like pattern with random amplitudes taken from the real SAM, and geopotential height anomalies predicted by EFO2. Even though by construction this dataset has a perfectly symmetric SAM, the EOF decomposition mixes this mode with parts of the the zonally asymmetric cEOF2 pattern, resulting in a pattern eerily similar to the real SAM pattern.
+To test the hypothesis that a PSA-like feature can appear as statistic contamination of an otherwise zonally symmetrical and uncorrelated SAM, we create a synthetic dataset of 41 fields by reconstructing the 200 hPa geopotential field explained by the cEOF2 and adding a perfectly zonally symmetric SAM-like structure with random sign and value. To this synthetic dataset we then apply traditional EOF. By construction this dataset contains two independent components: a zonally symmetric standing oscillation and a PSA of varying amplitude and phase (Figure~\ref{fig:fake-eof} row a). The former one is ar standing oscillation which could be represented by a single EOF, while the latter, being a wave which can change phase, needs two EOFs to be represented correctly. Thus, the full variance of this synthetic dataset can be perfectly explained by three EOFs.
+
+The three EOFs of the synthetic dataset are shown in Figure~\ref{fig:fake-eof} row b. The synthetic SAM can be seen in the first EOF while the PSA is explained by the second and third. However, even though the synthetic SAM is perfectly zonally symmetric by construction, the leading EOF is not. The EOF decomposition mixes this mode with parts of the the zonally asymmetric cEOF2 pattern, resulting in a pattern eerily similar to the real SAM pattern. Of note, the three EOFs are well separated according to North's rule of thumb \citep{north1982}.
 
 This suggests that the zonal asymmetries of the SAM could very well be mostly a statistical artifact. Since many surface impacts are mediated by the asymmetric component, as well as the relationship between SAM and ENSO \citep{campitelli2021}, this potential issue could affect the interpretability of many results involving the SAM. Studies on the relationship between the SAM and the PSA pattern would be particularly difficult to interpret.
 
@@ -394,7 +385,7 @@ This suggests that the zonal asymmetries of the SAM could very well be mostly a 
 
 Figure~\ref{fig:sst-psi-2} shows regression maps between cEOF2 and Sea Surface Temperatures (SST) Streamfunction at 200 hPa. The Imaginary cEOF2 is associated with strong positive SST anomalies on the Central Pacific and negative anomalies on an area across the North of Australia and New Zealand, the South Pacific Convergence Zone (SPCZ) (Figure~\ref{fig:sst-psi-2}.a2). This pattern is almost canonically positive ENSO and indeed, the correlation between the Imaginary cEOF2 and the Oceanic Niño Index \citep{bamston1997} is very high 0.76 (CI: 0.59 -- 0.86). Streamfunction anomalies show a coherent picture. The Imaginary cEOF2 is associated with strong wave-like streamfunction anomalies emanating from the tropics (Figure~\ref{fig:sst-psi-2}.b2). This is consistent with what we know of the effect of ENSO on the extratropics: SST anomalies initiate anomalous convection that excites Rossby waves that propagate meridionally towards higher latitudes \textcolor{red}{(REFS??)}.
 
-Since the Real cEOF2 represents just a different phase of the same wave train, one would expect that it would show a similar forcing pattern to the Imaginary cEOF with a slight translation of its location. However, Figure~\ref{fig:sst-psi-2}.a1 and b1 show that the Real cEOF2 is not associated either with any significant SST nor streamfunction anomalies in the tropics. The correlation between the Real cEOF2 and ENSO is also not significant () \textcolor{red}{(No aparece el valor en el PDF)}. This lack of tropical signal suggests different natures of the different phases of the cEOF2 wave train.
+Since the Real cEOF2 represents just a different phase of the same wave train, one would expect that it would show a similar forcing pattern to the Imaginary cEOF with a slight translation of its location. However, Figure~\ref{fig:sst-psi-2}.a1 and b1 show that the Real cEOF2 is not associated either with any significant SST nor streamfunction anomalies in the tropics. The correlation between the Real cEOF2 and ENSO is also not significant (-0.0017 (CI: -0.31 -- 0.31)) \textcolor{red}{(No aparece el valor en el PDF)}. This lack of tropical signal suggests different natures of the different phases of the cEOF2 wave train.
 
 \begin{figure}
 \centering
@@ -404,7 +395,7 @@ Since the Real cEOF2 represents just a different phase of the same wave train, o
 
 To better explore the relationship between tropical forcing and phase of the cEOF2, Figure~\ref{fig:enso-phase} plots the ONI index and the phase of the cEOF2 for each SON trimester between 1979 and 2019, highlighting years in which the magnitude of cEOF2 is above the median. In years with positive ONI, the phase of the cEOF2 is mostly around +90º (corresponding with positive imaginary part) and vice versa. In years with near neutral ENSO, the phase of the cEOF2 is much more variable. The black line in Figure~\ref{fig:enso-phase} is an harmonical fit of the relationship between ONI and cEOF2 phase. The \(r^2\) corresponding to the fit is 0.56, with p-value \textless{} 0.001, indicating a quasi-sinusoidal relation between these two variables.
 
-Furthemore, Figure~\ref{fig:enso-phase} suggest that strong cEOF2 years tend to coincide with strong ENSO years. The correlation between the absolute magnitude of the ONI and the magnitude of the cEOF2 is 0.44 (CI: 0.16 -- 0.66). This relationship, however, appears to be driven only by the three years with strongest ENSO events in the period (2015, 1997, and 1982) which also coincide with the three years with strongest cEOF2 magnitude. If those years are removed, the correlation becomes non-significant (0.044 (CI: -0.28 -- 0.36)). Furthermore, even when using all the datapoints, the Spearman correlation --which is robust to outliers-- is also non-significant (0.2, p-value= 0.2). Therefore, the relationship between the magnitude of the cEOF2 train wave and ONI remains uncertain.
+Furthermore, Figure~\ref{fig:enso-phase} suggest that strong cEOF2 years tend to coincide with strong ENSO years. The correlation between the absolute magnitude of the ONI and the magnitude of the cEOF2 is 0.44 (CI: 0.16 -- 0.66). This relationship, however, appears to be driven only by the three years with strongest ENSO events in the period (2015, 1997, and 1982) which also coincide with the three years with strongest cEOF2 magnitude. If those years are removed, the correlation becomes non-significant (0.044 (CI: -0.28 -- 0.36)). Furthermore, even when using all the datapoints, the Spearman correlation --which is robust to outliers-- is also non-significant (0.2, p-value= 0.2). Therefore, the relationship between the magnitude of the cEOF2 train wave and ONI remains uncertain.
 
 It could be concluded that the wave train represented by cEOF2 can be both part of the internal variability of the extratropical atmosphere or forced by tropical SSTs. In the former case, the wave train has little phase preference. However, when cEOF2 is excited by tropical SST variability, it tends to remain locked to the imaginary phase. This explains the relative overabundance of years with cEOF2 near positive and negative imaginary phase in Figure~\ref{fig:phase-histogram}.
 

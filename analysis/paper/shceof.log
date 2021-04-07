@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.3.30)  6 APR 2021 15:52
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.3.30)  7 APR 2021 19:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -574,10 +574,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [1] [2] [3]
 File: ../figures/eof-naive-1.pdf Graphic file (type pdf)
 <use ../figures/eof-naive-1.pdf>
-[4]
-Underfull \vbox (badness 2080) has occurred while \output is active []
-
-[5]
+[4] [5]
 File: ../figures/ceofs-1-1.pdf Graphic file (type pdf)
 <use ../figures/ceofs-1-1.pdf>
 File: ../figures/ceofs-2-1.pdf Graphic file (type pdf)
@@ -591,11 +588,14 @@ Overfull \hbox (154.84003pt too wide) in paragraph at lines 229--229
  []
 
 
-Underfull \vbox (badness 5050) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [7]
 File: ../figures/eof1-regr-gh-1.pdf Graphic file (type pdf)
 <use ../figures/eof1-regr-gh-1.pdf>
+
+Underfull \vbox (badness 3138) has occurred while \output is active []
+
 [8]
 File: ../figures/eof2-regr-gh-1.pdf Graphic file (type pdf)
 <use ../figures/eof2-regr-gh-1.pdf>
@@ -631,9 +631,6 @@ Overfull \hbox (154.84003pt too wide) in paragraph at lines 321--321
 [][] 
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 [13] [14]
 File: ../figures/phase-histogram-1.pdf Graphic file (type pdf)
 <use ../figures/phase-histogram-1.pdf>
@@ -641,28 +638,27 @@ File: ../figures/phase-histogram-1.pdf Graphic file (type pdf)
 File: ../figures/sam-eof-vertical-1.pdf Graphic file (type pdf)
 <use ../figures/sam-eof-vertical-1.pdf>
 [16]
-File: ../figures/eof-filtered-1.pdf Graphic file (type pdf)
-<use ../figures/eof-filtered-1.pdf>
 File: ../figures/fake-eof-1.pdf Graphic file (type pdf)
 <use ../figures/fake-eof-1.pdf>
 [17]
 File: ../figures/sst-psi-2-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-2-1.pdf>
 
-Overfull \hbox (141.79132pt too wide) in paragraph at lines 392--392
+Overfull \hbox (141.79132pt too wide) in paragraph at lines 383--383
 [][] 
  []
 
+[18]
 File: ../figures/enso-phase-1.pdf Graphic file (type pdf)
 <use ../figures/enso-phase-1.pdf>
-[18]
-Underfull \vbox (badness 4995) has occurred while \output is active []
+
+Underfull \vbox (badness 2103) has occurred while \output is active []
 
 [19]
 File: ../figures/sst-psi-1-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-1-1.pdf>
 
-Overfull \hbox (141.79132pt too wide) in paragraph at lines 414--414
+Overfull \hbox (141.79132pt too wide) in paragraph at lines 405--405
 [][] 
  []
 
@@ -672,7 +668,7 @@ File: ../figures/pp-america-1.pdf Graphic file (type pdf)
 File: ../figures/pp-oceania-1.pdf Graphic file (type pdf)
 <use ../figures/pp-oceania-1.pdf>
 
-Underfull \vbox (badness 4995) has occurred while \output is active []
+Underfull \vbox (badness 2103) has occurred while \output is active []
 
 [21]
 File: ../figures/australia-pp-phase-1.pdf Graphic file (type pdf)
@@ -715,21 +711,21 @@ a5-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [26])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 491.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 482.
 [27]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 491.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 482.
 (./shceof.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 491.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 491.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 491.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 482.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 482.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 482.
  ) 
 Here is how much of TeX's memory you used:
- 12938 strings out of 493007
- 184117 string characters out of 6136719
- 296094 words of memory out of 5000000
- 16729 multiletter control sequences out of 15000+600000
+ 12936 strings out of 493007
+ 184016 string characters out of 6136719
+ 296001 words of memory out of 5000000
+ 16728 multiletter control sequences out of 15000+600000
  9670 words of font info for 45 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 44i,9n,47p,1274b,489s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,9n,47p,1274b,487s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on shceof.pdf (27 pages).
