@@ -1227,7 +1227,7 @@ To explore the relationship between SAM and the modes described from the cEOF, i
  \textcolor{red}{(Esta explicación habría que hacerla más detallada. Explicar más sobre lo que se ve en cada panel y después ir interpretando.  )}
 The split between A-SAM and S-SAM gives more insight into the nature of the relationship. The relationship between the SAM and ¿the imaginary cEOF1? (Figure\ \@ref(fig:sam-eof-vertical).b1) is mediated by S-SAM in the troposphere, but by the A-SAM in the stratosphere.
 
-The Imaginary cEOF2 is related with the SAM through the A-SAM in the troposphere, with up to \textcolor{red}{(Acá aparece un -)} `r scales::percent(max_r2[cEOF == "cEOF2"]$estimate, 2)` of shared variance, reached at `r max_r2[cEOF == "cEOF2"]$lev` hPa (Figure\ \@ref(fig:sam-eof-vertical).b2). 
+The Imaginary cEOF2 is related with the SAM through the A-SAM in the troposphere, with up to `r scales::percent(max_r2[cEOF == "cEOF2"]$estimate^2, 2)` of shared variance, reached at `r max_r2[cEOF == "cEOF2"]$lev` hPa (Figure\ \@ref(fig:sam-eof-vertical).b2). 
 
 ```{r eof-filtered, fig.cap = "Spatial pattern of the leading EOF of 200 hPa geopotential height with the variability of cEOF2 filtered out South of 20º. Arbitrary units.", fig.width=2.5, fig.height=2.5}
 eof_filtered <- era5 %>% 
