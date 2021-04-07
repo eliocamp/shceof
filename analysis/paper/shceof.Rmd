@@ -1180,10 +1180,8 @@ cut(ceof$eof[[1]], 2)$left %>%
 
 This phase-locking behaviour indicates that the Imaginary phase both is the direction that has the maximum relationship with ENSO and is also the most common phase. Therefore, the Imaginary cEOF2 explains more variance than the Real cEOF2 and conventional cEOF analysis will tend to separate the two. 
 
-This is analogous to the method of @irving2016, who used reprojection and Fourier filtering to detect "PSA-like" variability and defined as the proper PSA using the peaks of the phase distribution (Compare our Figure\ \@ref(fig:phase-histogram) with their Figure 6).
-
-\textcolor{red}{(Amplia un poco la oración anterior que no queda del todo clara)} 
-
+This is similar to the method used by @irving2016. From their Fourier decomposition of reprojected meridional wind fields, they show that the phase distribution is bimodal and isolate the PSA pattern from the rest of the PSA-like variability by selecting events that are near the peacks of the distribution (compare our Figure\ \@ref(fig:phase-histogram) with their Figure 6).
+ 
 The advantage of our method is that it is much simpler to implement, it provides magnitude and phase naturally, and it facilitates the description of this mode as a propagating wave instead of as standing oscillation. As a consequence, the cEOF2 offers an alternative way of representing the PSA which has several advantages over using the second and third EOFs.
 
 ### SAM
