@@ -1644,9 +1644,27 @@ plot_pp(data = regr_pp, which_cEOF = c("cEOF1", "cEOF2"), which_continent = "ame
 
 The influence of cEOFs variability in continental rainfall of extra-tropical Southern Hemisphere is also explored. We focus on South America and Oceania sectors, because there are not relevant signals in Southern Africa (not shown). 
 
-Figure\ \@ref(fig:pp-america) shows regression maps of seasonal precipitation with each cEOF in South America. cEOF1 is associated with slight decreases in precipitation in Southern Brazil and Paraguay, although these are not statistically significant \@ref(fig:pp-america) column a. The strongest precipitation anomalies are the ones associated with the Imaginary cEOF2. The positive anomalies on Southeastern South America (SESA) and Central Chile, and negative anomalies over South Atlantic Convergence Zone is a well known springtime precipitation signature of ENSO [@cai2020a] and it is also similar to the precipitation anomalies associated with the A-SAM [@campitelli2021]. This is not surprising considering the close relationship between the ONI, the Asymmetric SAM index and the Imaginary cEOF2 shown previously, but further consolidates the identification of this mode with the PSA pattern. The Real cEOF2, on the other hand, is associated with negative precipitation anomalies in a smaller area of SESA. There is a phase dependence of the precipitation anomalies in SESA (not shown), which resembles the relationship between ONI and the phase of cEOF2. \textcolor{red}{(Podrías agregar acá el coeficiente de determinación)}
+```{r sinusoidal-sesa}
+gdata <- cmap %>% 
+  .[lon %between% sesa$lon  & lat %between% sesa$lat] %>% 
+  .[, .(pp = weighted.mean(pp, cos(lat*pi/180))), by = time] %>% 
+  .[, pp := Anomaly(pp), by = season(time)] %>% 
+  .[ceof$eof[[1]]$left, on  = "time"] %>% 
+  .[cEOF == "cEOF2"] %>% 
+  .[, arg := Arg(hgt)] %>% 
+  .[, mag := Mod(hgt)]
 
-  (ref:pp-oceania-cap) As Figure\ \@ref(fig:pp-america) but for Oceania.
+model <- lm(pp ~ I(sin(arg)) + I(cos(arg)) - 1, data = gdata)
+
+fstatistic <- summary(model)$fstatistic
+p_value <- pf(fstatistic["value"], fstatistic["numdf"], fstatistic["dendf"], 
+        lower.tail = FALSE)
+```
+
+
+Figure\ \@ref(fig:pp-america) shows regression maps of seasonal precipitation with each cEOF in South America. cEOF1 is associated with slight decreases in precipitation in Southern Brazil and Paraguay, although these are not statistically significant \@ref(fig:pp-america) column a. The strongest precipitation anomalies are the ones associated with the Imaginary cEOF2. The positive anomalies on Southeastern South America (SESA) and Central Chile, and negative anomalies over South Atlantic Convergence Zone is a well known springtime precipitation signature of ENSO [@cai2020a] and it is also similar to the precipitation anomalies associated with the A-SAM [@campitelli2021]. This is not surprising considering the close relationship between the ONI, the Asymmetric SAM index and the Imaginary cEOF2 shown previously, but further consolidates the identification of this mode with the PSA pattern. The Real cEOF2, on the other hand, is associated with negative precipitation anomalies in a smaller area of SESA. There is a phase dependence of the precipitation anomalies in SESA (not shown), which resembles the relationship between ONI and the phase of cEOF2. A sinusoidal fit has an $r^2$\ of\ `r round(summary(model)$r.squared, 2)` with p-value\ `r report_p(p_value)`. 
+
+(ref:pp-oceania-cap) As Figure\ \@ref(fig:pp-america) but for Oceania.
 
 ```{r box_australia}
 box_australia <- data.frame(cEOF = "cEOF2", 
