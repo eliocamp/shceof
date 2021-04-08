@@ -1256,7 +1256,6 @@ eof_filtered_cor <- eof_filtered$right[sams, on = "time"] %>%
 #   theme(axis.text = element_blank())
 ```
 
-\textcolor{red}{(La discusión de los próximos parráfos me resulta confusa. Deberías aclarar mejor por qué mostras cada cosa que mostras y cómo se relaciona con lo que mostraste antes. También me resulta como un resultado que se va un poco de tema, por eso creo que debería estar mejor contada esta parte para poder incluirla)}
 
 In the case of cEOF2, the moderate correlation between SAM and Imaginary cEOF2 becomes extremely high when only the zonally asymmetric variability of the SAM is considered. The Imaginary cEOF2 and the A-SAM share up to `r scales::percent(max_r2[cEOF == "cEOF2"]$estimate^2, 2)` of their variance, reached at `r max_r2[cEOF == "cEOF2"]$lev` hPa (Figure\ \@ref(fig:sam-eof-vertical).b2). Such extremely high correlation between the asymmetric SAM and the Imaginary cEOF2 suggests that these are not different features that share a causal link, but that they might be different ways of characterising the same phenomenon. And, in fact, suggests that the asymmetric part of the SAM might be statistical contamination from one phase of the PSA. 
 
