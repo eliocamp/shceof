@@ -1679,8 +1679,7 @@ plot_pp(regr_pp, c("cEOF1", "cEOF2"), which_continent =  "oceania") +
             fill = NA, colour = "gray20") 
 ```
 
-The precipitation anomalies in Oceania associated with cEOF1 are also weak and not statistically significant (Figure\ \@ref(fig:pp-oceania) column a) whereas EFO2 is associated with large and expansive anomalies. The Real cEOF2 is associated with positive seasonal anomalies in Northern and Eastern Australia, and negative ones over New Zealand, while precipitation anomalies associated with Imaginary cEOF2 are negative over all Eastern Australia. Again, these negative anomalies are similar to the springtime precipitation anomalies observed in relation with the Asymmetric SAM [@campitelli2021]. 
-\textcolor{red}{(Habría que agregar alguna referencia del ENSO que es más conocido)}
+The precipitation anomalies in Oceania associated with cEOF1 are also weak and not statistically significant (Figure\ \@ref(fig:pp-oceania) column a) whereas EFO2 is associated with large and expansive anomalies. The Real cEOF2 is associated with positive seasonal anomalies in Northern and Eastern Australia, and negative ones over New Zealand, while precipitation anomalies associated with Imaginary cEOF2 are negative over all Eastern Australia. Again, these negative anomalies are similar to the springtime precipitation anomalies observed in relation with the Asymmetric SAM [@campitelli2021] and ENSO [@cai2011]. 
 
 (ref:australia-pp-phase-cap) Same as Figure\ \@ref(fig:enso-phase) but for precipitacion anomalies averaged between  `r knitr::combine_words(LonLabel(box_australia$lon))` and `r knitr::combine_words(LatLabel(box_australia$lat))` (box shown in Figure\ \@ref(fig:pp-oceania) column b).
 
