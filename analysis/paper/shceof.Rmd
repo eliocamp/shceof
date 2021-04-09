@@ -1334,6 +1334,8 @@ cEOF2[psa_time, on = "time"] %>%
   # .[, hgt := rotate(hgt, psa_angle)] %>%
   sep_ReIm() %>% 
   ggplot(aes(value, hgt)) +
+  geom_hline(yintercept = 0, size = 0.2, color = "gray50") +
+  geom_vline(xintercept = 0, size = 0.2, color = "gray50") +
   geom_point() +
   geom_smooth(method = "lm") +
   geom_smooth(method = "lm") + 
