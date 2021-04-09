@@ -72,7 +72,7 @@ knitr::opts_chunk$set(
   echo = FALSE,
   cache = TRUE,
   comment = "#>",
-  cache.extra = 41,
+  cache.extra = 42,
   cache.path = "../cache/paper/",
   fig.path = "../figures/",
   dpi = 300,
@@ -199,12 +199,13 @@ enso <- rsoi::download_oni(TRUE, data_path("raw", "oni.csv")) %>%
   .[, .(time = lubridate::as_datetime(Date), oni = ONI)] %>%
   na.omit() %>%
   .[season(time) == "SON"] %>%
+  .[, oni := oni*season_weights(time)] %>% 
   .[, .(oni = mean(oni)), by = .(time = seasonally(time))]
 
 sams <- readRDS(data_path("derived", "sam.Rds")) %>%
   .[season(time) == "SON"] %>%
-  .[, dim :=  lubridate::days_in_month(time)] %>%
-  .[, .(estimate = weighted.mean(estimate, dim)),
+  .[, estimate := estimate*season_weights(time)] %>% 
+  .[, .(estimate = mean(estimate)),
     by = .(lev, term, time = seasonally(time))]
 
 levs <- unique(sams$lev)
@@ -235,8 +236,9 @@ era5 <- ReadNetCDF(ERA5(), vars = c(hgt = "z",
                                  latitude = -90:10)) %>% 
   normalise_coords() %>% 
   .[season(time) == "SON"] %>%
-  .[, .(hgt = mean(hgt), 
-        t = mean(t)), by = .(lev, lon, lat, time = seasonally(time))]
+  .[, w := season_weights(time)] %>% 
+  .[, .(hgt = mean(hgt*w), 
+        t = mean(t*w)), by = .(lev, lon, lat, time = seasonally(time))]
 ```
 
 ```{r compute-psi}
@@ -245,7 +247,8 @@ psi <- ReadNetCDF(ERA5(), vars = "vo",
                                 time = c("1979-01-01", "2019-12-01"))) %>%
   normalise_coords() %>%
   .[season(time) == "SON"] %>%
-  .[, .(vo = mean(vo)), by = .(lon, lat, lev, time = seasonally(time))] %>%
+  .[, w := season_weights(time)] %>% 
+  .[, .(vo = mean(vo*w)), by = .(lon, lat, lev, time = seasonally(time))] %>%
   .[, solve_poisson(vo, lon, lat), by = .(lev, time)] %>%
   setnames("value", "psi") %>% 
   .[, psi.z := Anomaly(psi), by = .(time, lev, lat)] 
@@ -259,7 +262,8 @@ o3 <- O3() %>%
   .[, lon := ConvertLongitude(lon)] %>% 
   .[lat <= -20] %>% 
   .[, toc := toc/2.1415e-5] %>%    # transform to Dobson Units (https://sacs.aeronomie.be/info/dobson.php)
-  .[, .(toc = mean(toc, na.rm = TRUE)), by = .(lon, lat, time = seasonally(time))]
+  .[, w := season_weights(time)] %>% 
+  .[, .(toc = mean(toc*w)), by = .(lon, lat, time = seasonally(time))]
 
 o3wave_lats <- c(-75, -45)
 ```
@@ -270,7 +274,8 @@ psa <- ReadNetCDF(ERA5(), vars = c(hgt = "z"),
                    subset = list(level = list(500),
                                  latitude = -90:0)) %>% 
   normalise_coords() %>% 
-  .[, .(hgt = mean(hgt)), by = .(lon, lat, time = seasonally(time))] %>% 
+  .[, w := season_weights(time)] %>% 
+  .[, .(hgt = mean(hgt*w)), by = .(lon, lat, time = seasonally(time))] %>% 
   .[, value := Anomaly(hgt)*sqrt(cos(lat*pi/180)), by = .(lon, lat, season(time))] %>%
   EOF(value ~ time | lon + lat, n = 1:3, data = .)
 
@@ -398,7 +403,8 @@ invisible(
                            level = list(200, 50))) %>%
     normalise_coords() %>%
     .[season(time) == "SON"] %>%
-    .[, .(hgt = mean(hgt)), by = .(lev, lon, lat, time = seasonally(time))] %>%
+    .[, w := season_weights(time)] %>% 
+    .[, .(hgt = mean(hgt*w)), by = .(lev, lon, lat, time = seasonally(time))] %>%
     .[, season := season(time)] %>%
     {
       ceof <<- .[, .(eof = list(compute_ceof(.SD))), by = .(season)]
@@ -677,7 +683,8 @@ era_more <- rbind(
                            level = list(200, 50)))) %>%
   normalise_coords() %>%
   .[season(time) == "SON"] %>%
-  .[, .(hgt = mean(hgt)), by = .(lev, lon, lat, time = seasonally(time))] %>%
+  .[, w := season_weights(time)] %>% 
+  .[, .(hgt = mean(hgt*w)), by = .(lev, lon, lat, time = seasonally(time))] %>%
   .[, season := season(time)] %>%
   .[, hgt := hgt/sd(hgt), by = .(lev)] %>%
   .[pattern, on = .NATURAL, allow.cartesian = TRUE] %>%
@@ -870,10 +877,11 @@ t <- ERA5() %>%
   ReadNetCDF(vars = c("t", hgt = "z", "o3"), 
              subset = list(latitude = c(-90, -20))) %>% 
   normalise_coords() %>% 
-  .[season(time) == "SON"] %>%
-  .[, .(t = mean(t),
-        o3 = mean(o3),
-        hgt = mean(hgt)), by = .(lev, lon, lat, time = seasonally(time))]
+  .[season(time) == "SON"] %>% 
+  .[, w := season_weights(time)] %>% 
+  .[, .(t   = mean(t*w),
+        o3  = mean(o3*w),
+        hgt = mean(hgt*w)), by = .(lev, lon, lat, time = seasonally(time))]
 ```
 
 (ref:t-vertical-cap) Regression coefficients between cEOF1 and zonal anomalies of mean air temperature (shaded) and ozone mixing ratio (contours, negative contours with dashed lines, labels in parts per billion by mass) averaged between `r knitr::combine_words(LatLabel(o3wave_lats))` for the period 1979 -- 2019.
@@ -1364,7 +1372,7 @@ era5 %>%
 ```
 
 
-To test the hypothesis that a PSA-like feature can appear as statistic contamination of an otherwise zonally symmetrical and uncorrelated SAM, we create a synthetic dataset of `r uniqueN(fake_sam$time)` fields by reconstructing the 200 hPa geopotential field explained by the cEOF2 and adding a perfectly zonally symmetric SAM-like structure with random sign and value. To this synthetic dataset we then apply traditional EOF. By construction this dataset contains two independent components: a zonally symmetric standing oscillation and a PSA of varying amplitude and phase (Figure\ \@ref(fig:fake-eof) row a). The former one is ar standing oscillation which could be represented by a single EOF, while the latter, being a wave which can change phase, needs two EOFs to be represented correctly. Thus, the full variance of this synthetic dataset can be perfectly explained by three EOFs. 
+To test the hypothesis that a PSA-like feature can appear as statistic contamination of an otherwise zonally symmetrical and uncorrelated SAM, we create a synthetic dataset of `r uniqueN(fake_sam$time)` fields by reconstructing the 200 hPa geopotential field explained by the cEOF2 and adding a perfectly zonally symmetric SAM-like structure with random sign and value. To this synthetic dataset we then apply traditional EOF. By construction this dataset contains two independent components: a zonally symmetric standing oscillation and a PSA-like of varying amplitude and phase (Figure\ \@ref(fig:fake-eof) row a). The former one is ar standing oscillation which could be represented by a single EOF, while the latter, being a wave which can change phase, needs two EOFs to be represented correctly. Thus, the full variance of this synthetic dataset can be perfectly explained by three EOFs. 
 
 The three EOFs of the synthetic dataset are shown in Figure\ \@ref(fig:fake-eof) row b. The synthetic SAM can be seen in the first EOF while the PSA is explained by the second and third. However, even though the synthetic SAM is perfectly zonally symmetric by construction, the leading EOF is not. The EOF decomposition mixes this mode with parts of the the zonally asymmetric cEOF2 pattern, resulting in a pattern eerily similar to the real SAM pattern. Of note, the three EOFs are well separated according to North's rule of thumb [@north1982].
 
@@ -1393,7 +1401,8 @@ sst <- ERA5_SST() %>%
   ReadNetCDF(vars = c("t" = "sst")) %>%
   normalise_coords() %>%
   .[season(time) == "SON"] %>%
-  .[, .(t = mean(t)), by = .(lon, lat, time = seasonally(time))]
+  .[, w := season_weights(time)] %>% 
+  .[, .(t = mean(t*w)), by = .(lon, lat, time = seasonally(time))]
 ```
 
 ```{r regr_sst}
@@ -1502,7 +1511,7 @@ gdata %>%
   geom_hline(yintercept = c(-0.5, 0, 0.5), size = 0.2, color = "gray50") +
   geom_vline(xintercept = 0, size = 0.2, color = "gray50") +
    annotate(shadowtext:::GeomShadowText,
-           label = c("- Real", "- Imaginary", "+ Real", "+ Imaginary", "+ Real"),
+           label = c("- Real", "- Imaginary", "+ Real", "+ Imaginary", "- Real"),
            color = "gray60", bg.colour = "white", bg.r = 0.2,
            size = 3,
            y = -Inf, x = c(-pi, -pi/2, 0, pi/2, pi), angle = 90, hjust = 0) +
@@ -1551,7 +1560,8 @@ Figure\ \@ref(fig:sst-psi-1) shows SST and streamfunction regression maps for cE
 cmap <- ReadNetCDF(CMAP(), vars = c(pp = "precip"),
                    subset = list(lat = -90:10)) %>%
   normalise_coords() %>%
-  .[, .(pp = mean(pp, na.rm = TRUE)), by = .(lon, lat, time = seasonally(time))]
+  .[, w := season_weights(time)] %>% 
+  .[, .(pp = mean(pp*w)), by = .(lon, lat, time = seasonally(time))]
 ```
 
 ```{r regr_pp}
@@ -1717,7 +1727,7 @@ gdata %>%
   geom_hline(yintercept = 0, size = 0.2, color = "gray50") +
   geom_vline(xintercept = 0, size = 0.2, color = "gray50") +
   annotate(shadowtext:::GeomShadowText,
-           label = c("- Real", "- Imaginary", "+ Real", "+ Imaginary", "+ Real"),
+           label = c("- Real", "- Imaginary", "+ Real", "+ Imaginary", "- Real"),
            color = "gray60", bg.colour = "white", bg.r = 0.2,
            size = 3,
            y = -Inf, x = c(-pi, -pi/2, 0, pi/2, pi), angle = 90, hjust = 0) +
