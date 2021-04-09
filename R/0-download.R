@@ -184,3 +184,24 @@ simple_download <- function(url) {
 }
 
 
+download_ersst <- function(file) {
+  base_url <- "https://www.ncei.noaa.gov/pub/data/cmb/ersst/v5/netcdf/ersst.v5."
+
+  years <- 1970:2019
+  months <- formatC(9:11, width = 2, flag = "0")
+  dates <- data.table::CJ(years, months)[, paste0(years, months)]
+
+  urls <- paste0(base_url, dates, ".nc")
+
+  files <- vapply(urls, function(url) {
+    file <- tempfile(fileext = ".nc")
+    download.file(url, file)
+    file
+  }, character(1))
+
+  data <- lapply(files, function(file) metR::ReadNetCDF(file, vars = c(t = "sst")))
+  data <- data.table::rbindlist(data)
+
+  saveRDS(data, file)
+  file
+}

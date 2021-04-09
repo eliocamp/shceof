@@ -17,7 +17,7 @@ NCEP_VOR(force)
 # Download ERA5 -----------------------------------------------------------
 ERA5(force)
 ERA5_BE(force)
-ERA5_SST(force)
+ERSST(force)
 
 # Download ERA20C -----------------------------------------------------------
 ERA20C(force)

@@ -310,7 +310,7 @@ In this paper we propose using complex Empirical Orthogonal Functions [@horel198
 
 ## Data
 
-We used monthly geopotential height, air temperature, ozone mixing ratio, and Total Ozone Column (TOC) at 2.5\degree\ longitude by 2.5\degree\ latitude of horizontal resolution and 37 vertical isobaric levels from ERA5 [@era5] for the period 1979 to 2019. We restricted most of our analysis to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 [@era5be] to look at long-term trends. We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK [@fishpack] and computed horizontal wave activity fluxes following @plumb1985. For precipitation data we used monthly data from the CPC Merged Analysis of Precipitation [@cmap], with a 2.5\degree\ resolution in latitude and longitude. This rainfall gridded dataset is based on information from different sources such as rain gauge observations, satellite inferred estimations and the NCEP-NCAR reanalysis, and it is available since 1979 to present.
+We used monthly geopotential height, air temperature, ozone mixing ratio, and Total Ozone Column (TOC) at 2.5\degree\ longitude by 2.5\degree\ latitude of horizontal resolution and 37 vertical isobaric levels from ERA5 [@era5] for the period 1979 to 2019. We restricted most of our analysis to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 [@era5be] to look at long-term trends. We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK [@fishpack] and computed horizontal wave activity fluxes following @plumb1985. Sea Surface Temperature (SST) fields were taken from Extended Reconstructed Sea Surface Temperature (ERSST) v5 [@huang2017]. For precipitation data we used monthly data from the CPC Merged Analysis of Precipitation [@cmap], with a 2.5\degree\ resolution in latitude and longitude. This rainfall gridded dataset is based on information from different sources such as rain gauge observations, satellite inferred estimations and the NCEP-NCAR reanalysis, and it is available since 1979 to present.
 
 ## Methods
 
@@ -1397,10 +1397,10 @@ regr_psi <- ceof[, eof[[1]]$left, by = .(season)] %>%
 ```
 
 ```{r sst}
-sst <- ERA5_SST() %>%
-  ReadNetCDF(vars = c("t" = "sst")) %>%
-  normalise_coords() %>%
+sst <- ERSST() %>%
+  readRDS() %>% 
   .[season(time) == "SON"] %>%
+  normalise_coords() %>%
   .[, w := season_weights(time)] %>% 
   .[, .(t = mean(t*w)), by = .(lon, lat, time = seasonally(time))]
 ```
@@ -1416,6 +1416,7 @@ regr_sst <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[, FitLm(t, Imaginary, Real, se = TRUE), by = .(lon, lat, cEOF, season)] %>%
   rm_intercept() %>%
   .[, term := factor_ReIm(term)]
+
 ```
 
 ```{r enso_cor}
@@ -1472,6 +1473,7 @@ plot_sst_psi <- function(which_cEOF, which_lev) {
 
 ```{r sst-psi-2,  fig.cap = "(ref:sst-psi-2-cap)", fig.width = 7, fig.height=4, dependson="plot_sst_psi", fig.env="figure*"}
 plot_sst_psi(which_cEOF = "cEOF2", which_lev = 200)
+
 ```
 
 
@@ -1550,6 +1552,7 @@ It could be concluded that the wave train represented by cEOF2 can be both part 
 
 ```{r sst-psi-1, fig.cap = "(ref:sst-psi-1-cap)", fig.width = 7, fig.height=4, dependson="plot_sst_psi", fig.env = "figure*"}
 plot_sst_psi(which_cEOF = "cEOF1", which_lev = 200)
+
 ```
 
 Figure\ \@ref(fig:sst-psi-1) shows SST and streamfunction regression maps for cEOF1. There is no significant pattern of SST anomalies associated with either the Real or Imaginary cEOF1. Consistently, streamfunction anomalies do not show any tropical influence. Instead of that, the real and imaginary CEOF1 are associated with zonally wave activity fluxes in the extra-tropics, except for an equatorward flow from the coast of Antarctica around 150ºE in the real component.

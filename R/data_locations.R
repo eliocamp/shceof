@@ -118,3 +118,8 @@ CMAP <- data_nc_fun(file = data_path("raw", "cmap.mon.mean.nc"),
 O3 <- data_nc_fun(file = data_path("raw", "o3.mon.mean.nc"),
                     download = download_cds(request_o3_era5),
                     citation = citation_o3_era5)
+
+#' @export
+#' @rdname data_locations
+ERSST <- data_rds_fun(file = data_path("raw", "ersst.Rds"),
+                      download = download_ersst)

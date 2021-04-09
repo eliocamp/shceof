@@ -11,6 +11,7 @@
 \alias{HADSST}
 \alias{CMAP}
 \alias{O3}
+\alias{ERSST}
 \title{Data locations}
 \usage{
 data_path(type = c("raw", "derived"), ...)
@@ -32,6 +33,8 @@ HADSST(force_download = FALSE)
 CMAP(force_download = FALSE)
 
 O3(force_download = FALSE)
+
+ERSST(force_download = FALSE)
 }
 \arguments{
 \item{type}{character indicating the type of data. The resulting base will be type_data}
