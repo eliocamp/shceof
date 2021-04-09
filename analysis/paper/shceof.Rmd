@@ -4,8 +4,8 @@ titlerunning:  Title
 authors: 
 - name: Elio Campitelli
   address: |
-    Universidad de Buenos Aires, Facultad de Ciencias Exactas y Naturales, Departamento de Ciencias de la Atmósfera y los Océanos. Buenos Aires, Argentina.
-    CONICET – Universidad de Buenos Aires. Centro de Investigaciones del Mar y la Atmósfera (CIMA). Buenos Aires, Argentina.
+    Universidad de Buenos Aires, Facultad de Ciencias Exactas y Naturales, Departamento de Ciencias de la Atmósfera y los Océanos. Buenos Aires, Argentina.  
+    CONICET – Universidad de Buenos Aires. Centro de Investigaciones del Mar y la Atmósfera (CIMA). Buenos Aires, Argentina.  
     CNRS – IRD – CONICET – UBA. Instituto Franco-Argentino para el Estudio del Clima y sus Impactos (IRL 3351 IFAECI). Buenos Aires, Argentina.
   email: elio.campitelli@cima.fcen.uba.ar
   
@@ -595,46 +595,43 @@ We performed all analysis in this paper using the R programming language [@rcore
 ## cEOF patterns
 
 
-```{r define-plot_ceof}
-plot_ceof <- function(data, n = 1:2, formula = lev  ~  cEOF) {
-  
-  gdata <- data[, cut(eof[[1]], n)$right, by = .(season)]
-  
-  var <- data[, cut(eof[[1]], n)$sdev, by = .(season)] %>%
-    .[, setNames(paste0(cEOF, " (", scales::percent(r2), ")"),
-                 cEOF)]
-  
-  gdata %>%
-    ggperiodic::periodic(lon = c(0, 360)) %>%
-    ggplot(aes(lon, lat)) +
-    
-    geom_contour_fill(aes(z = Re(hgt), fill = ..level..),
-                      breaks = AnchorBreaks(0, 0.005, exclude = 0)) +
-    geom_contour2(aes(z = Im(hgt),  linetype = factor(sign(..level..))),
-                  breaks = AnchorBreaks(0, 0.005, exclude = 0)) +
-    
-    scale_fill_divergent_discretised(guide = "none") +
-    
-    
-    geom_qmap(~ .x[lat <= -20]) +
-    scale_x_longitude() +
-    scale_y_latitude() +
-    scale_linetype_manual(values = c("1" = 1, "-1" = 2), labels = c("1" = "+", "-1" = "-"),
-                          guide = "none") +
-    facet_grid(formula,
-               labeller = labeller(lev = lab_lev,
-                                   cEOF = var)) +
-    coord_quickmap(ylim = c(NA, -20)) +
-    theme(legend.title = element_blank())
-}
-```
+```{r ceofs-1, fig.cap = "Spatial patterns of the leading 2 cEOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2019. Real part in shading, imaginary part in contours. Arbitrary units.", fig.width=width_column, fig.height=width_column*1.2}
 
-```{r ceofs-1, fig.cap = "Spatial patterns of the leading 2 cEOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2019. Real part in shading, imaginary part in contours.", fig.width=width_column, fig.height=width_column}
-ceof[season == "SON"] %>%
-  plot_ceof() +
+gdata <- ceof[, eof[[1]]$right, by = .(season)] %>% 
+  copy() %>% 
+  .[, hgt := hgt/sd(abs(hgt))]
+
+var <- ceof[, eof[[1]]$sdev, by = .(season)] %>%
+  .[, setNames(paste0(cEOF, " (", scales::percent(r2), ")"),
+               cEOF)]
+
+
+gdata %>%
+  ggperiodic::periodic(lon = c(0, 360)) %>%
+  ggplot(aes(lon, lat)) +
+  
+  geom_contour_fill(aes(z = Re(hgt), fill = ..level..),
+                    breaks = AnchorBreaks(0, 1, exclude = 0)) +
+  geom_contour2(aes(z = Im(hgt),  linetype = factor(sign(..level..))),
+                breaks = AnchorBreaks(0, 1, exclude = 0)) +
+  
+  scale_fill_divergent_discretised(guide = guide_colorsteps_bottom()) +
+  
+  
+  geom_qmap(~ .x[lat <= -20]) +
+  scale_x_longitude() +
+  scale_y_latitude() +
+  scale_linetype_manual(values = c("1" = 1, "-1" = 2), labels = c("1" = "+", "-1" = "-"),
+                        guide = "none") +
+  facet_grid( lev  ~  cEOF,
+             labeller = labeller(lev = lab_lev,
+                                 cEOF = var)) +
+  coord_quickmap(ylim = c(NA, -20)) +
+  theme(legend.title = element_blank()) +
   coord_polar() +
   axis_labs_smol +
   tag_facets(tag = "cr")
+
 ```
 
 ```{r ceofs-2, fig.cap = "Time series of the leading 2 cEOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2019.", fig.height=width_column, fig.width = width_column}
@@ -1274,7 +1271,7 @@ In the case of cEOF2, the moderate correlation between SAM and Imaginary cEOF2 b
 
 <!-- As a further illustration \textcolor{red}{(¿De qué?)}, Figure\ \@ref(fig:eof-filtered) shows the spatial pattern of the leading EOF of 200 hPa geopotential height when the variability associated with cEOF2 is removed. The resulting pattern is an nearly zonally symmetrical annular mode. This mode is highly correlated with SAM (`r eof_filtered_cor[term == "full"]$text`), but only with the symmetrical part (`r eof_filtered_cor[term == "sym"]$text`). Note that the usual definition of the PSA modes as the second and third EOFs creates modes orthogonal to the SAM (defined as the first EOF) and thus impedes this kind of filtering.   -->
 
-(ref:fake-eof-cap) Row a: The three components used to create a synthetic dataset of 41 years of geopotential height at 200 hPa. Row b: The three EOF computed from the synthetic dataset with the variance explained by each EOF in parenthesis. Units are arbitrary. Negative values in blue and positive values in red. 
+(ref:fake-eof-cap) Row a: The three components used to create a synthetic dataset of 41 years of geopotential height at 200 hPa. Row b: The three EOF computed from the synthetic dataset with the variance explained by each EOF in parenthesis. Units are arbitrary.
 
 ```{r fake_eof}
 pattern <- eof_filtered$right %>% 
@@ -1313,7 +1310,7 @@ fake_eof <- era5 %>%
   EOF(eof ~ lon + lat | time, n = 1:3, data = ., suffix = "EOF")  
 ```
 
-```{r fake-eof, fig.cap = "(ref:fake-eof-cap)", fig.width=3.7, fig.height=3.2}
+```{r fake-eof, fig.cap = "(ref:fake-eof-cap)", fig.width=3.7, fig.height=3.3}
 north_thumb <- function(sdev, n){
   sdev <- sdev^2
   delta <- sqrt(2 / n) * sdev
@@ -1348,19 +1345,21 @@ era5 %>%
   .[, EOF := factor(EOF, c("SAM", "Imaginary", "Real", paste0("EOF", 1:3)),
                     ordered = TRUE)] %>% 
   .[EOF %in% c("EOF1", "EOF3"), eof := -eof] %>% 
-
+  .[!(EOF %in% c("SAM", "Imaginary", "Real")), eof := eof/sd(eof)] %>% 
+  .[EOF %in% c("SAM", "Imaginary", "Real"), eof := eof/sd(eof)] %>% 
+  
+  # geom_contour_tanaka has problem with the perfectly symemtric SAM
+  # adding just a tiny bit of noise solves it. 
+  .[EOF == "SAM", eof := eof + rnorm(.N, sd = 1e-5)] %>%
+  
   periodic(lon = c(0, 360)) %>%
   ggplot(aes(lon, lat)) +
+  geom_contour_fill(aes(z = eof, fill = ..level..), global.breaks = TRUE, 
+                    breaks = AnchorBreaks(0, 0.5, exclude = 0)) +
   
-  geom_contour_fill(data = ~.x[EOF %in% c("SAM", "Imaginary", "Real")],
-    aes(z = eof), global.breaks = FALSE, breaks = AnchorBreaks(0, exclude = 0)) +
-  scale_fill_divergent(guide = "none") +
-  ggnewscale::new_scale_fill() +
-  geom_contour_fill(data = ~.x[!(EOF %in% c("SAM", "Imaginary", "Real"))],
-    aes(z = eof), global.breaks = FALSE, breaks = AnchorBreaks(0, exclude = 0)) +
-  
-  geom_contour_tanaka(aes(z = eof), global.breaks = FALSE,  breaks = AnchorBreaks(0, exclude = 0)) +
-  scale_fill_divergent(guide = "none") +
+  geom_contour_tanaka(aes(z = eof), global.breaks = TRUE, 
+                      breaks = AnchorBreaks(0,0.5,  exclude = 0)) +
+  scale_fill_divergent_discretised(NULL, guide = guide_colorsteps_bottom()) +
   geom_qmap(~.x[lat <= -20]) +
   scale_x_longitude() +
   scale_y_latitude() +
