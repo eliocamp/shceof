@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.3.30)  9 APR 2021 18:43
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.3.30)  9 APR 2021 19:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -640,14 +640,6 @@ File: ../figures/fake-eof-1.pdf Graphic file (type pdf)
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [15]
-File: ../figures/psa-eof2-1.pdf Graphic file (type pdf)
-<use ../figures/psa-eof2-1.pdf>
-
-Overfull \hbox (154.84003pt too wide) in paragraph at lines 352--352
-[][] 
- []
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [16]
@@ -657,33 +649,38 @@ File: ../figures/phase-histogram-1.pdf Graphic file (type pdf)
 File: ../figures/sst-psi-2-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-2-1.pdf>
 
-Overfull \hbox (141.79132pt too wide) in paragraph at lines 381--381
+Overfull \hbox (141.79132pt too wide) in paragraph at lines 393--393
 [][] 
  []
 
-[18]
 File: ../figures/enso-phase-1.pdf Graphic file (type pdf)
 <use ../figures/enso-phase-1.pdf>
-
-Underfull \vbox (badness 2103) has occurred while \output is active []
+[18]
+Underfull \vbox (badness 4995) has occurred while \output is active []
 
 [19]
 File: ../figures/sst-psi-1-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-1-1.pdf>
 
-Overfull \hbox (141.79132pt too wide) in paragraph at lines 403--403
+Overfull \hbox (141.79132pt too wide) in paragraph at lines 415--415
 [][] 
  []
 
-[20]
 File: ../figures/pp-america-1.pdf Graphic file (type pdf)
 <use ../figures/pp-america-1.pdf>
-[21]
+[20]
 File: ../figures/pp-oceania-1.pdf Graphic file (type pdf)
 <use ../figures/pp-oceania-1.pdf>
+
+Underfull \vbox (badness 4995) has occurred while \output is active []
+
+[21]
 File: ../figures/australia-pp-phase-1.pdf Graphic file (type pdf)
 <use ../figures/australia-pp-phase-1.pdf>
-[22] [23] [24] (./shceof.bbl
+[22] [23] (./shceof.bbl
+Underfull \vbox (badness 1360) has occurred while \output is active []
+
+[24]
 Underfull \hbox (badness 1028) in paragraph at lines 31--34
 []\TU/lmr/m/n/10 Bamston AG, Chelliah M, Goldenberg SB (1997) Documentation of 
 a
@@ -711,25 +708,28 @@ Underfull \hbox (badness 10000) in paragraph at lines 38--44
 a5-
  []
 
+
+Underfull \vbox (badness 3930) has occurred while \output is active []
+
 [25]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [26])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 477.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 489.
 [27]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 477.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 489.
 (./shceof.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 477.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 477.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 477.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 489.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 489.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 489.
  ) 
 Here is how much of TeX's memory you used:
- 12945 strings out of 493007
- 184154 string characters out of 6136719
- 297149 words of memory out of 5000000
- 16737 multiletter control sequences out of 15000+600000
+ 12941 strings out of 493007
+ 184036 string characters out of 6136719
+ 296146 words of memory out of 5000000
+ 16734 multiletter control sequences out of 15000+600000
  9670 words of font info for 45 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 44i,9n,47p,1266b,481s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,9n,47p,1266b,489s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on shceof.pdf (27 pages).

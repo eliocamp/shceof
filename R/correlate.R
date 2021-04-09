@@ -5,9 +5,11 @@
 #'
 #' @param x,y numeric variables to correlate.
 #' @param signif number of significant figures to keep in the reporting text.
+#' @param sep separator to use between the estimate and the confidence interval.
+#' The default uses a protected space.
 #'
 #' @export
-correlate <- function(x, y, signif = 2) {
+correlate <- function(x, y, signif = 2, sep = "\ ") {
   correlation <- cor.test(x, y)
   out <- with(correlation,
               list(estimate = estimate,
@@ -15,8 +17,9 @@ correlate <- function(x, y, signif = 2) {
                    low = conf.int[1],
                    hig = conf.int[2]))
 
+
   out$text <- with(out,
-                   paste0(signif(estimate, signif), " (CI:\ ",
+                   paste0(signif(estimate, signif), sep, "(CI:\ ",
                           signif(low, signif), "\ --\ ", signif(hig, signif), ")"))
 
   out

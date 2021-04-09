@@ -4,12 +4,15 @@
 \alias{correlate}
 \title{Compute correlations}
 \usage{
-correlate(x, y, signif = 2)
+correlate(x, y, signif = 2, sep = " ")
 }
 \arguments{
 \item{x, y}{numeric variables to correlate.}
 
 \item{signif}{number of significant figures to keep in the reporting text.}
+
+\item{sep}{separator to use between the estimate and the confidence interval.
+The default uses a protected space.}
 }
 \description{
 Thin wrapper around [cor.test] which returns estimate, p.value, low and high
