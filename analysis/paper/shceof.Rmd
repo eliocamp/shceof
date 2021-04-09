@@ -343,18 +343,19 @@ explained <- eof_naive[, eof[[1]]$sdev, by = lev] %>%
 
 ```
 
-```{r eof-naive, fig.cap = "(ref:eof-naive-cap)", fig.width=2.5, fig.height=3}
+```{r eof-naive, fig.cap = "(ref:eof-naive-cap)", fig.width=2.5, fig.height=3.2}
 eof_naive[, eof[[1]]$right, by = lev] %>%
   .[lev == 50] %>% 
+  .[ , hgt := hgt/sd(hgt)] %>% 
   periodic(lon = c(0, 360)) %>%
   ggplot(aes(lon, lat)) +
   geom_contour_fill(aes(z = hgt, fill = ..level..),
-                    breaks = AnchorBreaks(0, 0.01, exclude = 0)) +
-  geom_contour_tanaka(aes(z = hgt), breaks = AnchorBreaks(0, 0.01, exclude = 0), 
+                    breaks = AnchorBreaks(0, 1, exclude = 0)) +
+  geom_contour_tanaka(aes(z = hgt), breaks = AnchorBreaks(0, 1, exclude = 0), 
                     range = c(0.01, 0.2)) +
   
   geom_qmap(~.x[lat <= -20], size = 0.1) +
-  scale_fill_divergent_discretised(guide = "none")  +
+  scale_fill_divergent_discretised(NULL, guide = guide_colorsteps_bottom(10))  +
   scale_y_latitude() +
   scale_x_longitude() +
   coord_polar() +
