@@ -132,6 +132,7 @@ theme_set(theme_shceof(base_size = 10))
 
 grid <- theme(panel.grid = element_line(color = "gray10", size = 0.4, linetype = 3))
 no_grid <- theme(panel.grid = element_blank())
+grid_y <- theme(panel.grid.major.y = element_line(color = "gray60", size = 0.1))
 
 panel_background <- theme(panel.background = element_rect(fill = "#fbfbfb", color = NA), 
                           panel.ontop = FALSE,
@@ -352,17 +353,19 @@ eof_naive[, eof[[1]]$right, by = lev] %>%
   geom_contour_fill(aes(z = hgt, fill = ..level..),
                     breaks = AnchorBreaks(0, 1, exclude = 0)) +
   geom_contour_tanaka(aes(z = hgt), breaks = AnchorBreaks(0, 1, exclude = 0), 
-                    range = c(0.01, 0.2)) +
+                      range = c(0.01, 0.2)) +
   
   geom_qmap(~.x[lat <= -20], size = 0.1) +
   scale_fill_divergent_discretised(NULL, guide = guide_colorsteps_bottom(10))  +
-  scale_y_latitude() +
+  scale_y_latitude(labels = NULL,
+                   minor_breaks = NULL) +
   scale_x_longitude() +
   coord_polar() +
   theme(axis.text = element_blank()) +
   facet_wrap(.~cEOF, ncol = 2, labeller = labeller(lev = lab_lev))  +
   tagger::tag_facets("rc")  +
-  theme(panel.spacing = grid::unit(-.7, "lines"))
+  theme(panel.spacing = grid::unit(-.7, "lines")) +
+  grid_y
 ```
 
 In traditional EOF analysis zonal waves appear as pairs of EOFs, usually degenerate, that represent similar patterns but shifted in phase [@horel1984]. For instance, Figure\ \@ref(fig:eof-naive) shows the leading 4 EOFs of zonally anomalous SON geopotential height at 50 hPa and 200 hPa. It is clear that at 50 hPa the first two EOFs represent the same zonal wave 1 pattern and the last 2 represent the same zonal wave pattern with shorter wavenumber shifted by 1/4 wavelength. A similar EOF structure can be seen in 200 hPa (not shown). Since each pair of EOFs seem to represent the same phase-varying structure, it would be desirable to combine them into a single index with amplitude and phase. 
@@ -621,7 +624,8 @@ gdata %>%
   
   geom_qmap(~ .x[lat <= -20]) +
   scale_x_longitude() +
-  scale_y_latitude() +
+    scale_y_latitude(labels = NULL,
+                   minor_breaks = NULL) +
   scale_linetype_manual(values = c("1" = 1, "-1" = 2), labels = c("1" = "+", "-1" = "-"),
                         guide = "none") +
   facet_grid( lev  ~  cEOF,
@@ -631,8 +635,8 @@ gdata %>%
   theme(legend.title = element_blank()) +
   coord_polar() +
   axis_labs_smol +
-  tag_facets(tag = "cr")
-
+  tag_facets(tag = "cr") +
+  grid_y
 ```
 
 ```{r ceofs-2, fig.cap = "Time series of the leading 2 cEOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2019.", fig.height=width_column, fig.width = width_column}
@@ -807,7 +811,9 @@ plot_regr <- function(data, which_cEOF, which_levs, which_var) {
     geom_qmap(~ .x[lat <= -20]) +
     
     scale_x_longitude() +
-    scale_y_latitude() +
+      scale_y_latitude(labels = NULL,
+                   minor_breaks = NULL) +
+    grid_y +
     facet +
     coord_polar() +
     axis_labs_smol +
@@ -1010,12 +1016,14 @@ o3_regr %>%
                 bins = 5) +
   
   geom_contour_pval(aes(z = p.value)) +
-  geom_hline(yintercept = o3wave_lats, size = 0.3, alpha = 0.5) +
+  geom_hline(yintercept = o3wave_lats, size = 0.3, alpha = 0.8) +
   geom_qmap(~.x[lat <= -20]) +
   scale_fill_divergent_discretised("Total Ozone Column", 
                                    guide = guide_colorsteps_bottom(15)) + 
   scale_x_longitude() +
-  scale_y_latitude() +
+    scale_y_latitude(labels = NULL,
+                   minor_breaks = NULL) +
+  grid_y +
   scale_linetype(guide = "none") +
   coord_polar() +
   
@@ -1160,6 +1168,11 @@ The relationship between the tropospheric SAM and cEOF1 is explained entirely by
 
 
 ```{r eof-filtered, fig.cap = "Spatial pattern of the leading EOF of 200 hPa geopotential height with the variability of cEOF2 filtered out South of 20º. Arbitrary units.", fig.width=2.5, fig.height=2.5}
+cEOF2 <- ceof$eof[[1]]$left[cEOF == "cEOF2"] %>% 
+  copy() %>% 
+  .[, cEOF := NULL] %>% 
+  .[]
+
 eof_filtered <- era5 %>% 
   .[sep_ReIm(cEOF2, format = "wide")[, hgt := NULL], on = .NATURAL] %>% 
   .[lev == 200] %>% 
@@ -1295,7 +1308,9 @@ era5 %>%
   scale_fill_divergent_discretised(NULL, guide = guide_colorsteps_bottom()) +
   geom_qmap(~.x[lat <= -20]) +
   scale_x_longitude() +
-  scale_y_latitude() +
+    scale_y_latitude(labels = NULL,
+                   minor_breaks = NULL) +
+  grid_y +
   coord_polar() +
   facet_wrap(~EOF, ncol = 3, labeller = labeller(EOF = var)) +
   axis_labs_smol +
