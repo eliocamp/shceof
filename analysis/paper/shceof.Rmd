@@ -1047,7 +1047,7 @@ Figure\ \@ref(fig:o3-regr) shows regression maps of cEOF1 with fields of Total O
 
 (ref:wave1-o3-cap) Relationship between cEOF1 amplitude and phase with amplitude and phase of the zonal wave 1 in Total Ozone Column averaged between `r knitr::combine_words(LatLabel(o3wave_lats))` for the period 1979 -- 2019. 
 
-```{r wave1-o3, fig.cap = "(ref:wave1-o3-cap)", fig.width=width_column, fig.height=width_column*.7}
+```{r wave1-o3, fig.cap = "(ref:wave1-o3-cap)", fig.width=width_column, fig.height=width_column*.7, include = FALSE}
 wave1_o3 <- o3 %>% 
   .[lat %between% o3wave_lats] %>% 
   .[, .(toc = mean(toc, na.rm = TRUE)), by = .(time, lon)] %>% 
@@ -1067,11 +1067,13 @@ temp <- ceof$eof[[1]]$left %>%
 #   geom_smooth(method = "lm", color = "black") +
 #   facet_grid(cEOF ~ part) +
 #   panel_background
-# temp %>% 
-#   .[, correlate(amplitude, Mod(hgt))]
-# 
-# temp %>% 
-#   .[, correlate(phase, Arg(hgt))]
+wave1_cor <- rbind(temp %>%
+                     .[, correlate(amplitude, Mod(hgt))] %>% 
+                     .[, with := "amplitude"],
+                   
+                   temp %>%
+                     .[, correlate(phase, Arg(hgt))] %>% 
+                     .[, with := "phase"])
 
 
 correlation_statistics <- function(x, n, signif = 2) {
@@ -1126,7 +1128,7 @@ temp %>%
 
 ```
 
-Indeed, Figure\ \@ref(fig:wave1-o3) shows the relationship between amplitude and phase of the cEOF1 and the amplitude and phase of the planetary wave 1 in Total Ozone Column between `r knitr::combine_words(LatLabel(o3wave_lats))`; as shown in Figure\ \@ref(fig:o3-regr), this is a wide latitude band that captures most of the area with significant regression coefficients. The correlation between the zonal wave 1 of ozone and cEOF1 (computed as the mean cosine of the difference in phase) is `r wave_correlation$text`. As expected from the location of anomalies in Figure\ \@ref(fig:wave1-o3), the Real cEOF1 drives the relationship with amplitude and the Imaginary cEOF1 drives the relationship with phase (not shown). 
+There is a close relationship between amplitude and phase of the cEOF1 and the amplitude and phase of the planetary wave 1 in Total Ozone Column between `r knitr::combine_words(LatLabel(o3wave_lats))`; as shown in Figure\ \@ref(fig:o3-regr), this is a wide latitude band that captures most of the area with significant regression coefficients. The correlation between the amplitude of each index is `r wave1_cor[with == "amplitude"]$text` the overall correlation between the zonal wave 1 of ozone and cEOF1 (computed as the mean cosine of the difference in phase) is `r wave_correlation$text`. As expected from the location of anomalies in Figure\ \@ref(fig:o3-regr), the Real cEOF1 drives the relationship with amplitude and the Imaginary cEOF1 drives the relationship with phase (not shown). 
 
 ### SAM
 
