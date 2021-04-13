@@ -1806,7 +1806,8 @@ gdata %>%
   geom_smooth(data = ~qwrap(.x, arg = c(-pi, pi) ~ c(-2*pi, 2*pi)),
               method = "lm", aes(weight = mag),
               formula = y ~ I(sin(x)) + I(cos(x)) -1,
-              se = FALSE, color = "black", size = 0.5) +
+              se = FALSE, color = "black", size = 0.5, 
+              fullrange = TRUE) +
     geom_point(aes(colour = mag >= quantile(mag, 0.5),
                  shape  = mag >= quantile(mag, 0.5)),
              size = 3) +

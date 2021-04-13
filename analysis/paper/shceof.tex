@@ -146,7 +146,9 @@ We computed the level-dependent Southern Annular Mode (SAM) index as the leading
 
 We also calculated the Pacific South American patterns (PSA1 and PSA2) as the third and fourth leading EOF of seasonal mean 500 hPa geopotential height with all seasons together following \citet{mo2001}.
 
-\textcolor{red}{Creo que habría que expandir un poco esta parte e ir comentando todoas las metodologías que vas usando: regresiones, tendencias, cómo evlauas significancia en cada caso, etc. }
+We performed linear regressions to quantify the association between the cEOFs and other variables. For each cEOF, we create regression maps by computing fitting a multiple linear model involving both the real and the imaginary part. We evaluated statistical significance using a two-sided t-test and, in the case of regression maps, p-values were adjusted by controlling for the False Discovery Rate \citep{benjamini1995, wilks2016} to avoid misleading results from the high number of regressions \citep{walker1914, katz1991}.
+
+Linear trends were computed by Ordinary Least Squares and the 95\% confidence interval was computed assuming a t-distribution with the appropriate residual degrees of freedom. To the amplitude of the zonal waves is defined through computing the Fourier transform of the spatial field at each latitude circle.
 
 \hypertarget{complex-empirical-orthogonal-functions-ceof}{%
 \subsection{Complex Empirical Orthogonal Functions (cEOF)}\label{complex-empirical-orthogonal-functions-ceof}}
