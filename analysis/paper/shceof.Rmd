@@ -319,12 +319,13 @@ We restrict our study to  the September-October-November (SON) trimester. For th
 
 We computed the amplitude and phase of the zonal wave 1 by averaging (area-weighted) variables (temperature, geopotential height, ozone mixing ratio and Total Ozone Column) between `r knitr::combine_words(LatLabel(o3wave_lats))` for each SON and extracting the wave-1 component of the Fourier spectrum. We chose this latitude band because it is wide enough to capture most of the relevant anomalies. 
 
- 
 We computed the level-dependent Southern Annular Mode (SAM) index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period [@baldwin2009]. We further split the SAM into its zonally symmetric and zonally asymmetric components (S-SAM and A-SAM indices respectively). These are obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields [@campitelli2021]. Since the analysis here is only for the SON trimester, monthly values were averaged across trimesters. 
 
 We also calculated the Pacific South American patterns (PSA1 and PSA2) as the third and fourth leading EOF of seasonal mean 500 hPa geopotential height with all seasons together following @mo2001. 
 
-\textcolor{red}{Creo que habría que expandir un poco esta parte e ir comentando todoas las metodologías que vas usando: regresiones, tendencias, cómo evlauas significancia en cada caso, etc. }
+We performed linear regressions to quantify the association between the cEOFs and other variables. For each cEOF, we create regression maps by computing fitting a multiple linear model involving both the real and the imaginary part. We evaluated statistical significance using a two-sided t-test and, in the case of regression maps, p-values were adjusted by controlling for the False Discovery Rate [@benjamini1995;@wilks2016] to avoid misleading results from the high number of regressions [@walker1914;@katz1991].
+
+Linear trends were computed by Ordinary Least Squares and the 95% confidence interval  was computed assuming a t-distribution with the appropriate residual degrees of freedom. To the amplitude of the zonal waves is defined through computing the Fourier transform of the spatial field at each latitude circle.
 
 ## Complex Empirical Orthogonal Functions (cEOF)
 
