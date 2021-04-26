@@ -34,6 +34,6 @@ Suggests:
     ggpatern
 RoxygenNote: 7.1.1
 Remotes:
-    - eliocamp/asymsam
-    - eliocamp/tagger
-    - eliocamp/ggpattern
+    eliocamp/asymsam,
+    eliocamp/tagger,
+    eliocamp/ggpattern,
