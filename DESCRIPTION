@@ -23,17 +23,20 @@ Imports:
     maptools,
     rmapshaper,
     memoise,
-    kableExtra
+    kableExtra,
+    ggnewscale,
+    ggh4x,
+    ggthemes,
+    shadowtext,
+    ggpattern
 Suggests: 
     devtools,
     git2r,
     renv,
-    asymsam,
     tagger,
     bookdown,
     ggpatern
 RoxygenNote: 7.1.1
 Remotes:
-    eliocamp/asymsam,
     eliocamp/tagger,
     eliocamp/ggpattern,
