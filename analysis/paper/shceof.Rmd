@@ -296,7 +296,7 @@ The large-scale extratropical circulation in the Southern Hemisphere is strongly
 Zonal asymmetries of extratropical circulation in the Southern Hemisphere strongly modulate weather systems and regional climate through latitudinal transport of heat, humidity, and momentum [@trenberth1980].
 
 One typical way of describing the zonally asymmetric circulation is by the amplitude and phase of zonal waves obtained by Fourier decomposition of geopotential height at each latitude [e.g.
-@vanloon1972;@trenberth1980;\textcolor{red}{Agregar alguna referencia más actual}].
+@vanloon1972;@trenberth1980;@turner2017].
 This approach suggests that zonal waves 1 and 3 explained most of the variance of the tropospheric extratropical Southern Hemisphere circulation (@vanloon1972).
 However, this methodology rely on the assumption that the circulation can be meaningfully understood in terms of zonal waves of constant amplitude along a latitude circle.
 This is not valid for meridionally propagating waves or zonal waves with localised amplitudes.
