@@ -293,7 +293,7 @@ psa_time <- psa$left[season(time) == "SON"]
 \textcolor{red}{Agregar parráfo que introduzca el problema del estudio de la ciriculación extra-tropical en SH, su variaiblidad y sus cambios. Quizás algo también de los impactos. También algo habría que decir de la primavera, ya que solo nos concentrmaos en esa estación}
 
 The large-scale extratropical circulation in the Southern Hemisphere is strongly zonally symmetric, but its zonal departures are highly relevant for surface impacts and could be related to high-impact climate extremes.
-Zonal asymmetries of extratropical circulation in the Southern Hemisphere strongly modulate weather systems and regional cli8 mate through latitudinal transport of heat, humidity, and momentum [@trenberth1980].
+Zonal asymmetries of extratropical circulation in the Southern Hemisphere strongly modulate weather systems and regional climate through latitudinal transport of heat, humidity, and momentum [@trenberth1980].
 
 One typical way of describing the zonally asymmetric circulation is by the amplitude and phase of zonal waves obtained by Fourier decomposition of geopotential height at each latitude [e.g.
 @vanloon1972;@trenberth1980;\textcolor{red}{Agregar alguna referencia más actual}].
@@ -947,7 +947,9 @@ Comparing the location of the positive anomaly near 90ºW in column b of Figure�
 #   panel_background
 ```
 
-## cEOFs relationship with other variables (Quedo medio rara la divsión con los títulos. Me parece que convendrá discutir primero la relación con otros modos de circulación conocidos (SAM, Ozono) y después con las otras variables(Temp, TOC, SST, precip) )
+## cEOFs relationship with other variables 
+
+\textcolor{red}{Quedo medio rara la divsión con los títulos. Me parece que convendrá discutir primero la relación con otros modos de circulación conocidos (SAM, Ozono) y después con las otras variables(Temp, TOC, SST, precip)}
 
 ### Temperature and Ozone
 
