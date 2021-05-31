@@ -356,7 +356,7 @@ We chose this latitude band because it is wide enough to capture most of the rel
 We computed the level-dependent Southern Annular Mode (SAM) index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period [@baldwin2009].
 We further split the SAM into its zonally symmetric and zonally asymmetric components (S-SAM and A-SAM indices respectively).
 These indices were obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields, as proposed by @campitelli2021.
-The Pacific South American patterns (PSA1 and PSA2) were calculated as the third and fourth leading EOF of seasonal mean for 500 hPa geopotential height with all seasons together \textcolor{red}{No me quedo claro lo de "all seasons together"} following @mo2001.
+The Pacific South American patterns (PSA1 and PSA2) were calculated as the third and fourth leading EOF of seasonal mean for 500 hPa geopotential height combining all seasons following @mo2001.
 
 Linear trends were computed by Ordinary Least Squares and the 95% confidence interval was computed assuming a t-distribution with the appropriate residual degrees of freedom \textcolor{red}{Referencia?}.
 The amplitude of the zonal waves was defined through computing the Fourier transform of the spatial field at each latitude circle.
