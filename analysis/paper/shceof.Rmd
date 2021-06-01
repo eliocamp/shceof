@@ -350,6 +350,7 @@ The study is restricted to the spring season, defined as the September-October-N
 We compute seasonal means for the different variables, averaging monthly values weighted by the number of days in each month.
 We use 200 hPa level to represent the high troposphere and 50 hPa to represent the lower stratosphere.
 
+The amplitude of the zonal waves was defined through computing the Fourier transform of the spatial field at each latitude circle.
 We computed the amplitude and phase of the zonal wave 1 by averaging (area-weighted) variables (temperature, geopotential height, ozone mixing ratio and Total Ozone Column) between `r knitr::combine_words(LatLabel(o3wave_lats))` for each SON and extracting the wave-1 component of the Fourier spectrum.
 We chose this latitude band because it is wide enough to capture most of the relevant anomalies.
 
@@ -359,22 +360,21 @@ These indices were obtained by projecting the zonally asymmetric and zonally sym
 The Pacific South American patterns (PSA1 and PSA2) were calculated following @mo2001 as the third and fourth leading EOF of seasonal mean anomalies for SH 500 hPa geopotential height combining all seasons. 
 
 Linear trends were computed by Ordinary Least Squares and the 95% confidence interval was computed assuming a t-distribution with the appropriate residual degrees of freedom [@wilks2011r].
-The amplitude of the zonal waves was defined through computing the Fourier transform of the spatial field at each latitude circle.
-\textcolor{red}{Esto está repetido con lo de arriba o querías referirte a otra cosa}
+
 
 ## Complex Empirical Orthogonal Functions (cEOF)
 
-(ref:eof-naive-cap) Spatial patterns of the leading 4 EOFs of SON zonal anomalies of geopotential height at 50 hPa for the 1979 -- 2019 period (arbitrary units).
+(ref:eof-naive-cap) Spatial patterns of the leading 4 EOFs of SON zonal anomalies of geopotential height at 50 hPa south of 20\degree S for the 1979 -- 2019 period (arbitrary units).
 
 ```{r compute-eof-naive}
 eof_naive <- era5[lev %in% c(50, 200) & lat %between% c(-90, -20)] %>% 
   # .[, hgt := Anomaly(hgt), by = .(season(time), lon, lat, lev)] %>%
   .[, hgt  := Anomaly(hgt)*sqrt(cos(lat*pi/180)), by = .(time, lev, lat)] %>% 
-  .[, .(eof = list(EOF(hgt ~ time | lon + lat, n = 1:4, data = .SD, suffix = "cEOF"))), 
+  .[, .(eof = list(EOF(hgt ~ time | lon + lat, n = 1:4, data = .SD, suffix = "EOF"))), 
     by = lev]
 
 explained <- eof_naive[, eof[[1]]$sdev, by = lev] %>% 
-  .[order(lev, cEOF)] %>% 
+  .[order(lev, EOF)] %>% 
   .[, scales::percent(r2, accuracy = .1)]
 
 ```
@@ -397,19 +397,17 @@ eof_naive[, eof[[1]]$right, by = lev] %>%
   scale_x_longitude() +
   coord_polar() +
   theme(axis.text = element_blank()) +
-  facet_wrap(.~cEOF, ncol = 2, labeller = labeller(lev = lab_lev))  +
+  facet_wrap(.~EOF, ncol = 2)  +
   tagger::tag_facets("rc")  +
   theme(panel.spacing = grid::unit(-.7, "lines")) +
   grid_y
 ```
 
 In traditional EOF analysis zonal waves appear as pairs of EOFs, that could be degenerated representing similar patterns but shifted in phase [@horel1984].
-For instance, Figure \@ref(fig:eof-naive) shows the leading 4 EOFs of SON geopotential height zonal anomalies at 50 hPa \textcolor{red}{Creo que no aclaras ni acá, ni para los complejos, cuál sería el dominio para el cuál estás calculando el EOF) La barra de colores quedaría mejor si le agregas un contorno que la encierre.}.
+For instance, Figure \@ref(fig:eof-naive) shows the leading 4 EOFs of SON geopotential height zonal anomalies at 50 hPa south of 20\degree S. 
 It is clear that the first two EOFs represent the same zonal wave 1 pattern and the last two represent a same zonal wave pattern with shorter wavenumber and four centers of action shifted by 1/4 wavelength.
 A similar EOF structure can be seen in 200 hPa (not shown).
 Since each pair of EOFs seem to represent the same phase-varying structure, it would be desirable to combine them into a single index with amplitude and phase.
-
-\textcolor{red}{Detalles para la figura 1: a) Les pusiste cEOF, cuando debería ser EOF; b) te quedaron muy superpuestos los distintos subplots; c) La barra de colores quedaría mejor si le agregas un contorno que la encierre.}
 
 Complex Empirical Orthogonal Functions (cEOF) is a useful method to characterise zonal waves, considering phase-varying structures [@horel1984].
 This method involves augmenting \textcolor{red}{No sé si es un vocabulario específico de usar este método, pero no me queda claro que se entiende por "augmenting" exactamente} the original fields with the Hilbert transform of the data and then computing the Singular Value Decomposition of it.
