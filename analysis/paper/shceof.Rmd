@@ -487,7 +487,7 @@ ceof_splitted[, eof[[1]]$left, by = .(lev = levs)] %>%
   kable_classic() 
 ```
 
-The cEOF methodology is applied to SON geopotential height zonal anomalies at 50 and 200 hPa, representing a stratsopheric and upper troposhperic level respectively.
+The cEOF methodology is applied to SON geopotential height zonal anomalies south of 20\degree S at 50 and 200 hPa, representing a stratsopheric and upper troposhperic level respectively.
 Table \@ref(tab:corr-ceof-splitted) shows the coefficient of determination between time series of the amplitude of each complex EOF (cEOF) across levels.
 There's a high degree of correlation between the respective cEOF1 and cEOF2 at each level.
 The spatial patterns of the 50 hPa and 200 hPa cEOFs are also similar (not shown).
@@ -802,13 +802,13 @@ era_more %>%
   geom_hline(data = ~.x[, mean(hgt)*1e3, by  = .(cEOF, part)], 
              aes(yintercept = V1), size = 0.1, color = "gray30") +
   ggthemes::geom_rangeframe(sides = "lr", size = 0.1, color = "gray30") +
-  geom_line() +
+  geom_line(aes(color = part)) +
   # geom_line(data = era_less) +
   scale_alpha_manual(values = c(1, 0.2)) +
-  geom_smooth(method = "lm", color = "black") +
+  geom_smooth(method = "lm", aes(color = part)) +
   scale_x_datetime(NULL, date_labels = "%Y") +
   scale_y_continuous("EOF") +
-  
+  scale_color_brewer(NULL, palette = "Dark2") +
   facet_grid(cEOF ~ part, scales = "free_y") +
   theme(panel.spacing = grid::unit(1.5, "lines"))  +
   tag_facets("cr") +
@@ -897,7 +897,8 @@ plot_regr <- function(data, which_cEOF, which_levs, which_var) {
 }
 ```
 
-(ref:eof1-regr-gh-cap) Regression coefficients of the real and imaginary part of the first cEOF on SON geopotential height anomalies for the 1979 -- 2019 period. These coefficients come from multiple linear regression involving the real and imaginary part of both cEFO2.
+(ref:eof1-regr-gh-cap) Regression coefficients of the real and imaginary part of the first cEOF on SON geopotential height anomalies for the 1979 -- 2019 period. 
+These coefficients come from multiple linear regression involving the real and imaginary part of both cEFOs.
 
 ```{r eof1-regr-gh, fig.cap = "(ref:eof1-regr-gh-cap)", fig.height=1.2*width_column, fig.width=width_column, dependson="plot_regr"}
 plot_regr(regr , "cEOF1", c(200, 50), "hgt") +
