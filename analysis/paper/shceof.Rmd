@@ -642,6 +642,12 @@ This also nearly minimises the correlation with the imaginary part.
 
 For the second complex principal component, the phase was chosen so that the coefficient of determination between the Oceanic Niño Index [@bamston1997] and the real part was minimized, which also nearly maximizes the correlation with the imaginary part.
 
+While we compute these complex pricipal components using data from 1979 to 2019, we extended the complex time series back to the 1950 -- 1978 period by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial patterns.
+
+Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern and scaled to zero mean and unit standard deviation.
+
+
+
 We performed linear regressions to quantify the association between the cEOFs and other variables.
 For each cEOF, we create regression maps by computing fitting a multiple linear model involving both the real and the imaginary part.
 We evaluated statistical significance using a two-sided t-test and, in the case of regression maps, p-values were adjusted by controlling for the False Discovery Rate [@benjamini1995; @wilks2016] to avoid misleading results from the high number of regressions [@walker1914; @katz1991].
@@ -758,7 +764,8 @@ era_more <- rbind(
 
 ```
 
-(ref:extended-series-cap) Time series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern and scaled to zero mean and unit standard deviation. \textcolor{red}{Esta aclaración metodológica debería estar en la secció de métodos y revisa como expresas este caption para que sea consistente con el resto.}
+(ref:extended-series-cap) Time series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019).
+Each series is scaled to zero mean and unit standard deviation. 
 
 ```{r extended-series, fig.cap = "(ref:extended-series-cap)", fig.height=3, fig.width = 7, fig.env = "figure*"}
 # Check that the extended index coincides with the
