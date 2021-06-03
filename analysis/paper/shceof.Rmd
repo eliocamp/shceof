@@ -462,6 +462,9 @@ invisible(
 )
 ```
 
+(ref:corr-ceof-splitted-cap) Coefficient of determination ($R^2$) of the absolute magnitude of complex EOFs between 200 hPa and 50 hPa computing EOF separatedly for each level. 
+Background colour indicates the value of $R^2$.
+
 ```{r corr-ceof-splitted}
 ceof_splitted[, eof[[1]]$left, by = .(lev = levs)] %>%
   copy() %>%
@@ -476,7 +479,7 @@ ceof_splitted[, eof[[1]]$left, by = .(lev = levs)] %>%
   .[, r2 := round(correlation^2, 2)] %>%
   dcast(item1 ~ item2, value.var = "r2") %>%
   setnames("item1", "200 hPa") %>%
-  kbl2(booktabs = TRUE, caption = "Coefficient of determination ($R^2$) of the absolute magnitude of complex EOFs between 200 hPa and 50 hPa computing EOF separatedly for each level.") %>%
+  kbl2(booktabs = TRUE, caption = "(ref:corr-ceof-splitted-cap)") %>%
   column_spec2(2:4, background = spec_color2(.table[[.col]], option = background_palette,
                                             scale_from = c(0, 1)),
                color = ifelse(.table[[.col]] > .5, "white", "black")) %>% 
@@ -1445,7 +1448,9 @@ Studies on the relationship between the SAM and PSA-like patterns would be parti
 
 ### PSA
 
-(ref:psa-eof2-cap) Correlations between the Real and Imaginary parts of cEOF2 and the PSA1 and PSA2 modes computed as the second and third EOFs of seasonal geopotential height anomalies [following @mo2001] for the 1979 -- 2019 period. \textcolor{red}{Acclarar lo que está entre parentésis y que sería la coloración. Me parece también que hay un error en el del PSA2 imaginario.}
+(ref:psa-eof2-cap) Correlations between the Real and Imaginary parts of cEOF2 and the PSA1 and PSA2 modes computed as the second and third EOFs of seasonal geopotential height anomalies [following @mo2001] for the 1979 -- 2019 period. 95% confidence intervals in parenthesis. 
+Background colour indicates the value of correlation.
+
 
 ```{r psa-eof2, fig.cap = "(ref:psa-eof2-cap)", fig.width=7, fig.height=3, fig.env="figure*"}
 psa2 <- psa$left[PC == "PSA2"][season(time) == "SON"]
