@@ -409,10 +409,13 @@ It is clear that the first two EOFs represent the same zonal wave 1 pattern and 
 A similar EOF structure can be seen in 200 hPa (not shown).
 Since each pair of EOFs seem to represent the same phase-varying structure, it would be desirable to combine them into a single index with amplitude and phase.
 
-Complex Empirical Orthogonal Functions (cEOF) is a useful method to characterise zonal waves, considering phase-varying structures [@horel1984].
-This method involves augmenting \textcolor{red}{No sé si es un vocabulario específico de usar este método, pero no me queda claro que se entiende por "augmenting" exactamente} the original fields with the Hilbert transform of the data and then computing the Singular Value Decomposition of it.
-In this work, instead of applying the Hilbert transform to the time series at each point, we apply it to each latitude circle at each moment in time \textcolor{red}{Esta aclaración la haces por qué es la manera usual de hacer la metodología, si es asi aclaralo.}.
+Complex Empirical Orthogonal Functions (cEOF) is a useful method to characterise zonal waves, considering phase-varying structures [@horel1984]. 
+This method involves computing EOF on the analytic representation of the original field. 
+This representation is a complex field in which the real part is the original variable and the imaginary part is the original data shifted by 90\degree at each spectral frequency -- i.e. its Hilbert transform. 
+The Hilbert transform is usually understood in terms of time-varying signal. 
+However, in this work we apply the Hilbert transform to each latitude circle at each moment in time.
 Since each latitude circle is a periodic domain, this procedure does not suffer from edge effects.
+
 The result of the cEOF methodology is a set of complex spatial patterns and complex time series.
 The real and imaginary part of each spatial pattern represent two phases wave-like spatial patterns that are in quadrature.
 The magnitude and argument of each complex time series represent the amplitude and phase of each zonal wave.
