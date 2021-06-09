@@ -645,14 +645,19 @@ This also nearly minimises the correlation with the imaginary part.
 
 For the second complex principal component, the phase was chosen so that the coefficient of determination between the Oceanic Niño Index [@bamston1997] and the real part was minimized, which also nearly maximizes the correlation with the imaginary part.
 
-While we compute these complex pricipal components using data from 1979 to 2019, we extended the complex time series back to the 1950 -- 1978 period by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial patterns.
-
-Each series is computed by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial pattern and scaled to zero mean and unit standard deviation.
-
+While we compute these complex principal components using data from 1979 to 2019, we extended the complex time series back to the 1950 -- 1978 period by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial patterns.
 
 
 We performed linear regressions to quantify the association between the cEOFs and other variables.
 For each cEOF, we create regression maps by computing fitting a multiple linear model involving both the real and the imaginary part.
+To obtain the linear coefficients of a variable $X$ (geopotential, temperature, precipitation, etc...) with the Imaginary and Real parts of each cEOF we fit the equation
+
+$$
+X(\lambda, \phi, t) = \alpha(\lambda, \phi) \operatorname{Im}(\operatorname{cEOF}) + \beta(\lambda, \phi) \operatorname{Re}(\operatorname{cEOF}) + X_0(\lambda, \phi) +  \epsilon(\lambda, \phi, t)
+$$
+
+where $\lambda$ and $\phi$ are the longitude and latitude, $t$ is the time, $\alpha$ and $\beta$ are the linear regression coefficients, $X_0$ and $\epsilon$ are the constant and error terms respectively.
+
 We evaluated statistical significance using a two-sided t-test and, in the case of regression maps, p-values were adjusted by controlling for the False Discovery Rate [@benjamini1995; @wilks2016] to avoid misleading results from the high number of regressions [@walker1914; @katz1991].
 
 ## Computation procedures
@@ -839,13 +844,13 @@ regr <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[, hgt := NULL] %>%
   .[, `:=`(Real = as.numeric(scale(Real)), Imaginary = as.numeric(scale(Imaginary))),
     by = .(season, cEOF)] %>%
-  dcast(time ~ cEOF, value.var = c("Real", "Imaginary")) %>%
+  # dcast(time ~ cEOF, value.var = c("Real", "Imaginary")) %>%
   .[melt(era5, id.vars = c("time", "lon", "lat", "lev")), on = "time", allow.cartesian = TRUE] %>%
   .[lev %in% c(850, 700, 200, 50)] %>%
   # .[variable == "hgt"] %>%
-  .[, FitLm(value, Imaginary_cEOF1, Real_cEOF1, Imaginary_cEOF2, Real_cEOF2, se = TRUE),
-    by = .(lev, lon, lat, variable)] %>%
-  .[, c("term", "cEOF") := tstrsplit(term, "_")] %>%
+  .[, FitLm(value, Imaginary, Real, se = TRUE),
+    by = .(lev, lon, lat, variable, cEOF)] %>%
+  # .[, c("term", "cEOF") := tstrsplit(term, "_")] %>%
   rm_intercept() %>%
   .[, term := factor_ReIm(term)]
 ```
