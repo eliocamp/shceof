@@ -816,8 +816,8 @@ A similar observation was made by @raphael2003, who detected a step after around
 ## cEOFs Regressions
 
 The spatial patterns shown in Figure \@ref(fig:ceofs-1) are derived by removing the zonally symmetric circulation, so they might not include all the variability that is actually associated with the cEOF time series.
-To understand the full geopotential height field changes associated with each cEOF, we computed regression patterns of the full geopotential fields onto the 
-of each cEOF with the complete geopotential fields.
+To understand the full geopotential height field changes associated with each cEOF, we computed regression patterns of the full geopotential fields onto each cEOF.
+
 
 ```{r compute-regression}
 regr <- ceof[, eof[[1]]$left, by = .(season)] %>%
@@ -887,8 +887,9 @@ plot_regr <- function(data, which_cEOF, which_levs, which_var) {
 }
 ```
 
-(ref:eof1-regr-gh-cap) Regression coefficients of the real and imaginary part of the first cEOF on SON geopotential height anomalies for the 1979 -- 2019 period. 
-These coefficients come from multiple linear regression involving the real and imaginary part of both cEFOs.
+(ref:eof1-regr-gh-cap) Regression of SON geopotential height anomalies (meters) with the (column 1) real and (column 2) imaginary parts of the first cEOF for the 1979 -- 2019 period at (row a) 50 hPa and (row b) 200 hPa. 
+These coefficients come from multiple linear regression involving the real and imaginary parts. 
+Areas marked with dots have p-values smaller than 0.05 adjusted for False Detection Rate.
 
 ```{r eof1-regr-gh, fig.cap = "(ref:eof1-regr-gh-cap)", fig.height=1.2*width_column, fig.width=width_column, dependson="plot_regr"}
 plot_regr(regr , "cEOF1", c(200, 50), "hgt") +
@@ -973,7 +974,7 @@ t <- ERA5() %>%
         hgt = mean(hgt*w)), by = .(lev, lon, lat, time = seasonally(time))]
 ```
 
-(ref:t-vertical-cap) Regression coefficients between cEOF1 and zonal anomalies of mean air temperature (shaded) and ozone mixing ratio (contours, negative contours with dashed lines, labels in parts per billion by mass) averaged between `r knitr::combine_words(LatLabel(o3wave_lats))` for the period 1979 -- 2019.
+(ref:t-vertical-cap) Regression of SON anomalies of mean air temperature (shaded, Kelvin) and ozone mixing ratio (contours, negative contours with dashed lines, labels in parts per billion by mass) averaged between `r knitr::combine_words(LatLabel(o3wave_lats))` with the (a) real and (b) imaginary parts of the first cEOF for the 1979 -- 2019 period.
 
 ```{r lable_placement_min}
 lable_placement_min <- function(direction = c("vertical", "horizontal"))  {
@@ -1034,7 +1035,8 @@ t %>%
   scale_x_longitude(ticks = 60) +
   facet_grid(~term) +
   axis_labs_smol +
-  coord_cartesian(clip = "off") 
+  coord_cartesian(clip = "off") +
+  tag_facets()
 ```
 
 The relation between cEOFs and temperature was also evaluated.
@@ -1095,7 +1097,9 @@ o3_regr <- temp %>%
   .[, term := factor_ReIm(term)]
 ```
 
-(ref:o3-regr-cap) Regression coefficients (shaded) of SON mean Total Ozone Column anomalies onto the real (a) and imaginary (b) components of the cEOF1 for the 1979 -- 2019 period. On contours, the mean zonal anomaly of Total OZone Column (negative contours in dashed lines, Dobson Units).
+(ref:o3-regr-cap) Regression of SON mean Total Ozone Column anomalies (shaded, Dobson Units) with the (a) real and (b) imaginary parts of the first cEOF for the 1979 -- 2019 period.
+On contours, the mean zonal anomaly of Total Ozone Column (negative contours in dashed lines, Dobson Units).
+Areas marked with dots have p-values smaller than 0.05 adjusted for False Detection Rate.
 
 ```{r o3-regr, fig.cap = "(ref:o3-regr-cap)", fig.height=3, fig.width = width_column}
 o3_regr %>% 
@@ -1853,7 +1857,8 @@ sesa <- list(lon = c(300, 315),
              lat = c(-35, -22))
 ```
 
-(ref:pp-america-cap) Regression of SON mean precipitation anomalies in South America (mm per day, shaded) and (column a) cEOF1 the (row 1) Imaginary and (column 1) Real phase. For the 1979 -- 2018 \textcolor{red}{¿Cambiaste el año o es un typo?} period. Black contours with dots indicate areas with p-value smaller than 0.05 controlling for False Detection Rate.
+(ref:pp-america-cap) Regression of SON mean precipitation anomalies in South America (mm per day, shaded) and (column a) cEOF1 the (row 1) Imaginary and (column 1) Real phase. For the 1979 -- 2018 \textcolor{red}{¿Cambiaste el año o es un typo?} period.
+Areas marked with dots have p-values smaller than 0.05 adjusted for False Detection Rate.
 
 ```{r pp-america, fig.cap = "(ref:pp-america-cap)", fig.width=width_column, fig.height=width_column*1.1}
 plot_pp(data = regr_pp, which_cEOF = c("cEOF1", "cEOF2"), which_continent = "america")  +
