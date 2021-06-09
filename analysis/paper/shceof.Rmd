@@ -712,41 +712,6 @@ gdata %>%
   grid_y
 ```
 
-```{r ceofs-2, fig.cap = "Time series of the leading two cEOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa for the SON trimester and the period 1979 -- 2019.", fig.height=width_column, fig.width = width_column}
-ceof %>%
-  .[, eof[[1]]$left, by = season] %>%
-  sep_ReIm(hgt) %>%
-  .[season == "SON"] %>%
-  # .[, hgt := scale(hgt), by = .(part, cEOF)] %>%
-  ggplot(aes(time, hgt)) +
-  geom_line(aes(color = part)) +
-  scale_x_datetime(NULL) +
-  scale_y_continuous(NULL) +
-  scale_color_brewer(NULL, palette = "Dark2") +
-  facet_grid(cEOF ~ ., switch = "y") +
-  theme(panel.spacing = grid::unit(1.5, "lines"), strip.placement = "outside")  +
-  
-  panel_background
-```
-
-To describe the variability of the circulation zonal anomalies, the spatial and temporal parts of the first two leading cEOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa, compueted jointly at both levels, are shown in Figures \@ref(fig:ceofs-1) and \@ref(fig:ceofs-2).
-The first mode (cEOF1) explains 82% of the variance, while the second mode (cEOF2) explains a smaller fraction (7%).
-In the spatial patterns (Fig. \@ref(fig:ceofs-1)), the real and the imaginary components are in quadrature by construction, so that each cEOF describe a single wave-like pattern whose amplitude and position (i.e. phase) is controlled by the magnitude and phase of the temporal cEOF.
-The wave patterns described by these cEOFs match the patterns seen in the traditional EOFs of Figure \@ref(fig:eof-naive).
-
-The first cEOF (Fig. \@ref(fig:eof-naive) column a) is a hemispheric wave 1 pattern with maximum amplitude at high latitudes.
-At 50 hPa the Real cEOF1 has the maximum of the wave 1 at 150ºE and at 200 hPa, the maximum is located at around 175ºE indicating a westerly shift in phase.
-The second cEOF (Fig. \@ref(fig:eof-naive) column b) shows also a zonal wave-like structure with maximum amplitude at high latitudes, but with shorter spatial scales.
-In particular, its dominant structure at both levels is a wave 3 but with larger amplitude in the pacific sector.
-This modulated amplitude is especially apparent at 200 hPa.
-There is no apparent phase shift, suggesting a rather barotropic structure.
-
-The temporal variability for both components of the cEOF1 have non zero mean (Fig. \@ref(fig:ceofs-2)).
-This is due to the fact that the geopotential fields that enter into the cEOFs algorithm are anomalies with respect to the zonal mean, not the time mean.
-As a consequence, the variability associated with the cEOF1 includes variability that projects onto the mean zonally anomalous field.
-There are no significant simultanous correlation between the time series.
-Both cEOFs show year-to-year variability but show no evidence of decadal variabilty.
-The relatively short timespan (`r diff(range(unique(year(era5$time))))` years) hampers our habilty to detect longer trends.
 
 ```{r era_more}
 pattern <- ceof$eof[[1]]$right %>%
@@ -824,7 +789,24 @@ era_more %>%
   panel_background
 ```
 
-Therefore, we extend the cEOFs time series using the preliminary ERA5 back extension going back to 1950 by projecting the older SON geopogential height zonal anomaly fields onto the spatial patterns shown in Figure \@ref(fig:ceofs-1).
+To describe the variability of the circulation zonal anomalies, the spatial and temporal parts of the first two leading cEOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa, computed jointly at both levels, are shown in Figures \@ref(fig:ceofs-1) and \@ref(fig:extended-series,).
+The first mode (cEOF1) explains 82% of the variance, while the second mode (cEOF2) explains a smaller fraction (7%).
+In the spatial patterns (Fig. \@ref(fig:ceofs-1)), the real and the imaginary components are in quadrature by construction, so that each cEOF describe a single wave-like pattern whose amplitude and position (i.e. phase) is controlled by the magnitude and phase of the temporal cEOF.
+The wave patterns described by these cEOFs match the patterns seen in the traditional EOFs of Figure \@ref(fig:eof-naive).
+
+The first cEOF (Fig. \@ref(fig:eof-naive) column a) is a hemispheric wave 1 pattern with maximum amplitude at high latitudes.
+At 50 hPa the Real cEOF1 has the maximum of the wave 1 at 150ºE and at 200 hPa, the maximum is located at around 175ºE indicating a westerly shift in phase.
+The second cEOF (Fig. \@ref(fig:eof-naive) column b) shows also a zonal wave-like structure with maximum amplitude at high latitudes, but with shorter spatial scales.
+In particular, its dominant structure at both levels is a wave 3 but with larger amplitude in the pacific sector.
+This modulated amplitude is especially apparent at 200 hPa.
+There is no apparent phase shift, suggesting a rather barotropic structure.
+
+The temporal variability for both components of the cEOF1 have non zero mean (Fig. \@ref(fig:extended-series,)).
+This is due to the fact that the geopotential fields that enter into the cEOFs algorithm are anomalies with respect to the zonal mean, not the time mean.
+As a consequence, the variability associated with the cEOF1 includes variability that projects onto the mean zonally anomalous field.
+There are no significant simultaneous correlation between the time series.
+Both cEOFs show year-to-year variability but show no evidence of decadal variability.
+
 There is a significant upward trend in the real component of cEOF1 (Fig. \@ref(fig:extended-series)a.1, p-value `r trends[part == "Real" & cEOF == "cEOF1"]$p_report`) and no significant trend in any of the complex components of cEOF2.
 The positive trend in the real cEOF1 translates into a positive trend in cEOF1 magnitude, but not in the phase (not shown).
 
