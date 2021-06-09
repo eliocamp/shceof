@@ -136,6 +136,7 @@ grid_y <- theme(panel.grid.major.y = element_line(color = "gray60", size = 0.1))
 
 panel_background <- theme(panel.background = element_rect(fill = "#fbfbfb", color = NA), 
                           panel.ontop = FALSE,
+                          panel.grid = element_line(size = 0.5, color = "gray90"),
                           tagger.panel.tag.background = ggplot2::element_rect(color = NA, 
                                                                               fill = "#fbfbfb"))
 
@@ -718,14 +719,13 @@ ceof %>%
   .[season == "SON"] %>%
   # .[, hgt := scale(hgt), by = .(part, cEOF)] %>%
   ggplot(aes(time, hgt)) +
-  geom_hline(yintercept = 0, size = 0.1, color = "gray30") +
   geom_line(aes(color = part)) +
   scale_x_datetime(NULL) +
   scale_y_continuous(NULL) +
   scale_color_brewer(NULL, palette = "Dark2") +
   facet_grid(cEOF ~ ., switch = "y") +
   theme(panel.spacing = grid::unit(1.5, "lines"), strip.placement = "outside")  +
-  ggthemes::geom_rangeframe(sides = "lr", size = 0.1, color = "gray30") +
+  
   panel_background
 ```
 
@@ -772,10 +772,9 @@ era_more <- rbind(
 
 ```
 
-(ref:extended-series-cap) Time series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019).
-Each series is scaled to zero mean and unit standard deviation. 
+(ref:extended-series-cap) Time series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Dark straight line is the OLS trend. Black horizontal and vertical line mark the mean value and range of each time series respectively.
 
-```{r extended-series, fig.cap = "(ref:extended-series-cap)", fig.height=3, fig.width = 7, fig.env = "figure*"}
+```{r extended-series, fig.cap = "(ref:extended-series-cap)", fig.height=4, fig.width = 7, fig.env = "figure*"}
 # Check that the extended index coincides with the
 # original index.
 cors <- era_more %>%
@@ -808,16 +807,18 @@ era_more %>%
   ggplot(aes(time, hgt*1e3)) +
   # Zero line + rangeframe
   geom_hline(data = ~.x[, mean(hgt)*1e3, by  = .(cEOF, part)], 
-             aes(yintercept = V1), size = 0.1, color = "gray30") +
-  ggthemes::geom_rangeframe(sides = "lr", size = 0.1, color = "gray30") +
+             aes(yintercept = V1), size = 0.2, color = "gray30") +
+  ggthemes::geom_rangeframe(sides = "r", size = 0.2, color = "gray30") +
   geom_line(aes(color = part)) +
   # geom_line(data = era_less) +
   scale_alpha_manual(values = c(1, 0.2)) +
-  geom_smooth(method = "lm", aes(color = part)) +
+  geom_smooth(method = "lm", aes(color = stage(part, after_scale = scales::muted(color))),
+              show.legend = FALSE, size = 0.8) +
   scale_x_datetime(NULL, date_labels = "%Y") +
-  scale_y_continuous("EOF") +
-  scale_color_brewer(NULL, palette = "Dark2") +
-  facet_grid(cEOF ~ part, scales = "free_y") +
+  scale_y_continuous("EOF", minor_breaks = NULL) +
+  scale_color_brewer(NULL, palette = "Dark2", 
+                     guide = guide_legend(override.aes = list(fill = NA))) +
+  facet_grid(cEOF ~ part) +
   theme(panel.spacing = grid::unit(1.5, "lines"))  +
   tag_facets("cr") +
   panel_background
@@ -827,15 +828,14 @@ Therefore, we extend the cEOFs time series using the preliminary ERA5 back exten
 There is a significant upward trend in the real component of cEOF1 (Fig. \@ref(fig:extended-series)a.1, p-value `r trends[part == "Real" & cEOF == "cEOF1"]$p_report`) and no significant trend in any of the complex components of cEOF2.
 The positive trend in the real cEOF1 translates into a positive trend in cEOF1 magnitude, but not in the phase (not shown).
 
-\textcolor{red}{Revisa la figura 4 que te están quedando bastante desparejos los subplots. También sugieron mantener la convención de colores de la figura anterior (real/imaginario) para hacer más directa la interpretación.}
-
 This long-term change indicates an increase in the magnitude of the high latitude zonal wave 1.
 A similar observation was made by @raphael2003, who detected a step after around 1975 in the leading EOF of August-September-October 500 hPa zonal geopotential height anomalies.
 
 ## cEOFs Regressions
 
 The spatial patterns shown in Figure \@ref(fig:ceofs-1) are derived by removing the zonally symmetric circulation, so they might not include all the variability that is actually associated with the cEOF time series.
-To understand the full geopotential height field changes associated with each cEOF, we computed regression patterns of each cEOF with the complete geopotential fields.
+To understand the full geopotential height field changes associated with each cEOF, we computed regression patterns of the full geopotential fields onto the 
+of each cEOF with the complete geopotential fields.
 
 ```{r compute-regression}
 regr <- ceof[, eof[[1]]$left, by = .(season)] %>%
@@ -1264,7 +1264,7 @@ sam_r2 %>%
             size = 2) +
   geom_line(aes(color = term, group = term)) +
   
-  scale_x_level() +
+  scale_x_level(minor_breaks = NULL) +
   scale_y_continuous(r2, limits = c(0, 1)) +
   scale_size_manual("p-value", values = c("TRUE" = 1, 
                                       "FALSE" = 0.5), 
