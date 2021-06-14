@@ -898,9 +898,6 @@ plot_regr(regr , "cEOF1", c(200, 50), "hgt") +
                        limits = c(-1800, 1800))
 ```
 
-\textcolor{red}{Creo que te había hecho el mismo comentario en la versión anterior. Tenés que ser más preciso cuando hablas/mostras regresiones indicando en qué dirección va la regresión "regressed upon". Revisalo a lo largo del texto. En la figura 5, ¿no está al revés?}
-
-\textcolor{red}{En el caption de la Figura 5 falta aclarar qué son los puntos.}
 
 Figure \@ref(fig:eof1-regr-gh) shows regression maps of SON geopotential height anomalies upon cEOF1.
 At 50 hPa (Figure \@ref(fig:eof1-regr-gh) row a), both the Real and Imaginary cEOF1 are associated with planetary wave 1 patterns, that are 90º off phase.
@@ -1045,14 +1042,13 @@ In both levels, the Real cEOF1 is associated with positive monopole over the Sou
 On the other hand, the regression maps on the Imaginary cEOF1 show a more clear wave 1 pattern with its maximum around 60ºE.
 The distribution of temperature regression coefficients at 50 hPa and at 200 hPa mirror the geopotential height regression maps at 50 hPa (Fig. \@ref(fig:eof1-regr-gh)).
 
-Figure  \@ref(fig:t-vertical) shows the vertical distribution of the regression coefficientes on cEOF1 from zonal anomalies of air temperature and zonal anomalies of ozone mixing ratio averaged between `r knitr::combine_words(LatLabel(o3wave_lats))`.
+Figure \@ref(fig:t-vertical) shows the vertical distribution of the regression coefficients on cEOF1 from zonal anomalies of air temperature and zonal anomalies of ozone mixing ratio averaged between `r knitr::combine_words(LatLabel(o3wave_lats))`.
 \textcolor{red}{Deberias aclarar qué significa la terminología que estas utilizando. Lo podes hacer en los métodos y ya queda para todo el texto}.
 Temperature zonal anomalies associated with cEOF1 show a clear wave 1 pattern for both real and imaginary components throughout the atmosphere above 250 hPa with a change in sign above 10 hPa.
 Following hydrostatic balance, this is the level in which the geopotential anomaly have maximum amplitude (not shown).
 
 The maximum ozone anomalies are co-located with the minimum temperature anomalies above 10 hPa and with the maximum temperature anomalies below 10 hPa (Fig. \@ref(fig:t-vertical))). Therefore, the ozone zonal wave 1 is anticorrelated with the temperature zonal wave 1 in the upper stratosphere, and directly correlated in the upper stratosphere . This change in phase is observed in ozone anomalies forced by planetary waves that reach the stratosphere. In the photochemically-dominated upper stratosphere, cold temperatures inhibit the destruction of ozone, and the advectively-dominated lower stratosphere, ozone anomalies are 90º out of phase with horizontal and vertical transport, which is 90º our of phase with temperature anomalies [@hartmann1979; @wirth1993; @smith1995].
 
-\textcolor{red}{Revisa que todos los captions tengan las unidades correspondientes}
 
 ```{r o3-t-phase}
 # t %>% 
@@ -1310,11 +1306,120 @@ In the case of cEOF2, the moderate correlation between SAM and Imaginary cEOF2 b
 The Imaginary cEOF2 and the A-SAM share up to `r scales::percent(max_r2[cEOF == "cEOF2"]$estimate^2, 2)` of their variance, reached at `r max_r2[cEOF == "cEOF2"]$lev` hPa (Figure \@ref(fig:sam-eof-vertical).b2).
 Such extremely high correlation between the asymmetric SAM and the Imaginary cEOF2 suggests that these might be different ways of characterising the same phenomenon.
 
-<!-- As a further illustration \textcolor{red}{(¿De qué?)}, Figure\ @ref(fig:eof-filtered) shows the spatial pattern of the leading EOF of 200 hPa geopotential height when the variability associated with cEOF2 is removed. The resulting pattern is an nearly zonally symmetrical annular mode. This mode is highly correlated with SAM (`r eof_filtered_cor[term == "full"]$text`), but only with the symmetrical part (`r eof_filtered_cor[term == "sym"]$text`). Note that the usual definition of the PSA modes as the second and third EOFs creates modes orthogonal to the SAM (defined as the first EOF) and thus impedes this kind of filtering.   -->
+
+### PSA
+
+(ref:psa-eof2-cap) Correlations between the Real and Imaginary parts of cEOF2 and the PSA1 and PSA2 modes computed as the second and third EOFs of seasonal geopotential height anomalies [following @mo2001] for the 1979 -- 2019 period. 95% confidence intervals in parenthesis. 
+Background colour indicates the value of correlation.
+
+
+```{r psa-eof2, fig.cap = "(ref:psa-eof2-cap)", fig.width=7, fig.height=3, fig.env="figure*"}
+psa2 <- psa$left[PC == "PSA2"][season(time) == "SON"]
+
+rotations_psa <- lapply(angles, function(a) {
+  cEOF2 %>% 
+    copy() %>% 
+    .[, hgt := rotate(hgt, a)] %>% 
+    .[psa2, on = "time"] %>% 
+    .[, cor(value, Re(hgt))] 
+}) 
+
+psa_angle <- angles[which.min(unlist(rotations_psa))]
+
+make_numeric <- function(x) {
+  x <- strsplit(x, "\ ")
+  vapply(x, function(x) as.numeric(x[[1]]), numeric(1))
+}
+
+background_palette <- grDevices::colorRampPalette(c(scales::muted("blue"),
+                                                    "white",
+                                                    scales::muted("red")),
+                                                  space = "Lab")
+
+cEOF2[psa_time, on = "time"] %>% 
+  .[PC != "SAM"] %>% 
+  copy() %>% 
+  sep_ReIm() %>% 
+  .[, correlate(value, hgt), by = .(PC, part)] %>% 
+  dcast(PC ~ part, value.var = "text") %>% 
+  kbl2(booktabs = TRUE, caption = "(ref:psa-eof2-cap)") %>%
+  column_spec2(2:3, background = spec_color2(make_numeric(.table[[.col]]),
+                                             option = background_palette,
+                                             scale_from = c(-1, 1)), 
+               color = ifelse(abs(make_numeric(.table[[.col]])) > .5, "white", "black")) %>%
+  add_header_above(c("", "cEOF2" = 2)) %>%
+  kable_classic() 
+
+# cEOF2[psa_time, on = "time"] %>% 
+#   .[PC != "SAM"] %>% 
+#   copy() %>% 
+#   # .[, hgt := rotate(hgt, psa_angle)] %>%
+#   sep_ReIm() %>% 
+#   ggplot(aes(value, hgt)) +
+#   geom_hline(yintercept = 0, size = 0.2, color = "gray50") +
+#   geom_vline(xintercept = 0, size = 0.2, color = "gray50") +
+#   geom_point() +
+#   geom_smooth(method = "lm") +
+#   geom_smooth(method = "lm") + 
+#   scale_y_continuous("EOF2") +
+#   scale_x_continuous("PSA") +
+#   facet_grid(part ~ PC) +
+#   panel_background +
+#   tag_facets("rc")
+```
+
+The relationship between PSAs and the modes described from the cEOFs is also studied.
+Table \@ref(tab:psa-eof2) shows the correlations between the two PSA indices and the timeseries for Real and Imaginary phase of cEOF2.
+As anticipated by Figure \@ref(fig:eof2-regr-gh), there is a strong correlation between PSA1 and Imaginary cEOF2, and between PSA2 and Real cEOF2.
+Conversely, there is no relationship between PSA1 and Real cEOF2, and between PSA2 and Imaginary cEOF2.
+As a result, cEOF2 represents well both the spatial structure and temporal evolution of the PSA modes, as well as it is possible to make a rather clean association between its two phases and the two PSA modes.
+So, It could be concluded that the same particular rotation of cEOF2 that maximises the association between cEOF2 parts and PSA modes, is the one which maximises the relationship between ENSO and Imaginary cEOF2.
+
+The reason the conventional EOF analysis arrives at the same separation than our particular cEOF rotation is probably the fact that not all phases are equal.
+\textcolor{red}{No me quedo claro ese "equal", ¿igual de probables/posibles/factibles?}.
+To visualize that, Figure \@ref(fig:phase-histogram) shows an histogram that counts the number of SON years in which the cEOF2 was close to each of the four particular phases (positive/negative Real/Imaginary), with the observations for each season marked as rugs on the horizontal axis.
+For instance, years with cEOF2 phase within 45º of 0º are nearest the "positive Real" phase.
+About two thirds of time cEOF2 has a phase similar to either the negative or positive Imaginary phase.
+It could be seen that Imaginary phase is the most common phase and It is also the direction that has the maximum relationship with ENSO.
+Therefore, the Imaginary cEOF2 explains more variance than the Real cEOF2 and conventional EOF analysis will tend to separate the two.
+
+(ref:phase-histogram-cap) Histogram of phase distribution of cEOF2 for the 1979 -- 2019 period. Bins are centred at 90º, 0º, -90º, -180º with a binwidth of 90º. \textcolor{red}{Rugs...}
+
+```{r phase-histogram, fig.cap = "(ref:phase-histogram-cap)", fig.width=width_column*.8, fig.height=2.5}
+N <- nrow(cut(ceof$eof[[1]], 2)$left)
+cut(ceof$eof[[1]], 2)$left %>% 
+  .[, arg := Arg(hgt)] %>% 
+  .[, w := Mod(hgt)/mean(Mod(hgt))] %>% 
+  qwrap(arg = c(-pi, pi) ~  c(-pi - 1/4*pi, pi - 1/4*pi)) %>% 
+  ggplot(aes(arg)) +
+  geom_histogram(binwidth = 90*pi/180, center = 0, size = 0.2,
+                 color = "black", fill = "gray70") +
+  annotate("text",
+           label = c("- Real", "- Imaginary", "+ Real", "+ Imaginary"),
+           color = "black", size = 3,
+           y = 0.5, x = c(-pi, -pi/2, 0, pi/2), angle = 90, hjust = 0) +
+  geom_rug() +
+  scale_y_continuous("Number of years", 
+                     sec.axis = sec_axis(~.x/N, 
+                                         name = "Proportion of years", 
+                                         labels = scales::percent)) +
+  scale_x_continuous("Phase", trans = scales::reverse_trans(),
+                     breaks = seq(-pi - 1/4*pi, pi - 1/4*pi, by = 45*pi/180),
+                     labels = function(x) paste0(round(x*180/pi, 5), "º")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+The result obtaneid here is similar to the one obtained by @irving2016.
+From their Fourier decomposition of reprojected meridional wind fields \textcolor{red}{¿En qué región?}, they show that the phase distribution is bimodal and isolate the PSA pattern from the rest of the PSA-like variability by selecting events that are near the peaks of the distribution (compare our Figure \@ref(fig:phase-histogram) with their Figure 6).
+
+The advantage of our method is that it is much simpler to implement, it provides magnitude and phase naturally, and it facilitates the description of this mode as a propagating wave instead of as standing oscillation.
+As a consequence, the cEOF2 offers an alternative way of representing the PSA which has several advantages over using the second and third EOFs.
+
+### Is the Asymmetric SAM real?
 
 (ref:fake-eof-cap) Row a: The three components used to create a synthetic dataset of 41 years of geopotential height at 200 hPa. Row b: The three EOF computed from the synthetic dataset with the variance explained by each EOF in parenthesis. Units are arbitrary.
 
-```{r fake_eof}
+```{r make_fake_eof}
 cEOF2 <- ceof$eof[[1]]$left[cEOF == "cEOF2"] %>% 
   copy() %>% 
   .[, cEOF := NULL] %>% 
@@ -1425,8 +1530,6 @@ era5 %>%
   tag_facets("rc")
 ```
 
-\textcolor{red}{Esta parte creo que quedaría mejor como una subsección, aunque no se me viene rápido a la cabeza el título y la pondría después de la parte de PSA}
-
 To test the hypothesis that a PSA-like feature can appear as statistic contamination of an otherwise zonally symmetrical and uncorrelated SAM, we create a synthetic dataset of `r uniqueN(fake_sam$time)` fields by reconstructing the SON 200 hPa geopotential height field explained by the cEOF2 and adding a perfectly zonally symmetric SAM-like structure with random sign and value sampled with replacement from the real SAM index.
 To this synthetic dataset (\textcolor{red}{No me suena mucho la palabra "synthetic", ¿se usa en este contexto?}) we then apply traditional EOF.
 By construction this dataset contains two independent components: a zonally symmetric standing oscillation and a PSA-like of varying amplitude and phase (Figure \@ref(fig:fake-eof) row a).
@@ -1447,115 +1550,6 @@ Of note, the three EOFs are well separated according to North's rule of thumb [@
 This suggests that the zonal asymmetries of the SON SAM could very well be mostly a statistical artefact.
 Since many surface impacts are mediated by the asymmetric component, as well as the relationship between SAM and ENSO [@campitelli2021], this potential issue could affect the interpretability of many results involving the SAM.
 Studies on the relationship between the SAM and PSA-like patterns would be particularly difficult to interpret.
-
-### PSA
-
-(ref:psa-eof2-cap) Correlations between the Real and Imaginary parts of cEOF2 and the PSA1 and PSA2 modes computed as the second and third EOFs of seasonal geopotential height anomalies [following @mo2001] for the 1979 -- 2019 period. 95% confidence intervals in parenthesis. 
-Background colour indicates the value of correlation.
-
-
-```{r psa-eof2, fig.cap = "(ref:psa-eof2-cap)", fig.width=7, fig.height=3, fig.env="figure*"}
-psa2 <- psa$left[PC == "PSA2"][season(time) == "SON"]
-
-rotations_psa <- lapply(angles, function(a) {
-  cEOF2 %>% 
-    copy() %>% 
-    .[, hgt := rotate(hgt, a)] %>% 
-    .[psa2, on = "time"] %>% 
-    .[, cor(value, Re(hgt))] 
-}) 
-
-psa_angle <- angles[which.min(unlist(rotations_psa))]
-
-make_numeric <- function(x) {
-  x <- strsplit(x, "\ ")
-  vapply(x, function(x) as.numeric(x[[1]]), numeric(1))
-}
-
-background_palette <- grDevices::colorRampPalette(c(scales::muted("blue"),
-                                                    "white",
-                                                    scales::muted("red")),
-                                                  space = "Lab")
-
-cEOF2[psa_time, on = "time"] %>% 
-  .[PC != "SAM"] %>% 
-  copy() %>% 
-  sep_ReIm() %>% 
-  .[, correlate(value, hgt), by = .(PC, part)] %>% 
-  dcast(PC ~ part, value.var = "text") %>% 
-  kbl2(booktabs = TRUE, caption = "(ref:psa-eof2-cap)") %>%
-  column_spec2(2:3, background = spec_color2(make_numeric(.table[[.col]]),
-                                             option = background_palette,
-                                             scale_from = c(-1, 1)), 
-               color = ifelse(abs(make_numeric(.table[[.col]])) > .5, "white", "black")) %>%
-  add_header_above(c("", "cEOF2" = 2)) %>%
-  kable_classic() 
-
-# cEOF2[psa_time, on = "time"] %>% 
-#   .[PC != "SAM"] %>% 
-#   copy() %>% 
-#   # .[, hgt := rotate(hgt, psa_angle)] %>%
-#   sep_ReIm() %>% 
-#   ggplot(aes(value, hgt)) +
-#   geom_hline(yintercept = 0, size = 0.2, color = "gray50") +
-#   geom_vline(xintercept = 0, size = 0.2, color = "gray50") +
-#   geom_point() +
-#   geom_smooth(method = "lm") +
-#   geom_smooth(method = "lm") + 
-#   scale_y_continuous("EOF2") +
-#   scale_x_continuous("PSA") +
-#   facet_grid(part ~ PC) +
-#   panel_background +
-#   tag_facets("rc")
-```
-
-The relationship between PSAs and the modes described from the cEOFs is also studied.
-Table \@ref(tab:psa-eof2) shows the correlations between the two PSA indices and the timeseries for Real and Imaginary phase of cEOF2.
-As anticipated by Figure \@ref(fig:eof2-regr-gh), there is a strong correlation between PSA1 and Imaginary cEOF2, and between PSA2 and Real cEOF2.
-Conversely, there is no relationship between PSA1 and Real cEOF2, and between PSA2 and Imaginary cEOF2.
-As a result, cEOF2 represents well both the spatial structure and temporal evolution of the PSA modes, as well as it is possible to make a rather clean association between its two phases and the two PSA modes.
-So, It could be concluded that the same particular rotation of cEOF2 that maximises the association between cEOF2 parts and PSA modes, is the one which maximises the relationship between ENSO and Imaginary cEOF2.
-
-The reason the conventional EOF analysis arrives at the same separation than our particular cEOF rotation is probably the fact that not all phases are equal.
-\textcolor{red}{No me quedo claro ese "equal", ¿igual de probables/posibles/factibles?}.
-To visualize that, Figure \@ref(fig:phase-histogram) shows an histogram that counts the number of SON years in which the cEOF2 was close to each of the four particular phases (positive/negative Real/Imaginary), with the observations for each season marked as rugs on the horizontal axis.
-For instance, years with cEOF2 phase within 45º of 0º are nearest the "positive Real" phase.
-About two thirds of time cEOF2 has a phase similar to either the negative or positive Imaginary phase.
-It could be seen that Imaginary phase is the most common phase and It is also the direction that has the maximum relationship with ENSO.
-Therefore, the Imaginary cEOF2 explains more variance than the Real cEOF2 and conventional EOF analysis will tend to separate the two.
-
-(ref:phase-histogram-cap) Histogram of phase distribution of cEOF2 for the 1979 -- 2019 period. Bins are centred at 90º, 0º, -90º, -180º with a binwidth of 90º. \textcolor{red}{Rugs...}
-
-```{r phase-histogram, fig.cap = "(ref:phase-histogram-cap)", fig.width=width_column*.8, fig.height=2.5}
-N <- nrow(cut(ceof$eof[[1]], 2)$left)
-cut(ceof$eof[[1]], 2)$left %>% 
-  .[, arg := Arg(hgt)] %>% 
-  .[, w := Mod(hgt)/mean(Mod(hgt))] %>% 
-  qwrap(arg = c(-pi, pi) ~  c(-pi - 1/4*pi, pi - 1/4*pi)) %>% 
-  ggplot(aes(arg)) +
-  geom_histogram(binwidth = 90*pi/180, center = 0, size = 0.2,
-                 color = "black", fill = "gray70") +
-  annotate("text",
-           label = c("- Real", "- Imaginary", "+ Real", "+ Imaginary"),
-           color = "black", size = 3,
-           y = 0.5, x = c(-pi, -pi/2, 0, pi/2), angle = 90, hjust = 0) +
-  geom_rug() +
-  scale_y_continuous("Number of years", 
-                     sec.axis = sec_axis(~.x/N, 
-                                         name = "Proportion of years", 
-                                         labels = scales::percent)) +
-  scale_x_continuous("Phase", trans = scales::reverse_trans(),
-                     breaks = seq(-pi - 1/4*pi, pi - 1/4*pi, by = 45*pi/180),
-                     labels = function(x) paste0(round(x*180/pi, 5), "º")) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-
-The result obtaneid here is similar to the one obtained by @irving2016.
-From their Fourier decomposition of reprojected meridional wind fields \textcolor{red}{¿En qué región?}, they show that the phase distribution is bimodal and isolate the PSA pattern from the rest of the PSA-like variability by selecting events that are near the peaks of the distribution (compare our Figure \@ref(fig:phase-histogram) with their Figure 6).
-
-The advantage of our method is that it is much simpler to implement, it provides magnitude and phase naturally, and it facilitates the description of this mode as a propagating wave instead of as standing oscillation.
-As a consequence, the cEOF2 offers an alternative way of representing the PSA which has several advantages over using the second and third EOFs.
-
 ## Tropical sources
 
 ```{r regr_psi}
@@ -1646,7 +1640,7 @@ plot_sst_psi <- function(which_cEOF, which_lev) {
 }
 ```
 
-(ref:sst-psi-2-cap) Regression maps of cEOF2 with SST (column a) and streamfunction zonal anomalies (shaded) with their corresponding activity wave flux (vectors) (column b). Areas marked with dots have p-values smaller than 0.05 adjusted for FDR.
+(ref:sst-psi-2-cap) Regression maps of cEOF2 with SST (column a) and streamfunction zonal anomalies (shaded) with their corresponding activity wave flux (vectors) (column b). Areas marked with dots have p-values smaller than 0.01 adjusted for FDR.
 
 ```{r sst-psi-2,  fig.cap = "(ref:sst-psi-2-cap)", fig.width = 7, fig.height=4, dependson="plot_sst_psi", fig.env="figure*"}
 plot_sst_psi(which_cEOF = "cEOF2", which_lev = 200) +
