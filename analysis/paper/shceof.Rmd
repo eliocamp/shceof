@@ -1129,7 +1129,7 @@ o3_regr %>%
 
 ```
 
-The regression maps of cEOF1 with fields of Total Ozone Column (TOC) (Fig.  \@ref(fig:o3-regr)) show zonal wave 1 pattens in TOC associated with both phases of cEOF1. Climatologically, the springtime Ozone minimum is located off the South Pole and towards the Weddell Sea [@wirth1993, \textcolor{red}{¿Alguna referencia más nueva?}].
+The regression maps of cEOF1 with fields of Total Ozone Column (TOC) (Fig.  \@ref(fig:o3-regr)) show zonal wave 1 pattens in TOC associated with both phases of cEOF1. Climatologically, the springtime Ozone minimum is located off the South Pole and towards the Weddell Sea [@grytsai2011].
 Thus, the Real cEOF1 regression pattern (Figure \@ref(fig:o3-regr)a) coincides with the climatological position of the ozone hole while the one for the Imaginary cEOF1 is shifted by 90º.
 
 (ref:wave1-o3-cap) Relationship between cEOF1 amplitude and phase with amplitude and phase of the zonal wave 1 in Total Ozone Column averaged between `r knitr::combine_words(LatLabel(o3wave_lats))` for the period 1979 -- 2019.
@@ -1375,15 +1375,14 @@ Conversely, there is no relationship between PSA1 and Real cEOF2, and between PS
 As a result, cEOF2 represents well both the spatial structure and temporal evolution of the PSA modes, as well as it is possible to make a rather clean association between its two phases and the two PSA modes.
 So, It could be concluded that the same particular rotation of cEOF2 that maximises the association between cEOF2 parts and PSA modes, is the one which maximises the relationship between ENSO and Imaginary cEOF2.
 
-The reason the conventional EOF analysis arrives at the same separation than our particular cEOF rotation is probably the fact that not all phases are equal.
-\textcolor{red}{No me quedo claro ese "equal", ¿igual de probables/posibles/factibles?}.
+The reason the conventional EOF analysis arrives at the same separation than our particular cEOF rotation is probably the fact that not all phases are equally frequent.
 To visualize that, Figure \@ref(fig:phase-histogram) shows an histogram that counts the number of SON years in which the cEOF2 was close to each of the four particular phases (positive/negative Real/Imaginary), with the observations for each season marked as rugs on the horizontal axis.
 For instance, years with cEOF2 phase within 45º of 0º are nearest the "positive Real" phase.
 About two thirds of time cEOF2 has a phase similar to either the negative or positive Imaginary phase.
 It could be seen that Imaginary phase is the most common phase and It is also the direction that has the maximum relationship with ENSO.
 Therefore, the Imaginary cEOF2 explains more variance than the Real cEOF2 and conventional EOF analysis will tend to separate the two.
 
-(ref:phase-histogram-cap) Histogram of phase distribution of cEOF2 for the 1979 -- 2019 period. Bins are centred at 90º, 0º, -90º, -180º with a binwidth of 90º. \textcolor{red}{Rugs...}
+(ref:phase-histogram-cap) Histogram of phase distribution of cEOF2 for the 1979 -- 2019 period. Bins are centred at 90º, 0º, -90º, -180º with a binwidth of 90º. The small vertical lines near the horizontal axis mark the observations.
 
 ```{r phase-histogram, fig.cap = "(ref:phase-histogram-cap)", fig.width=width_column*.8, fig.height=2.5}
 N <- nrow(cut(ceof$eof[[1]], 2)$left)
@@ -1425,25 +1424,45 @@ cEOF2 <- ceof$eof[[1]]$left[cEOF == "cEOF2"] %>%
   .[, cEOF := NULL] %>% 
   .[]
 
-pattern <- eof_filtered$right %>% 
-  .[era5[lev == 200], on = "time"] %>% 
-  .[, FitLm(hgt, eof), by = .(lon, lat)] %>% 
-  .[, estimate := mean(estimate), by = .(lat, term)] %>%
-  dcast(lon + lat ~ term, value.var = "estimate")
 
+pattern <- sams[term == "full" & lev == 200] %>% 
+  .[era5[lev == 200], on = c("lev", "time")] %>% 
+  .[, FitLm(hgt, estimate), by = .(lon, lat, lev)] %>% 
+  rm_intercept() %>% 
+  .[, estimate := mean(estimate), by = .(lat)] %>% 
+  .[, term := NULL] %>% 
+  setnames("estimate", "eof")
 
 set.seed(42)
-fake_sam <- eof_filtered$right %>% 
+
+
+fake_sam <-  sams[term == "full" & lev == 200] %>% 
   copy() %>% 
-  .[, eof := sample(eof, replace = TRUE)] 
+  .[, value := sample(estimate, replace = TRUE)] %>% 
+  .[, estimate := NULL] %>% 
+  .[, term := NULL]
+
+# complement <- function(x, y) {
+#   
+#   e <- residuals(lm(x ~ y))
+#   
+#   e*sd(x) + mean(x)
+#   
+# }
+# 
+# fake_sam <-  sams[term == "full" & lev == 200] %>% 
+#   copy() %>% 
+#   .[, value := complement(estimate, y)] %>% 
+#   .[, estimate := NULL] %>% 
+#   .[, term := NULL]
 
 cor_with_eof2 <- fake_sam[cEOF2, on = "time"] %>% 
   sep_ReIm() %>% 
-  .[, correlate(eof, hgt), by = part]
+  .[, correlate(value, hgt), by = part]
 
 fake_sam <- fake_sam %>% 
-  setnames("eof", "value") %>% 
-  .[, pattern[, .(sam = value*eof), by = .(lon, lat)], by = time]
+  .[pattern, on = "lev", allow.cartesian = TRUE] %>% 
+  .[, sam := value*eof]
 
 # fake_sam %>% 
 #   .[time %in% unique(time)[1:4]] %>% 
@@ -1485,7 +1504,7 @@ var <- fake_eof$sdev %>%
   copy() %>% 
     .[, setNames(paste0(EOF, " (", scales::percent(r2), ")"),
                  EOF)]
-var <- c(var, setNames(c("SAM", "Imaginary", "Real"), c("SAM", "Imaginary", "Real")))
+var <- c(var, setNames(c("Annular Pattern", "Imaginary cEOF2", "Real cEOF2"), c("SAM", "Imaginary", "Real")))
 
 
 era5 %>%
@@ -1507,14 +1526,16 @@ era5 %>%
   
   # geom_contour_tanaka has problem with the perfectly symemtric SAM
   # adding just a tiny bit of noise solves it. 
-  .[EOF == "SAM", eof := eof + rnorm(.N, sd = 1e-5)] %>%
   
+  .[, eof := scale(eof), by = EOF] %>% 
+  .[EOF == "SAM", eof := eof + rnorm(.N, sd = 1e-5)] %>%
+  .[EOF %in% c("EOF1", "EOF2"), eof := -eof] %>% 
   periodic(lon = c(0, 360)) %>%
   ggplot(aes(lon, lat)) +
   geom_contour_fill(aes(z = eof, fill = ..level..), global.breaks = TRUE, 
                     breaks = AnchorBreaks(0, 0.5, exclude = 0)) +
   
-  geom_contour_tanaka(aes(z = eof), global.breaks = TRUE, 
+  geom_contour_tanaka(aes(z = eof), global.breaks = TRUE,
                       breaks = AnchorBreaks(0,0.5,  exclude = 0)) +
   scale_fill_divergent_discretised(NULL, guide = guide_colorsteps_bottom(), 
                                    limits = c(-4, 4)) +
@@ -1530,26 +1551,33 @@ era5 %>%
   tag_facets("rc")
 ```
 
-To test the hypothesis that a PSA-like feature can appear as statistic contamination of an otherwise zonally symmetrical and uncorrelated SAM, we create a synthetic dataset of `r uniqueN(fake_sam$time)` fields by reconstructing the SON 200 hPa geopotential height field explained by the cEOF2 and adding a perfectly zonally symmetric SAM-like structure with random sign and value sampled with replacement from the real SAM index.
-To this synthetic dataset (\textcolor{red}{No me suena mucho la palabra "synthetic", ¿se usa en este contexto?}) we then apply traditional EOF.
+To test the hypothesis that a PSA-like feature can appear as statistic contamination of an otherwise zonally symmetrical and uncorrelated annular pattern, we create a synthetic dataset of `r uniqueN(fake_sam$time)` fields by reconstructing the SON 200 hPa geopotential height field explained by the cEOF2 and adding a perfectly zonally symmetric annylar pattern with random sign and value sampled with replacement from the real SAM index.
+To this synthetic dataset we then apply traditional EOF.
 By construction this dataset contains two independent components: a zonally symmetric standing oscillation and a PSA-like of varying amplitude and phase (Figure \@ref(fig:fake-eof) row a).
-While the former is a standing oscillation which could be represented by a single EOF, the latter is a wave which can change phase, so it needs two EOFs to be represented correctly.
+While the former is a standing oscillation which could be represented by a single EOF, the latter is a wave which can change phase, so traditional EOF analysis needs two EOFs to represented it correctly.
 Thus, the full variance of this synthetic dataset can be perfectly explained by three EOFs.
 
-\textcolor{red}{Los titulos de la figura 11 superior se prestan a la confusión, ya que no es exactamente el SAM y no se entiende qué sería "Imaginary" y "Real"}
-
 The three EOFs of the synthetic dataset are shown in Figure \@ref(fig:fake-eof) row b.
-The synthetic SAM can be seen in the first EOF while the cEOF2 is explained by the second and third.
-However, even though the synthetic SAM is perfectly zonally symmetric by construction, the leading EOF is not.
-The EOF decomposition mixes this mode with parts of the the zonally asymmetric cEOF2 pattern, resulting in a pattern pretty similar to the real SAM pattern (\textcolor{red}{REF}).
-This happens because, although in this synthetic dataset the zonally symmetrical SAM and the cEOF2 are uncorrelated by construction, the sample correlation is not null \\textcolor{red}{No me quedo 100% clara esta parte, ¿podrías expresarla un poco distinto?}
-.
+The annular pattern is captured mainly by the first EOF while the cEOF2 is explained by the second and third.
+However, even though the annular pattern used to construct these data is perfectly zonally symmetric, the leading EOF is not.
+The EOF decomposition mixes the true annular pattern with parts of the the zonally asymmetric cEOF2 pattern, resulting in a pattern pretty similar to the real SAM pattern [@fogt2020].
+
+
+\textcolor{red}{Todo esto está mal.}
+
+Rotating makes it even worse. 
+
+
+The reason this happens is that the spatial correlation between the annular pattern and the wave patterns is not zero; i.e. they are not orthogonal. And since EOFs 
+
 In this particular example, it is `r cor_with_eof2[part == "Real"]$text` with the Real part and `r cor_with_eof2[part == "Imaginary"]$text` with the Imaginary part.
 Of note, the three EOFs are well separated according to North's rule of thumb [@north1982].
 
 This suggests that the zonal asymmetries of the SON SAM could very well be mostly a statistical artefact.
 Since many surface impacts are mediated by the asymmetric component, as well as the relationship between SAM and ENSO [@campitelli2021], this potential issue could affect the interpretability of many results involving the SAM.
 Studies on the relationship between the SAM and PSA-like patterns would be particularly difficult to interpret.
+
+
 ## Tropical sources
 
 ```{r regr_psi}
@@ -1646,11 +1674,11 @@ plot_sst_psi <- function(which_cEOF, which_lev) {
 plot_sst_psi(which_cEOF = "cEOF2", which_lev = 200) +
   scale_fill_divergent_discretised("SST",
                                    limits = c(-1, 1),
-                                   guide = guide_colorsteps_bottom(20, order = 2)) 
+                                   guide = guide_colorstrip_bottom(20, order = 2)) 
 ```
 
 The connections between cEOFs and Tropical sources is also assesed.
-Figure \@ref(fig:sst-psi-2) shows the regression maps of Sea Surface Temperatures (SST) and Streamfunction at 200 hPa respectively upon cEOF2. The Imaginary cEOF2 is associated with strong positive SST anomalies on the Central Pacific and negative anomalies over an area across the North of Australia and New Zealand, the South Pacific Convergence Zone (SPCZ) (Figure \@ref(fig:sst-psi-2).a2). This pattern is almost canonically positive ENSO (\textcolor{red}{REF ENSO}) and indeed, the correlation between the Imaginary cEOF2 and the Oceanic Niño Index [@bamston1997] is very high `r enso_cor[cEOF == "cEOF2" & part == "Imaginary"]$text`.
+Figure \@ref(fig:sst-psi-2) shows the regression maps of Sea Surface Temperatures (SST) and Streamfunction at 200 hPa respectively upon cEOF2. The Imaginary cEOF2 is associated with strong positive SST anomalies on the Central Pacific and negative anomalies over an area across the North of Australia and New Zealand, the South Pacific Convergence Zone (SPCZ) (Figure \@ref(fig:sst-psi-2).a2). This pattern is almost canonically positive ENSO [@bamston1997] and indeed, the correlation between the Imaginary cEOF2 and the Oceanic Niño Index [@bamston1997] is very high `r enso_cor[cEOF == "cEOF2" & part == "Imaginary"]$text`.
 Besides, the Imaginary cEOF2 is associated with strong wave-like streamfunction anomalies emanating from the tropics (Figure \@ref(fig:sst-psi-2).b2). This is consistent with the effect of ENSO on the extratropics: SST anomalies initiate anomalous convection that excites Rossby waves that propagate meridionally towards higher latitudes [@mo2000].
 
 \textcolor{red}{Revisa los labels de la colorbar para la figura 13. Además ojo que solamente sirven para la columna a, faltan los correspondientes a la streamfunction y el vector de referencia para wave flux}
@@ -1660,7 +1688,7 @@ However, Figure \@ref(fig:sst-psi-2).a1 and b1 show that the Real cEOF2 is not 
 The correlation between the Real cEOF2 and ENSO is also not significant (`r enso_cor[cEOF == "cEOF2" & part == "Real"]$text`).
 This lack of tropical signal suggests different natures of the different phases of the Real cEOF2 wave train, which has the maximum amplitudes in the surroundings of southern South America.
 
-```{r enso-phase, fig.cap = " ONI plotted against cEOF2 phase for th 1979 -- 2019 period. Years with magnitude of cEOF2 greater or smaller than the 50th percentile are shown as orange circles and green diamomnds respectively. Black line is the fit ONI ~ sin(phase) computed by OLS weighted by the magnitude of cEOF2.", fig.width = width_column, fig.height=3}
+```{r enso-phase, fig.cap = " ONI plotted against cEOF2 phase for th 1979 -- 2019 period. Years with magnitude of cEOF2 greater or smaller than the 50th percentile are shown as orange circles and green diamomnds respectively. Black line is the fit ONI ~ sin(phase) computed by weighted OLS using the magnitude of the cEOF2 as weights.", fig.width = width_column, fig.height=3}
 gdata <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[cEOF == "cEOF2"] %>% 
   # .[, hgt := Anomaly(hgt)] %>% 
@@ -1675,6 +1703,11 @@ cor_enso_mag <- gdata[, correlate(mag, abs(oni))]
 cor_enso_spearman <- gdata[, cor.test(mag, abs(oni), method = "spearman")]
 
 cor_enso_mag_outlier <- gdata[oni < 1.5][, correlate(mag, abs(oni))]
+
+
+cor_enso_mag_quantile <- gdata[mag >= quantile(mag, 0.5)] %>% 
+  .[oni < 1.5] %>% 
+  .[, correlate(mag, abs(oni))]
 
 
 cos_model <- gdata %>% 
@@ -1705,12 +1738,12 @@ gdata %>%
              size = 3) +
 
   scale_color_brewer(NULL, palette = "Dark2",
-                     labels = c("TRUE"  = "|EOF2| > 50%",
-                                "FALSE" = "|EOF2| < 50%")) +
+                     labels = c("TRUE"  = "|cEOF2| > 50%",
+                                "FALSE" = "|cEOF2| < 50%")) +
   scale_shape_manual(NULL, values = c("TRUE" = 20,
                                       "FALSE" = 18),
-                     labels = c("TRUE"  = "|EOF2| > 50%",
-                                "FALSE" = "|EOF2| < 50%")) +
+                     labels = c("TRUE"  = "|cEOF2| > 50%",
+                                "FALSE" = "|cEOF2| < 50%")) +
   scale_y_continuous("ONI") +
   scale_x_continuous("Phase",
                      breaks = seq(-pi, pi, by = 45*pi/180),
@@ -1736,6 +1769,17 @@ Furthermore, even when using all the datapoints, the Spearman correlation --whic
 Therefore, the relationship between the magnitude of the cEOF2 train wave and ONI remains uncertain.
 
 \textcolor{red}{Se que la cantidad de años hace bastante limitada la muestra, pero creo que es un resultado a tener en cuenta que en esos eventos muy intensos se alineen. ¿Probaste hacer la correlación con todos los puntos naranjas?}
+
+```{r}
+# gdata %>% 
+#   ggplot(aes(oni, mag)) +
+#   geom_point(aes(color = mag >= quantile(mag, 0.5)))  +
+#    scale_color_brewer(NULL, palette = "Dark2",
+#                      labels = c("TRUE"  = "|cEOF2| > 50%",
+#                                 "FALSE" = "|cEOF2| < 50%")) +
+#   panel_background
+```
+
 
 It could be concluded that the wave train represented by cEOF2 can be both part of the internal variability of the extratropical atmosphere or forced by tropical SSTs.
 In the former case, the wave train has little phase preference.
@@ -1851,50 +1895,15 @@ sesa <- list(lon = c(300, 315),
              lat = c(-35, -22))
 ```
 
-(ref:pp-america-cap) Regression of SON mean precipitation anomalies in South America (mm per day, shaded) and (column a) cEOF1 the (row 1) Imaginary and (column 1) Real phase. For the 1979 -- 2018 \textcolor{red}{¿Cambiaste el año o es un typo?} period.
-Areas marked with dots have p-values smaller than 0.05 adjusted for False Detection Rate.
-
-```{r pp-america, fig.cap = "(ref:pp-america-cap)", fig.width=width_column, fig.height=width_column*1.1}
-plot_pp(data = regr_pp, which_cEOF = c("cEOF1", "cEOF2"), which_continent = "america")  +
-  scale_fill_divergent_discretised(NULL, 
-                         limits = c(-1, 1),
-                         # oob = scales::squish,
-                         low = "#8E521C",
-                         high = "#00665E",
-                         guide = guide_colorsteps_bottom(15)) 
-  # annotate("rect", xmin = min(sesa$lon), xmax = max(sesa$lon), 
-  #          ymin = min(sesa$lat), ymax = max(sesa$lat),
-  #          fill = NA, color = "gray50", size = 0.3)
-  #          
-```
 
 The influence of cEOFs variability in continental rainfall of extra-tropical Southern Hemisphere is also explored.
 We focus on South America and Oceania sectors, because there are not relevant signals in Southern Africa (not shown).
 
-```{r sinusoidal-sesa}
-gdata <- cmap %>% 
-  .[lon %between% sesa$lon  & lat %between% sesa$lat] %>% 
-  .[, .(pp = weighted.mean(pp, cos(lat*pi/180))), by = time] %>% 
-  .[, pp := Anomaly(pp), by = season(time)] %>% 
-  .[ceof$eof[[1]]$left, on  = "time"] %>% 
-  .[cEOF == "cEOF2"] %>% 
-  .[, arg := Arg(hgt)] %>% 
-  .[, mag := Mod(hgt)]
 
-model <- lm(pp ~ I(sin(arg)) + I(cos(arg)) - 1, data = gdata)
+(ref:pp-oceania-cap) Regression of SON mean precipitation anomalies in Oceania (mm per day, shaded) and (column a) cEOF1 the (row 1) Imaginary and (column 1) Real phase. For the 1979 -- 2019.
+Areas marked with dots have p-values smaller than 0.05 adjusted for False Detection Rate.
 
-fstatistic <- summary(model)$fstatistic
-p_value <- pf(fstatistic["value"], fstatistic["numdf"], fstatistic["dendf"], 
-        lower.tail = FALSE)
-```
 
-Figure \@ref(fig:pp-america) shows regression maps of seasonal precipitation with each cEOF in South America. cEOF1 is associated with slight decreases \textcolor{red}{Revisa como estás expresando toda esta parte (y en el resto del texto), recorda que son regresiones así que no corresponde decir postive/negative sino haces alguna referencia a la variable con las que los estás regresionando.} in precipitation in Southern Brazil and Paraguay, although these are not statistically significant (Fig. \@ref(fig:pp-america) column a). The strongest precipitation regression coefccients are the ones associated with the Imaginary cEOF2. The positive anomalies on Southeastern South America (SESA) and Central Chile, and negative anomalies over South Atlantic Convergence Zone is a well known springtime precipitation signature of ENSO [@cai2020a] and it is also similar to the precipitation anomalies associated with the A-SAM [@campitelli2021].
-This is not surprising considering the close relationship between the ONI, the A-SAM index and the Imaginary cEOF2 shown previously, but further consolidates the identification of this mode with the PSA pattern.
-On the other hand, the Real cEOF2 is associated with negative precipitation anomalies in a smaller area of SESA.
-Resembling the relationship between ONI and the phase of cEOF2 (Fig. \@ref(fig:enso-phase)), there is a cEOF2 phase dependence of the precipitation anomalies in SESA (not shown).
-These variable could be related wth a signficant sinusoidal fit that has a coefficient of determination of `r round(summary(model)$r.squared, 2)` (p-value `r report_p(p_value)`).
-
-(ref:pp-oceania-cap) As Figure \@ref(fig:pp-america) but for Oceania.
 
 ```{r box_australia}
 box_australia <- data.frame(cEOF = "cEOF2", 
@@ -1911,7 +1920,8 @@ plot_pp(regr_pp, c("cEOF1", "cEOF2"), which_continent =  "oceania") +
 
 The precipitation anomalies in Oceania associated with cEOF1 are also weak and not statistically significant (Figure \@ref(fig:pp-oceania) column a) whereas EFO2 is associated with large and widespread anomalies. The Real cEOF2 is associated with positive seasonal anomalies in Northern and Eastern Australia, and negative ones over New Zealand, while precipitation anomalies associated with Imaginary cEOF2 are negative over all Eastern Australia. Again, these negative anomalies are similar to the springtime precipitation anomalies observed in relation with the Asymmetric SAM [@campitelli2021] and ENSO [@cai2011].
 
-(ref:australia-pp-phase-cap) Same as Figure \@ref(fig:enso-phase) but for precipitation anomalies averaged between `r knitr::combine_words(LonLabel(box_australia$lon))` and `r knitr::combine_words(LatLabel(box_australia$lat))` (box shown in Figure \@ref(fig:pp-oceania) column b).
+(ref:australia-pp-phase-cap) Same as Figure \@ref(fig:enso-phase) but for precipitation anomalies averaged between `r knitr::combine_words(LonLabel(box_australia$lon))` and `r knitr::combine_words(LatLabel(box_australia$lat))` (box shown in Figure \@ref(fig:pp-oceania) column b). 
+Black line is the fit precipitation ~ sin(phase) + cos(phase) computed by weighted OLS using the magnitude of the cEOF2 as weights.
 
 ```{r australia-pp-phase, fig.cap = "(ref:australia-pp-phase-cap)", fig.width = width_column, fig.height=3}
 gdata <- cmap %>% 
@@ -1923,15 +1933,15 @@ gdata <- cmap %>%
   .[, arg := Arg(hgt)] %>% 
   .[, mag := Mod(hgt)]
 
-model <- lm(pp ~ I(sin(arg)) + I(cos(arg)) - 1, data = gdata)
+model <- lm(pp ~ I(sin(arg)) + I(cos(arg)) - 1, weights = mag, data = gdata)
 fstatistic <- summary(model)$fstatistic
 p_value <- pf(fstatistic["value"], fstatistic["numdf"], fstatistic["dendf"], 
         lower.tail = FALSE)
 
 
 equation <- latex2exp::TeX(paste0("$\\mathrm{Precipitation} = ", 
-        signif(coef(model)[1], 2), "\\sin{(\\mathrm{phase})} + ", 
-        signif(coef(model)[2], 2), "\\cos{(\\mathrm{phase})}$"), output = "text")
+        signif(coef(model)[1], 2), "\\frac{mm}{day} \\sin{(\\mathrm{phase})} + ", 
+        signif(coef(model)[2], 2), "\\frac{mm}{day} \\cos{(\\mathrm{phase})}$"), output = "text")
   
   
 gdata %>% 
@@ -1969,16 +1979,56 @@ gdata %>%
                      labels = function(x) paste0(round(x*180/pi, 5), "º")) +
   coord_cartesian(xlim = c(-pi, pi)) +
   labs(subtitle = equation) +
+  theme(plot.subtitle = element_text(size = 8)) +
   panel_background
 ```
 
-To better understand the relationship between precipitation anomalies over Western Australia and the cEOF2, Figure \@ref(fig:australia-pp-phase) plots precipitation anomalies averaged over Eastern Australia (box in Figure \@ref(fig:pp-oceania)) as a function of cEOF2 phase.
+To better understand the relationship between precipitation anomalies over Eastern Australia and the cEOF2, Figure \@ref(fig:australia-pp-phase) plots precipitation anomalies averaged over Eastern Australia (box in Figure \@ref(fig:pp-oceania)) as a function of cEOF2 phase.
 The black line shows a sinusoidal fit, whose coefficients are fitted by weighted least squares using the magnitude of the EFO2 as weight.
 The $r^2$ corresponding to the fit is `r signif(summary(model)$r.squared, 2)` (p-value `r report_p(p_value)`).
 There is a strong relationship between the phase of the cEOF2 and precipitation anomalies in Eastern Australia, but the Real and Imaginary phases we chose are not exactly aligned with the direction that maximises this relationship.
 To perform a more in-depth analysis of the relationship between this pattern and precipitation in this region, it would be recommended to align one of the axis (either the Real or the Imaginary) to the phase that maximises the described relationship.
 
-\textcolor{red}{¿Había alguna razón para poner SA antes que Oceanía? Sino invertiría el orden, porque creo que es más obvio lo que decis en Sudamérica sobre el sinusoidal fit, si mostras antes de lo de Oceanía.}
+
+(ref:pp-america-cap) As Figure \@ref(fig:pp-america) but for South America
+
+```{r pp-america, fig.cap = "(ref:pp-america-cap)", fig.width=width_column, fig.height=width_column*1.1}
+plot_pp(data = regr_pp, which_cEOF = c("cEOF1", "cEOF2"), which_continent = "america")  +
+  scale_fill_divergent_discretised(NULL, 
+                         limits = c(-1, 1),
+                         # oob = scales::squish,
+                         low = "#8E521C",
+                         high = "#00665E",
+                         guide = guide_colorsteps_bottom(15)) 
+  # annotate("rect", xmin = min(sesa$lon), xmax = max(sesa$lon), 
+  #          ymin = min(sesa$lat), ymax = max(sesa$lat),
+  #          fill = NA, color = "gray50", size = 0.3)
+  #          
+```
+
+
+```{r sinusoidal-sesa}
+gdata <- cmap %>% 
+  .[lon %between% sesa$lon  & lat %between% sesa$lat] %>% 
+  .[, .(pp = weighted.mean(pp, cos(lat*pi/180))), by = time] %>% 
+  .[, pp := Anomaly(pp), by = season(time)] %>% 
+  .[ceof$eof[[1]]$left, on  = "time"] %>% 
+  .[cEOF == "cEOF2"] %>% 
+  .[, arg := Arg(hgt)] %>% 
+  .[, mag := Mod(hgt)]
+
+model <- lm(pp ~ I(sin(arg)) + I(cos(arg)) - 1, data = gdata)
+
+fstatistic <- summary(model)$fstatistic
+p_value <- pf(fstatistic["value"], fstatistic["numdf"], fstatistic["dendf"], 
+        lower.tail = FALSE)
+```
+
+Figure \@ref(fig:pp-america) shows regression maps of seasonal precipitation with each cEOF in South America. cEOF1 is associated with slight decreases \textcolor{red}{Revisa como estás expresando toda esta parte (y en el resto del texto), recorda que son regresiones así que no corresponde decir postive/negative sino haces alguna referencia a la variable con las que los estás regresionando.} in precipitation in Southern Brazil and Paraguay, although these are not statistically significant (Fig. \@ref(fig:pp-america) column a). The strongest precipitation regression coefccients are the ones associated with the Imaginary cEOF2. The positive anomalies on Southeastern South America (SESA) and Central Chile, and negative anomalies over South Atlantic Convergence Zone is a well known springtime precipitation signature of ENSO [@cai2020a] and it is also similar to the precipitation anomalies associated with the A-SAM [@campitelli2021].
+This is not surprising considering the close relationship between the ONI, the A-SAM index and the Imaginary cEOF2 shown previously, but further consolidates the identification of this mode with the PSA pattern.
+On the other hand, the Real cEOF2 is associated with negative precipitation anomalies in a smaller area of SESA.
+Resembling the relationship between ONI and the phase of cEOF2 (Fig. \@ref(fig:enso-phase)), there is a cEOF2 phase dependence of the precipitation anomalies in SESA (not shown).
+These variable could be related wth a signficant sinusoidal fit that has a coefficient of determination of `r round(summary(model)$r.squared, 2)` (p-value `r report_p(p_value)`).
 
 \textcolor{red}{La formula en la figura trata de escribirla en una forma más precisa "precipitación"/"phase" son muy generales, y también teniendo en cuenta las unidades. También incluilo en el caption.}
 
@@ -2008,8 +2058,6 @@ This mirrors the results of @cai2002, who showed that the CSIRO Model can create
 
 We further show that the Imaginary cEOF2 is closely related to the Southern Annular Mode in the troposphere.
 In fact, it has a closer resemblance of the zonally asymmetric portion of the SAM.
-
-To the extreme that the leading EOF of geopotential height with the cEOF2 removes results in an annular mode that has none of the typical zonal asymmetries of the observed SAM.\textcolor{red}{No me pareció del todo claro lo que estás queriendo expresar acá}
 
 This raises the possibility that the asymmetric component of the SAM is actually a statistical contamination of the PSA mode.
 
