@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.3.30)  13 APR 2021 15:54
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.3.30)  15 JUN 2021 19:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -572,112 +572,102 @@ File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 Underfull \vbox (badness 5878) has occurred while \output is active []
 
 [1] [2] [3]
-
-Package natbib Warning: Citation `wilks2016' on page 4 undefined on input line 
-149.
-
-
-Package natbib Warning: Citation `walker1914' on page 4 undefined on input line
- 149.
-
-
-Package natbib Warning: Citation `katz1991' on page 4 undefined on input line 1
-49.
-
 File: ../figures/eof-naive-1.pdf Graphic file (type pdf)
 <use ../figures/eof-naive-1.pdf>
+
+Underfull \vbox (badness 2941) has occurred while \output is active []
+
 [4]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 2343) has occurred while \output is active []
 
 [5]
+Overfull \hbox (1.5178pt too wide) in paragraph at lines 238--242
+[]\TU/lmr/m/n/10 The cEOF methodology is applied to SON geopotential height zon
+al anoma-
+ []
+
+[6]
 File: ../figures/ceofs-1-1.pdf Graphic file (type pdf)
 <use ../figures/ceofs-1-1.pdf>
-File: ../figures/ceofs-2-1.pdf Graphic file (type pdf)
-<use ../figures/ceofs-2-1.pdf>
-[6] [7]
 File: ../figures/extended-series-1.pdf Graphic file (type pdf)
 <use ../figures/extended-series-1.pdf>
 
-Overfull \hbox (154.84003pt too wide) in paragraph at lines 231--231
+Overfull \hbox (154.84003pt too wide) in paragraph at lines 297--297
 [][] 
  []
 
-
-Underfull \vbox (badness 3977) has occurred while \output is active []
-
-[8]
-File: ../figures/eof1-regr-gh-1.pdf Graphic file (type pdf)
-<use ../figures/eof1-regr-gh-1.pdf>
-[9]
-File: ../figures/eof2-regr-gh-1.pdf Graphic file (type pdf)
-<use ../figures/eof2-regr-gh-1.pdf>
-
-Overfull \hbox (0.81999pt too wide) in paragraph at lines 267--268
-[]\TU/lmr/m/n/10 Figure []6[] shows the regression pattern of geopotential heig
-ht and the cEOF2.
+[7] [8]
+Overfull \hbox (9.32999pt too wide) in paragraph at lines 318--320
+[]\TU/lmr/m/n/10 There is a significant upward trend in the real component of c
+EOF1 (Fig. []3[]a.1,
  []
 
+[9]
+File: ../figures/eof1-regr-gh-1.pdf Graphic file (type pdf)
+<use ../figures/eof1-regr-gh-1.pdf>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 [10]
+File: ../figures/eof2-regr-gh-1.pdf Graphic file (type pdf)
+<use ../figures/eof2-regr-gh-1.pdf>
+[11]
 File: ../figures/eof1-regr-t-1.pdf Graphic file (type pdf)
 <use ../figures/eof1-regr-t-1.pdf>
 File: ../figures/t-vertical-1.pdf Graphic file (type pdf)
 <use ../figures/t-vertical-1.pdf>
 
-Overfull \hbox (6.86002pt too wide) in paragraph at lines 291--292
-\TU/lmr/m/n/10 onto cEOF1. In both levels, the Real cEOF1 is associated with po
-sitive monopole
+Overfull \hbox (1.06999pt too wide) in paragraph at lines 392--397
+\TU/lmr/m/n/10 shows regression patterns of air temperature at 50hPa and 200hPa
+ onto cEOF1.
  []
 
-[11] [12]
+[12]
 File: ../figures/o3-regr-1.pdf Graphic file (type pdf)
 <use ../figures/o3-regr-1.pdf>
+[13] [14]
 File: ../figures/sam-eof-vertical-1.pdf Graphic file (type pdf)
 <use ../figures/sam-eof-vertical-1.pdf>
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[13]
-File: ../figures/fake-eof-1.pdf Graphic file (type pdf)
-<use ../figures/fake-eof-1.pdf>
-
-Underfull \vbox (badness 3168) has occurred while \output is active []
-
-[14]
-Underfull \vbox (badness 1264) has occurred while \output is active []
-
-[15] [16]
+[15]
 File: ../figures/phase-histogram-1.pdf Graphic file (type pdf)
 <use ../figures/phase-histogram-1.pdf>
+[16]
+File: ../figures/fake-eof-1.pdf Graphic file (type pdf)
+<use ../figures/fake-eof-1.pdf>
 [17]
+Underfull \vbox (badness 1742) has occurred while \output is active []
+
+[18]
 File: ../figures/sst-psi-2-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-2-1.pdf>
 
-Overfull \hbox (141.79132pt too wide) in paragraph at lines 389--389
+Overfull \hbox (141.79132pt too wide) in paragraph at lines 541--541
 [][] 
  []
 
-[18]
+[19]
 File: ../figures/enso-phase-1.pdf Graphic file (type pdf)
 <use ../figures/enso-phase-1.pdf>
-[19]
+[20]
 File: ../figures/sst-psi-1-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-1-1.pdf>
 
-Overfull \hbox (141.79132pt too wide) in paragraph at lines 411--411
+Overfull \hbox (141.79132pt too wide) in paragraph at lines 586--586
 [][] 
  []
 
-File: ../figures/pp-america-1.pdf Graphic file (type pdf)
-<use ../figures/pp-america-1.pdf>
-[20]
+
+Underfull \vbox (badness 1077) has occurred while \output is active []
+
+[21]
 File: ../figures/pp-oceania-1.pdf Graphic file (type pdf)
 <use ../figures/pp-oceania-1.pdf>
 File: ../figures/australia-pp-phase-1.pdf Graphic file (type pdf)
 <use ../figures/australia-pp-phase-1.pdf>
-
-Underfull \vbox (badness 2103) has occurred while \output is active []
-
-[21] [22] [23] (./shceof.bbl [24]
+[22]
+File: ../figures/pp-america-1.pdf Graphic file (type pdf)
+<use ../figures/pp-america-1.pdf>
+[23] [24] [25] (./shceof.bbl
 Underfull \hbox (badness 1028) in paragraph at lines 31--34
 []\TU/lmr/m/n/10 Bamston AG, Chelliah M, Goldenberg SB (1997) Documentation of 
 a
@@ -706,30 +696,30 @@ a5-
  []
 
 
+Underfull \vbox (badness 3930) has occurred while \output is active []
+
+[26]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[25]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[26])
-
-Package natbib Warning: There were undefined citations.
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 485.
 [27]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 485.
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[28])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 691.
+[29]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 691.
 (./shceof.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 485.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 485.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 485.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 691.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 691.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 691.
  ) 
 Here is how much of TeX's memory you used:
- 12939 strings out of 493007
- 183937 string characters out of 6136719
- 295940 words of memory out of 5000000
- 16733 multiletter control sequences out of 15000+600000
+ 12950 strings out of 493007
+ 184137 string characters out of 6136719
+ 297651 words of memory out of 5000000
+ 16745 multiletter control sequences out of 15000+600000
  9670 words of font info for 45 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 44i,9n,47p,1266b,495s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,9n,47p,982b,521s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on shceof.pdf (27 pages).
+Output written on shceof.pdf (29 pages).
