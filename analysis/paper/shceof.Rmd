@@ -317,9 +317,9 @@ The SAM represents a relatively zonally symmetric pattern of alternating low pre
 The PSA1 and PSA2 describe the two out-of-phase sides of a meridionally propagating wave train that originates in the Eastern equatorial Pacific and travels towards the South Atlantic following a great-circle arch along the Antarctic Peninsula.
 These patterns are derived by applying EOF to temporal anomalies, but @raphael2003 applied EOF methods specifically to zonal anomalies.
 
-EOFs are more flexible than Fourier descomposition modes in the sense that they can characterise \textcolor{red}{Esto hay que exresarlo más claramente}.
+EOFs are more flexible than Fourier descomposition modes in the sense that they can capture oscillation patterns that cannot be characterised by purely sinusoidal waves with constant amplitude.
 Nonetheless, they are restricted to standing oscillation modes and could not represent properly propagating or phase-varying modes such as zonal waves.
-Besides, a single EOF can also represent a mixture of two or more physical modes.
+A single EOF can also represent a mixture of two or more physical modes.
 The inability of a single EOF to describe travelling waves is what forces the PSA pattern to be described by two EOFs.
 @irving2016 characterises the Pacific--South American Pattern in a Fourier framework.
 Being a meridionally propagating mode, the PSA cannot be correctly characterised by Fourier decomposition at each latitude circle, so they reprojected meridional wind fields so that the path of the PSA laid on the equator.
@@ -1513,7 +1513,7 @@ plot_sst_psi <- function(which_cEOF, which_lev) {
                     size = 0.1, res = 2, nx = 22, ny = 12, 
                     arrow.angle = 14, arrow.length = 0.2) +
     geom_qmap(keep = .015) +
-    scale_fill_divergent_discretised("Streamfunction (*1e-7)", 
+    scale_fill_divergent_discretised("Streamfunction (×1e-7)", 
                                      guide = guide_colorstrip_bottom(20, order = 1)) +
     ggnewscale::new_scale_fill() +
     
@@ -1782,7 +1782,7 @@ plot_pp(regr_pp, c("cEOF1", "cEOF2"), which_continent =  "oceania") +
 
 The precipitation anomalies in Oceania associated with cEOF1 are also weak and not statistically significant (Figure \@ref(fig:pp-oceania) column a) whereas EFO2 is associated with large and widespread anomalies. The Real cEOF2 is associated with positive seasonal anomalies in Northern and Eastern Australia, and negative ones over New Zealand, while precipitation anomalies associated with Imaginary cEOF2 are negative over all Eastern Australia. Again, these negative anomalies are similar to the springtime precipitation anomalies observed in relation with the Asymmetric SAM [@campitelli2021] and ENSO [@cai2011].
 
-(ref:australia-pp-phase-cap) Same as Figure \@ref(fig:enso-phase) but for precipitation anomalies averaged between `r knitr::combine_words(LonLabel(box_australia$lon))` and `r knitr::combine_words(LatLabel(box_australia$lat))` (box shown in Figure \@ref(fig:pp-oceania) column b). 
+(ref:australia-pp-phase-cap) Same as Figure \@ref(fig:enso-phase) but for precipitation anomalies averaged between `r knitr::combine_words(LonLabel(box_australia$lon))` and `r knitr::combine_words(LatLabel(box_australia$lat))` (box shown in Figure \@ref(fig:pp-oceania) column b) in $\frac{\mathrm{mm}}{\mathrm{day}}$. 
 Black line is the fit precipitation ~ sin(phase) + cos(phase) computed by weighted OLS using the magnitude of the cEOF2 as weights.
 
 ```{r australia-pp-phase, fig.cap = "(ref:australia-pp-phase-cap)", fig.width = width_column, fig.height=3}
@@ -1801,9 +1801,10 @@ p_value <- pf(fstatistic["value"], fstatistic["numdf"], fstatistic["dendf"],
               lower.tail = FALSE)
 
 
-equation <- latex2exp::TeX(paste0("$\\mathrm{Precipitation} = ", 
-                                  signif(coef(model)[1], 2), "\\frac{mm}{day} \\sin{(\\mathrm{phase})} + ", 
-                                  signif(coef(model)[2], 2), "\\frac{mm}{day} \\cos{(\\mathrm{phase})}$"), output = "text")
+equation <- latex2exp::TeX(paste0("$\\mathrm{Precipitation}_{\\mathrm{West Australia}} = ", 
+                                  signif(coef(model)[1], 2), "\\sin{(\\mathrm{phase})} + ", 
+                                  signif(coef(model)[2], 2), "\\cos{(\\mathrm{phase})}$"), 
+                           output = "text")
 
 
 gdata %>% 
@@ -1892,7 +1893,6 @@ On the other hand, the Real cEOF2 is associated with negative precipitation anom
 Resembling the relationship between ONI and the phase of cEOF2 (Fig. \@ref(fig:enso-phase)), there is a cEOF2 phase dependence of the precipitation anomalies in SESA (not shown).
 These variable could be related wth a signficant sinusoidal fit that has a coefficient of determination of `r round(summary(model)$r.squared, 2)` (p-value `r report_p(p_value)`).
 
-\textcolor{red}{La formula en la figura trata de escribirla en una forma más precisa "precipitación"/"phase" son muy generales, y también teniendo en cuenta las unidades. También incluilo en el caption.}
 
 (ref:pp-africa-cap) Same as Figure \@ref(fig:pp-america) but for South of Africa.
 
@@ -1916,7 +1916,7 @@ We show that the Imaginary cEOF2 can be identified with the PSA1 and the Real cE
 This cEOF prefers a phase aligned with the Imaginary cEOF2.
 This is because the when ENSO is active, it forces the cEOF2 to be in the Imaginary phase.
 When ENSO is neutral, the cEOF2 is still active, but with no particular preferred phase.
-This mirrors the results of @cai2002, who showed that the CSIRO Model can create PSA-like variability even in the absence of ENSO forcing (with a climatological run), but the variability of one of the PSA modes was enhanced when adding the ENSO signal. The magnitude of the cEOF2 appears not to be related to the magnitude of ENSO, except frot the three strongest ENSO events in the period (`r knitr::combine_words(year(gdata[order(-oni)][1:3]$time))`) which coincide with the three strongest cEOF2 years.
+This mirrors the results of @cai2002, who showed that the CSIRO Model can create PSA-like variability even in the absence of ENSO forcing (with a climatological run), but the variability of one of the PSA modes was enhanced when adding the ENSO signal. The magnitude of the cEOF2 appears not to be related to the magnitude of ENSO, except frot the three strongest ENSO events in the period which coincide with the three strongest cEOF2 years.
 
 We further show that the Imaginary cEOF2 is closely related to the Southern Annular Mode in the troposphere.
 In fact, it has a closer resemblance of the zonally asymmetric portion of the SAM.
