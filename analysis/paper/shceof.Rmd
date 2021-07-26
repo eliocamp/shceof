@@ -72,7 +72,7 @@ knitr::opts_chunk$set(
   echo = FALSE,
   cache = TRUE,
   comment = "#>",
-  cache.extra = 42,
+  cache.extra = 41,
   cache.path = "../cache/paper/",
   fig.path = "../figures/",
   dpi = 300,
@@ -140,15 +140,17 @@ panel_background <- theme(panel.background = element_rect(fill = "#fbfbfb", colo
                           tagger.panel.tag.background = ggplot2::element_rect(color = NA, 
                                                                               fill = "#fbfbfb"))
 
-guide_colorstrip_bottom <- function(width = 15, height = 0.5, ...) {
-  guide_colorstrip(title.position = "top", title.hjust = 0.5,
+guide_colorstrip_bottom <- function(width = 15, height = 0.5, 
+                                    title.position = "top",...) {
+  guide_colorstrip(title.position = title.position, title.hjust = 0.5,
                    barheight = height,
                    barwidth = width, ...)
 }
 
-guide_colorsteps_bottom <- function(width = 15, height = 0.5, even.steps = FALSE, ...) {
+guide_colorsteps_bottom <- function(width = 15, height = 0.5, even.steps = FALSE, 
+                                    title.position = "top", ...) {
   guide_colorsteps(show.limits = TRUE, even.steps = even.steps,
-                   title.position = "top", title.hjust = 0.5,
+                   title.position = title.position, title.hjust = 0.5,
                    barheight = height,
                    barwidth = width, ...)
 }
@@ -271,12 +273,13 @@ o3wave_lats <- c(-75, -45)
 
 ```{r psa}
 psa <- ReadNetCDF(ERA5(), vars = c(hgt = "z"),
-                   subset = list(level = list(500),
-                                 latitude = -90:0)) %>% 
+                  subset = list(level = list(500),
+                                latitude = -90:0)) %>% 
   normalise_coords() %>% 
   .[, w := season_weights(time)] %>% 
   .[, .(hgt = mean(hgt*w)), by = .(lon, lat, time = seasonally(time))] %>% 
-  .[, value := Anomaly(hgt)*sqrt(cos(lat*pi/180)), by = .(lon, lat, season(time))] %>%
+  .[, value := Anomaly(hgt)*sqrt(cos(lat*pi/180)), 
+    by = .(lon, lat, season(time))] %>%
   EOF(value ~ time | lon + lat, n = 1:3, data = .)
 
 psa <- lapply(psa, function(x) {
@@ -485,7 +488,7 @@ ceof_splitted[, eof[[1]]$left, by = .(lev = levs)] %>%
   setnames("item1", "200 hPa") %>%
   kbl2(booktabs = TRUE, caption = "(ref:corr-ceof-splitted-cap)") %>%
   column_spec2(2:4, background = spec_color2(.table[[.col]], option = background_palette,
-                                            scale_from = c(0, 1)),
+                                             scale_from = c(0, 1)),
                color = ifelse(.table[[.col]] > .5, "white", "black")) %>% 
   add_header_above(c("", "50 hPa" = 3)) %>%
   kable_classic() 
@@ -535,7 +538,7 @@ wave1_o3 <- o3 %>%
 with_o3 <- ceof$eof[[1]]$left %>% 
   .[cEOF == "cEOF1"] %>% 
   .[wave1_o3, on = "time"]
-  
+
 
 rotations_o3 <- lapply(angles, function(a) {
   with_o3 %>% 
@@ -556,7 +559,7 @@ with_enso <-  cut(ceof$eof[[1]], 2)$left %>%
   copy() %>%
   .[enso, on = "time"] %>% 
   na.omit() 
-  
+
 rotations_cEOF2 <- lapply(angles, function(a) {
   with_enso %>%
     .[, hgt2 := rotate(hgt, a)] %>%
@@ -612,7 +615,7 @@ ceof <- ceof[rotation == "rotated"][, rotation := NULL][]
 
 ```{r rotations, fig.cap="(ref:rotations-cap)", fig.height=2.5, fig.width=width_column, include=FALSE}
 r2 <- expression(`$r^2$` = paste("", "r", phantom()^{
-    paste("2")
+  paste("2")
 }, "", ""))
 
 
@@ -626,7 +629,7 @@ rotations_o3 %>%
   scale_y_continuous("Correlation") +
   scale_color_brewer(NULL, palette = "Dark2", labels = lab_cplx) +
   
-rotations_cEOF2 %>%
+  rotations_cEOF2 %>%
   melt(id.vars = "rotation") %>%
   ggplot(aes(rotation, value^2)) +
   geom_hline(yintercept = 0,  size = 0.2, color = "gray50") +
@@ -697,13 +700,13 @@ gdata %>%
   
   geom_qmap(~ .x[lat <= -20]) +
   scale_x_longitude() +
-    scale_y_latitude(labels = NULL,
+  scale_y_latitude(labels = NULL,
                    minor_breaks = NULL) +
   scale_linetype_manual(values = c("1" = 1, "-1" = 2), labels = c("1" = "+", "-1" = "-"),
                         guide = "none") +
   facet_grid( lev  ~  cEOF,
-             labeller = labeller(lev = lab_lev,
-                                 cEOF = var)) +
+              labeller = labeller(lev = lab_lev,
+                                  cEOF = var)) +
   coord_quickmap(ylim = c(NA, -20)) +
   theme(legend.title = element_blank()) +
   coord_polar() +
@@ -768,7 +771,7 @@ trends <- era_more %>%
 era_more %>%
   copy() %>% 
   .[, ref := year(time) > 1979] %>% 
-   # .[, hgt := scale(hgt, center = FALSE, scale = sd(hgt[ref])), by = .(part, cEOF)] %>%
+  # .[, hgt := scale(hgt, center = FALSE, scale = sd(hgt[ref])), by = .(part, cEOF)] %>%
   ggplot(aes(time, hgt*1e3)) +
   # Zero line + rangeframe
   geom_hline(data = ~.x[, mean(hgt)*1e3, by  = .(cEOF, part)], 
@@ -860,7 +863,7 @@ plot_regr <- function(data, which_cEOF, which_levs, which_var) {
   } else {
     data[, lev := which_levs]
   }
-
+  
   data[lat <= -20] %>%
     # .[term == "I" & lev == 50] %>%
     .[, p.value := Pvaluate(estimate, std.error, df, "fdr"), by = .(lev, cEOF, term)] %>%
@@ -877,8 +880,8 @@ plot_regr <- function(data, which_cEOF, which_levs, which_var) {
     geom_qmap(~ .x[lat <= -20]) +
     
     scale_x_longitude() +
-      scale_y_latitude(labels = NULL,
-                   minor_breaks = NULL) +
+    scale_y_latitude(labels = NULL,
+                     minor_breaks = NULL) +
     grid_y +
     facet +
     coord_polar() +
@@ -918,8 +921,8 @@ While in the troposphere, they are associated with slightly off-centre monopoles
 
 ```{r eof2-regr-gh, fig.cap = "(ref:eof2-regr-gh-cap)", fig.height=1.3*width_column, fig.width=width_column, dependson="plot_regr"}
 plot_regr(regr, "cEOF2", c(200, 50), "hgt") +
-    scale_fill_divergent("Geopotential height", 
-                         breaks = AnchorBreaks(0, 200, exclude = 0),
+  scale_fill_divergent("Geopotential height", 
+                       breaks = AnchorBreaks(0, 200, exclude = 0),
                        guide = guide_colorstrip_bottom(15), 
                        limits = c(-1000+1, 1000-1))
 ```
@@ -954,7 +957,7 @@ Comparing the location of the positive anomaly near 90ºW in column b of Figure�
 
 ```{r eof1-regr-t, fig.cap = "(ref:eof1-regr-t-cap)",  dependson="plot_regr", fig.height=1.3*width_column, fig.width=width_column}
 plot_regr(regr, "cEOF1", c(200, 50), "t") +
-    scale_fill_divergent("Temperature", breaks = AnchorBreaks(0, exclude = 0),
+  scale_fill_divergent("Temperature", breaks = AnchorBreaks(0, exclude = 0),
                        guide = guide_colorstrip_bottom(15), 
                        limits = c(-4.5, 4.5))
 ```
@@ -1018,12 +1021,12 @@ t %>%
                 aes(z = estimate, linetype = factor(-sign(..level..))), 
                 breaks = AnchorBreaks(0, exclude = 0)) +
   geom_text_contour(data = ~.x[variable == "o3"], 
-                aes(z = estimate*1e9, label = signif(..level.., 2)),
-                size = 2,
-                skip = 1, stroke = 0.15, stroke.colour = "white", 
-                label.placement = lable_placement_min(),
-                breaks = AnchorBreaks(0, exclude = 0)) +
- 
+                    aes(z = estimate*1e9, label = signif(..level.., 2)),
+                    size = 2,
+                    skip = 1, stroke = 0.15, stroke.colour = "white", 
+                    label.placement = lable_placement_min(),
+                    breaks = AnchorBreaks(0, exclude = 0)) +
+  
   scale_fill_divergent_discretised("Air temperature", 
                                    # limits = c(-2.25, 2.25),
                                    guide = guide_colorsteps_bottom(15)) + 
@@ -1117,7 +1120,7 @@ o3_regr %>%
                                    limits = c(-30, 30),  
                                    guide = guide_colorsteps_bottom(15)) + 
   scale_x_longitude() +
-    scale_y_latitude(labels = NULL,
+  scale_y_latitude(labels = NULL,
                    minor_breaks = NULL) +
   grid_y +
   scale_linetype(guide = "none") +
@@ -1143,7 +1146,7 @@ wave1_o3 <- o3 %>%
 temp <- ceof$eof[[1]]$left %>% 
   .[cEOF == "cEOF1"] %>% 
   .[wave1_o3, on = "time"]
-  
+
 # temp %>% 
 #   copy() %>% 
 #   na.omit() %>% 
@@ -1197,7 +1200,7 @@ temp %>%
   scale_x_continuous("EOF1 Amplitude") +
   scale_y_continuous("O3 Wave-1\nAmplitude") +
   
-temp %>% 
+  temp %>% 
   copy() %>%
   na.omit() %>% 
   qwrap(phase = c(0, 2*pi) ~ c(-pi, pi)) %>% 
@@ -1249,7 +1252,7 @@ sam_r2 %>%
   scale_x_level(minor_breaks = NULL) +
   scale_y_continuous(r2, limits = c(0, 1)) +
   scale_size_manual("p-value", values = c("TRUE" = 1, 
-                                      "FALSE" = 0.5), 
+                                          "FALSE" = 0.5), 
                     guide = "none") +
   scale_color_brewer(NULL, palette = "Dark2", labels = c(full = "SAM",
                                                          asym = "A-SAM",
@@ -1268,7 +1271,7 @@ The relationship between the tropospheric SAM and cEOF1 is explained entirely by
 In the stratosphere, the Real cEOF1 is correlated with both A-SAM and S-SAM, while the Imaginary cEOF1 is highly correlated only with the A-SAM.
 These correlations are consistent with the regression patterns of geopotential height in Figure \@ref(fig:eof1-regr-gh).
 
-```{r eof-filtered, fig.cap = "Spatial pattern of the leading EOF of 200 hPa geopotential height with the variability of cEOF2 filtered out South of 20º. Arbitrary units.", fig.width=2.5, fig.height=2.5}
+```{r eof-filtered, eval=FALSE, fig.cap="Spatial pattern of the leading EOF of 200 hPa geopotential height with the variability of cEOF2 filtered out South of 20º. Arbitrary units.", fig.height=2.5, fig.width=2.5, include=FALSE}
 cEOF2 <- ceof$eof[[1]]$left[cEOF == "cEOF2"] %>% 
   copy() %>% 
   .[, cEOF := NULL] %>% 
@@ -1288,19 +1291,25 @@ eof_filtered_cor <- eof_filtered$right[sams, on = "time"] %>%
   .[lev == 200] %>% 
   .[, correlate(estimate, eof), by = term]
 
-# eof_filtered %>% 
-#   .$left %>% 
-#   periodic(lon = c(0, 360)) %>% 
-#   ggplot(aes(lon, lat)) +
-#   geom_contour_fill(aes(z = eof), breaks = AnchorBreaks(0, exclude = 0)) +
-#   geom_contour_tanaka(aes(z = eof), breaks = AnchorBreaks(0, exclude = 0)) +
-#   scale_fill_divergent(guide = "none") +
-#   geom_qmap(~.x[lat <= -20]) +  
-#   scale_x_longitude() +
-#   scale_y_latitude() +
-#   coord_polar() +
-#   theme(axis.text = element_blank())
+eof_filtered %>%
+  .$left %>%
+  periodic(lon = c(0, 360)) %>%
+  ggplot(aes(lon, lat)) +
+  geom_contour_fill(aes(z = eof), breaks = AnchorBreaks(0, exclude = 0)) +
+  geom_contour_tanaka(aes(z = eof), breaks = AnchorBreaks(0, exclude = 0)) +
+  scale_fill_divergent(guide = "none") +
+  geom_qmap(~.x[lat <= -20]) +
+  scale_x_longitude() +
+  scale_y_latitude() +
+  coord_polar() +
+  theme(axis.text = element_blank()) 
+
+eof_filtered_cor %>% 
+  .[, .(term, text)] %>%
+  .[, term := factor(term, labels = c("SAM", "A-SAM", "S-SAM"))] %>%
+  knitr::kable(col.names = c("Índice SAM", "Correlación"))
 ```
+
 
 In the case of cEOF2, the moderate correlation between SAM and Imaginary cEOF2 becomes extremely high only when the zonally asymmetric variability of the SAM is considered.
 The Imaginary cEOF2 and the A-SAM share up to `r scales::percent(max_r2[cEOF == "cEOF2"]$estimate^2, 2)` of their variance, reached at `r max_r2[cEOF == "cEOF2"]$lev` hPa (Figure \@ref(fig:sam-eof-vertical).b2).
@@ -1315,6 +1324,10 @@ Background colour indicates the value of correlation.
 
 ```{r psa-eof2, fig.cap = "(ref:psa-eof2-cap)", fig.width=7, fig.height=3, fig.env="figure*"}
 psa2 <- psa$left[PC == "PSA2"][season(time) == "SON"]
+cEOF2 <- ceof$eof[[1]]$left[cEOF == "cEOF2"] %>% 
+  copy() %>% 
+  .[, cEOF := NULL] %>% 
+  .[]
 
 rotations_psa <- lapply(angles, function(a) {
   cEOF2 %>% 
@@ -1408,174 +1421,12 @@ cut(ceof$eof[[1]], 2)$left %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-The result obtaneid here is similar to the one obtained by @irving2016.
+The result obtained here is similar to the one obtained by @irving2016.
 From their Fourier decomposition of reprojected meridional wind fields \textcolor{red}{¿En qué región?}, they show that the phase distribution is bimodal and isolate the PSA pattern from the rest of the PSA-like variability by selecting events that are near the peaks of the distribution (compare our Figure \@ref(fig:phase-histogram) with their Figure 6).
 
 The advantage of our method is that it is much simpler to implement, it provides magnitude and phase naturally, and it facilitates the description of this mode as a propagating wave instead of as standing oscillation.
 As a consequence, the cEOF2 offers an alternative way of representing the PSA which has several advantages over using the second and third EOFs.
 
-### Is the Asymmetric SAM real?
-
-(ref:fake-eof-cap) Row a: The three components used to create a synthetic dataset of 41 years of geopotential height at 200 hPa. Row b: The three EOF computed from the synthetic dataset with the variance explained by each EOF in parenthesis. Units are arbitrary.
-
-```{r make_fake_eof}
-cEOF2 <- ceof$eof[[1]]$left[cEOF == "cEOF2"] %>% 
-  copy() %>% 
-  .[, cEOF := NULL] %>% 
-  .[]
-
-
-pattern <- sams[term == "full" & lev == 200] %>% 
-  .[era5[lev == 200], on = c("lev", "time")] %>% 
-  .[, FitLm(hgt, estimate), by = .(lon, lat, lev)] %>% 
-  rm_intercept() %>% 
-  .[, estimate := mean(estimate), by = .(lat)] %>% 
-  .[, term := NULL] %>% 
-  setnames("estimate", "eof")
-
-set.seed(42)
-
-
-fake_sam <-  sams[term == "full" & lev == 200] %>% 
-  copy() %>% 
-  .[, value := sample(estimate, replace = TRUE)] %>% 
-  .[, estimate := NULL] %>% 
-  .[, term := NULL]
-
-# complement <- function(x, y) {
-#   
-#   e <- residuals(lm(x ~ y))
-#   
-#   e*sd(x) + mean(x)
-#   
-# }
-# 
-# fake_sam <-  sams[term == "full" & lev == 200] %>% 
-#   copy() %>% 
-#   .[, value := complement(estimate, y)] %>% 
-#   .[, estimate := NULL] %>% 
-#   .[, term := NULL]
-
-cor_with_eof2 <- fake_sam[cEOF2, on = "time"] %>% 
-  sep_ReIm() %>% 
-  .[, correlate(value, hgt), by = part]
-
-fake_sam <- fake_sam %>% 
-  .[pattern, on = "lev", allow.cartesian = TRUE] %>% 
-  .[, sam := value*eof]
-
-# fake_sam %>% 
-#   .[time %in% unique(time)[1:4]] %>% 
-#   ggplot(aes(lon, lat)) +
-#   geom_contour_fill(aes(z = sam)) +
-#   facet_wrap(~factor(time)) +
-#   coord_polar()
-
-
-fake_eof <- era5 %>% 
-  .[sep_ReIm(cEOF2, format = "wide")[, hgt := NULL], on = .NATURAL] %>% 
-  .[lev == 200] %>% 
-  .[lat <= -20] %>% 
-  .[season(time) == "SON"] %>% 
-  .[, hgt := hgt - .lm.fit(cbind(1, Imaginary, Real), hgt)$residuals,
-    .(lon, lat, lev, season(time))] %>% 
-  .[, hgt := Anomaly(hgt), by = .(lat)] %>% 
-  fake_sam[., on = .NATURAL] %>% 
-  .[, hgt := hgt + sam] %>% 
-  .[, eof := Anomaly(hgt)*sqrt(cos(lat*pi/180)), by = .(lon, lat, season(time))] %>% 
-  EOF(eof ~ lon + lat | time, n = 1:3, data = ., suffix = "EOF")  
-```
-
-```{r fake-eof, fig.cap = "(ref:fake-eof-cap)", fig.width=3.7, fig.height=3.3}
-north_thumb <- function(sdev, n){
-  sdev <- sdev^2
-  delta <- sqrt(2 / n) * sdev
-  
-  # Separation between each pair of eofs must be 
-  # greater than the sum of their errors.
-  separation <- abs(diff(sdev))
-  separation >  delta[-length(delta)] + delta[-1]
-}
-
-separated <- north_thumb(fake_eof$sdev$sd^2, 41)
-stopifnot(all(separated))
-
-var <- fake_eof$sdev %>%
-  copy() %>% 
-    .[, setNames(paste0(EOF, " (", scales::percent(r2), ")"),
-                 EOF)]
-var <- c(var, setNames(c("Annular Pattern", "Imaginary cEOF2", "Real cEOF2"), c("SAM", "Imaginary", "Real")))
-
-
-era5 %>%
-  .[sep_ReIm(cEOF2, format = "wide")[, hgt := NULL], on = .NATURAL] %>%
-  .[lev == 200] %>%
- 
-  .[season(time) == "SON"] %>%
-  .[, FitLm(hgt, Real, Imaginary), .(lon, lat)] %>%
-  rm_intercept() %>%
-  .[, .(lon, lat, eof = estimate, EOF = term)] %>%
-  rbind(pattern[, .(lon, lat, eof, EOF = "SAM")]) %>%
-  rbind(fake_eof$left, use.names = TRUE) %>% 
-   .[lat <= -20] %>%
-  .[, EOF := factor(EOF, c("SAM", "Imaginary", "Real", paste0("EOF", 1:3)),
-                    ordered = TRUE)] %>% 
-  .[EOF %in% c("EOF1", "EOF3"), eof := -eof] %>% 
-  .[!(EOF %in% c("SAM", "Imaginary", "Real")), eof := eof/sd(eof)] %>% 
-  .[EOF %in% c("SAM", "Imaginary", "Real"), eof := eof/sd(eof)] %>% 
-  
-  # geom_contour_tanaka has problem with the perfectly symemtric SAM
-  # adding just a tiny bit of noise solves it. 
-  
-  .[, eof := scale(eof), by = EOF] %>% 
-  .[EOF == "SAM", eof := eof + rnorm(.N, sd = 1e-5)] %>%
-  .[EOF %in% c("EOF1", "EOF2"), eof := -eof] %>% 
-  periodic(lon = c(0, 360)) %>%
-  ggplot(aes(lon, lat)) +
-  geom_contour_fill(aes(z = eof, fill = ..level..), global.breaks = TRUE, 
-                    breaks = AnchorBreaks(0, 0.5, exclude = 0)) +
-  
-  geom_contour_tanaka(aes(z = eof), global.breaks = TRUE,
-                      breaks = AnchorBreaks(0,0.5,  exclude = 0)) +
-  scale_fill_divergent_discretised(NULL, guide = guide_colorsteps_bottom(), 
-                                   limits = c(-4, 4)) +
-  geom_qmap(~.x[lat <= -20]) +
-  scale_x_longitude() +
-    scale_y_latitude(labels = NULL,
-                   minor_breaks = NULL) +
-  grid_y +
-  coord_polar() +
-  facet_wrap(~EOF, ncol = 3, labeller = labeller(EOF = var)) +
-  axis_labs_smol +
-  theme(axis.text = element_blank()) +
-  tag_facets("rc")
-```
-
-To test the hypothesis that a PSA-like feature can appear as statistic contamination of an otherwise zonally symmetrical and uncorrelated annular pattern, we create a synthetic dataset of `r uniqueN(fake_sam$time)` fields by reconstructing the SON 200 hPa geopotential height field explained by the cEOF2 and adding a perfectly zonally symmetric annylar pattern with random sign and value sampled with replacement from the real SAM index.
-To this synthetic dataset we then apply traditional EOF.
-By construction this dataset contains two independent components: a zonally symmetric standing oscillation and a PSA-like of varying amplitude and phase (Figure \@ref(fig:fake-eof) row a).
-While the former is a standing oscillation which could be represented by a single EOF, the latter is a wave which can change phase, so traditional EOF analysis needs two EOFs to represented it correctly.
-Thus, the full variance of this synthetic dataset can be perfectly explained by three EOFs.
-
-The three EOFs of the synthetic dataset are shown in Figure \@ref(fig:fake-eof) row b.
-The annular pattern is captured mainly by the first EOF while the cEOF2 is explained by the second and third.
-However, even though the annular pattern used to construct these data is perfectly zonally symmetric, the leading EOF is not.
-The EOF decomposition mixes the true annular pattern with parts of the the zonally asymmetric cEOF2 pattern, resulting in a pattern pretty similar to the real SAM pattern [@fogt2020].
-
-
-\textcolor{red}{Todo esto está mal.}
-
-Rotating makes it even worse. 
-
-
-The reason this happens is that the spatial correlation between the annular pattern and the wave patterns is not zero; i.e. they are not orthogonal. And since EOFs 
-
-In this particular example, it is `r cor_with_eof2[part == "Real"]$text` with the Real part and `r cor_with_eof2[part == "Imaginary"]$text` with the Imaginary part.
-Of note, the three EOFs are well separated according to North's rule of thumb [@north1982].
-
-This suggests that the zonal asymmetries of the SON SAM could very well be mostly a statistical artefact.
-Since many surface impacts are mediated by the asymmetric component, as well as the relationship between SAM and ENSO [@campitelli2021], this potential issue could affect the interpretability of many results involving the SAM.
-Studies on the relationship between the SAM and PSA-like patterns would be particularly difficult to interpret.
 
 
 ## Tropical sources
@@ -1646,25 +1497,28 @@ plot_sst_psi <- function(which_cEOF, which_lev) {
     geom_contour_fill(aes(z = estimate*1e8, fill = ..level..),
                       breaks = AnchorBreaks(exclude = 0)) +
     geom_contour_pval(aes(z = p_val)) +
-    geom_streamline(aes(dx = fx, dy = fy), min.L = 3, L = 10, n = 30,
-                    size = 0.2, res = 2, nx = 25, ny = 15, 
+    geom_streamline(aes(dx = fx, dy = fy), min.L = 3, L = 10,
+                    size = 0.1, res = 2, nx = 22, ny = 12, 
                     arrow.angle = 14, arrow.length = 0.2) +
     geom_qmap(keep = .015) +
-    scale_fill_divergent_discretised("Streamfunction", guide = "none") +
+    scale_fill_divergent_discretised("Streamfunction", 
+                                     guide = guide_colorstrip_bottom(20, order = 1)) +
     ggnewscale::new_scale_fill() +
     
     geom_contour_fill(data = sst_gdata,
-                      aes(z = estimate, fill = ..level..), breaks = AnchorBreaks(exclude = 0)) +
+                      aes(z = estimate, fill = ..level..), 
+                      breaks = AnchorBreaks(exclude = 0)) +
     geom_contour_pval(data = sst_gdata, aes(z = p_val)) +
-    scale_fill_divergent_discretised("SST", guide = guide_colorsteps_bottom(order = 2)) +
+    scale_fill_divergent_discretised("SST", 
+                                     guide = guide_colorsteps_bottom(order = 2)) +
     scale_x_longitude() +
     scale_y_latitude() +
     scale_mag(guide = "none") +
     facet_grid(term ~ var) +
     coord_quickmap(ylim = c(NA, 10)) +
-    theme(legend.box = "horizontal") +
+    theme(legend.box = "vertical") +
     axis_labs_smol +
-    tag_facets("cr", position = "bl")
+    tag_facets("cr", position = "bl") 
 }
 ```
 
@@ -1696,7 +1550,7 @@ gdata <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[, mag := Mod(hgt)] %>%
   .[enso, on = "time"] %>%
   na.omit()
-  
+
 
 cor_enso_mag <- gdata[, correlate(mag, abs(oni))]
 
@@ -1716,14 +1570,14 @@ cos_model <- gdata %>%
 
 
 equation <- latex2exp::TeX(paste0("$\\mathrm{ONI} = ", 
-        signif(coef(cos_model)[1], 2), "\\sin{(\\mathrm{phase})}$"),
-        output = "text")
+                                  signif(coef(cos_model)[1], 2), "\\sin{(\\mathrm{phase})}$"),
+                           output = "text")
 
 gdata %>% 
   ggplot(aes(arg, oni)) +
   geom_hline(yintercept = c(-0.5, 0, 0.5), size = 0.2, color = "gray50") +
   geom_vline(xintercept = 0, size = 0.2, color = "gray50") +
-   annotate(shadowtext:::GeomShadowText,
+  annotate(shadowtext:::GeomShadowText,
            label = c("- Real", "- Imaginary", "+ Real", "+ Imaginary", "- Real"),
            color = "gray60", bg.colour = "white", bg.r = 0.2,
            size = 3,
@@ -1736,7 +1590,7 @@ gdata %>%
   geom_point(aes(colour = mag >= quantile(mag, 0.5),
                  shape  = mag >= quantile(mag, 0.5)),
              size = 3) +
-
+  
   scale_color_brewer(NULL, palette = "Dark2",
                      labels = c("TRUE"  = "|cEOF2| > 50%",
                                 "FALSE" = "|cEOF2| < 50%")) +
@@ -1871,11 +1725,11 @@ plot_pp <- function(data, which_cEOF, which_term = c("Real", "Imaginary"), which
     
     # scale_fill_divergent() +
     scale_fill_divergent_discretised(NULL, 
-                         # limits = c(-.8, .8),
-                         # oob = scales::squish,
-                         low = "#8E521C",
-                         high = "#00665E",
-                         guide = guide_colorsteps_bottom(15)) +
+                                     # limits = c(-.8, .8),
+                                     # oob = scales::squish,
+                                     low = "#8E521C",
+                                     high = "#00665E",
+                                     guide = guide_colorsteps_bottom(15)) +
     # scale_fill_divergent_discretised(NULL, guide = guide_colorsteps_bottom(15)) +
     geom_contour_pval(aes(z = p.value)) +
     geom_qmap(~.x %>% .[lat %between% c(-60, max(data$lat))] %>% add_continent() %>% filter_continent(),
@@ -1936,14 +1790,14 @@ gdata <- cmap %>%
 model <- lm(pp ~ I(sin(arg)) + I(cos(arg)) - 1, weights = mag, data = gdata)
 fstatistic <- summary(model)$fstatistic
 p_value <- pf(fstatistic["value"], fstatistic["numdf"], fstatistic["dendf"], 
-        lower.tail = FALSE)
+              lower.tail = FALSE)
 
 
 equation <- latex2exp::TeX(paste0("$\\mathrm{Precipitation} = ", 
-        signif(coef(model)[1], 2), "\\frac{mm}{day} \\sin{(\\mathrm{phase})} + ", 
-        signif(coef(model)[2], 2), "\\frac{mm}{day} \\cos{(\\mathrm{phase})}$"), output = "text")
-  
-  
+                                  signif(coef(model)[1], 2), "\\frac{mm}{day} \\sin{(\\mathrm{phase})} + ", 
+                                  signif(coef(model)[2], 2), "\\frac{mm}{day} \\cos{(\\mathrm{phase})}$"), output = "text")
+
+
 gdata %>% 
   ggplot(aes(Arg(hgt), pp)) +
   geom_hline(yintercept = 0, size = 0.2, color = "gray50") +
@@ -1959,11 +1813,11 @@ gdata %>%
               formula = y ~ I(sin(x)) + I(cos(x)) -1,
               se = FALSE, color = "black", size = 0.5, 
               fullrange = TRUE) +
-    geom_point(aes(colour = mag >= quantile(mag, 0.5),
+  geom_point(aes(colour = mag >= quantile(mag, 0.5),
                  shape  = mag >= quantile(mag, 0.5)),
              size = 3) +
-
-
+  
+  
   # annotate("text", x = 90*pi/180, y = 1, label = equation, parse = TRUE) +
   
   scale_color_brewer(NULL, palette = "Dark2",
@@ -1995,15 +1849,15 @@ To perform a more in-depth analysis of the relationship between this pattern and
 ```{r pp-america, fig.cap = "(ref:pp-america-cap)", fig.width=width_column, fig.height=width_column*1.1}
 plot_pp(data = regr_pp, which_cEOF = c("cEOF1", "cEOF2"), which_continent = "america")  +
   scale_fill_divergent_discretised(NULL, 
-                         limits = c(-1, 1),
-                         # oob = scales::squish,
-                         low = "#8E521C",
-                         high = "#00665E",
-                         guide = guide_colorsteps_bottom(15)) 
-  # annotate("rect", xmin = min(sesa$lon), xmax = max(sesa$lon), 
-  #          ymin = min(sesa$lat), ymax = max(sesa$lat),
-  #          fill = NA, color = "gray50", size = 0.3)
-  #          
+                                   limits = c(-1, 1),
+                                   # oob = scales::squish,
+                                   low = "#8E521C",
+                                   high = "#00665E",
+                                   guide = guide_colorsteps_bottom(15)) 
+# annotate("rect", xmin = min(sesa$lon), xmax = max(sesa$lon), 
+#          ymin = min(sesa$lat), ymax = max(sesa$lat),
+#          fill = NA, color = "gray50", size = 0.3)
+#          
 ```
 
 
@@ -2021,7 +1875,7 @@ model <- lm(pp ~ I(sin(arg)) + I(cos(arg)) - 1, data = gdata)
 
 fstatistic <- summary(model)$fstatistic
 p_value <- pf(fstatistic["value"], fstatistic["numdf"], fstatistic["dendf"], 
-        lower.tail = FALSE)
+              lower.tail = FALSE)
 ```
 
 Figure \@ref(fig:pp-america) shows regression maps of seasonal precipitation with each cEOF in South America. cEOF1 is associated with slight decreases \textcolor{red}{Revisa como estás expresando toda esta parte (y en el resto del texto), recorda que son regresiones así que no corresponde decir postive/negative sino haces alguna referencia a la variable con las que los estás regresionando.} in precipitation in Southern Brazil and Paraguay, although these are not statistically significant (Fig. \@ref(fig:pp-america) column a). The strongest precipitation regression coefccients are the ones associated with the Imaginary cEOF2. The positive anomalies on Southeastern South America (SESA) and Central Chile, and negative anomalies over South Atlantic Convergence Zone is a well known springtime precipitation signature of ENSO [@cai2020a] and it is also similar to the precipitation anomalies associated with the A-SAM [@campitelli2021].
