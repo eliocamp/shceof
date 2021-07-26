@@ -246,6 +246,10 @@ era5 <- ReadNetCDF(ERA5(), vars = c(hgt = "z",
 ```
 
 ```{r compute-psi}
+# Scaling magical numbers. (come from psi-test.Rmd)
+# Not really important, though.
+scaling <- c(add = -2.364646e+06, mult = 3.954828e+13)
+
 psi <- ReadNetCDF(ERA5(), vars = "vo",
                   subset = list(level = c(50, 200),
                                 time = c("1979-01-01", "2019-12-01"))) %>%
@@ -255,6 +259,7 @@ psi <- ReadNetCDF(ERA5(), vars = "vo",
   .[, .(vo = mean(vo*w)), by = .(lon, lat, lev, time = seasonally(time))] %>%
   .[, solve_poisson(vo, lon, lat), by = .(lev, time)] %>%
   setnames("value", "psi") %>% 
+  .[, psi := psi*scaling[2] + scaling[1]] %>%
   .[, psi.z := Anomaly(psi), by = .(time, lev, lat)] 
 ```
 
@@ -1494,14 +1499,14 @@ plot_sst_psi <- function(which_cEOF, which_lev) {
     .[, var := "Streamfunction"] %>%
     periodic(lon = c(0, 360)) %>%
     ggplot(aes(lon, lat)) +
-    geom_contour_fill(aes(z = estimate*1e8, fill = ..level..),
+    geom_contour_fill(aes(z = estimate*1e-7, fill = ..level..),
                       breaks = AnchorBreaks(exclude = 0)) +
     geom_contour_pval(aes(z = p_val)) +
     geom_streamline(aes(dx = fx, dy = fy), min.L = 3, L = 10,
                     size = 0.1, res = 2, nx = 22, ny = 12, 
                     arrow.angle = 14, arrow.length = 0.2) +
     geom_qmap(keep = .015) +
-    scale_fill_divergent_discretised("Streamfunction", 
+    scale_fill_divergent_discretised("Streamfunction (*1e-7)", 
                                      guide = guide_colorstrip_bottom(20, order = 1)) +
     ggnewscale::new_scale_fill() +
     
