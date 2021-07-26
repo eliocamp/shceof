@@ -341,9 +341,16 @@ The use of data of only specific regions or locations makes them suitable for ea
 In this paper we propose using complex Empirical Orthogonal Functions [@horel1984] as a robust extension of EOF analysis that is capable of describing rich structures with meridional and zonal propagation, and amplitude modulation such as the PSA.
 We apply this method to characterise the Springtime zonally asymmetric circulation of the extratopical Southern Hemisphere.
 
-\textcolor{red}{The data and methods are described in Section 2 :P ...}
+In Section \@ref(methods) we describe the methods.
+In Section \@ref(temporal) we describe the temporal variability and vertical coherence of the indices.
+In Section \@ref(spatial), we analyse the spatial patterns of each complex EOF.
+In Section \@ref(regressions) we study the spatial regressions with geopotential height and temperatuer. 
+In Section \@ref(other-variables), we analyise the relationship between cEOF1 and Ozone, and between EOF2 and the Southern Annular Mode and the PSA. 
+In Section \@ref(tropical) we look for tropical forcings that explain the variability of each cEOF. 
+Finally, in Section \@ref(precipitation) we show the relationship between these modes of variabiltiy and precipitation in South America and Oceania.
 
-# Data and Methods
+
+# Data and Methods {#methods}
 
 ## Data
 
@@ -678,7 +685,7 @@ The paper was rendered using knitr and rmarkdown [@xie2015; @allaire2019].
 
 # Results
 
-## cEOF spatial patterns
+## cEOF spatial patterns {#spatial}
 
 ```{r ceofs-1, fig.cap = "Spatial patterns for the two leading cEOFs of SON zonal anomalies of geopotential height at 50 hPa and 200 hPa for the 1979 -- 2019 period. The shading (contours) corresponds to real (imaginary) part. Arbitrary units.", fig.width=width_column, fig.height=width_column*1.2}
 
@@ -821,7 +828,7 @@ The positive trend in the real cEOF1 translates into a positive trend in cEOF1 m
 This long-term change indicates an increase in the magnitude of the high latitude zonal wave 1.
 A similar observation was made by @raphael2003, who detected a step after around 1975 in the leading EOF of August-September-October 500 hPa zonal geopotential height anomalies.
 
-## cEOFs Regressions
+## cEOFs Regressions {#regressions}
 
 The spatial patterns shown in Figure \@ref(fig:ceofs-1) are derived by removing the zonally symmetric circulation, so they might not include all the variability that is actually associated with the cEOF time series.
 To understand the full geopotential height field changes associated with each cEOF, we computed regression patterns of the full geopotential fields onto each cEOF.
@@ -952,7 +959,7 @@ Comparing the location of the positive anomaly near 90ºW in column b of Figure�
 #   panel_background
 ```
 
-## cEOFs relationship with other variables 
+## cEOFs relationship with other variables {#other-variables}
 
 \textcolor{red}{Quedo medio rara la divsión con los títulos. Me parece que convendrá discutir primero la relación con otros modos de circulación conocidos (SAM, Ozono) y después con las otras variables(Temp, TOC, SST, precip)}
 
@@ -1434,7 +1441,7 @@ As a consequence, the cEOF2 offers an alternative way of representing the PSA wh
 
 
 
-## Tropical sources
+## Tropical sources  {#tropical}
 
 ```{r regr_psi}
 regr_psi <- ceof[, eof[[1]]$left, by = .(season)] %>%
@@ -1655,7 +1662,7 @@ Unlike the cEOF2 case, there is no significant pattern of SST anomalies associat
 Consistently, streamfunction anomalies do not show any tropical influence.
 Instead of that, the real and imaginary CEOF1 are associated with zonally wave activity fluxes in the extra-tropics around 60ºS, except for an equatorward flow from the coast of Antarctica around 150ºE in the real component.
 
-## Precipitation
+## Precipitation {#precipitation}
 
 ```{r cmap}
 cmap <- ReadNetCDF(CMAP(), vars = c(pp = "precip"),
