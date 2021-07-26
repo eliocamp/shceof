@@ -1542,7 +1542,7 @@ However, Figure \@ref(fig:sst-psi-2).a1 and b1 show that the Real cEOF2 is not 
 The correlation between the Real cEOF2 and ENSO is also not significant (`r enso_cor[cEOF == "cEOF2" & part == "Real"]$text`).
 This lack of tropical signal suggests different natures of the different phases of the Real cEOF2 wave train, which has the maximum amplitudes in the surroundings of southern South America.
 
-```{r enso-phase, fig.cap = " ONI plotted against cEOF2 phase for th 1979 -- 2019 period. Years with magnitude of cEOF2 greater or smaller than the 50th percentile are shown as orange circles and green diamomnds respectively. Black line is the fit ONI ~ sin(phase) computed by weighted OLS using the magnitude of the cEOF2 as weights.", fig.width = width_column, fig.height=3}
+```{r enso-phase, fig.cap = "ONI plotted against cEOF2 phase for th 1979 -- 2019 period. Years with magnitude of cEOF2 greater or smaller than the 50th percentile are shown as orange circles and green diamomnds respectively. Black line is the fit ONI ~ sin(phase) computed by weighted OLS using the magnitude of the cEOF2 as weights.", fig.width = width_column, fig.height=3}
 gdata <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[cEOF == "cEOF2"] %>% 
   # .[, hgt := Anomaly(hgt)] %>% 
@@ -1613,16 +1613,12 @@ In years with near neutral ENSO, the phase of the cEOF2 is much more variable.
 The black line in Figure \@ref(fig:enso-phase) is a sinusoidal fit of the relationship between ONI and cEOF2 phase.
 The $r^2$ corresponding to the fit is `r signif(summary(cos_model)$r.squared, 2)`, with p-value `r report_p(coef(summary(cos_model))[4])`, indicating a quasi-sinusoidal relation between these two variables.
 
-\textcolor{red}{¿Qué significa para el fit "weighted by the magnitude of cEOF2"?}
-
 Furthermore, Figure \@ref(fig:enso-phase) suggest that higher amplitude cEOF2 years tend to coincide with stronger ENSO years.
 The correlation between the absolute magnitude of the ONI and the magnitude of the cEOF2 is `r cor_enso_mag$text`.
 This relationship, however, appears to be driven only by the three years with strongest ENSO events in the period (`r knitr::combine_words(year(gdata[order(-oni)][1:3]$time))`) which also coincide with the three years with strongest cEOF2 magnitude.
 If those years are removed, the correlation becomes non-significant (`r cor_enso_mag_outlier$text`).
 Furthermore, even when using all the datapoints, the Spearman correlation --which is robust to outliers-- is also non-significant (`r signif(cor_enso_spearman$estimate, 2)`, p-value`r report_p(cor_enso_spearman$p.value)`).
 Therefore, the relationship between the magnitude of the cEOF2 train wave and ONI remains uncertain.
-
-\textcolor{red}{Se que la cantidad de años hace bastante limitada la muestra, pero creo que es un resultado a tener en cuenta que en esos eventos muy intensos se alineen. ¿Probaste hacer la correlación con todos los puntos naranjas?}
 
 ```{r}
 # gdata %>% 
@@ -1645,7 +1641,7 @@ This explains the relative overabundance of years with cEOF2 near positive and n
 ```{r sst-psi-1, fig.cap = "(ref:sst-psi-1-cap)", fig.width = 7, fig.height=4, dependson="plot_sst_psi", fig.env = "figure*"}
 plot_sst_psi(which_cEOF = "cEOF1", which_lev = 200) +
   scale_fill_divergent_discretised("SST",
-                                   limits = c(-.3, .3),
+                                   limits = c(-1, 1),
                                    guide = guide_colorsteps_bottom(20, order = 2)) 
 ```
 
@@ -1902,13 +1898,13 @@ The first complex EOF represents the variability of the zonal wave 1 in the stra
 There is a statistically positive trend in the magnitude of this cEOF, which is consistent with previous studies which showed secular changes in springtime wave-1-like patterns [e.g. @raphael2003].
 This mode is closely related to anomalies in Total Ozone Column.
 
-THe second complex EOF represents a wave-3 pattern with maximum magnitude in the Pacific sector.
+The second complex EOF represents a wave-3 pattern with maximum magnitude in the Pacific sector.
 Essentially, it is an alternate representation of the PSA1 and PSA2 patterns [@mo2001].
 We show that the Imaginary cEOF2 can be identified with the PSA1 and the Real cEOF2 with the PSA2.
 This cEOF prefers a phase aligned with the Imaginary cEOF2.
 This is because the when ENSO is active, it forces the cEOF2 to be in the Imaginary phase.
-When ENSO is neutral, the cEOF2 is still active, but with no particular phase.
-This mirrors the results of @cai2002, who showed that the CSIRO Model can create PSA-like variability even in the absence of ENSO forcing (with a climatological run), but the variability of one of the PSA modes was enhanced when adding the ENSO signal.
+When ENSO is neutral, the cEOF2 is still active, but with no particular preferred phase.
+This mirrors the results of @cai2002, who showed that the CSIRO Model can create PSA-like variability even in the absence of ENSO forcing (with a climatological run), but the variability of one of the PSA modes was enhanced when adding the ENSO signal. The magnitude of the cEOF2 appears not to be related to the magnitude of ENSO, except frot the three strongest ENSO events in the period (`r knitr::combine_words(year(gdata[order(-oni)][1:3]$time))`) which coincide with the three strongest cEOF2 years.
 
 We further show that the Imaginary cEOF2 is closely related to the Southern Annular Mode in the troposphere.
 In fact, it has a closer resemblance of the zonally asymmetric portion of the SAM.
