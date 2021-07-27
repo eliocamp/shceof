@@ -13,7 +13,7 @@ theme_shceof <- function(base_size = 16) {
       # text = element_text(family = font_rc),
       legend.position = "bottom", legend.box = "vertical",
       tagger.panel.tag.background = ggplot2::element_rect(color = NA),
-      strip.text = ggplot2::element_text(size = ggplot2::rel(12/16)),
+      strip.text = ggplot2::element_text(size =  ggplot2::rel(11/16)),
       # panel.spacing.y = grid::unit(5, "mm"),
       # panel.spacing.x = grid::unit(5, "mm"),
       # legend.spacing = grid::unit(2, "mm"),
@@ -22,7 +22,6 @@ theme_shceof <- function(base_size = 16) {
       # # legend.title = element_blank(),
       # legend.box.spacing = grid::unit(3, "mm"),
       # legend.margin = ggplot2::margin(t = -5),
-      panel.grid = ggplot2::element_blank(),
-      # panel.grid = ggplot2::element_line(color = "gray10", size = 0.4, linetype = 3),
+      panel.grid = ggplot2::element_line(color = scales::alpha("gray60", 0.5), size = 0.1),
       panel.ontop = TRUE)
 }
