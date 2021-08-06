@@ -292,7 +292,7 @@ Zonal asymmetries of extratropical circulation in the Southern Hemisphere strong
 
 One of the main features of the zonally asymmetric circulation are the Pacific--South American Patterns [@mo2001], which are associated with precipitation anomalies in South America. Besides, @raphael2007 suggests that variability in the planetary wave 3 projected onto its climatological location is associated with Antarctic sea ice concentration anomalies. @irving2015 showed that planetary wave amplitude in general is associated sea ice concentration, as well as temperature and precipitation anomalies.
 
-Some of these patterns of variability associated to the zonally asymmetric circulation appear to have experienced secular changes. @raphael2003 found that the amplitude of the zonal wave 1 experienced a large increase and that the zonal wave 3 experienced changes in its annual cycle between 1958 and 1996. \textcolor{red}{¿esto es lo único que encontraste asociado a esta afirmación? en caso de que si, diría de agregar que "ha sido poco estudiado hasta el momento"}
+Some of these patterns of variability associated to the zonally asymmetric circulation appear to have experienced secular changes, although to our knowledge this has not been extensively studied. For instance, @raphael2003 found that the amplitude of the zonal wave 1 experienced a large increase and that the zonal wave 3 experienced changes in its annual cycle between 1958 and 1996.
 
 One typical way of describing the zonally asymmetric circulation is by the amplitude and phase of zonal waves obtained by Fourier decomposition of geopotential height at each latitude [e.g.
 @vanloon1972;@trenberth1980;@turner2017].
@@ -327,7 +327,7 @@ These methods are grounded on other methods to identify the centres of action fo
 The use of data of only specific regions or locations makes them suitable for easy computation and for extending back into the data-poor past, but also makes them not very robust and unable to capture non-stationary patterns.
 
 
-Our objective is to create an index that is able to capture the phase-varying nature of planetary waves and is flexible enough to describe planetary waves with non-constant amplitude in each latitude circle. \textcolor{red}{yo no pondría que el objetivo es crear el índice, sino porfundizar el conocimiento de la variabilidad... utilizando un índice...}
+Our objective is to improve our understanding of planetary waves in the Southern Hemisphere using an index that is able to capture the phase-varying nature of planetary waves and is flexible enough to describe planetary waves with non-constant amplitude in each latitude circle.
 We use complex Empirical Orthogonal Functions [@horel1984] as a robust extension of EOF analysis that is capable of describing rich structures with meridional and zonal propagation, and amplitude modulation such as the PSA. 
 
 
@@ -368,7 +368,7 @@ We chose this latitude band because it is wide enough to capture most of the rel
 We computed the level-dependent SAM index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period according to @baldwin2009.
 We further split the SAM into its zonally symmetric and zonally asymmetric components (S-SAM and A-SAM indices respectively).
 These indices were obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields, as proposed by @campitelli2021.
-The Pacific South American patterns (PSA1 and PSA2) were calculated following @mo2001 as the third and fourth leading EOF of seasonal mean anomalies for SH 500 hPa geopotential height combining all seasons \textcolor{red}{leyendo esto me queda la duda. Vos calculaste esto usando todos los meses y luego tomaste el valor de SON, no? Creo que valdría la pena aclararlo mejor, por lo menos a mi me resulta confuso}. 
+Seasonal indices of the Pacific South American patterns (PSA1 and PSA2) were calculated following @mo2001 as the third and fourth leading EOF of seasonal mean anomalies for SH 500 hPa geopotential height combining all seasons. In our study, only the SON values were used.
 
 Linear trends were computed by Ordinary Least Squares (OLS) and the 95% confidence interval was computed assuming a t-distribution with the appropriate residual degrees of freedom [@wilks2011r].
 
@@ -813,7 +813,7 @@ At 50 hPa the Real cEOF1 has the maximum of the wave 1 at 150ºE and at 200 hPa,
 The cEOF2 (Fig. \@ref(fig:eof-naive) column b) shows also a zonal wave-like structure with maximum amplitude at high latitudes, but with shorter spatial scales.
 In particular, its dominant structure at both levels is a wave 3 but with larger amplitude in the pacific sector.
 This modulated amplitude is especially apparent at 200 hPa.
-There is no apparent phase shift, suggesting a rather barotropic structure.
+There is no apparent phase shift but the amplitude of the pattern is greatly reduced in the stratosphere, suggesting that this barotropic mode represents mainly tropospheric variability.
 
 \textcolor{red}{se me vino una duda, ¿se pueden comparar de algún modo las amplitudes que mostras en esta figura? en caso de que si, creo que habría que mencionar algo sobre lo que pasa con el cEOF2 en la estratósfera}
 All cEOFs have non zero mean (Fig. \@ref(fig:extended-series)) because the geopotential fields that enter into the cEOFs algorithm are anomalies with respect to the zonal mean instead of the time mean. 
@@ -825,8 +825,7 @@ Both cEOFs show year-to-year variability but show no evidence of decadal variabi
 
 There is only a significant upward trend in the real component of cEOF1 (Fig. \@ref(fig:extended-series)a.1, p-value `r trends[part == "Real" & cEOF == "cEOF1"]$p_report`) and no significant trend in any of the complex components of cEOF2.
 The positive trend in the real cEOF1 translates into a positive trend in cEOF1 magnitude, but not in the phase (not shown). This long-term change indicates an increase in the magnitude of the high latitude zonal wave 1.
-A similar observation was made by @raphael2003, who detected a step after around 1975 in the leading EOF of August-September-October 500 hPa zonal geopotential height anomalies.
-\textcolor{red}{Creo que acá faltaría decir que el modo del trabajo de Raphael se parece al que estás mostrando vos, sino no tendria mucho sentido la comapración.}
+A similar observation was made by @raphael2003, who detected a step after around 1975 in the leading EOF of August-September-October 500 hPa zonal geopotential height anomalies, which is similar to the cEOF1.
 
 
 ## cEOFs Regressions {#regressions}
@@ -1133,9 +1132,8 @@ cEOF2[psa_time, on = "time"] %>%
 #   tag_facets("rc")
 ```
 
-The relationship between PSAs and the modes described from the cEOFs is also studied.
-Table \@ref(tab:psa-eof2) shows the correlations between the two PSA indices and the timeseries for Real and Imaginary phase of cEOF2.
-\textcolor{red}{Valdría la pena aclarar por qué no consideras el cEOF1 para esta discusión}
+Due to the similarity between the PSA patterns and the cEOF2 spatial patterns (Fig. \@ref(fig:eof2-regr-gh)), we study the relationship between these modes. 
+Table \@ref(tab:psa-eof2) shows the correlations between the two PSA indices and the timeseries for Real and Imaginary phase of cEOF2.
 As anticipated by Figure \@ref(fig:eof2-regr-gh), there is a strong correlation between PSA1 and Imaginary cEOF2, and between PSA2 and Real cEOF2.
 Conversely, there is no relationship between PSA1 and Real cEOF2, and between PSA2 and Imaginary cEOF2.
 As a result, cEOF2 represents well both the spatial structure and temporal evolution of the PSA modes, as well as it is possible to make a rather clean association between its two phases and the two PSA modes.
@@ -1145,7 +1143,7 @@ The reason the conventional EOF analysis arrives at the same separation than our
 To visualize that, Figure \@ref(fig:phase-histogram) shows an histogram that counts the number of SON years in which the cEOF2 was close to each of the four particular phases (positive/negative Real/Imaginary), with the observations for each season marked as rugs on the horizontal axis.
 For instance, years with cEOF2 phase within 45º of 0º are nearest the "positive Real" phase.
 About two thirds of time cEOF2 has a phase similar to either the negative or positive Imaginary phase.
-It could be seen that Imaginary phase is the most common phase and It is also the direction that has the maximum relationship with ENSO. \textcolor{red}{Ojo que todavía no estuvo la discusión con lo del ENSO, así que esto lo deberías decir más adelante.}
+It could be seen that Imaginary phase is the most common phase and It is also, by construction, the direction that has the maximum relationship with ENSO. 
 Therefore, the Imaginary cEOF2 explains more variance than the Real cEOF2 and conventional EOF analysis will tend to separate the two.
 
 (ref:phase-histogram-cap) Histogram of phase distribution of cEOF2 for the 1979 -- 2019 period. Bins are centred at 90º, 0º, -90º, -180º with a binwidth of 90º. The small vertical lines near the horizontal axis mark the observations.
