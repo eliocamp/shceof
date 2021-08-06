@@ -965,10 +965,7 @@ Comparing the location of the positive anomaly near 90ºW in column b of Figure�
 #   panel_background
 ```
 
-## cEOFs relationship with other variables {#other-variables}
-
-\textcolor{red}{Este título queda raro porque después hablas de modos de variabilidad climática y no de lo que llamaríamos variables}
-
+## cEOFs relationship with known modes of variability {#other-variables}
 ### SAM
 
 (ref:sam-eof-vertical-cap) Coefficient of determination between the real and imaginary part of each cEOF and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level according to @campitelli2021. Thick lines represent estimates with p-value \< 0.01 corrected for False Detection Rate [@benjamini1995].
@@ -1771,6 +1768,7 @@ We focus on South America and Oceania sectors because there are no relevant sign
 
 (ref:pp-oceania-cap) Regression of SON mean precipitation anomalies in Oceania (mm per day, shaded) and (column a) cEOF1 the (row 1) Imaginary and (column 1) Real phase. For the 1979 -- 2019.
 Areas marked with dots have p-values smaller than 0.05 adjusted for False Detection Rate.
+In black is the West Australia region, defined as the box between `r knitr::combine_words(LonLabel(box_australia$lon))` and `r knitr::combine_words(LatLabel(box_australia$lat))`.
 
 \textcolor{red}{Revisa el caption de la figura 14 que equedo un estilo distinto que los anteriores. Te falto aclarar también qué es la caja (¿la inventaste vos o habías utilizado la de algún otro trabajo?). Fijate también de aumentar la separación entre la columna izquierda y derecha para que no se superpongan los labels. También fijate que esta barra de colores no te quedo con el borde externo como el resto. }
 
