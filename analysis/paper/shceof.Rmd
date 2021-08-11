@@ -150,15 +150,22 @@ geom_contour_pval <- function(mapping, p.value = 0.01, size = 0.1, ...) {
 }
 
 geom_coords <- function() {
+  
   list(
     no_grid,
-    annotate("segment", 
+    annotate("segment",
+             y = seq(-90, 0, by = 15),
+             yend = seq(-90, 0, by = 15),
+             x = 0,
+             xend = 360,
+             size = 0.1, alpha = 0.5),
+    
+    annotate("segment",
              x = seq(0, 360 - 30, by = 30),
              xend =  seq(0, 360 - 30, by = 30),
              y = -90 + 15,
              yend = Inf,
              size = 0.1, alpha = 0.5),
-    geom_hline(yintercept = seq(-90, 0, by = 15), size = 0.1, alpha = 0.5),
     shadowtext::geom_shadowtext(data = data.frame(x = 0, y = seq(-90 + 15, 0, 
                                                                  by = 15)),
                                 aes(x, y, label = LatLabel(y)), size = 1.5, 
@@ -168,6 +175,33 @@ geom_coords <- function() {
     
   )
 }
+
+coord_polar <- function(ymax = -20) {
+  
+  x <- c(seq(0, 360, length.out = 40), 
+         seq(360, 0, length.out = 40), 
+         0)
+  y <- c(rep(ymax, length.out = 40), 
+         rep(60, length.out = 40), 
+         ymax)
+  
+  cbind(x, y) |> 
+    list() |> 
+    sf::st_polygon() |> 
+    sf::st_sfc(crs = "+proj=latlong") -> white
+  
+  list(
+    geom_sf(data = white, inherit.aes = FALSE, 
+            fill = "white", 
+            colour = "white", size = 2),
+    coord_sf(ylim = c(-90, ymax), 
+             lims_method = "box",
+             crs = "+proj=laea +lat_0=-90",
+             default_crs = "+proj=longlat",
+             label_axes =  "----")
+  )
+}
+
 
 lab_lev <- AddSuffix(" hPa")
 lab_cplx <- c(R = "Real", 
@@ -337,7 +371,6 @@ We focus the analysis to the September-October-November because that's the trime
 \textcolor{red}{Este parráfo me parece que quedo un poco colgado. Creo que sería importante que esté desde más arriba la idea de la primavera, ya que todo lo otro es muy general, pero al final el análisis solo se va a restringir a esta estación}
 
 In Section \@ref(methods) we describe the methods.
-In Section \@ref(temporal) we describe the temporal variability and vertical coherence of the indices.
 In Section \@ref(spatial), we analyse the spatial patterns of each complex EOF.
 In Section \@ref(regressions) we study the spatial regressions with geopotential height and temperatuer. 
 In Section \@ref(other-variables), we analyise the relationship between cEOF1 and Ozone, and between EOF2 and the Southern Annular Mode and the PSA. 
@@ -403,7 +436,7 @@ eof_naive[, eof[[1]]$right, by = lev] %>%
   geom_contour_tanaka(aes(z = hgt), breaks = AnchorBreaks(0, 1, exclude = 0), 
                       range = c(0.01, 0.2)) +
   
-  geom_qmap(~.x[lat <= -20], size = 0.1) +
+  geom_qmap(size = 0.1) +
   scale_fill_divergent_discretised(NULL, guide = guide_colorsteps_bottom(10))  +
   scale_y_latitude(labels = NULL,
                    minor_breaks = NULL, 
@@ -679,7 +712,7 @@ We evaluated statistical significance using a two-sided t-test and, in the case 
 We performed all analysis in this paper using the R programming language [@rcoreteam2020], using data.table [@dowle2020] and metR [@campitelli2020] packages.
 All graphics are made using ggplot2 [@wickham2009].
 We downloaded data from reanalysis using the ecmwfr package [@hufkens2020] and indices of the ENSO with the rsoi package [@albers2020].
-The paper was rendered using knitr and rmarkdown [@xie2015; @allaire2019].
+The paper was rendered using knitr and rmarkdown [@xie2015; @allaire2020].
 
 # Results
 
@@ -706,20 +739,20 @@ gdata %>%
                 breaks = AnchorBreaks(0, 1, exclude = 0)) +
   
   scale_fill_divergent_discretised(guide = guide_colorsteps_bottom()) +
-  geom_qmap(~ .x[lat <= -20]) +
+  geom_qmap() +
   scale_x_longitude(labels = NULL) +
   scale_y_latitude(labels = NULL,
-                   limits = c(NA, -20),
                    minor_breaks = NULL) +
-  scale_linetype_manual(values = c("1" = 1, "-1" = 2), labels = c("1" = "+", "-1" = "-"),
+  scale_linetype_manual(values = c("1" = 1, "-1" = 2),
+                        labels = c("1" = "+", "-1" = "-"),
                         guide = "none") +
   facet_grid( lev  ~  cEOF,
               labeller = labeller(lev = lab_lev,
                                   cEOF = var)) +
-  coord_quickmap(ylim = c(NA, -20)) +
   theme(legend.title = element_blank()) +
-  coord_polar() +
   geom_coords() +
+  coord_polar() +
+  
   tag_facets(tag = "cr")
 
 ```
@@ -889,16 +922,15 @@ plot_regr <- function(data, which_cEOF, which_levs, which_var) {
                          guide = guide_colorstrip_bottom(15)) +
     geom_contour_pval(aes(z = p.value)) +
     
-    geom_qmap(~ .x[lat <= -20]) +
+    geom_qmap() +
     
     scale_x_longitude(labels = NULL) +
     scale_y_latitude(labels = NULL,
-                     limits = c(NA, -20),
                      minor_breaks = NULL) +
     grid_y +
     facet +
-    coord_polar() +
     geom_coords() +
+    coord_polar() +
     tag_facets("rc")
 }
 ```
@@ -1044,11 +1076,12 @@ eof_filtered %>%
   geom_contour_fill(aes(z = eof), breaks = AnchorBreaks(0, exclude = 0)) +
   geom_contour_tanaka(aes(z = eof), breaks = AnchorBreaks(0, exclude = 0)) +
   scale_fill_divergent(guide = "none") +
-  geom_qmap(~.x[lat <= -20]) +
+  geom_qmap() +
   scale_x_longitude() +
   scale_y_latitude() +
-  coord_polar() +
   geom_coords() +
+  coord_polar() +
+  
   theme(axis.text = element_blank()) 
 
 eof_filtered_cor %>% 
@@ -1249,7 +1282,9 @@ t %>%
   scale_fill_divergent_discretised("Air temperature", 
                                    # limits = c(-2.25, 2.25),
                                    guide = guide_colorsteps_bottom(15)) + 
-  scale_y_level() +
+  scale_y_level(minor_breaks= NULL, 
+                sec.axis = sa_height_axis(breaks = seq(0, 50, by = 10),
+                                          labels = function(x) paste0("~", x, " km"))) +
   scale_linetype(guide = "none") +
   scale_x_longitude(ticks = 60) +
   facet_grid(~term) +
@@ -1335,18 +1370,23 @@ o3_regr %>%
                 bins = 5) +
   
   geom_contour_pval(aes(z = p.value)) +
-  geom_hline(yintercept = o3wave_lats, size = 0.3, alpha = 0.8) +
-  geom_qmap(~.x[lat <= -20]) +
+  annotate("segment", 
+           y  = o3wave_lats,
+           yend = o3wave_lats,
+           x = 0,
+           xend = 360,
+           size = 0.3, alpha = 0.8
+  ) +
+  geom_qmap() +
   scale_fill_divergent_discretised("Total Ozone Column", 
                                    limits = c(-30, 30),  
                                    guide = guide_colorsteps_bottom(15)) + 
   scale_x_longitude(labels = NULL) +
   scale_y_latitude(labels = NULL,
-                   limits = c(NA, -20),
                    minor_breaks = NULL) +
   scale_linetype(guide = "none") +
-  coord_polar() +
   geom_coords() +
+  coord_polar() +
   facet_grid(cEOF~term) +
   tag_facets("panel")
 
@@ -1528,8 +1568,11 @@ plot_sst_psi <- function(which_cEOF, which_lev) {
     scale_y_latitude() +
     scale_mag(guide = "none") +
     facet_grid(term ~ var) +
-    coord_quickmap(ylim = c(NA, 10)) +
-    theme(legend.box = "vertical") +
+    # coord_quickmap(ylim = c(NA, 10)) +
+    coord_sf(ylim = c(-90, 0),
+             crs = "+proj=longlat +pm=180 +over",
+             default_crs = "+proj=longlat +over") + 
+  theme(legend.box = "vertical") +
     tag_facets("cr", position = "bl") 
 }
 ```
@@ -1707,6 +1750,7 @@ add_continent <- function(dt) {
     .[, continent := factor(continent, levels = c("africa", "oceania", "america"), ordered = TRUE)] %>%
     .[]
 }
+
 ```
 
 ```{r plot_pp}
@@ -1727,7 +1771,8 @@ plot_pp <- function(data, which_cEOF, which_term = c("Real", "Imaginary"), which
     add_continent() %>%
     filter_continent() %>%
     # .[abs(estimate) <= 2] %>%
-    .[, p.value := Pvaluate(estimate, std.error, df, "none"), by = .(lev, cEOF, term)] %>%
+    .[, p.value := Pvaluate(estimate, std.error, df, "none"), 
+      by = .(lev, cEOF, term)] %>%
     periodic(lon = c(0, 360)) %>%
     ggplot(aes(lon, lat)) +
     # geom_raster(aes(fill = estimate)) +
@@ -1744,24 +1789,28 @@ plot_pp <- function(data, which_cEOF, which_term = c("Real", "Imaginary"), which
                                      guide = guide_colorsteps_bottom(15)) +
     # scale_fill_divergent_discretised(NULL, guide = guide_colorsteps_bottom(15)) +
     geom_contour_pval(aes(z = p.value)) +
-    geom_qmap(~.x %>% .[lat %between% c(-60, max(data$lat))] %>% 
-                add_continent() %>% filter_continent(),
-              keep = 1) +
+    geom_qmap(keep = 1) +
     
     scale_x_longitude(ticks = 15) +
     scale_y_latitude(ticks = 15) +
     ggh4x::facet_nested(term ~ cEOF) +
     axis_labs_smol +
     tag_facets("cr") +
-    coord_quickmap()
+      coord_sf(ylim = continents[[which_continent]]$lat,
+               xlim = continents[[which_continent]]$lon,
+               crs = "+proj=longlat +pm=180 +over",
+               default_crs = "+proj=longlat +over")
+    
 }
 ```
 
-```{r sesa}
+```{r boxes}
 sesa <- list(lon = c(300, 315),
              lat = c(-35, -22))
+box_australia <- data.frame(cEOF = "cEOF2", 
+                            lon = c(130, 155),
+                            lat = c(-40, -15))
 ```
-
 
 The influence of cEOFs variability in continental rainfall of extra-tropical Southern Hemisphere is also explored.
 We focus on South America and Oceania sectors because there are no relevant signals in southern Africa (not shown).
@@ -1772,11 +1821,7 @@ In black is the West Australia region, defined as the box between `r knitr::comb
 
 \textcolor{red}{Revisa el caption de la figura 14 que equedo un estilo distinto que los anteriores. Te falto aclarar también qué es la caja (¿la inventaste vos o habías utilizado la de algún otro trabajo?). Fijate también de aumentar la separación entre la columna izquierda y derecha para que no se superpongan los labels. También fijate que esta barra de colores no te quedo con el borde externo como el resto. }
 
-```{r box_australia}
-box_australia <- data.frame(cEOF = "cEOF2", 
-                            lon = c(130, 155),
-                            lat = c(-40, -15))
-```
+
 
 ```{r pp-oceania, fig.cap = "(ref:pp-oceania-cap)", fig.width=width_column, fig.height=width_column*.8}
 plot_pp(regr_pp, c("cEOF1", "cEOF2"), which_continent =  "oceania") +

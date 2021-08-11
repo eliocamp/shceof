@@ -57,7 +57,7 @@
 
 \begin{document}
 
-\title{Austral Spring Extratropical Southern Hemisphere zonally assymetric circulation \thanks{The research was supported by UBACyT20020170100428BA and the CLIMAX Project funded by Belmont Forum/ANR-15-JCL/-0002-01. Elio Campitelli was supported by a PhD grant from CONICET, Argentina.} }
+\title{Revisiting the Austral Spring Extratropical Southern Hemisphere zonally assymetric circulation using complex Empirical Orthogonal Functions \thanks{The research was supported by UBACyT20020170100428BA and the CLIMAX Project funded by Belmont Forum/ANR-15-JCL/-0002-01. Elio Campitelli was supported by a PhD grant from CONICET, Argentina.} }
 
 
     \titlerunning{Title}
@@ -116,9 +116,9 @@ abstract
 The large-scale extratropical circulation in the Southern Hemisphere is strongly zonally symmetric, but its zonal departures are highly relevant for surface impacts and could be related to high-impact climate extremes.
 Zonal asymmetries of extratropical circulation in the Southern Hemisphere strongly modulate weather systems and regional climate through latitudinal transport of heat, humidity, and momentum \citep{trenberth1980}.
 
-For example, \citet{raphael2007} suggests that variability in the planetary wave 3 projected onto its climatological location is associated with Antarctic sea ice concentration anomalies. \citet{irving2015} showed that planetary wave amplitude in general is associated sea ice concentration, as well as temperature and precipitation anomalies. Another characteristic of the zonally asymmetric circulation are the Pacific--South American Patterns \citep{mo2001}, which are associated with precipitation anomalies in South America.
+One of the main features of the zonally asymmetric circulation are the Pacific--South American Patterns \citep{mo2001}, which are associated with precipitation anomalies in South America. Besides, \citet{raphael2007} suggests that variability in the planetary wave 3 projected onto its climatological location is associated with Antarctic sea ice concentration anomalies. \citet{irving2015} showed that planetary wave amplitude in general is associated sea ice concentration, as well as temperature and precipitation anomalies.
 
-Some of these patterns of variability appear to have experienced secular changes. \citet{raphael2003} found that the amplitude of the zonal wave 1 experienced a large increase and that the zonal wave 3 experienced changes in its annual cycle between 1958 and 1996.
+Some of these patterns of variability associated to the zonally asymmetric circulation appear to have experienced secular changes, although to our knowledge this has not been extensively studied. For instance, \citet{raphael2003} found that the amplitude of the zonal wave 1 experienced a large increase and that the zonal wave 3 experienced changes in its annual cycle between 1958 and 1996.
 
 One typical way of describing the zonally asymmetric circulation is by the amplitude and phase of zonal waves obtained by Fourier decomposition of geopotential height at each latitude \citep[e.g.][]{vanloon1972, trenberth1980, turner2017}.
 This approach suggests that zonal waves 1 and 3 explained most of the variance of the tropospheric extratropical Southern Hemisphere circulation (\citet{vanloon1972}).
@@ -138,8 +138,8 @@ EOFs are more flexible than Fourier decomposition modes in the sense that they c
 Nonetheless, they are restricted to standing oscillation modes and could not represent properly propagating or phase-varying modes such as zonal waves.
 A single EOF can also represent a mixture of two or more physical modes.
 The inability of a single EOF to describe travelling waves is what forces the PSA pattern to be described by two EOFs.
-\citet{irving2016} characterises the Pacific--South American Pattern in a Fourier framework.
-Being a meridionally propagating mode, the PSA cannot be correctly characterised by Fourier decomposition at each latitude circle, so they reprojected meridional wind fields so that the path of the PSA laid on the equator.
+\citet{irving2016} characterises this pattern in a Fourier framework.
+Being a meridionally propagating mode, the PSA cannot be correctly characterised by Fourier decomposition at each latitude circle. As a result, they reprojected meridional wind fields so that the path of the PSA laid on the equator.
 On this new projection, they could identify the PSA using Fourier decomposition.
 
 Finally, another, hybrid, methodology commonly used consist on identifying particular features of interest and creating indices using simple methods such as averages and differences.
@@ -151,15 +151,15 @@ Similarly, \citet{hobbs2010} propose that the zonally asymmetric circulation in 
 These methods are grounded on other methods to identify the centres of action for the described phenomena and can be useful to characterise features that are not readily apparent with Fourier or EOF methods.
 The use of data of only specific regions or locations makes them suitable for easy computation and for extending back into the data-poor past, but also makes them not very robust and unable to capture non-stationary patterns.
 
-Our objective is to create an index that is able to capture the phase-varying nature of planetary waves and is flexible enough to describe planetary waves with non-constant amplitude in each latitude circle.
+Our objective is to improve our understanding of planetary waves in the Southern Hemisphere using an index that is able to capture the phase-varying nature of planetary waves and is flexible enough to describe planetary waves with non-constant amplitude in each latitude circle.
 We use complex Empirical Orthogonal Functions \citep{horel1984} as a robust extension of EOF analysis that is capable of describing rich structures with meridional and zonal propagation, and amplitude modulation such as the PSA.
 
 We apply this method to characterise the Springtime zonally asymmetric circulation of the extratropical Southern Hemisphere.
 To take vertical distribution into account, we analyse both the troposphere and the stratosphere.
 We focus the analysis to the September-October-November because that's the trimester in which tropical forcing of zonal waves is maximised (cita).
+\textcolor{red}{Este parráfo me parece que quedo un poco colgado. Creo que sería importante que esté desde más arriba la idea de la primavera, ya que todo lo otro es muy general, pero al final el análisis solo se va a restringir a esta estación}
 
 In Section \ref{methods} we describe the methods.
-In Section \ref{temporal} we describe the temporal variability and vertical coherence of the indices.
 In Section \ref{spatial}, we analyse the spatial patterns of each complex EOF.
 In Section \ref{regressions} we study the spatial regressions with geopotential height and temperatuer.
 In Section \ref{other-variables}, we analyise the relationship between cEOF1 and Ozone, and between EOF2 and the Southern Annular Mode and the PSA.
@@ -172,10 +172,10 @@ Finally, in Section \ref{precipitation} we show the relationship between these m
 \hypertarget{data}{%
 \subsection{Data}\label{data}}
 
-We used monthly geopotential height, air temperature, ozone mixing ratio, and Total Ozone Column (TOC) at 2.5\degree~longitude by 2.5\degree~latitude of horizontal resolution and 37 vertical isobaric levels from ERA5 \citep{era5} for the period 1979 to 2019.
+We used monthly geopotential height, air temperature, ozone mixing ratio, and total ozone column (TOC) at 2.5\degree~longitude by 2.5\degree~latitude of horizontal resolution and 37 vertical isobaric levels from the European Centre for Medium-Range Weather Forecasts Reanalysis version 5 {[}ERA; \citet{era5}{]} for the period 1979-2019.
 Most of our analysis was restricted to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 \citep{era5be} to look at long-term trends.
 Streamfunction was derived from ERA5 vorticity at 200 hPa using the FORTRAN subroutine FISHPACK \citep{fishpack} and horizontal wave activity fluxes was computed following \citet{plumb1985}.
-We usded Sea Surface Temperature (SST) monthly fields from Extended Reconstructed Sea Surface Temperature (ERSST) v5 \citep{huang2017} and precipitation monthly data from the CPC Merged Analysis of Precipitation \citep{cmap}, with a 2.5\degree~resolution in latitude and longitude.
+We used Sea Surface Temperature (SST) monthly fields from Extended Reconstructed Sea Surface Temperature (ERSST) v5 \citep{huang2017} and precipitation monthly data from the CPC Merged Analysis of Precipitation \citep{cmap}, with a 2.5\degree~resolution in latitude and longitude.
 This rainfall gridded dataset is based on information from different sources such as rain gauge observations, satellite inferred estimations and the NCEP-NCAR reanalysis, and it is available since 1979 to present.
 
 \hypertarget{methods-1}{%
@@ -185,21 +185,23 @@ The study is restricted to the spring season, defined as the September-October-N
 We compute seasonal means for the different variables, averaging monthly values weighted by the number of days in each month.
 We use 200 hPa level to represent the high troposphere and 50 hPa to represent the lower stratosphere.
 
-The amplitude of the zonal waves was defined through computing the Fourier transform of the spatial field at each latitude circle.
-We computed the amplitude and phase of the zonal wave 1 by averaging (area-weighted) variables (temperature, geopotential height, ozone mixing ratio and Total Ozone Column) between 75°S and 45°S for each SON and extracting the wave-1 component of the Fourier spectrum.
-We chose this latitude band because it is wide enough to capture most of the relevant anomalies.
+The amplitude of the zonal waves was obtained through the Fourier transform of the spatial field at each latitude circle.
+We computed the amplitude and phase of the zonal wave 1 by averaging (area-weighted) each variable between 75°S and 45°S for each SON and extracting the wave-1 component of the Fourier spectrum.
+We chose this latitude band because it is wide enough to capture most of the relevant anomalies for southern hemisphere mid-latitudes.
 
-We computed the level-dependent Southern Annular Mode (SAM) index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period \citep{baldwin2009}.
+We computed the level-dependent SAM index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period according to \citet{baldwin2009}.
 We further split the SAM into its zonally symmetric and zonally asymmetric components (S-SAM and A-SAM indices respectively).
 These indices were obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields, as proposed by \citet{campitelli2021}.
-The Pacific South American patterns (PSA1 and PSA2) were calculated following \citet{mo2001} as the third and fourth leading EOF of seasonal mean anomalies for SH 500 hPa geopotential height combining all seasons.
+Seasonal indices of the Pacific South American patterns (PSA1 and PSA2) were calculated following \citet{mo2001} as the third and fourth leading EOF of seasonal mean anomalies for SH 500 hPa geopotential height combining all seasons. In our study, only the SON values were used.
 
-Linear trends were computed by Ordinary Least Squares and the 95\% confidence interval was computed assuming a t-distribution with the appropriate residual degrees of freedom \citep{wilks2011r}.
+Linear trends were computed by Ordinary Least Squares (OLS) and the 95\% confidence interval was computed assuming a t-distribution with the appropriate residual degrees of freedom \citep{wilks2011r}.
 
 \hypertarget{complex-empirical-orthogonal-functions-ceof}{%
 \subsection{Complex Empirical Orthogonal Functions (cEOF)}\label{complex-empirical-orthogonal-functions-ceof}}
 
 
+
+\textcolor{red}{En la figura 1 te quedaron muy chicos los subplots, amplialos un poco}.
 
 \begin{figure}
 \centering
@@ -226,6 +228,8 @@ The magnitude and argument of each complex time series represent the amplitude a
 
 
 
+
+\textcolor{red}{Los colores de la Tabla 1 no dicen mucho en la medida que no se conoce cuál sería la paleta. Quizás se pueden remarcar en negrita ambos aclarando que son significativos (lo son?)}.
 
 \begin{table}
 
@@ -258,26 +262,22 @@ The phase of principal components is defined up to an additive constant.
 For real principal components, this constant can be either 0 or \(\pi\), corresponding to a change in sign.
 For complex principal components, it can be any number between 0 and \(2\pi\) \citep{horel1984}.
 Since any choice is arbitrary and equally valid, we chose the phase of each cEOF so that the real and imaginary parts are aligned with meaningful phases in our analysis.
-This procedure does not create a spurious correlation, it only takes whatever relationship that already exist and aligns it with a specific phase.
+This procedure does not create a spurious correlation, it only takes a known relationship and aligns it with a specific phase. For the first complex principal component, the phase was chosen so that the time series corresponding to the real part has the maximum correlation with the zonal wave 1 of Total Ozone Column between 75°S and 45°S.
+This also nearly minimises the correlation with the imaginary part. For the second complex principal component, the phase was chosen so that the coefficient of determination between the Oceanic Niño Index \citep{bamston1997} and the real part was minimized, which also nearly maximizes the correlation with the imaginary part.
 
 
-
-For the first complex principal component, the phase was chosen so that the time series corresponding to the real part has the maximum correlation with the zonal wave 1 of Total Ozone Column between 75°S and 45°S.
-This also nearly minimises the correlation with the imaginary part.
-
-For the second complex principal component, the phase was chosen so that the coefficient of determination between the Oceanic Niño Index \citep{bamston1997} and the real part was minimized, which also nearly maximizes the correlation with the imaginary part.
 
 While we compute these complex principal components using data from 1979 to 2019, we extended the complex time series back to the 1950 -- 1978 period by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial patterns.
 
 We performed linear regressions to quantify the association between the cEOFs and other variables.
-For each cEOF, we create regression maps by computing fitting a multiple linear model involving both the real and the imaginary part.
+For each cEOF, we create regression maps by fitting a multiple linear model involving both the real and the imaginary part.
 To obtain the linear coefficients of a variable \(X\) (geopotential, temperature, precipitation, etc\ldots) with the Imaginary and Real parts of each cEOF we fit the equation
 
 \[
 X(\lambda, \phi, t) = \alpha(\lambda, \phi) \operatorname{Im}(\operatorname{cEOF}) + \beta(\lambda, \phi) \operatorname{Re}(\operatorname{cEOF}) + X_0(\lambda, \phi) +  \epsilon(\lambda, \phi, t)
 \]
 
-where \(\lambda\) and \(\phi\) are the longitude and latitude, \(t\) is the time, \(\alpha\) and \(\beta\) are the linear regression coefficients, \(X_0\) and \(\epsilon\) are the constant and error terms respectively.
+where \(\lambda\) and \(\phi\) are the longitude and latitude, \(t\) is the time, \(\alpha\) and \(\beta\) are the linear regression coefficients for Imaginary and Real parts respectively, \(X_0\) and \(\epsilon\) are the constant and error terms respectively.
 
 We evaluated statistical significance using a two-sided t-test and, in the case of regression maps, p-values were adjusted by controlling for the False Discovery Rate \citep{benjamini1995, wilks2016} to avoid misleading results from the high number of regressions \citep{walker1914, katz1991}.
 
@@ -287,7 +287,7 @@ We evaluated statistical significance using a two-sided t-test and, in the case 
 We performed all analysis in this paper using the R programming language \citep{rcoreteam2020}, using data.table \citep{dowle2020} and metR \citep{campitelli2020} packages.
 All graphics are made using ggplot2 \citep{wickham2009}.
 We downloaded data from reanalysis using the ecmwfr package \citep{hufkens2020} and indices of the ENSO with the rsoi package \citep{albers2020}.
-The paper was rendered using knitr and rmarkdown \citep{xie2015, allaire2019}.
+The paper was rendered using knitr and rmarkdown \citep{xie2015, allaire2020}.
 
 \hypertarget{results}{%
 \section{Results}\label{results}}
@@ -307,29 +307,31 @@ The paper was rendered using knitr and rmarkdown \citep{xie2015, allaire2019}.
 \includegraphics{../figures/extended-series-1} \caption{Time series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Dark straight line is the OLS trend. Black horizontal and vertical line mark the mean value and range of each time series respectively.}\label{fig:extended-series}
 \end{figure*}
 
-To describe the variability of the circulation zonal anomalies, the spatial and temporal parts of the first two leading cEOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa, computed jointly at both levels, are shown in Figures \ref{fig:ceofs-1} and @ref(fig:extended-series,).
+To describe the variability of the circulation zonal anomalies, the spatial and temporal parts of the first two leading cEOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa, computed jointly at both levels, are shown in Figures \ref{fig:ceofs-1} and \ref{fig:extended-series}.
 The first mode (cEOF1) explains 82\% of the variance, while the second mode (cEOF2) explains a smaller fraction (7\%).
 In the spatial patterns (Fig.~\ref{fig:ceofs-1}), the real and the imaginary components are in quadrature by construction, so that each cEOF describe a single wave-like pattern whose amplitude and position (i.e.~phase) is controlled by the magnitude and phase of the temporal cEOF.
 The wave patterns described by these cEOFs match the patterns seen in the traditional EOFs of Figure~\ref{fig:eof-naive}.
 
-The first cEOF (Fig.~\ref{fig:eof-naive} column~a) is a hemispheric wave 1 pattern with maximum amplitude at high latitudes.
+\textcolor{red}{tengo la impresión de que en la figura 2 podría estar un poco más grandes los subplots para que se vean más fácilmente los detalles}
+
+The cEOF1 (Fig.~\ref{fig:ceofs-1} column~a) is a hemispheric wave 1 pattern with maximum amplitude at high latitudes.
 At 50 hPa the Real cEOF1 has the maximum of the wave 1 at 150ºE and at 200 hPa, the maximum is located at around 175ºE indicating a westerly shift in phase.
-The second cEOF (Fig.~\ref{fig:eof-naive} column~b) shows also a zonal wave-like structure with maximum amplitude at high latitudes, but with shorter spatial scales.
+The cEOF2 (Fig.~\ref{fig:eof-naive} column~b) shows also a zonal wave-like structure with maximum amplitude at high latitudes, but with shorter spatial scales.
 In particular, its dominant structure at both levels is a wave 3 but with larger amplitude in the pacific sector.
 This modulated amplitude is especially apparent at 200 hPa.
-There is no apparent phase shift, suggesting a rather barotropic structure.
+There is no apparent phase shift but the amplitude of the pattern is greatly reduced in the stratosphere, suggesting that this barotropic mode represents mainly tropospheric variability.
 
-The temporal variability for both components of the cEOF1 have non zero mean (Fig.~@ref(fig:extended-series,)).
-This is due to the fact that the geopotential fields that enter into the cEOFs algorithm are anomalies with respect to the zonal mean, not the time mean.
-As a consequence, the variability associated with the cEOF1 includes variability that projects onto the mean zonally anomalous field.
+\textcolor{red}{se me vino una duda, ¿se pueden comparar de algún modo las amplitudes que mostras en esta figura? en caso de que si, creo que habría que mencionar algo sobre lo que pasa con el cEOF2 en la estratósfera}
+All cEOFs have non zero mean (Fig. \ref{fig:extended-series}) because the geopotential fields that enter into the cEOFs algorithm are anomalies with respect to the zonal mean instead of the time mean.
+However, cEOF2's mean is almost zero, which indicates that only cEOF1 includes variability that significantly projects onto the mean zonally anomalous field.
 There are no significant simultaneous correlation between the time series.
 Both cEOFs show year-to-year variability but show no evidence of decadal variability.
 
-There is a significant upward trend in the real component of cEOF1 (Fig.~\ref{fig:extended-series}a.1, p-value~\textless{} 0.001) and no significant trend in any of the complex components of cEOF2.
-The positive trend in the real cEOF1 translates into a positive trend in cEOF1 magnitude, but not in the phase (not shown).
+\textcolor{red}{En la figura 3 agregaría dos cosas: i)el eje y en la columna derecha (si la queres ver más grande perdes la referencia) ii) creo que serviría agregar una líneas verticales en la grilla para poder tener una idea un poco mejor de a qué años corresponde más o menos cada valor. pueden ser un poco más finas que las que ya están, pero creo que sería una referencia util para visualmente poder decir a qué año corresponde cada punto. Además, fijate que la figura te quedo de un ancho mayor que el de la página y te quedo un "EOF" en el eje-y a la izquierda que no creo que sea lo más correcto.}
 
-This long-term change indicates an increase in the magnitude of the high latitude zonal wave 1.
-A similar observation was made by \citet{raphael2003}, who detected a step after around 1975 in the leading EOF of August-September-October 500 hPa zonal geopotential height anomalies.
+There is only a significant upward trend in the real component of cEOF1 (Fig.~\ref{fig:extended-series}a.1, p-value~\textless{} 0.001) and no significant trend in any of the complex components of cEOF2.
+The positive trend in the real cEOF1 translates into a positive trend in cEOF1 magnitude, but not in the phase (not shown). This long-term change indicates an increase in the magnitude of the high latitude zonal wave 1.
+A similar observation was made by \citet{raphael2003}, who detected a step after around 1975 in the leading EOF of August-September-October 500 hPa zonal geopotential height anomalies, which is similar to the cEOF1.
 
 \hypertarget{regressions}{%
 \subsection{cEOFs Regressions}\label{regressions}}
@@ -350,13 +352,15 @@ Areas marked with dots have p-values smaller than 0.05 adjusted for False Detect
 \end{figure}
 
 Figure~\ref{fig:eof1-regr-gh} shows regression maps of SON geopotential height anomalies upon cEOF1.
-At 50 hPa (Figure~\ref{fig:eof1-regr-gh} row a), both the Real and Imaginary cEOF1 are associated with planetary wave 1 patterns, that are 90º off phase.
+At 50 hPa (Figure~\ref{fig:eof1-regr-gh} row a), both the Real and Imaginary cEOF1 are associated with planetary wave 1 patterns, that are 90º out of phase.
 Their phases coincide with the ones shown in Figure~\ref{fig:ceofs-1}a.1, with the positive centre of the real cEOF1 located towards the dateline, and the one of the Imaginary cEOF1 located over Eastern Antarctica.
 However, the Real cEOF1 pattern is substantially altered by the zonally symmetric circulation.
 Instead of a clear wave 1 pattern, the regression pattern can be better describes as a monopole with its centre displaced from the South Pole.
 
-The regression patterns at 200 hPa (Figure~\ref{fig:eof1-regr-gh} row b) are similarly influenced by the zonally symmetric circulation.
-It is only possible to distinguish partially the wave 1 pattern in relation with the real cEOF1 (Figure~\ref{fig:eof1-regr-gh}b.1).
+\textcolor{red}{La figura 4 la veo muy saturada con los puntos que indican la significancia. ¿se podrán hacer con un tamaño menor? ¿Las unidades son correctas? Me llama la atención que te puedan dar tantos cientos de metros de altura geopotencial.}
+
+The regression patterns for cEOF1 at 200 hPa (Figure~\ref{fig:eof1-regr-gh} row b) are similarly influenced by the zonally symmetric circulation.
+It is only possible to partially distinguish the wave 1 pattern in relation with the real cEOF1 (Figure~\ref{fig:eof1-regr-gh}b.1).
 The imaginary cEOF1 shows a much more zonally symmetrical pattern resembling the negative SAM phase.
 
 With the exception of the imaginary cEOF1, it is clear that these patterns are very different than the fully zonally asymmetric versions (Fig.~\ref{fig:ceofs-1}), particularly at 200 hPa.
@@ -372,11 +376,13 @@ While in the troposphere, they are associated with slightly off-centre monopoles
 \caption{\label{fig:eof2-regr-gh}Same as Figure~\ref{fig:eof1-regr-gh} but for the second cEOF.}
 \end{figure}
 
-Figure~\ref{fig:eof2-regr-gh} shows the regression pattern of geopotential height anomalies upon the cEOF2. Unlike for cEOF1, in this case the regression patterns are similar to the fully zonally asymmetric patterns from Figure~\ref{fig:ceofs-1}. Although there are some differences (particularly in 50 hPa), the wave trains identified before are well characterised and patterns associated with the real cEOF2 are 90º out of phase with those associated with the imaginary cEOF2. Zonal wave 3 dominates all fields, but only in the western hemisphere, over the Pacific and Atlantic Oceans. cEOF2 then represents a equivalent barotropic wave train that is very similar to the the Pacific South American Patterns \citep{mo2001}.
+Figure~\ref{fig:eof2-regr-gh} shows the regression pattern of geopotential height anomalies upon the cEOF2. Unlike for cEOF1, in this case the regression patterns are similar to the fully zonally asymmetric patterns from Figure~\ref{fig:ceofs-1}. Although there are some differences (particularly in 50 hPa), the wave trains identified before are well characterised and patterns associated with the real cEOF2 are 90º out of phase with those associated with the imaginary cEOF2. Zonal wave 3 dominates all fields, but only in the western hemisphere, over the Pacific and Atlantic Oceans. cEOF2 then represents an equivalent barotropic wave train that is very similar to the the Pacific South American Patterns \citep{mo2001}.
 Comparing the location of the positive anomaly near 90ºW in column b of Figure~\ref{fig:eof2-regr-gh} with Figures 1.a and b from \citet{mo2001}, the real cEOF2 can roughly be identified with PSA2, while the imaginary cEOF2 resembles PSA1.
 
+\textcolor{red}{Figura 5. Me resulto raro que vaya hasta 999 en vez de 1000 }
+
 \hypertarget{other-variables}{%
-\subsection{cEOFs relationship with other variables}\label{other-variables}}
+\subsection{cEOFs relationship with known modes of variability}\label{other-variables}}
 
 \hypertarget{sam}{%
 \subsubsection{SAM}\label{sam}}
@@ -390,19 +396,23 @@ Comparing the location of the positive anomaly near 90ºW in column b of Figure~
 \end{figure}
 
 To explore the relationship between SAM and the modes described from the cEOF, we compute the coefficient of determination between the cEOFs timeseries and the three SAM indices (SAM, A-SAM and S-SAM) at each vertical level (Fig.~\ref{fig:sam-eof-vertical}).
-The SAM index is moderately correlated with the Real cEOF1 in all levels, and with the Imaginary cEOF1 and Imaginary cEOF2 in the troposphere.
-It is not correlated with the Real cEOF2 at any level.
+The SAM index is statistically signficant correlated with the Real cEOF1 in all levels, and with the Imaginary cEOF1 and Imaginary cEOF2 in the troposphere.
+Correlations between SAM and the Real cEOF2 are non-significant.
+
+\textcolor{red}{Fig. 6. Te quedan muy pegados los subplots de la columna izquierda con los de la derecha. Recomendaría aumentar el espacio intermedio y repetir el eje y en las figuras de la derecha. Además podrías agregar el y-label (Level) a la izquierda.}
 
 The relationship between the tropospheric SAM and cEOF1 is explained entirely by the zonally symmetric component of the SAM as shown by the low and statistically non-significant correlations between the A-SAM and either the Real or Imaginary cEOF1 and the high correlation with the S-SAM below 100 hPa.
 In the stratosphere, the Real cEOF1 is correlated with both A-SAM and S-SAM, while the Imaginary cEOF1 is highly correlated only with the A-SAM.
-These correlations are consistent with the regression patterns of geopotential height in Figure~\ref{fig:eof1-regr-gh}.
+These correlations are consistent with the regression patterns of geopotential height in Figure~\ref{fig:eof1-regr-gh} and their comparison with those obtained for SAM, A-SAM and S-SAM by \citet{campitelli2021}.
 
 In the case of cEOF2, the moderate correlation between SAM and Imaginary cEOF2 becomes extremely high only when the zonally asymmetric variability of the SAM is considered.
-The Imaginary cEOF2 and the A-SAM share up to 92\% of their variance, reached at 225 hPa (Figure~\ref{fig:sam-eof-vertical}.b2).
+The Imaginary cEOF2 explains up to 92\% of A-SAM variance, reached the maximum value at 225 hPa (Figure~\ref{fig:sam-eof-vertical}.b2).
 Such extremely high correlation between the asymmetric SAM and the Imaginary cEOF2 suggests that these might be different ways of characterising the same phenomenon.
 
 \hypertarget{psa}{%
 \subsubsection{PSA}\label{psa}}
+
+\textcolor{red}{Tabla 2. Mismo comentario que antes con lo del background color (no dice mucho si no se conoce la escala), quizás podes destacar en negritas según la significancia. ¿Está bien el intervalo de confianza de PSA2 vs cEOF2 Im? Hay algo raro ahí}
 
 
 
@@ -424,8 +434,8 @@ PSA2 & \cellcolor[HTML]{9E4E47}{\textcolor{white}{0.81 (CI: 0.67 -- 0.9)}} & \ce
 \end{tabular}
 \end{table}
 
-The relationship between PSAs and the modes described from the cEOFs is also studied.
-Table~\ref{tab:psa-eof2} shows the correlations between the two PSA indices and the timeseries for Real and Imaginary phase of cEOF2.
+Due to the similarity between the PSA patterns and the cEOF2 spatial patterns (Fig. \ref{fig:eof2-regr-gh}), we study the relationship between these modes.
+Table \ref{tab:psa-eof2} shows the correlations between the two PSA indices and the timeseries for Real and Imaginary phase of cEOF2.
 As anticipated by Figure~\ref{fig:eof2-regr-gh}, there is a strong correlation between PSA1 and Imaginary cEOF2, and between PSA2 and Real cEOF2.
 Conversely, there is no relationship between PSA1 and Real cEOF2, and between PSA2 and Imaginary cEOF2.
 As a result, cEOF2 represents well both the spatial structure and temporal evolution of the PSA modes, as well as it is possible to make a rather clean association between its two phases and the two PSA modes.
@@ -435,7 +445,7 @@ The reason the conventional EOF analysis arrives at the same separation than our
 To visualize that, Figure~\ref{fig:phase-histogram} shows an histogram that counts the number of SON years in which the cEOF2 was close to each of the four particular phases (positive/negative Real/Imaginary), with the observations for each season marked as rugs on the horizontal axis.
 For instance, years with cEOF2 phase within 45º of 0º are nearest the ``positive Real'' phase.
 About two thirds of time cEOF2 has a phase similar to either the negative or positive Imaginary phase.
-It could be seen that Imaginary phase is the most common phase and It is also the direction that has the maximum relationship with ENSO.
+It could be seen that Imaginary phase is the most common phase and It is also, by construction, the direction that has the maximum relationship with ENSO.
 Therefore, the Imaginary cEOF2 explains more variance than the Real cEOF2 and conventional EOF analysis will tend to separate the two.
 
 
@@ -447,9 +457,9 @@ Therefore, the Imaginary cEOF2 explains more variance than the Real cEOF2 and co
 \end{figure}
 
 The result obtained here is similar to the one obtained by \citet{irving2016}.
-They show that the phase distribution of the PSA-like variability they detected is bimodal and isolate the PSA pattern from the rest of the PSA-like variability by selecting events that are near the peaks of the distribution (compare our Figure~\ref{fig:phase-histogram} with their Figure 6).
+They show that the phase distribution of the PSA-like variability obtained by them is bimodal and isolate the PSA pattern from the rest of the PSA-like variability by selecting events that are near the peaks of the distribution (compare our Figure~\ref{fig:phase-histogram} with their Figure 6).
 
-The advantage of our method is that it is much simpler to implement, it provides magnitude and phase naturally, and it facilitates the description of this mode as a propagating wave instead of as standing oscillation.
+The advantage of our method is that it is much simpler to implement, it provides magnitude and phase naturally, and it facilitates the description of this mode as a propagating wave instead of as standing oscillations.
 As a consequence, the cEOF2 offers an alternative way of representing the PSA which has several advantages over using the second and third EOFs.
 
 \hypertarget{temperature-and-ozone}{%
@@ -460,7 +470,7 @@ As a consequence, the cEOF2 offers an alternative way of representing the PSA wh
 \begin{figure}
 \centering
 \includegraphics{../figures/eof1-regr-t-1.pdf}
-\caption{\label{fig:eof1-regr-t}Same as Figure~\ref{fig:eof1-regr-gh} but for air temperature.}
+\caption{\label{fig:eof1-regr-t}Same as Figure~\ref{fig:eof1-regr-gh} but for air temperature (K).}
 \end{figure}
 
 
@@ -471,9 +481,9 @@ As a consequence, the cEOF2 offers an alternative way of representing the PSA wh
 \caption{\label{fig:t-vertical}Regression of SON anomalies of mean air temperature (shaded, Kelvin) and ozone mixing ratio (contours, negative contours with dashed lines, labels in parts per billion by mass) averaged between 75°S and 45°S with the (a) real and (b) imaginary parts of the first cEOF for the 1979 -- 2019 period.}
 \end{figure}
 
-The relation between cEOFs and temperature was also evaluated.
+The relation between cEOFs and air temperature was also evaluated.
 Figure~\ref{fig:eof1-regr-t} shows regression patterns of air temperature at 50hPa and 200hPa onto cEOF1.
-In both levels, the Real cEOF1 is associated with positive monopole over the South Pole with its centre moved slightly towards 150ºE (Fig.~\ref{fig:eof1-regr-t} column 1).
+In both levels, the Real cEOF1 is associated with a positive monopole over the South Pole with its centre moved slightly towards 150ºE (Fig.~\ref{fig:eof1-regr-t} column 1).
 On the other hand, the regression maps on the Imaginary cEOF1 show a more clear wave 1 pattern with its maximum around 60ºE.
 The distribution of temperature regression coefficients at 50 hPa and at 200 hPa mirror the geopotential height regression maps at 50 hPa (Fig.~\ref{fig:eof1-regr-gh}).
 
@@ -481,16 +491,18 @@ Figure \ref{fig:t-vertical} shows the vertical distribution of the regression co
 Temperature zonal anomalies associated with cEOF1 show a clear wave 1 pattern for both real and imaginary components throughout the atmosphere above 250 hPa with a change in sign above 10 hPa.
 Following hydrostatic balance, this is the level in which the geopotential anomaly have maximum amplitude (not shown).
 
-The maximum ozone anomalies are co-located with the minimum temperature anomalies above 10 hPa and with the maximum temperature anomalies below 10 hPa (Fig.~\ref{fig:t-vertical})). Therefore, the ozone zonal wave 1 is anticorrelated with the temperature zonal wave 1 in the upper stratosphere, and directly correlated in the upper stratosphere . This change in phase is observed in ozone anomalies forced by planetary waves that reach the stratosphere. In the photochemically-dominated upper stratosphere, cold temperatures inhibit the destruction of ozone, and the advectively-dominated lower stratosphere, ozone anomalies are 90º out of phase with horizontal and vertical transport, which is 90º our of phase with temperature anomalies \citep{hartmann1979, wirth1993, smith1995}.
+The maximum ozone anomalies are co-located with the minimum temperature anomalies above 10 hPa and with the maximum temperature anomalies below 10 hPa (Fig.~\ref{fig:t-vertical}). Therefore, the ozone zonal wave 1 is anticorrelated with the temperature zonal wave 1 in the upper stratosphere, and directly correlated in the upper stratosphere. This change in phase is observed in ozone anomalies forced by planetary waves that reach the stratosphere. In the photochemically-dominated upper stratosphere, cold temperatures inhibit the destruction of ozone. On the other hand, in the advectively-dominated lower stratosphere, ozone anomalies are 90º out of phase with horizontal and vertical transport, which are in adittion 90º out of phase with temperature anomalies \citep{hartmann1979, wirth1993, smith1995}.
 
 
 
 
+
+\textcolor{red}{Revisa que tenes una incosistencia en el uso de mayúsculas en Real/Imaginary porque a veces las usas y a veces no.}
 
 \begin{figure}
 \centering
 \includegraphics{../figures/o3-regr-1.pdf}
-\caption{\label{fig:o3-regr}Regression of SON mean Total Ozone Column anomalies (shaded, Dobson Units) with the (a) real and (b) imaginary parts of the first cEOF for the 1979 -- 2019 period.
+\caption{\label{fig:o3-regr}Regression of SON mean Total Ozone Column anomalies (shaded, Dobson Units) with the (a) real and (b) imaginary parts of the cEOF1 for the 1979 -- 2019 period.
 On contours, the mean zonal anomaly of Total Ozone Column (negative contours in dashed lines, Dobson Units).
 Areas marked with dots have p-values smaller than 0.05 adjusted for False Detection Rate.}
 \end{figure}
@@ -501,26 +513,26 @@ Thus, the Real cEOF1 regression pattern (Figure~\ref{fig:o3-regr}a) coincides wi
 
 
 There is a close spatial relationship between amplitudes and phases of the cEOF1 and TOC planetary wave 1 between 75°S and 45°S.
-The correlation between the amplitude of both indices is 0.77 (CI: 0.61 -- 0.87) the overall correlation between the zonal wave 1 of ozone and cEOF1 (computed as the mean cosine of the difference in phase) is 0.87 (CI: 0.77 -- 0.93).
-As expected from the location of regressions in Figure~\ref{fig:o3-regr}, the Real cEOF1 drives the relationship of amplitudes and the Imaginary cEOF1 drives the relationship of phases between the timeseries (not shown).
+The correlation between the amplitude of both indices is 0.77 (CI: 0.61 -- 0.87) and 0.49 (CI: 0.21 -- 0.69) between their phases.
 
 \hypertarget{tropical}{%
 \subsection{Tropical sources}\label{tropical}}
 
 
 
+
 \begin{figure*}
-\includegraphics{../figures/sst-psi-2-1} \caption{Regression maps of cEOF2 with SST (column a) and streamfunction zonal anomalies (shaded) with their corresponding activity wave flux (vectors) (column b). Areas marked with dots have p-values smaller than 0.01 adjusted for FDR.}\label{fig:sst-psi-2}
+\includegraphics{../figures/sst-psi-2-1} \caption{Regression maps of cEOF2 with SST (column a) and streamfunction zonal anomalies (shaded) with their corresponding activity wave flux (vectors) (column b). Areas marked with dots have p-values smaller than 0.01 adjusted for FDR.
+\textcolor{red}{Agregar unidades. Quedaría mucho mejor el gráfico y creo que se prestaría a menos confusión si colocas las barras de colores en las columnas corrrespondientes. Otro detalle es que en gral. para el gráfico de streamfunction la escala de colores se usa al revés para que los azules (positivos) sean ciclónicos y los rojos anticiclónicos}}\label{fig:sst-psi-2}
 \end{figure*}
 
-The connections between cEOFs and Tropical sources is also assessed.
-Figure~\ref{fig:sst-psi-2} shows the regression maps of Sea Surface Temperatures (SST) and Streamfunction at 200 hPa respectively upon cEOF2. The Imaginary cEOF2 is associated with strong positive SST anomalies on the Central Pacific and negative anomalies over an area across the North of Australia and New Zealand, the South Pacific Convergence Zone (SPCZ) (Figure~\ref{fig:sst-psi-2}.a2). This pattern is almost canonically positive ENSO \citep{bamston1997} and indeed, the correlation between the Imaginary cEOF2 and the Oceanic Niño Index \citep{bamston1997} is very high 0.76 (CI: 0.59 -- 0.87).
-Besides, the Imaginary cEOF2 is associated with strong wave-like streamfunction anomalies emanating from the tropics (Figure~\ref{fig:sst-psi-2}.b2). This is consistent with the effect of ENSO on the extratropics: SST anomalies initiate anomalous convection that excites Rossby waves that propagate meridionally towards higher latitudes \citep{mo2000}.
+The connections between cEOFs and Tropical sources are also assessed.
+Figure~\ref{fig:sst-psi-2} shows the regression maps of Sea Surface Temperatures (SST) and Streamfunction anomalies at 200 hPa respectively upon cEOF2. The Imaginary cEOF2 is associated with strong positive SST anomalies on the Central Pacific and negative anomalies over an area across the North of Australia and New Zealand, the South Pacific Convergence Zone (SPCZ) (Figure~\ref{fig:sst-psi-2}.a2). This pattern is almost canonically positive ENSO \citep{bamston1997} and indeed, the correlation between the Imaginary cEOF2 and the Oceanic Niño Index \citep{bamston1997} is significant and very high 0.76 (CI: 0.59 -- 0.87).
+Besides, the Imaginary cEOF2 is associated with strong wave-like streamfunction anomalies emanating from the tropics (Figure~\ref{fig:sst-psi-2}.b2). This is consistent with the effect of ENSO on the extratropics: SST anomalies initiate anomalous tropical convection that excites Rossby waves that propagate meridionally towards higher latitudes \citep{mo2000}.
 
-Since the Real cEOF2 represents just a different phase of the same wave train, it would be expected to show a similar forcing pattern to the Imaginary cEOF with a slight translation of its location.
+Since the Real cEOF2 represents just a different phase of the same wave train, it would be expected to show a similar forcing pattern to the Imaginary cEOF2 with a slight translation of its location.
 However, Figure~\ref{fig:sst-psi-2}.a1 and b1 show that the Real cEOF2 is not associated either with any significant SST nor streamfunction anomalies in the tropics.
-The correlation between the Real cEOF2 and ENSO is also not significant (0.00025 (CI: -0.31 -- 0.31)).
-This lack of tropical signal suggests different natures of the different phases of the Real cEOF2 wave train, which has the maximum amplitudes in the surroundings of southern South America.
+The correlation between the Real cEOF2 and ENSO is also not significant (0.00025 (CI: -0.31 -- 0.31)). \textcolor{red}{Usaría notación científica por la cantidad de 0 que tiene}. This lack of tropical signal suggest that the Real cEOF2 and the Imaginary cEOF2 have very different sources of variability.
 
 \begin{figure}
 \centering
@@ -532,9 +544,11 @@ To better explore the relationship between tropical forcing and phase of the cEO
 In years with positive ONI, the phase of the cEOF2 is mostly around +90º (corresponding with positive imaginary part) and vice versa.
 In years with near neutral ENSO, the phase of the cEOF2 is much more variable.
 The black line in Figure~\ref{fig:enso-phase} is a sinusoidal fit of the relationship between ONI and cEOF2 phase.
-The \(r^2\) corresponding to the fit is 0.56, with p-value \textless{} 0.001, indicating a quasi-sinusoidal relation between these two variables.
+The \(r^2\) corresponding to the fit is 0.56, statistically significant with p-value \textless{} 0.001, indicating a quasi-sinusoidal relation between these two variables.
 
-Furthermore, Figure~\ref{fig:enso-phase} suggest that higher amplitude cEOF2 years tend to coincide with stronger ENSO years.
+\textcolor{red}{Fig. 12 Revisa cómo te quedo abajo de la figura la indicación de qué son cada uno de los puntos (te quedaron dos circulos y una línea extra que no va)}
+
+Furthermore, Figure~\ref{fig:enso-phase} suggest that highest amplitude cEOF2 years tend to coincide with strong ENSO years.
 The correlation between the absolute magnitude of the ONI and the magnitude of the cEOF2 is 0.45 (CI: 0.17 -- 0.67).
 This relationship, however, appears to be driven only by the three years with strongest ENSO events in the period (2015, 1997, and 1982) which also coincide with the three years with strongest cEOF2 magnitude.
 If those years are removed, the correlation becomes non-significant (0.047 (CI: -0.28 -- 0.36)).
@@ -555,7 +569,10 @@ This explains the relative overabundance of years with cEOF2 near positive and n
 Figure~\ref{fig:sst-psi-1} shows SST and streamfunction regression maps for cEOF1.
 Unlike the cEOF2 case, there is no significant pattern of SST anomalies associated with either the Real or Imaginary cEOF1.
 Consistently, streamfunction anomalies do not show any tropical influence.
-Instead of that, the real and imaginary CEOF1 are associated with zonally wave activity fluxes in the extra-tropics around 60ºS, except for an equatorward flow from the coast of Antarctica around 150ºE in the real component.
+Instead, the real and imaginary cEOF1 are associated with zonally wave activity fluxes in the extra-tropics around 60ºS, except for an equatorward flow from the coast of Antarctica around 150ºE in the real component.
+This suggests that it's variability is driven primary by the internal variability of the extra-tropics.
+
+\textcolor{red}{Fig. 13 Tene en cuenta los mismos comentarios que en el figura 11 y revisa también la barra de colores para SST que quedo rara}
 
 \hypertarget{precipitation}{%
 \subsection{Precipitation}\label{precipitation}}
@@ -566,17 +583,24 @@ We focus on South America and Oceania sectors because there are no relevant sign
 
 
 
+
+\textcolor{red}{Revisa el caption de la figura 14 que equedo un estilo distinto que los anteriores. Te falto aclarar también qué es la caja (¿la inventaste vos o habías utilizado la de algún otro trabajo?). Fijate también de aumentar la separación entre la columna izquierda y derecha para que no se superpongan los labels. También fijate que esta barra de colores no te quedo con el borde externo como el resto. }
+
 \begin{figure}
 \centering
 \includegraphics{../figures/pp-oceania-1.pdf}
 \caption{\label{fig:pp-oceania}Regression of SON mean precipitation anomalies in Oceania (mm per day, shaded) and (column a) cEOF1 the (row 1) Imaginary and (column 1) Real phase. For the 1979 -- 2019.
-Areas marked with dots have p-values smaller than 0.05 adjusted for False Detection Rate.}
+Areas marked with dots have p-values smaller than 0.05 adjusted for False Detection Rate.
+In black is the West Australia region, defined as the box between 130°E and 155°E and 40°S and 15°S.}
 \end{figure}
 
-The precipitation anomalies in Oceania associated with cEOF1 are weak and not statistically significant (Figure~\ref{fig:pp-oceania} column a) whereas EFO2 is associated with large and widespread anomalies. The Real cEOF2 is associated with positive seasonal anomalies in Northern and Eastern Australia, and negative ones over New Zealand, while precipitation anomalies associated with Imaginary cEOF2 are negative over all Eastern Australia. Again, these negative anomalies are similar to the springtime precipitation anomalies observed in relation with the Asymmetric SAM \citep{campitelli2021} and ENSO \citep{cai2011}.
+The precipitation anomalies in Oceania associated with cEOF1 are weak and not statistically significant (Figure~\ref{fig:pp-oceania} column a) whereas cEOF2 is associated with large and widespread anomalies. The Real cEOF2 is associated with positive seasonal anomalies in Northern and Eastern Australia, and negative ones over New Zealand, while precipitation anomalies associated with Imaginary cEOF2 are negative over all Eastern Australia. As it could be expected, these negative anomalies are similar to the springtime precipitation anomalies observed in relation with the Asymmetric SAM \citep{campitelli2021} and ENSO \citep{cai2011}.
+\textcolor{red}{Acá te faltaría  sacar un poco más el jugo asociando con la figura 11. Además, ¿revisaste si podes también usar algún resultado asociado a los PSA? }
 
 
 
+
+\textcolor{red}{Revisa lo mismo que para la otra figura del tipo. }
 
 \begin{figure}
 \centering
@@ -596,52 +620,42 @@ To perform a more in-depth analysis of the relationship between this pattern and
 \begin{figure}
 \centering
 \includegraphics{../figures/pp-america-1.pdf}
-\caption{\label{fig:pp-america}As Figure~\ref{fig:pp-america} but for South America}
+\caption{\label{fig:pp-america}As Figure~\ref{fig:pp-oceania} but for South America}
 \end{figure}
 
-Figure~\ref{fig:pp-america} shows regression maps of seasonal precipitation with each cEOF in South America. cEOF1 is associated with slight decreases in precipitation in Southern Brazil and Paraguay, although these are not statistically significant (Fig.~\ref{fig:pp-america} column a). The strongest precipitation regression coefccients are the ones associated with the Imaginary cEOF2. The positive regression coefficients on Southeastern South America (SESA) and Central Chile, and negative ones over South Atlantic Convergence Zone is a well-known springtime precipitation signature of ENSO \citep{cai2020a} and it is also similar to the precipitation anomalies associated with the A-SAM \citep{campitelli2021}.
+Figure~\ref{fig:pp-america} shows regression maps of seasonal precipitation with each cEOF in South America. cEOF1 is associated with negative regressions coefficients for precipitation in Southern Brazil and Paraguay, although these are not statistically significant (Fig.~\ref{fig:pp-america} column a). The strongest precipitation regression coefccients are the ones associated with the Imaginary cEOF2. The positive regression coefficients on Southeastern South America (SESA) and Central Chile, and negative ones over South Atlantic Convergence Zone is a well-known springtime precipitation signature of ENSO \citep{cai2020a} and it is also similar to the precipitation anomalies associated with the A-SAM \citep{campitelli2021}.
+\textcolor{red}{Lo mismo que te puse antes. Te faltaría  sacar un poco más el jugo asociando con la figura 11. Además, ¿revisaste si podes también usar algún resultado asociado a los PSA? }
+
 This is not surprising considering the close relationship between the ONI, the A-SAM index and the Imaginary cEOF2 shown previously, but further consolidates the identification of this mode with the PSA pattern.
 On the other hand, the Real cEOF2 is associated with negative precipitation anomalies in a smaller area of SESA.
 Resembling the relationship between ONI and the phase of cEOF2 (Fig.~\ref{fig:enso-phase}), there is a cEOF2 phase dependence of the precipitation anomalies in SESA (not shown).
-These variables could be related wth a significant sinusoidal fit that has a coefficient of determination of~0.27 (p-value~= 0.0022).
+These variables could be related wth a significant sinusoidal fit that has a statistically significant coefficient of determination of~0.27.
 
 
 
 \hypertarget{conclusions}{%
 \section{Conclusions}\label{conclusions}}
 
-In this study we derived two complex indices of the zonally asymmetric circulation of the September-October-November southern extratropics using Complex Empirical Orthogonal Functions.
-This allowed us to characterise both the amplitude and phase of planetary waves that are not perfectly organised as sinusoidal waves with constant amplitude at each latitude circle.
+In this study we assessed the Austral Spring Extratropical Southern Hemisphere zonally assymetric circulation. For this purpose, two complex indices were derived using Complex Empirical Orthogonal Functions. This allowed us to characterise both the amplitude and phase of planetary waves that are not perfectly organised as sinusoidal waves with constant amplitude at each latitude circle.
 
 The first complex EOF represents the variability of the zonal wave 1 in the stratosphere, but represents a more zonally symmetric monopole in the troposphere.
-There is a statistically positive trend in the magnitude of this cEOF, which is consistent with previous studies which showed secular changes in springtime wave-1-like patterns \citep[e.g.][]{raphael2003}.
-This mode is closely related to anomalies in Total Ozone Column.
+There is a statistically positive trend in the magnitude of this cEOF, which is consistent with previous studies that showed secular changes in springtime wave-1-like patterns \citep[e.g.][]{raphael2003}. This mode is closely related to stratospheric variability such as anomalies in Total Ozone Column. Otherwise, this complex EOF is not related with SST variability and continental precipitation in the Southern Hemisphere.
 
-The second complex EOF represents a wave-3 pattern with maximum magnitude in the Pacific sector.
-Essentially, it is an alternate representation of the PSA1 and PSA2 patterns \citep{mo2001}.
-We show that the Imaginary cEOF2 can be identified with the PSA1 and the Real cEOF2 with the PSA2.
-This cEOF prefers a phase aligned with the Imaginary cEOF2.
-This is because the when ENSO is active, it forces the cEOF2 to be in the Imaginary phase.
-When ENSO is neutral, the cEOF2 is still active, but with no particular preferred phase.
+The second complex EOF represents a wave-3 pattern with maximum magnitude in the Pacific sector. Essentially, it is an alternate representation of the PSA1 and PSA2 patterns \citep{mo2001}. We show that the Imaginary cEOF2 can be identified with the PSA1 and the Real cEOF2 with the PSA2. This cEOF prefers a phase aligned with the Imaginary cEOF2, because when ENSO is active, it forces the cEOF2 to be in the Imaginary phase. When ENSO is neutral, the cEOF2 is still active, but with no particular preferred phase.
 This mirrors the results of \citet{cai2002}, who showed that the CSIRO Model can create PSA-like variability even in the absence of ENSO forcing (with a climatological run), but the variability of one of the PSA modes was enhanced when adding the ENSO signal. The magnitude of the cEOF2 appears not to be related to the magnitude of ENSO, except frot the three strongest ENSO events in the period which coincide with the three strongest cEOF2 years.
 
-We further show that the Imaginary cEOF2 is closely related to the Southern Annular Mode in the troposphere.
-In fact, it has a very close resemblance to the zonally asymmetric portion of the SAM.
-This raises the possibility that the asymmetric component of the SAM is actually a statistical contamination of the PSA mode.
+We further show that the Imaginary cEOF2 is closely related to the Southern Annular Mode in the troposphere. In fact, it has a very close resemblance to the zonally asymmetric portion of the SAM. This raises the possibility that the asymmetric component of the SAM is actually a statistical contamination of the PSA mode.
 
 Precipitation anomalies in South America associated with the Imaginary cEOF2 show a clear ENSO-like impact, with positive anomalies in South-Eastern South America, negative anomalies in Southern Brazil and positive anomalies in central Chile.
 Precipitation anomalies associated with the Real cEOF2 are low and not statistically significant, showing that the Imaginary phase is optimally aligned with the direction of maximum precipitation impacts.
 
 On the other hand, over Australia, both the Real and Imaginary phase are associated with significant precipitation anomalies, and we further show that the direction of maximum impact is not aligned with our chosen rotation of cEOF2.
-However, this underscores the benefit of using complex EOF, since it would trivial to rotate it.
+However, this underscores the benefit of using complex EOF, since it would be trivial to rotate it. \textcolor{red}{creo que esta idea convendría desarrollarla mejor para el que no lo tenga tan claro}
 
-To the extent that the cEOF2 can be identified with the PSA, what is the advantage of our technique?
-The spatial fields that the cEOF2 index describes are in quadrature by construction, which makes it possible to derive a proper amplitude and phase.
-Furthermore, because of the way they are constructed, they are not forced to be orthogonal to the SAM.
-This makes it possible to study the relationship between the two modes free of the statistical contamination that comes with the usual definition of the PSA as the second and third EOFs.
+To the extent that the cEOF2 can be identified with the PSA, what is the advantage of the technique proposed here? The spatial fields that the cEOF2 index describes are in quadrature by construction, which makes it possible to derive a proper amplitude and phase.
+Furthermore, because of the way they are constructed, they are not forced to be orthogonal to the SAM. This makes it possible to study their relationship with the SAM free of the statistical contamination that comes with the usual definition of the PSA as the second and third EOFs.
 
-Further work should extend this analysis to other seasons and further study the relationship between the cEOF2 and the SAM.
-In particular, it is not clear whether the close identification between the Imaginary cEOF2 and the Asymmetric SAM arises from physical processes or statistical contamination.
+Further work should extend this analysis to other seasons and further study the relationship between the cEOF2 and the SAM. In particular, it is not clear whether the close identification between the Imaginary cEOF2 and the Asymmetric SAM arises from physical processes or statistical contamination.
 
 \hypertarget{code-availability}{%
 \subsection*{Code availability}\label{code-availability}}
