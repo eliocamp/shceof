@@ -130,13 +130,13 @@ pattern_dots <- ggplot2::ggproto("GeomDots", ggpattern::GeomPolygonPattern)
 ggplot2::update_geom_defaults(pattern_dots, 
                               list(pattern = "circle",
                                    colour = NA,
-                                   pattern_colour = "black",
+                                   pattern_colour = NA,
                                    pattern_fill = "black",
-                                   pattern_density = 0.05,
-                                   pattern_alpha = 1,
-                                   fill = NA,
-                                   pattern_spacing = 0.025))
-
+                                   pattern_density = 0.25,
+                                   pattern_alpha = 0.5,
+                                   pattern_spacing = 0.03,
+                                   fill = NA
+                                   ))
 update_geom_defaults(GeomSmooth, list(colour = "#0d52bf"))
 
 
