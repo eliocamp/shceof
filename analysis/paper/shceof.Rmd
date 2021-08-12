@@ -117,12 +117,22 @@ guide_colorstrip_bottom <- function(width = 15, height = 0.5,
                    barwidth = width, ...)
 }
 
+guide_colorsteps <- function (even.steps = TRUE, show.limits = NULL, ticks = FALSE, 
+  ...) {
+  guide <- guide_colourbar(raster = FALSE, ticks = ticks, 
+    nbin = 300, ...)
+  guide$even.steps <- even.steps
+  guide$show.limits <- show.limits
+  class(guide) <- c("colorsteps", class(guide))
+  guide
+}
 guide_colorsteps_bottom <- function(width = 15, height = 0.5, even.steps = FALSE, 
-                                    title.position = "top", show.limits = TRUE,
+                                    title.position = "top", show.limits = TRUE, ticks = TRUE,
                                     ...) {
   guide_colorsteps(show.limits = show.limits, even.steps = even.steps,
                    title.position = title.position, title.hjust = 0.5,
-                   barheight = height,
+                   barheight = height, ticks = ticks,
+                   ticks.colour = "black",
                    barwidth = width, frame.colour = "black", ...)
 }
 
@@ -1575,7 +1585,7 @@ plot_sst_psi <- function(which_cEOF, which_lev) {
     scale_fill_divergent_discretised("SST (K)", 
                                      labels = one_less,
                                      guide = guide_colorsteps_bottom(width = 15,
-                                                                     show.limits = FALSE,
+                                                                     show.limits = FALSE, ticks = TRUE,
                                                                      order = 1)) +
     scale_x_longitude() +
     scale_y_latitude() +
@@ -1588,13 +1598,13 @@ plot_sst_psi <- function(which_cEOF, which_lev) {
     theme(legend.box = "horizontal", legend.text = element_text(size = rel(0.7))) +
     tag_facets("cr", position = "bl") 
 }
+
 ```
 
 (ref:sst-psi-2-cap) Regression maps of cEOF2 with SST (K, column a) and streamfunction zonal anomalies ($m^2/s\times10^-7$, shaded) with their corresponding activity wave flux (vectors) (column b). Areas marked with dots have p-values smaller than 0.01 adjusted for FDR. 
 
 ```{r sst-psi-2,  fig.cap = "(ref:sst-psi-2-cap)", fig.width = 7, fig.height=4, dependson="plot_sst_psi", fig.env="figure*"}
 plot_sst_psi(which_cEOF = "cEOF2", which_lev = 200) 
-
 
 ```
 
