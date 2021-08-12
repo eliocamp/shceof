@@ -118,8 +118,9 @@ guide_colorstrip_bottom <- function(width = 15, height = 0.5,
 }
 
 guide_colorsteps_bottom <- function(width = 15, height = 0.5, even.steps = FALSE, 
-                                    title.position = "top", ...) {
-  guide_colorsteps(show.limits = TRUE, even.steps = even.steps,
+                                    title.position = "top", show.limits = TRUE,
+                                    ...) {
+  guide_colorsteps(show.limits = show.limits, even.steps = even.steps,
                    title.position = title.position, title.hjust = 0.5,
                    barheight = height,
                    barwidth = width, frame.colour = "black", ...)
@@ -137,7 +138,7 @@ ggplot2::update_geom_defaults(pattern_dots,
                                    pattern_alpha = 0.5,
                                    pattern_spacing = 0.03,
                                    fill = NA
-                                   ))
+                              ))
 update_geom_defaults(GeomSmooth, list(colour = "#0d52bf"))
 
 
@@ -1515,37 +1516,67 @@ enso_cor <-  ceof[, eof[[1]]$left, by = .(season)] %>%
 
 ```{r plot_sst_psi}
 plot_sst_psi <- function(which_cEOF, which_lev) {
+  one_less <- function(x) {
+    n <- length(x)
+    if (n < 4) return(x)
+    x <- round(x, 5)
+    
+    c( rev(JumpBy(rev(x[x < 0]), 2, fill = "")),
+       JumpBy(x[x > 0], 2, fill = ""))
+  }
+  
+  
   sst_gdata <- regr_sst[cEOF == which_cEOF] %>%
     .[lat %between% c(-90, 10)] %>%
-    .[, p_val := Pvaluate(estimate, std.error, df, "fdr"), by = .(cEOF, term)] %>%
+    .[, p_val := Pvaluate(estimate, std.error, df, "fdr"), 
+      by = .(cEOF, term)] %>%
     .[, var := "SST"]
   
-  regr_psi %>%
+  rsst <- max(range(abs(regr_sst[!is.na(cEOF), ]$estimate), na.rm = TRUE))
+  breaks_sst <- AnchorBreaks(0, bins = 20, exclude = 0)(c(-rsst, rsst))
+  
+  
+  stream_gdata <- regr_psi %>%
     .[cEOF == which_cEOF] %>%
     .[lev == which_lev] %>%
     # .[abs(estimate) > 1, estimate := NA] %>%
     .[lat %between% c(-90, 10)] %>%
     .[, p_val := Pvaluate(estimate, std.error, df, "fdr"), by = .(cEOF, term)] %>%
-    .[, var := "Streamfunction"] %>%
+    .[, var := "Streamfunction"]
+  
+  rstream <- max(range(abs(regr_psi[lev == which_lev]$estimate), 
+                       na.rm = TRUE))*1e-7
+  breaks_stream <- AnchorBreaks(0, bins = 20, exclude = 0)(c(-rstream, rstream))
+  
+  
+  # browser()
+  stream_gdata %>% 
     periodic(lon = c(0, 360)) %>%
     ggplot(aes(lon, lat)) +
     geom_contour_fill(aes(z = estimate*1e-7, fill = ..level..),
-                      breaks = AnchorBreaks(exclude = 0)) +
+                      breaks = breaks_stream) +
     geom_contour_pval(aes(z = p_val)) +
     geom_streamline(aes(dx = fx, dy = fy), min.L = 3, L = 10,
                     size = 0.1, res = 2, nx = 22, ny = 12, 
                     arrow.angle = 14, arrow.length = 0.2) +
     geom_qmap(keep = .015) +
-    scale_fill_divergent_discretised("Streamfunction (×1e-7)", 
-                                     guide = guide_colorsteps_bottom(20, order = 1)) +
+    scale_fill_divergent_discretised("Streamfunction (m²/s×1e-7)", 
+                                     labels = one_less,
+                                      low = scales::muted("red"),
+                                     high = scales::muted("blue"),
+                                     guide = guide_colorsteps_bottom(15, show.limits = FALSE,
+                                                                     order = 99)) +
     ggnewscale::new_scale_fill() +
     
     geom_contour_fill(data = sst_gdata,
                       aes(z = estimate, fill = ..level..), 
-                      breaks = AnchorBreaks(exclude = 0)) +
+                      breaks = breaks_sst) +
     geom_contour_pval(data = sst_gdata, aes(z = p_val)) +
-    scale_fill_divergent_discretised("SST", 
-                                     guide = guide_colorsteps_bottom(order = 2)) +
+    scale_fill_divergent_discretised("SST (K)", 
+                                     labels = one_less,
+                                     guide = guide_colorsteps_bottom(width = 15,
+                                                                     show.limits = FALSE,
+                                                                     order = 1)) +
     scale_x_longitude() +
     scale_y_latitude() +
     scale_mag(guide = "none") +
@@ -1554,18 +1585,17 @@ plot_sst_psi <- function(which_cEOF, which_lev) {
     coord_sf(ylim = c(-90, 0),
              crs = "+proj=longlat +pm=180 +over",
              default_crs = "+proj=longlat +over") + 
-  theme(legend.box = "vertical") +
+    theme(legend.box = "horizontal", legend.text = element_text(size = rel(0.7))) +
     tag_facets("cr", position = "bl") 
 }
 ```
 
-(ref:sst-psi-2-cap) Regression maps of cEOF2 with SST (column a) and streamfunction zonal anomalies (shaded) with their corresponding activity wave flux (vectors) (column b). Areas marked with dots have p-values smaller than 0.01 adjusted for FDR. \textcolor{red}{Agregar unidades. Quedaría mucho mejor el gráfico y creo que se prestaría a menos confusión si colocas las barras de colores en las columnas corrrespondientes. Otro detalle es que en gral. para el gráfico de streamfunction la escala de colores se usa al revés para que los azules (positivos) sean ciclónicos y los rojos anticiclónicos}
+(ref:sst-psi-2-cap) Regression maps of cEOF2 with SST (K, column a) and streamfunction zonal anomalies ($m^2/s\times10^-7$, shaded) with their corresponding activity wave flux (vectors) (column b). Areas marked with dots have p-values smaller than 0.01 adjusted for FDR. 
 
 ```{r sst-psi-2,  fig.cap = "(ref:sst-psi-2-cap)", fig.width = 7, fig.height=4, dependson="plot_sst_psi", fig.env="figure*"}
-plot_sst_psi(which_cEOF = "cEOF2", which_lev = 200) +
-  scale_fill_divergent_discretised("SST",
-                                   limits = c(-1, 1),
-                                   guide = guide_colorsteps_bottom(20, order = 2)) 
+plot_sst_psi(which_cEOF = "cEOF2", which_lev = 200) 
+
+
 ```
 
 The connections between cEOFs and Tropical sources are also assessed.
@@ -1672,10 +1702,9 @@ This explains the relative overabundance of years with cEOF2 near positive and n
 (ref:sst-psi-1-cap) Same as Figure \@ref(fig:sst-psi-2) but for cEOF1.
 
 ```{r sst-psi-1, fig.cap = "(ref:sst-psi-1-cap)", fig.width = 7, fig.height=4, dependson="plot_sst_psi", fig.env = "figure*"}
-plot_sst_psi(which_cEOF = "cEOF1", which_lev = 200) +
-  scale_fill_divergent_discretised("SST",
-                                   limits = c(-1, 1),
-                                   guide = guide_colorsteps_bottom(20, order = 2)) 
+plot_sst_psi(which_cEOF = "cEOF1", which_lev = 200) 
+
+
 ```
 
 Figure \@ref(fig:sst-psi-1) shows SST and streamfunction regression maps for cEOF1.
@@ -1773,11 +1802,11 @@ plot_pp <- function(data, which_cEOF, which_term = c("Real", "Imaginary"), which
     ggh4x::facet_nested(term ~ cEOF) +
     axis_labs_smol +
     tag_facets("cr") +
-      coord_sf(ylim = continents[[which_continent]]$lat,
-               xlim = continents[[which_continent]]$lon,
-               crs = "+proj=longlat +pm=180 +over",
-               default_crs = "+proj=longlat +over")
-    
+    coord_sf(ylim = continents[[which_continent]]$lat,
+             xlim = continents[[which_continent]]$lon,
+             crs = "+proj=longlat +pm=180 +over",
+             default_crs = "+proj=longlat +over")
+  
 }
 ```
 
