@@ -857,7 +857,7 @@ Both cEOFs show year-to-year variability but show no evidence of decadal variabi
 \textcolor{red}{En la figura 3 agregaría dos cosas: i)el eje y en la columna derecha (si la queres ver más grande perdes la referencia) ii) creo que serviría agregar una líneas verticales en la grilla para poder tener una idea un poco mejor de a qué años corresponde más o menos cada valor. pueden ser un poco más finas que las que ya están, pero creo que sería una referencia util para visualmente poder decir a qué año corresponde cada punto. Además, fijate que la figura te quedo de un ancho mayor que el de la página y te quedo un "EOF" en el eje-y a la izquierda que no creo que sea lo más correcto.}
 
 There is only a significant upward trend in the real component of cEOF1 (Fig. \@ref(fig:extended-series)a.1, p-value `r trends[part == "Real" & cEOF == "cEOF1"]$p_report`) and no significant trend in any of the complex components of cEOF2.
-The positive trend in the real cEOF1 translates into a positive trend in cEOF1 magnitude, but not in the phase (not shown). This long-term change indicates an increase in the magnitude of the high latitude zonal wave 1.
+The positive trend in the Real cEOF1 translates into a positive trend in cEOF1 magnitude, but not in the phase (not shown). This long-term change indicates an increase in the magnitude of the high latitude zonal wave 1.
 A similar observation was made by @raphael2003, who detected a step after around 1975 in the leading EOF of August-September-October 500 hPa zonal geopotential height anomalies, which is similar to the cEOF1.
 
 
@@ -950,17 +950,17 @@ plot_regr(regr , "cEOF1", c(200, 50), "hgt") +
 
 Figure \@ref(fig:eof1-regr-gh) shows regression maps of SON geopotential height anomalies upon cEOF1.
 At 50 hPa (Figure \@ref(fig:eof1-regr-gh) row a), both the Real and Imaginary cEOF1 are associated with planetary wave 1 patterns, that are 90º out of phase.
-Their phases coincide with the ones shown in Figure \@ref(fig:ceofs-1)a.1, with the positive centre of the real cEOF1 located towards the dateline, and the one of the Imaginary cEOF1 located over Eastern Antarctica.
+Their phases coincide with the ones shown in Figure \@ref(fig:ceofs-1)a.1, with the positive centre of the Real cEOF1 located towards the dateline, and the one of the Imaginary cEOF1 located over Eastern Antarctica.
 However, the Real cEOF1 pattern is substantially altered by the zonally symmetric circulation.
 Instead of a clear wave 1 pattern, the regression pattern can be better describes as a monopole with its centre displaced from the South Pole.
 
 \textcolor{red}{La figura 4 la veo muy saturada con los puntos que indican la significancia. ¿se podrán hacer con un tamaño menor? ¿Las unidades son correctas? Me llama la atención que te puedan dar tantos cientos de metros de altura geopotencial.}
 
 The regression patterns for cEOF1 at 200 hPa (Figure \@ref(fig:eof1-regr-gh) row b) are similarly influenced by the zonally symmetric circulation.
-It is only possible to partially distinguish the wave 1 pattern in relation with the real cEOF1 (Figure \@ref(fig:eof1-regr-gh)b.1).
-The imaginary cEOF1 shows a much more zonally symmetrical pattern resembling the negative SAM phase.
+It is only possible to partially distinguish the wave 1 pattern in relation with the Real cEOF1 (Figure \@ref(fig:eof1-regr-gh)b.1).
+The Imaginary cEOF1 shows a much more zonally symmetrical pattern resembling the negative SAM phase.
 
-With the exception of the imaginary cEOF1, it is clear that these patterns are very different than the fully zonally asymmetric versions (Fig. \@ref(fig:ceofs-1)), particularly at 200 hPa.
+With the exception of the Imaginary cEOF1, it is clear that these patterns are very different than the fully zonally asymmetric versions (Fig. \@ref(fig:ceofs-1)), particularly at 200 hPa.
 Moreover, only in the stratosphere these patterns actually show a distinguishable wave 1 pattern shifted in phase by 90º, suggesting that using the cEOF method is artificially generating a wave structure at 200hPa.
 Therefore, the magnitude and phase of the cEOF1 are associated with the magnitude and phase of a zonal wave only in the stratosphere.
 While in the troposphere, they are associated with slightly off-centre monopoles.
@@ -975,8 +975,8 @@ plot_regr(regr, "cEOF2", c(200, 50), "hgt") +
                        limits = c(-1000+1, 1000-1))
 ```
 
-Figure \@ref(fig:eof2-regr-gh) shows the regression pattern of geopotential height anomalies upon the cEOF2. Unlike for cEOF1, in this case the regression patterns are similar to the fully zonally asymmetric patterns from Figure \@ref(fig:ceofs-1). Although there are some differences (particularly in 50 hPa), the wave trains identified before are well characterised and patterns associated with the real cEOF2 are 90º out of phase with those associated with the imaginary cEOF2. Zonal wave 3 dominates all fields, but only in the western hemisphere, over the Pacific and Atlantic Oceans. cEOF2 then represents an equivalent barotropic wave train that is very similar to the the Pacific South American Patterns [@mo2001].
-Comparing the location of the positive anomaly near 90ºW in column b of Figure \@ref(fig:eof2-regr-gh) with Figures 1.a and b from @mo2001, the real cEOF2 can roughly be identified with PSA2, while the imaginary cEOF2 resembles PSA1.
+Figure \@ref(fig:eof2-regr-gh) shows the regression pattern of geopotential height anomalies upon the cEOF2. Unlike for cEOF1, in this case the regression patterns are similar to the fully zonally asymmetric patterns from Figure \@ref(fig:ceofs-1). Although there are some differences (particularly in 50 hPa), the wave trains identified before are well characterised and patterns associated with the Real cEOF2 are 90º out of phase with those associated with the Imaginary cEOF2. Zonal wave 3 dominates all fields, but only in the western hemisphere, over the Pacific and Atlantic Oceans. cEOF2 then represents an equivalent barotropic wave train that is very similar to the the Pacific South American Patterns [@mo2001].
+Comparing the location of the positive anomaly near 90ºW in column b of Figure \@ref(fig:eof2-regr-gh) with Figures 1.a and b from @mo2001, the Real cEOF2 can roughly be identified with PSA2, while the Imaginary cEOF2 resembles PSA1.
 
 \textcolor{red}{Figura 5. Me resulto raro que vaya hasta 999 en vez de 1000 }
 
@@ -1353,9 +1353,6 @@ o3_regr <- temp %>%
 On contours, the mean zonal anomaly of Total Ozone Column (negative contours in dashed lines, Dobson Units).
 Areas marked with dots have p-values smaller than 0.05 adjusted for False Detection Rate.
 
-\textcolor{red}{Revisa que tenes una incosistencia en el uso de mayúsculas en Real/Imaginary porque a veces las usas y a veces no.}
-
-
 ```{r o3-regr, fig.cap = "(ref:o3-regr-cap)", fig.height=3, fig.width = width_column}
 o3_regr %>% 
   periodic(lon = c(0, 360)) %>% 
@@ -1703,7 +1700,7 @@ plot_sst_psi(which_cEOF = "cEOF1", which_lev = 200) +
 Figure \@ref(fig:sst-psi-1) shows SST and streamfunction regression maps for cEOF1.
 Unlike the cEOF2 case, there is no significant pattern of SST anomalies associated with either the Real or Imaginary cEOF1.
 Consistently, streamfunction anomalies do not show any tropical influence.
-Instead, the real and imaginary cEOF1 are associated with zonally wave activity fluxes in the extra-tropics around 60ºS, except for an equatorward flow from the coast of Antarctica around 150ºE in the real component. 
+Instead, the real and Imaginary cEOF1 are associated with zonally wave activity fluxes in the extra-tropics around 60ºS, except for an equatorward flow from the coast of Antarctica around 150ºE in the real component. 
 This suggests that it's variability is driven primary by the internal variability of the extra-tropics.
 
 \textcolor{red}{Fig. 13 Tene en cuenta los mismos comentarios que en el figura 11 y revisa también la barra de colores para SST que quedo rara}
