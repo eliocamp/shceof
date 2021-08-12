@@ -72,7 +72,7 @@ knitr::opts_chunk$set(
   echo = FALSE,
   cache = TRUE,
   comment = "#>",
-  cache.extra = 42,
+  cache.extra = 41,
   cache.path = "../cache/paper/",
   fig.path = "../figures/",
   dpi = 300,
@@ -96,7 +96,8 @@ library(shceof)
 
 
 
-theme_set(theme_shceof(base_size = 10))
+theme_set(theme_shceof(base_size = 10) +
+            theme(legend.box.spacing = grid::unit(-.5, "lines")))
 
 panel_background <- theme(panel.background = element_rect(fill = "#fbfbfb", color = NA), 
                           panel.ontop = FALSE,
@@ -442,7 +443,8 @@ eof_naive[, eof[[1]]$right, by = lev] %>%
   scale_x_longitude() +
   geom_coords() +
   coord_polar() +
-  theme(axis.text = element_blank()) +
+  theme(axis.text = element_blank(), 
+        legend.box.spacing = grid::unit(-1, "lines")) +
   facet_wrap(.~EOF, ncol = 2)  +
   tagger::tag_facets("rc")
 
@@ -1583,7 +1585,8 @@ gdata <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[, arg := Arg(hgt)] %>%
   .[, mag := Mod(hgt)] %>%
   .[enso, on = "time"] %>%
-  na.omit()
+  na.omit() %>%
+  .[, q := ifelse(mag >= quantile(mag, 0.5), "|cEOF2| > 50%", "|cEOF2| < 50%")]
 
 
 cor_enso_mag <- gdata[, correlate(mag, abs(oni))]
@@ -1621,17 +1624,12 @@ gdata %>%
               method = "lm", aes(weight = mag),
               formula = y ~ I(sin(x)) -1,
               se = FALSE, color = "black", size = 0.5) +
-  geom_point(aes(colour = mag >= quantile(mag, 0.5),
-                 shape  = mag >= quantile(mag, 0.5)),
+  geom_point(aes(color = q,
+                 shape  = q),
              size = 3) +
   
-  scale_color_brewer(NULL, palette = "Dark2",
-                     labels = c("TRUE"  = "|cEOF2| > 50%",
-                                "FALSE" = "|cEOF2| < 50%")) +
-  scale_shape_manual(NULL, values = c("TRUE" = 20,
-                                      "FALSE" = 18),
-                     labels = c("TRUE"  = "|cEOF2| > 50%",
-                                "FALSE" = "|cEOF2| < 50%")) +
+  scale_color_brewer("", palette = "Dark2") +
+  scale_shape_manual("", values = c(20, 18)) +
   scale_y_continuous("ONI") +
   scale_x_continuous("Phase",
                      breaks = seq(-pi, pi, by = 45*pi/180),
@@ -1820,7 +1818,8 @@ gdata <- cmap %>%
   .[ceof$eof[[1]]$left, on  = "time"] %>% 
   .[cEOF == "cEOF2"] %>% 
   .[, arg := Arg(hgt)] %>% 
-  .[, mag := Mod(hgt)]
+  .[, mag := Mod(hgt)] %>% 
+  .[, q := ifelse(mag >= quantile(mag, 0.5), "|cEOF2| > 50%", "|cEOF2| < 50%")]
 
 model <- lm(pp ~ I(sin(arg)) + I(cos(arg)) - 1, weights = mag, data = gdata)
 fstatistic <- summary(model)$fstatistic
@@ -1849,20 +1848,15 @@ gdata %>%
               formula = y ~ I(sin(x)) + I(cos(x)) -1,
               se = FALSE, color = "black", size = 0.5, 
               fullrange = TRUE) +
-  geom_point(aes(colour = mag >= quantile(mag, 0.5),
-                 shape  = mag >= quantile(mag, 0.5)),
+  geom_point(aes(colour = q,
+                 shape  = q),
              size = 3) +
   
   
   # annotate("text", x = 90*pi/180, y = 1, label = equation, parse = TRUE) +
   
-  scale_color_brewer(NULL, palette = "Dark2",
-                     labels = c("TRUE"  = "|EOF2| > 50%",
-                                "FALSE" = "|EOF2| < 50%")) +
-  scale_shape_manual(NULL, values = c("TRUE" = 20,
-                                      "FALSE" = 18),
-                     labels = c("TRUE"  = "|EOF2| > 50%",
-                                "FALSE" = "|EOF2| < 50%")) +
+  scale_color_brewer(NULL, palette = "Dark2") +
+  scale_shape_manual(NULL, values = c(20, 18)) +
   scale_y_continuous("Precipitation anomaly") +
   scale_x_continuous("Phase",
                      breaks = seq(-pi, pi, by = 30*pi/180),
