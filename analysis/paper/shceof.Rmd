@@ -72,7 +72,7 @@ knitr::opts_chunk$set(
   echo = FALSE,
   cache = TRUE,
   comment = "#>",
-  cache.extra = 41,
+  cache.extra = 42,
   cache.path = "../cache/paper/",
   fig.path = "../figures/",
   dpi = 300,
