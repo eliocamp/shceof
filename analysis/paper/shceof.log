@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.3.30)  11 AUG 2021 16:21
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.3.30)  12 AUG 2021 18:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -584,7 +584,7 @@ Underfull \vbox (badness 6708) has occurred while \output is active []
 File: ../figures/eof-naive-1.pdf Graphic file (type pdf)
 <use ../figures/eof-naive-1.pdf>
 [5]
-Overfull \hbox (1.5178pt too wide) in paragraph at lines 252--256
+Overfull \hbox (1.5178pt too wide) in paragraph at lines 253--257
 []\TU/lmr/m/n/10 The cEOF methodology is applied to SON geopotential height zon
 al anoma-
  []
@@ -602,74 +602,73 @@ Overfull \hbox (154.84003pt too wide) in paragraph at lines 307--307
 [][] 
  []
 
-[8] [9]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+[8]
+Underfull \vbox (badness 2671) has occurred while \output is active []
 
-[10]
+[9] [10]
 File: ../figures/eof1-regr-gh-1.pdf Graphic file (type pdf)
 <use ../figures/eof1-regr-gh-1.pdf>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 [11]
 File: ../figures/eof2-regr-gh-1.pdf Graphic file (type pdf)
 <use ../figures/eof2-regr-gh-1.pdf>
+
+Underfull \vbox (badness 2608) has occurred while \output is active []
+
+[12]
 File: ../figures/sam-eof-vertical-1.pdf Graphic file (type pdf)
 <use ../figures/sam-eof-vertical-1.pdf>
-[12]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 [13] [14]
 File: ../figures/phase-histogram-1.pdf Graphic file (type pdf)
 <use ../figures/phase-histogram-1.pdf>
-[15]
 File: ../figures/eof1-regr-t-1.pdf Graphic file (type pdf)
 <use ../figures/eof1-regr-t-1.pdf>
 File: ../figures/t-vertical-1.pdf Graphic file (type pdf)
 <use ../figures/t-vertical-1.pdf>
-[16]
-Overfull \hbox (8.77002pt too wide) in paragraph at lines 500--501
-[][]\TU/lmr/m/n/10 Revisa que tenes una incosistencia en el uso de mayúsculas e
-n Real/Imaginary
- []
-
+[15] [16]
 File: ../figures/o3-regr-1.pdf Graphic file (type pdf)
 <use ../figures/o3-regr-1.pdf>
-
-Underfull \vbox (badness 6220) has occurred while \output is active []
-
-[17] [18]
+[17]
 File: ../figures/sst-psi-2-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-2-1.pdf>
 
-Overfull \hbox (93.61142pt too wide) in paragraph at lines 525--526
+Overfull \hbox (141.79132pt too wide) in paragraph at lines 512--512
 [][] 
  []
 
-[19]
+[18]
 File: ../figures/enso-phase-1.pdf Graphic file (type pdf)
 <use ../figures/enso-phase-1.pdf>
+
+Underfull \vbox (badness 1648) has occurred while \output is active []
+
+[19]
+Underfull \vbox (badness 1460) has occurred while \output is active []
+
 [20]
 File: ../figures/sst-psi-1-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-1-1.pdf>
 
-Overfull \hbox (93.61142pt too wide) in paragraph at lines 566--566
+Overfull \hbox (141.79132pt too wide) in paragraph at lines 554--554
 [][] 
  []
 
-
-Underfull \vbox (badness 5245) has occurred while \output is active []
-
-[21]
 File: ../figures/pp-oceania-1.pdf Graphic file (type pdf)
 <use ../figures/pp-oceania-1.pdf>
-[22]
+[21]
 File: ../figures/australia-pp-phase-1.pdf Graphic file (type pdf)
 <use ../figures/australia-pp-phase-1.pdf>
-
-Underfull \vbox (badness 3623) has occurred while \output is active []
-
-[23]
 File: ../figures/pp-america-1.pdf Graphic file (type pdf)
 <use ../figures/pp-america-1.pdf>
-[24] [25] (./shceof.bbl [26]
+[22]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[23] [24]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[25] (./shceof.bbl
 Underfull \hbox (badness 1028) in paragraph at lines 48--51
 []\TU/lmr/m/n/10 Bamston AG, Chelliah M, Goldenberg SB (1997) Documentation of 
 a
@@ -697,28 +696,28 @@ Underfull \hbox (badness 10000) in paragraph at lines 55--61
 a5-
  []
 
-
+[26]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [27]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [28])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 673.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 670.
 [29]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 673.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 670.
 (./shceof.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 673.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 673.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 673.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 670.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 670.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 670.
  ) 
 Here is how much of TeX's memory you used:
  12947 strings out of 493007
  183978 string characters out of 6136719
- 297370 words of memory out of 5000000
+ 298388 words of memory out of 5000000
  16743 multiletter control sequences out of 15000+600000
  9670 words of font info for 45 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 44i,9n,47p,842b,497s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,9n,47p,1110b,513s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on shceof.pdf (29 pages).
