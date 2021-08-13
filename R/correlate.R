@@ -19,8 +19,8 @@ correlate <- function(x, y, signif = 2, sep = "\ ") {
 
 
   out$text <- with(out,
-                   paste0(signif(estimate, signif), sep, "(CI:\ ",
-                          signif(low, signif), "\ --\ ", signif(hig, signif), ")"))
+                   paste0(round(estimate, signif), sep, "(CI:\ ",
+                          round(low, signif), "\ --\ ", round(hig, signif), ")"))
 
   out
 }
