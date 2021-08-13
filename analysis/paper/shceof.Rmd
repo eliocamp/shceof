@@ -144,9 +144,9 @@ ggplot2::update_geom_defaults(pattern_dots,
                                    colour = NA,
                                    pattern_colour = NA,
                                    pattern_fill = "black",
-                                   pattern_density = 0.25,
-                                   pattern_alpha = 0.5,
-                                   pattern_spacing = 0.03,
+                                   pattern_density = 0.3,
+                                   pattern_alpha = 1,
+                                   pattern_spacing = 0.02,
                                    fill = NA
                               ))
 update_geom_defaults(GeomSmooth, list(colour = "#0d52bf"))
