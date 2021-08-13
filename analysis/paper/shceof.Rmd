@@ -819,7 +819,7 @@ era_more <- rbind(
 
 (ref:extended-series-cap) Time series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Dark straight line is the OLS trend. Black horizontal and vertical line mark the mean value and range of each time series respectively.
 
-```{r extended-series, fig.cap = "(ref:extended-series-cap)", fig.height=4, fig.width = 7, fig.env = "figure*"}
+```{r extended-series, fig.cap = "(ref:extended-series-cap)", fig.height=3, fig.width = 6, fig.env = "figure*"}
 # Check that the extended index coincides with the
 # original index.
 cors <- era_more %>%
@@ -855,26 +855,31 @@ era_more %>%
              aes(yintercept = V1), size = 0.2, color = "gray30") +
   ggthemes::geom_rangeframe(sides = "r", size = 0.2, color = "gray30") +
   geom_line(aes(color = part)) +
+  geom_point(aes(color = part), size = 0.25) +
   # geom_line(data = era_less) +
   scale_alpha_manual(values = c(1, 0.2)) +
   geom_smooth(method = "lm", aes(color = stage(part, after_scale = scales::muted(color))),
               show.legend = FALSE, size = 0.8) +
-  scale_x_datetime(NULL, date_labels = "%Y") +
-  scale_y_continuous("EOF", minor_breaks = NULL) +
+  scale_x_datetime(NULL, date_labels = "%Y", 
+                   breaks = seq(as.POSIXct("1950-01-01"), 
+                                as.POSIXct("2020-01-01"), by = "10 years"),
+                   minor_breaks = seq(as.POSIXct("1950-01-01"), 
+                                          as.POSIXct("2020-01-01"), by = "2 years")) +
+  scale_y_continuous(NULL, minor_breaks = NULL, sec.axis = dup_axis()) +
   scale_color_brewer(NULL, palette = "Dark2", 
                      guide = guide_legend(override.aes = list(fill = NA))) +
   facet_grid(cEOF ~ part) +
-  theme(panel.spacing = grid::unit(1.5, "lines"))  +
+  theme(panel.spacing = grid::unit(1.5, "lines"),
+        strip.placement = "outside", 
+        panel.grid.minor.x = element_line(linetype = 2))  +
   tag_facets("cr") +
-  panel_background
+  panel_background 
 ```
 
 To describe the variability of the circulation zonal anomalies, the spatial and temporal parts of the first two leading cEOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa, computed jointly at both levels, are shown in Figures \@ref(fig:ceofs-1) and \@ref(fig:extended-series).
 The first mode (cEOF1) explains 82% of the variance, while the second mode (cEOF2) explains a smaller fraction (7%).
 In the spatial patterns (Fig. \@ref(fig:ceofs-1)), the real and the imaginary components are in quadrature by construction, so that each cEOF describe a single wave-like pattern whose amplitude and position (i.e. phase) is controlled by the magnitude and phase of the temporal cEOF.
 The wave patterns described by these cEOFs match the patterns seen in the traditional EOFs of Figure \@ref(fig:eof-naive).
-
-\textcolor{red}{tengo la impresión de que en la figura 2 podría estar un poco más grandes los subplots para que se vean más fácilmente los detalles}
 
 The cEOF1 (Fig. \@ref(fig:ceofs-1) column a) is a hemispheric wave 1 pattern with maximum amplitude at high latitudes.
 At 50 hPa the Real cEOF1 has the maximum of the wave 1 at 150ºE and at 200 hPa, the maximum is located at around 175ºE indicating a westerly shift in phase.
@@ -883,12 +888,10 @@ In particular, its dominant structure at both levels is a wave 3 but with larger
 This modulated amplitude is especially apparent at 200 hPa.
 There is no apparent phase shift but the amplitude of the pattern is greatly reduced in the stratosphere, suggesting that this barotropic mode represents mainly tropospheric variability.
 
-\textcolor{red}{se me vino una duda, ¿se pueden comparar de algún modo las amplitudes que mostras en esta figura? en caso de que si, creo que habría que mencionar algo sobre lo que pasa con el cEOF2 en la estratósfera} All cEOFs have non zero mean (Fig. \@ref(fig:extended-series)) because the geopotential fields that enter into the cEOFs algorithm are anomalies with respect to the zonal mean instead of the time mean.
+All cEOFs have non zero mean (Fig. \@ref(fig:extended-series)) because the geopotential fields that enter into the cEOFs algorithm are anomalies with respect to the zonal mean instead of the time mean.
 However, cEOF2's mean is almost zero, which indicates that only cEOF1 includes variability that significantly projects onto the mean zonally anomalous field.
 There are no significant simultaneous correlation between the time series.
 Both cEOFs show year-to-year variability but show no evidence of decadal variability.
-
-\textcolor{red}{En la figura 3 agregaría dos cosas: i)el eje y en la columna derecha (si la queres ver más grande perdes la referencia) ii) creo que serviría agregar una líneas verticales en la grilla para poder tener una idea un poco mejor de a qué años corresponde más o menos cada valor. pueden ser un poco más finas que las que ya están, pero creo que sería una referencia util para visualmente poder decir a qué año corresponde cada punto. Además, fijate que la figura te quedo de un ancho mayor que el de la página y te quedo un "EOF" en el eje-y a la izquierda que no creo que sea lo más correcto.}
 
 There is only a significant upward trend in the real component of cEOF1 (Fig. \@ref(fig:extended-series)a.1, p-value `r trends[part == "Real" & cEOF == "cEOF1"]$p_report`) and no significant trend in any of the complex components of cEOF2.
 The positive trend in the Real cEOF1 translates into a positive trend in cEOF1 magnitude, but not in the phase (not shown).
@@ -984,8 +987,6 @@ Their phases coincide with the ones shown in Figure \@ref(fig:ceofs-1)a.1, with
 However, the Real cEOF1 pattern is substantially altered by the zonally symmetric circulation.
 Instead of a clear wave 1 pattern, the regression pattern can be better describes as a monopole with its centre displaced from the South Pole.
 
-\textcolor{red}{La figura 4 la veo muy saturada con los puntos que indican la significancia. ¿se podrán hacer con un tamaño menor? ¿Las unidades son correctas? Me llama la atención que te puedan dar tantos cientos de metros de altura geopotencial.}
-
 The regression patterns for cEOF1 at 200 hPa (Figure \@ref(fig:eof1-regr-gh) row b) are similarly influenced by the zonally symmetric circulation.
 It is only possible to partially distinguish the wave 1 pattern in relation with the Real cEOF1 (Figure \@ref(fig:eof1-regr-gh)b.1).
 The Imaginary cEOF1 shows a much more zonally symmetrical pattern resembling the negative SAM phase.
@@ -1002,13 +1003,11 @@ plot_regr(regr, "cEOF2", c(200, 50), "hgt") +
   scale_fill_divergent("Geopotential height", 
                        breaks = AnchorBreaks(0, 200, exclude = 0),
                        guide = guide_colorsteps_bottom(15, even.steps = TRUE), 
-                       limits = c(-1000+1, 1000-1))
+                       limits = c(-1000, 1000))
 ```
 
 Figure \@ref(fig:eof2-regr-gh) shows the regression pattern of geopotential height anomalies upon the cEOF2. Unlike for cEOF1, in this case the regression patterns are similar to the fully zonally asymmetric patterns from Figure \@ref(fig:ceofs-1). Although there are some differences (particularly in 50 hPa), the wave trains identified before are well characterised and patterns associated with the Real cEOF2 are 90º out of phase with those associated with the Imaginary cEOF2. Zonal wave 3 dominates all fields, but only in the western hemisphere, over the Pacific and Atlantic Oceans. cEOF2 then represents an equivalent barotropic wave train that is very similar to the the Pacific South American Patterns [@mo2001].
 Comparing the location of the positive anomaly near 90ºW in column b of Figure \@ref(fig:eof2-regr-gh) with Figures 1.a and b from @mo2001, the Real cEOF2 can roughly be identified with PSA2, while the Imaginary cEOF2 resembles PSA1.
-
-\textcolor{red}{Figura 5. Me resulto raro que vaya hasta 999 en vez de 1000 }
 
 ```{r zonal-waves, fig.cap = "Amplitud de ondas zonales de la regresión con altura geopotencial (figuras anteriores)"}
 # regr %>%
@@ -1056,7 +1055,9 @@ sam_r2 %>%
             size = 2) +
   geom_line(aes(color = term, group = term)) +
   
-  scale_x_level(minor_breaks = NULL) +
+  scale_x_level("Level (hPa)", minor_breaks = NULL, 
+                sec.axis = sa_height_axis(breaks = seq(0, 50, by = 10),
+                                          labels = function(x) paste0("~", x, " km"))) +
   scale_y_continuous(r2, limits = c(0, 1)) +
   scale_size_manual("p-value", values = c("TRUE" = 1, 
                                           "FALSE" = 0.5), 
@@ -1067,7 +1068,9 @@ sam_r2 %>%
   facet_grid(part ~ cEOF) +
   coord_flip() +
   tag_facets("rc") +
-  panel_background
+  panel_background +
+  theme(panel.spacing = grid::unit(1, "lines"), 
+        strip.placement = "outside")
 ```
 
 To explore the relationship between SAM and the modes described from the cEOF, we compute the coefficient of determination between the cEOFs timeseries and the three SAM indices (SAM, A-SAM and S-SAM) at each vertical level (Fig. \@ref(fig:sam-eof-vertical)).
