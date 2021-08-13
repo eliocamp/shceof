@@ -229,6 +229,29 @@ combine_lists <- function(...) {
     unlist(lapply(X, function(x) x[[n]]))
   })
 }
+
+correlation_statistics <- function(x, n, signif = 2) {
+  z <- atanh(x)
+  se <- 1/sqrt(n - 3)
+  
+  low <- qnorm(.025, mean = z, sd = se)
+  low <- tanh(low)
+  hig <- qnorm(.975, mean = z, sd = se)
+  hig <- tanh(hig)
+  
+  p.value <- pnorm(abs(x)/se, lower.tail = FALSE)
+  
+  text <- paste0(signif(x, signif), " (CI: ",
+                 signif(low, signif), " -- ", signif(hig, signif), ")")
+  
+  list(estimate = x, 
+       p.value = p.value, 
+       low = low,
+       hig = hig,
+       text = text
+  )
+}
+
 ```
 
 ```{r read-indices}
@@ -420,7 +443,6 @@ Linear trends were computed by Ordinary Least Squares (OLS) and the 95% confiden
 
 (ref:eof-naive-cap) Spatial patterns of the leading 4 EOFs of SON zonal anomalies of geopotential height at 50 hPa south of 20\degree S for the 1979 -- 2019 period (arbitrary units).
 
-\textcolor{red}{En la figura 1 te quedaron muy chicos los subplots, amplialos un poco}.
 
 ```{r compute-eof-naive}
 eof_naive <- era5[lev %in% c(50, 200) & lat %between% c(-90, -20)] %>% 
@@ -523,28 +545,35 @@ invisible(
 )
 ```
 
-(ref:corr-ceof-splitted-cap) Coefficient of determination ($R^2$) of the absolute magnitude of complex EOFs between 200 hPa and 50 hPa computing EOF separatedly for each level. Background colour indicates the value of $R^2$.
-
-\textcolor{red}{Los colores de la Tabla 1 no dicen mucho en la medida que no se conoce cuál sería la paleta. Quizás se pueden remarcar en negrita ambos aclarando que son significativos (lo son?)}.
+(ref:corr-ceof-splitted-cap) Coefficient of determination ($R^2$) of the absolute magnitude of complex EOFs between 200 hPa and 50 hPa computing EOF separately for each level. p-values lower than 0.01 in bold.
 
 ```{r corr-ceof-splitted}
-ceof_splitted[, eof[[1]]$left, by = .(lev = levs)] %>%
+table <- ceof_splitted[, eof[[1]]$left, by = .(lev = levs)] %>%
   copy() %>%
   .[, mag  := abs(hgt)] %>%
-  .[, item := paste(lev, cEOF, sep = "_")] %>%
-  widyr::pairwise_cor(item, time, mag) %>%
+  .[, item := paste(lev, cEOF, sep = "_")]
+
+n <- uniqueN(table$time)
+
+table2 <- table %>%
+  widyr::pairwise_cor(item, time, mag) |> 
   setDT() %>%
+  .[, p.value := correlation_statistics(correlation, n)$p.value] %>% 
   .[tstrsplit(item1, "_")[[1]] != tstrsplit(item2, "_")[[1]], ] %>%
   .[tstrsplit(item1, "_")[[1]] != 50] %>%
   .[, item1 := tstrsplit(item1, "_")[[2]]] %>%
   .[, item2 := tstrsplit(item2, "_")[[2]]] %>%
-  .[, r2 := round(correlation^2, 2)] %>%
-  dcast(item1 ~ item2, value.var = "r2") %>%
+  .[, r2 := round(correlation^2, 2)] 
+
+pval <- table2 %>% 
+  dcast(item1 ~ item2, value.var = c("p.value"))
+
+
+table2 %>% 
+  dcast(item1 ~ item2, value.var = c("r2")) %>% 
   setnames("item1", "200 hPa") %>%
   kbl2(booktabs = TRUE, caption = "(ref:corr-ceof-splitted-cap)") %>%
-  column_spec2(2:4, background = spec_color2(.table[[.col]], option = background_palette,
-                                             scale_from = c(0, 1)),
-               color = ifelse(.table[[.col]] > .5, "white", "black")) %>% 
+  column_spec2(2:4, bold = pval[[.col]] < 0.01) %>%
   add_header_above(c("", "50 hPa" = 3)) %>%
   kable_classic() 
 ```
@@ -1100,7 +1129,7 @@ Such extremely high correlation between the asymmetric SAM and the Imaginary cEO
 
 \textcolor{red}{Tabla 2. Mismo comentario que antes con lo del background color (no dice mucho si no se conoce la escala), quizás podes destacar en negritas según la significancia. ¿Está bien el intervalo de confianza de PSA2 vs cEOF2 Im? Hay algo raro ahí}
 
-(ref:psa-eof2-cap) Correlations between the Real and Imaginary parts of cEOF2 and the PSA1 and PSA2 modes computed as the second and third EOFs of seasonal geopotential height anomalies [following @mo2001] for the 1979 -- 2019 period. 95% confidence intervals in parenthesis. Background colour indicates the value of correlation.
+(ref:psa-eof2-cap) Correlations between the Real and Imaginary parts of cEOF2 and the PSA1 and PSA2 modes computed as the second and third EOFs of seasonal geopotential height anomalies [following @mo2001] for the 1979 -- 2019 period. 95% confidence intervals in parenthesis. p-values lower than 0.01 in bold.
 
 ```{r psa-eof2, fig.cap = "(ref:psa-eof2-cap)", fig.width=7, fig.height=3, fig.env="figure*"}
 psa2 <- psa$left[PC == "PSA2"][season(time) == "SON"]
@@ -1129,17 +1158,19 @@ background_palette <- grDevices::colorRampPalette(c(scales::muted("blue"),
                                                     scales::muted("red")),
                                                   space = "Lab")
 
-cEOF2[psa_time, on = "time"] %>% 
+table <- cEOF2[psa_time, on = "time"] %>% 
   .[PC != "SAM"] %>% 
   copy() %>% 
   sep_ReIm() %>% 
-  .[, correlate(value, hgt), by = .(PC, part)] %>% 
+  .[, correlate(value, hgt), by = .(PC, part)] 
+
+p.val <- table %>% 
+  dcast(PC ~ part, value.var = "p.value") 
+
+table %>% 
   dcast(PC ~ part, value.var = "text") %>% 
   kbl2(booktabs = TRUE, caption = "(ref:psa-eof2-cap)") %>%
-  column_spec2(2:3, background = spec_color2(make_numeric(.table[[.col]]),
-                                             option = background_palette,
-                                             scale_from = c(-1, 1)), 
-               color = ifelse(abs(make_numeric(.table[[.col]])) > .5, "white", "black")) %>%
+  column_spec2(2:3, bold = p.val[[.col]] < 0.01) %>%
   add_header_above(c("", "cEOF2" = 2)) %>%
   kable_classic() 
 
@@ -1417,29 +1448,6 @@ wave1_cor <- rbind(temp %>%
                    temp %>%
                      .[, correlate(phase, Arg(hgt))] %>% 
                      .[, with := "phase"])
-
-
-correlation_statistics <- function(x, n, signif = 2) {
-  z <- atanh(x)
-  se <- 1/sqrt(n - 3)
-  
-  low <- qnorm(.025, mean = z, sd = se)
-  low <- tanh(low)
-  hig <- qnorm(.975, mean = z, sd = se)
-  hig <- tanh(hig)
-  
-  p.value <- pnorm(abs(x)/se, lower.tail = FALSE)
-  
-  text <- paste0(signif(x, signif), " (CI: ",
-                 signif(low, signif), " -- ", signif(hig, signif), ")")
-  
-  list(estimate = x, 
-       p.value = p.value, 
-       low = low,
-       hig = hig,
-       text = text
-  )
-}
 
 
 wave_correlation <- temp %>% 
