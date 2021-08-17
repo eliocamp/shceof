@@ -21,7 +21,7 @@ data_path <- function(type = c("raw", "derived"), ...) {
 
 
 data_nc_fun <- function(file, download, citation = NULL) {
-   force(file)
+   # force(file)
 
    if (is.character(download)) {
       download <- simple_download(download)
@@ -44,7 +44,7 @@ data_nc_fun <- function(file, download, citation = NULL) {
 
 
 data_rds_fun <- function(file, download, citation = NULL) {
-   force(file)
+   # force(file)
 
    if (is.character(download)) {
       download <- simple_download(download)

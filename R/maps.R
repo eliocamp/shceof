@@ -54,7 +54,7 @@ map_simple <- function(wrap = c(0, 360), keep = 0.015, weighting = 0.7) {
 fortify <- ggplot2::fortify
 
 # zzz.R
-.onLoad <- function(pkgname, libname) {
+.onLoad <- function(lib, pkg) {
   map_simple <<- memoise::memoise(map_simple)
   fortify <<- memoise::memoise(fortify)
 }

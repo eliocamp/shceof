@@ -2,22 +2,10 @@
 % Please edit documentation in R/kableExtra.R
 \name{column_spec2}
 \alias{column_spec2}
-\alias{spec_color2}
 \alias{kbl2}
 \title{Helpers for kableExtra}
 \usage{
 column_spec2(kable_input, columns, ...)
-
-spec_color2(
-  x,
-  alpha = 1,
-  begin = 0,
-  end = 1,
-  direction = 1,
-  option = "D",
-  na_color = "#BBBBBB",
-  scale_from = NULL
-)
 
 kbl2(data, ...)
 }
@@ -45,27 +33,6 @@ colourise the first and second column.
 For `column_spec2()` to work, the table must be generated with `kbl2()`, not
 `kableExtra::kbl()`. Also bear in mind that some kableExtra operations will remove
 the formating necesary for it to work, so just to be safe, use `column_spec2()` right after `kbl2()`.}
-
-\item{x}{continuous vectors of values}
-
-\item{alpha}{The alpha transparency, a number in [0,1], see argument alpha in
-\code{\link[grDevices]{hsv}}.}
-
-\item{begin}{The (corrected) hue in [0,1] at which the viridis colormap begins.}
-
-\item{end}{The (corrected) hue in [0,1] at which the viridis colormap ends.}
-
-\item{direction}{Sets the order of colors in the scale. If 1, the default, colors
-are ordered from darkest to lightest. If -1, the order of colors is reversed.}
-
-\item{option}{A character string indicating the colormap option to use. Four
-options are available: "magma" (or "A"), "inferno" (or "B"), "plasma" (or "C"),
-"viridis" (or "D", the default option) and "cividis" (or "E").}
-
-\item{na_color}{color code for NA values}
-
-\item{scale_from}{input range (vector of length two). If not given,
-is calculated from the range of x}
 
 \item{data}{a data.frame-like object.}
 }

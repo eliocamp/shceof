@@ -6,6 +6,7 @@
 \usage{
 geom_qmap(
   subset = identity,
+  crop = NULL,
   color = "gray50",
   size = 0.2,
   fill = NA,
