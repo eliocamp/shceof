@@ -212,6 +212,39 @@ coord_polar <- function(ymax = -20) {
   )
 }
 
+one_less <- function(x) {
+  n <- length(x)
+  if (n < 4) return(x)
+  x <- round(x, 5)
+  
+  c( rev(JumpBy(rev(x[x < 0]), 2, fill = "")),
+     JumpBy(x[x > 0], 2, fill = ""))
+}
+
+AnchorBreaks <- function (anchor = 0, binwidth = NULL, exclude = NULL, bins = 10, sym = FALSE) {
+  force(anchor)
+  force(binwidth)
+  force(exclude)
+  force(bins)
+  force(sym)
+  function(x, binwidth2 = NULL) {
+    if (sym) {
+      length <- max(abs(x - anchor))
+      x <- c(anchor - length, anchor + length)
+    }
+    if (!is.null(binwidth)) 
+      binwidth2 <- binwidth
+    if (is.null(binwidth2)) {
+      binwidth2 <- diff(pretty(x, bins))[1]
+    }
+    mult <- ceiling((x[1] - anchor)/binwidth2) - 1L
+    start <- anchor + mult * binwidth2
+    b <- seq(start, x[2] + binwidth2, binwidth2)
+    b[!(b %in% exclude)]
+  }
+}
+
+
 
 lab_lev <- AddSuffix(" hPa")
 lab_cplx <- c(R = "Real", 
@@ -281,7 +314,8 @@ for (l in seq_along(levs)[-1]) {
 ```
 
 ```{r test-irlba}
-has_irlba <- requireNamespace("irlba", quietly = TRUE)
+x <- "irlba"
+has_irlba <- requireNamespace(x, quietly = TRUE)
 if (has_irlba) {
   stop("If installed, metR::EOF uses irlba, but that package has a bug with complex matrices\n(see: https://github.com/bwlewis/irlba/issues/55). Uninstall irlba with renv::remove(\"irlba\") and try again.")
 }
@@ -402,8 +436,7 @@ We use complex Empirical Orthogonal Functions [@horel1984] as a robust extension
 
 We apply this method to characterise the Springtime zonally asymmetric circulation of the extratropical Southern Hemisphere.
 To take vertical distribution into account, we analyse both the troposphere and the stratosphere.
-We focus the analysis to the September-October-November because that's the trimester in which tropical forcing of zonal waves is maximised (cita).
-\textcolor{red}{Este parráfo me parece que quedo un poco colgado. Creo que sería importante que esté desde más arriba la idea de la primavera, ya que todo lo otro es muy general, pero al final el análisis solo se va a restringir a esta estación}
+
 
 In Section \@ref(methods) we describe the methods.
 In Section \@ref(spatial), we analyse the spatial patterns of each complex EOF.
@@ -967,16 +1000,18 @@ plot_regr <- function(data, which_cEOF, which_levs, which_var) {
     coord_polar() +
     tag_facets("rc")
 }
+
+mgp <- latex2exp::TeX(r'(Geopotential height ($m^2s^{-1}$))')
 ```
 
-(ref:eof1-regr-gh-cap) Regression of SON geopotential height anomalies (meters) with the (column 1) real and (column 2) imaginary parts of the first cEOF for the 1979 -- 2019 period at (row a) 50 hPa and (row b) 200 hPa. These coefficients come from multiple linear regression involving the real and imaginary parts. Areas marked with dots have p-values smaller than 0.05 adjusted for False Detection Rate.
+(ref:eof1-regr-gh-cap) Regression of SON geopotential height anomalies ($m^2s^{-1}$) with the (column 1) real and (column 2) imaginary parts of the first cEOF for the 1979 -- 2019 period at (row a) 50 hPa and (row b) 200 hPa. These coefficients come from multiple linear regression involving the real and imaginary parts. Areas marked with dots have p-values smaller than 0.01 adjusted for False Detection Rate.
 
 ```{r eof1-regr-gh, fig.cap = "(ref:eof1-regr-gh-cap)", fig.height=1.2*width_column, fig.width=width_column, dependson="plot_regr"}
 plot_regr(regr , "cEOF1", c(200, 50), "hgt") +
-  scale_fill_divergent("Geopotential height", 
+  scale_fill_divergent(mgp,
                        breaks = AnchorBreaks(0, exclude = 0),
                        guide = guide_colorsteps_bottom(15, even.steps = TRUE), 
-                       limits = c(-1800, 1800))
+                       limits = c(-1800, 1800)) 
 ```
 
 Figure \@ref(fig:eof1-regr-gh) shows regression maps of SON geopotential height anomalies upon cEOF1.
@@ -998,7 +1033,7 @@ While in the troposphere, they are associated with slightly off-centre monopoles
 
 ```{r eof2-regr-gh, fig.cap = "(ref:eof2-regr-gh-cap)", fig.height=1.3*width_column, fig.width=width_column, dependson="plot_regr"}
 plot_regr(regr, "cEOF2", c(200, 50), "hgt") +
-  scale_fill_divergent("Geopotential height", 
+  scale_fill_divergent(mgp, 
                        breaks = AnchorBreaks(0, 200, exclude = 0),
                        guide = guide_colorsteps_bottom(15, even.steps = TRUE), 
                        limits = c(-1000, 1000))
@@ -1028,7 +1063,7 @@ Comparing the location of the positive anomaly near 90ºW in column b of Figure�
 
 ### SAM
 
-(ref:sam-eof-vertical-cap) Coefficient of determination between the real and imaginary part of each cEOF and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level according to @campitelli2021. Thick lines represent estimates with p-value \< 0.01 corrected for False Detection Rate [@benjamini1995].
+(ref:sam-eof-vertical-cap) Coefficient of determination between the real and imaginary part of each cEOF and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level according to @campitelli2021 for the 1979 -- 2019 period. Thick lines represent estimates with p-value \< 0.01 corrected for False Detection Rate [@benjamini1995].
 
 ```{r sam-eof-vertical, fig.cap = "(ref:sam-eof-vertical-cap)", fig.height=4, fig.width=width_column}
 time <- ceof[, eof[[1]]$left, by = .(season)] %>%
@@ -1056,7 +1091,8 @@ sam_r2 %>%
   scale_x_level("Level (hPa)", minor_breaks = NULL, 
                 sec.axis = sa_height_axis(breaks = seq(0, 50, by = 10),
                                           labels = function(x) paste0("~", x, " km"))) +
-  scale_y_continuous(r2, limits = c(0, 1)) +
+  scale_y_continuous(r2, limits = c(0, 1), 
+                     guide = guide_axis(check.overlap = TRUE)) +
   scale_size_manual("p-value", values = c("TRUE" = 1, 
                                           "FALSE" = 0.5), 
                     guide = "none") +
@@ -1242,7 +1278,7 @@ As a consequence, the cEOF2 offers an alternative way of representing the PSA wh
 
 ```{r eof1-regr-t, fig.cap = "(ref:eof1-regr-t-cap)",  dependson="plot_regr", fig.height=1.3*width_column, fig.width=width_column}
 plot_regr(regr, "cEOF1", c(200, 50), "t") +
-  scale_fill_divergent("Temperature", breaks = AnchorBreaks(0, exclude = 0),
+  scale_fill_divergent("Temperature (K)", breaks = AnchorBreaks(0, exclude = 0),
                        guide = guide_colorsteps_bottom(15, even.steps = TRUE), 
                        limits = c(-4.5, 4.5))
 ```
@@ -1292,10 +1328,10 @@ t %>%
   ggplot(aes(lon, lev)) +
   geom_contour_fill(data = ~.x[variable == "t"],
                     aes(z = estimate, fill = ..level..),
-                    breaks = AnchorBreaks(0, binwidth = 0.3, exclude = 0)) +
+                    breaks = AnchorBreaks(0, binwidth = 0.25, exclude = 0, sym = TRUE)) +
   geom_contour_tanaka(data = ~.x[variable == "t"],
                       aes(z = estimate),
-                      breaks = AnchorBreaks(0, binwidth = 0.3, exclude = 0)) +
+                      breaks = AnchorBreaks(0, binwidth = 0.25, exclude = 0, sym = TRUE)) +
   geom_contour2(data = ~.x[variable == "o3"], 
                 aes(z = estimate, linetype = factor(-sign(..level..))), 
                 breaks = AnchorBreaks(0, exclude = 0)) +
@@ -1306,9 +1342,10 @@ t %>%
                     label.placement = lable_placement_min(),
                     breaks = AnchorBreaks(0, exclude = 0)) +
   
-  scale_fill_divergent_discretised("Air temperature", 
+  scale_fill_divergent_discretised("Air temperature (K)", 
                                    # limits = c(-2.25, 2.25),
-                                   guide = guide_colorsteps_bottom(15)) + 
+                                   labels = one_less,
+                                   guide = guide_colorsteps_bottom(15, show.limits = TRUE)) + 
   scale_y_level(minor_breaks= NULL, 
                 sec.axis = sa_height_axis(breaks = seq(0, 50, by = 10),
                                           labels = function(x) paste0("~", x, " km"))) +
@@ -1375,7 +1412,7 @@ o3_regr <- temp %>%
   .[, term := factor_ReIm(term)]
 ```
 
-(ref:o3-regr-cap) Regression of SON mean Total Ozone Column anomalies (shaded, Dobson Units) with the (a) real and (b) imaginary parts of the cEOF1 for the 1979 -- 2019 period. On contours, the mean zonal anomaly of Total Ozone Column (negative contours in dashed lines, Dobson Units). Areas marked with dots have p-values smaller than 0.05 adjusted for False Detection Rate.
+(ref:o3-regr-cap) Regression of SON mean Total Ozone Column anomalies (shaded, Dobson Units) with the (a) real and (b) imaginary parts of the cEOF1 for the 1979 -- 2019 period. On contours, the mean zonal anomaly of Total Ozone Column (negative contours in dashed lines, Dobson Units). Areas marked with dots have p-values smaller than 0.01 adjusted for False Detection Rate.
 
 ```{r o3-regr, fig.cap = "(ref:o3-regr-cap)", fig.height=3, fig.width = width_column}
 o3_regr %>% 
@@ -1399,8 +1436,9 @@ o3_regr %>%
            size = 0.3, alpha = 0.8
   ) +
   geom_qmap() +
-  scale_fill_divergent_discretised("Total Ozone Column", 
-                                   limits = c(-30, 30),  
+  scale_fill_divergent_discretised("Total Ozone Column (DU)", 
+                                   limits = c(-30, 30), 
+                                   breaks = AnchorBreaks(exclude = 0, binwidth = 5)(c(-30, 30)),
                                    guide = guide_colorsteps_bottom(15)) + 
   scale_x_longitude(labels = NULL) +
   scale_y_latitude(labels = NULL,
@@ -1532,16 +1570,6 @@ enso_cor <-  ceof[, eof[[1]]$left, by = .(season)] %>%
 
 ```{r plot_sst_psi}
 plot_sst_psi <- function(which_cEOF, which_lev) {
-  one_less <- function(x) {
-    n <- length(x)
-    if (n < 4) return(x)
-    x <- round(x, 5)
-    
-    c( rev(JumpBy(rev(x[x < 0]), 2, fill = "")),
-       JumpBy(x[x > 0], 2, fill = ""))
-  }
-  
-  
   sst_gdata <- regr_sst[cEOF == which_cEOF] %>%
     .[lat %between% c(-90, 10)] %>%
     .[, p_val := Pvaluate(estimate, std.error, df, "fdr"), 
@@ -1576,7 +1604,7 @@ plot_sst_psi <- function(which_cEOF, which_lev) {
                     size = 0.1, res = 2, nx = 22, ny = 12, 
                     arrow.angle = 14, arrow.length = 0.2) +
     geom_qmap(keep = .015) +
-    scale_fill_divergent_discretised("Streamfunction (m²/s×1e-7)", 
+    scale_fill_divergent_discretised(latex2exp::TeX(r'(Streamfunction ($m^2s^{-1}\times 1e^{-7}$))'), 
                                      labels = one_less,
                                      low = scales::muted("red"),
                                      high = scales::muted("blue"),
@@ -1612,7 +1640,7 @@ plot_sst_psi <- function(which_cEOF, which_lev) {
 
 ```
 
-(ref:sst-psi-2-cap) Regression maps of cEOF2 with SST (K, column a) and streamfunction zonal anomalies ($m^2/s\times10^-7$, shaded) with their corresponding activity wave flux (vectors) (column b). Areas marked with dots have p-values smaller than 0.01 adjusted for FDR. 
+(ref:sst-psi-2-cap) Regression maps of cEOF2 with SST (K, column a) and streamfunction zonal anomalies ($m^2/s\times10^-7$, shaded) with their corresponding activity wave flux (vectors) (column b) for the 1979 -- 2019 period. Areas marked with dots have p-values smaller than 0.01 adjusted for FDR. 
 
 ```{r sst-psi-2,  fig.cap = "(ref:sst-psi-2-cap)", fig.width = 7, fig.height=4, dependson="plot_sst_psi", fig.env="figure*"}
 plot_sst_psi(which_cEOF = "cEOF2", which_lev = 200) 
@@ -1627,7 +1655,11 @@ However, Figure \@ref(fig:sst-psi-2).a1 and b1 show that the Real cEOF2 is not 
 The correlation between the Real cEOF2 and ENSO is also not significant (`r enso_cor[cEOF == "cEOF2" & part == "Real"]$text`).
 This lack of tropical signal suggest that the Real cEOF2 and the Imaginary cEOF2 have very different sources of variability.
 
-```{r enso-phase, fig.cap = "ONI plotted against cEOF2 phase for th 1979 -- 2019 period. Years with magnitude of cEOF2 greater or smaller than the 50th percentile are shown as orange circles and green diamomnds respectively. Black line is the fit ONI ~ sin(phase) computed by weighted OLS using the magnitude of the cEOF2 as weights.", fig.width = width_column, fig.height=3}
+(ref:enso-phase-cap) ONI plotted against cEOF2 phase for th 1979 -- 2019 period.
+Years with magnitude of cEOF2 greater or smaller than the 50th percentile are shown as orange circles and green diamomnds respectively. 
+Black line is the fit ONI ~ sin(phase) computed by weighted OLS using the magnitude of the cEOF2 as weights.
+
+```{r enso-phase, fig.cap = "(ref:enso-phase-cap)", fig.width = width_column, fig.height=3}
 gdata <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[cEOF == "cEOF2"] %>% 
   # .[, hgt := Anomaly(hgt)] %>% 
@@ -1656,8 +1688,7 @@ cos_model <- gdata %>%
 
 
 equation <- latex2exp::TeX(paste0("$\\mathrm{ONI} = ", 
-                                  signif(coef(cos_model)[1], 2), "\\sin{(\\mathrm{phase})}$"),
-                           output = "character")
+                                  signif(coef(cos_model)[1], 2), "\\sin{(\\mathrm{phase})}$"))
 
 gdata %>% 
   ggplot(aes(arg, oni)) +
@@ -1720,8 +1751,6 @@ This explains the relative overabundance of years with cEOF2 near positive and n
 
 ```{r sst-psi-1, fig.cap = "(ref:sst-psi-1-cap)", fig.width = 7, fig.height=4, dependson="plot_sst_psi", fig.env = "figure*"}
 plot_sst_psi(which_cEOF = "cEOF1", which_lev = 200) 
-
-
 ```
 
 Figure \@ref(fig:sst-psi-1) shows SST and streamfunction regression maps for cEOF1.
@@ -1802,7 +1831,7 @@ plot_pp <- function(data, which_cEOF, which_term = c("Real", "Imaginary"), which
     geom_contour_tanaka(aes(z = estimate), breaks = AnchorBreaks(exclude = 0)) +
     
     # scale_fill_divergent() +
-    scale_fill_divergent_discretised(NULL, 
+    scale_fill_divergent_discretised("Precipitation (mm/day)", 
                                      # limits = c(-.8, .8),
                                      # oob = scales::squish,
                                      low = "#8E521C",
@@ -1838,7 +1867,7 @@ box_australia <- data.frame(cEOF = "cEOF2",
 The influence of cEOFs variability in continental rainfall of extra-tropical Southern Hemisphere is also explored.
 We focus on South America and Oceania sectors because there are no relevant signals in southern Africa (not shown).
 
-(ref:pp-oceania-cap) Regression of SON mean precipitation anomalies in Oceania (mm per day, shaded) with the (row a) real and (row b) imaginary pars of the (column 1) cEOF1 and (column 2) cEOF2. For the 1979 -- 2019. Areas marked with dots have p-values smaller than 0.05 adjusted for False Detection Rate. In black is the West Australia region, defined as the box between `r knitr::combine_words(LonLabel(box_australia$lon))` and `r knitr::combine_words(LatLabel(box_australia$lat))`.
+(ref:pp-oceania-cap) Regression of SON mean precipitation anomalies in Oceania (mm per day, shaded) with the (row a) real and (row b) imaginary pars of the (column 1) cEOF1 and (column 2) cEOF2. For the 1979 -- 2019. Areas marked with dots have p-values smaller than 0.01 adjusted for False Detection Rate. In black is the West Australia region, defined as the box between `r knitr::combine_words(LonLabel(box_australia$lon))` and `r knitr::combine_words(LatLabel(box_australia$lat))`.
 
 ```{r pp-oceania, fig.cap = "(ref:pp-oceania-cap)", fig.width=width_column, fig.height=width_column*.8}
 plot_pp(regr_pp, c("cEOF1", "cEOF2"), which_continent =  "oceania") +
@@ -1872,8 +1901,7 @@ p_value <- pf(fstatistic["value"], fstatistic["numdf"], fstatistic["dendf"],
 
 equation <- latex2exp::TeX(paste0("$\\mathrm{Precipitation}_{\\mathrm{West Australia}} = ", 
                                   signif(coef(model)[1], 2), "\\sin{(\\mathrm{phase})} + ", 
-                                  signif(coef(model)[2], 2), "\\cos{(\\mathrm{phase})}$"), 
-                           output = "character")
+                                  signif(coef(model)[2], 2), "\\cos{(\\mathrm{phase})}$"))
 
 
 gdata %>% 
@@ -1920,7 +1948,7 @@ To perform a more in-depth analysis of the relationship between this pattern and
 
 ```{r pp-america, fig.cap = "(ref:pp-america-cap)", fig.width=width_column, fig.height=width_column*1.1}
 plot_pp(data = regr_pp, which_cEOF = c("cEOF1", "cEOF2"), which_continent = "america")  +
-  scale_fill_divergent_discretised(NULL, 
+  scale_fill_divergent_discretised("Precipitation (mm/day)", 
                                    limits = c(-1, 1),
                                    # oob = scales::squish,
                                    low = "#8E521C",
@@ -1986,7 +2014,7 @@ Precipitation anomalies associated with the Real cEOF2 are low and not statistic
 
 On the other hand, over Australia, both the Real and Imaginary phase are associated with significant precipitation anomalies, and we further show that the direction of maximum impact is not aligned with our chosen rotation of cEOF2.
 However, this underscores the benefit of using complex EOF, since it would be trivial to rotate it.
-\textcolor{red}{creo que esta idea convendría desarrollarla mejor para el que no lo tenga tan claro}
+That is, look for the rotation of complex EOF that maximises the relationship and use that as the relevant index for study or forecast. 
 
 To the extent that the cEOF2 can be identified with the PSA, what is the advantage of the technique proposed here?
 The spatial fields that the cEOF2 index describes are in quadrature by construction, which makes it possible to derive a proper amplitude and phase.
