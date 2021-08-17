@@ -2,7 +2,14 @@
 
 This repository contains data, code and other source files associated with a paper (title TBD)
 
-First clone or download this repository.
+First clone or download this repository with
+
+```bash
+git clone --depth 1 https://github.com/eliocamp/shceof.git
+```
+
+(This will download only the lasted version, without all the git history, which can get somehwat bloated.)
+
 
 ## Runing with docker
 
@@ -14,7 +21,7 @@ The easiest way to run this code is to use the docker environment, which comes n
 docker run --rm -p 8787:8787 -e DISABLE_AUTH=true -v $(pwd):/home/rstudio/shceof -v /home/rstudio/shceof/renv -v /home/rstudio/shceof/analysis/data eliocamp/shceof
 ```
 
-Open your web browser to [localhost:8787](http://127.0.0.1/:8787) and you'll be welcomed by an RStudio session with a shceof folder with all that you need. And you can move [to the next section](#compiling-the-manuscript).
+Open your web browser to [localhost:8787](http://127.0.0.1:8787/) and you'll be welcomed by an RStudio session with a shceof folder with all that you need. And you can move [to the next section](#compiling-the-manuscript).
 
 ## Running locally
 
