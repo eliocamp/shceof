@@ -58,11 +58,6 @@ header-includes:
  - \linenumbers 
 ---
 
-<!-- cambiarn nomenclatura. Imaginario / real -> pasarlo a nombrar la fase -->
-
-<!-- Chequear con ncep -->
-
-<!-- The following code chunk defines some general settings how code chunks should behave. -->
 
 ```{r setup, echo = FALSE, warning=FALSE, message=FALSE}
 knitr::opts_chunk$set(
@@ -359,7 +354,7 @@ psa_time <- psa$left[season(time) == "SON"]
 The large-scale extratropical circulation in the Southern Hemisphere is strongly zonally symmetric, but its zonal departures are highly relevant for surface impacts and could be related to high-impact climate extremes.
 Zonal asymmetries of extratropical circulation in the Southern Hemisphere strongly modulate weather systems and regional climate through latitudinal transport of heat, humidity, and momentum [@trenberth1980].
 
-One of the main features of the zonally asymmetric circulation are the Pacific--South American Patterns [@mo2001], which are associated with precipitation anomalies in South America.
+One of the main features of the zonally asymmetric circulation are the Pacific--South American Patterns [@mo2001], which are associated with precipitation anomalies in South America, particularly in the September-October-November trimester (cita).
 Besides, @raphael2007 suggests that variability in the planetary wave 3 projected onto its climatological location is associated with Antarctic sea ice concentration anomalies.
 @irving2015 showed that planetary wave amplitude in general is associated sea ice concentration, as well as temperature and precipitation anomalies.
 
