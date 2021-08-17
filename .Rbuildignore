@@ -3,3 +3,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 analysis
+.dockerignore
+Dockerfile
+.Renviron

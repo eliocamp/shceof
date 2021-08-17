@@ -1,0 +1,7 @@
+analysis/cache
+.git
+.RData
+renv/library
+Dockerfile
+.Renviron
+.dockerignore
