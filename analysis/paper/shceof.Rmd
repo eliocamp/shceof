@@ -67,7 +67,7 @@ knitr::opts_chunk$set(
   echo = FALSE,
   cache = TRUE,
   comment = "#>",
-  cache.extra = 42,
+  cache.extra = 45,
   cache.path = "../cache/paper/",
   fig.path = "../figures/",
   dpi = 300,
@@ -146,6 +146,9 @@ ggplot2::update_geom_defaults(pattern_dots,
                               ))
 update_geom_defaults(GeomSmooth, list(colour = "#0d52bf"))
 
+f <- formals(geom_contour_tanaka)
+f$range <-  c(0.01, 0.2)
+formals(geom_contour_tanaka) <- f
 
 geom_contour_pval <- function(mapping, p.value = 0.01, size = 0.1, ...) {
   mapping2 <- mapping
@@ -278,7 +281,7 @@ for (l in seq_along(levs)[-1]) {
 ```
 
 ```{r test-irlba}
-has_irlba <- requireNamespace("rilba", quietly = TRUE)
+has_irlba <- requireNamespace("irlba", quietly = TRUE)
 if (has_irlba) {
   stop("If installed, metR::EOF uses irlba, but that package has a bug with complex matrices\n(see: https://github.com/bwlewis/irlba/issues/55). Uninstall irlba with renv::remove(\"irlba\") and try again.")
 }
@@ -1654,7 +1657,7 @@ cos_model <- gdata %>%
 
 equation <- latex2exp::TeX(paste0("$\\mathrm{ONI} = ", 
                                   signif(coef(cos_model)[1], 2), "\\sin{(\\mathrm{phase})}$"),
-                           output = "text")
+                           output = "character")
 
 gdata %>% 
   ggplot(aes(arg, oni)) +
@@ -1870,7 +1873,7 @@ p_value <- pf(fstatistic["value"], fstatistic["numdf"], fstatistic["dendf"],
 equation <- latex2exp::TeX(paste0("$\\mathrm{Precipitation}_{\\mathrm{West Australia}} = ", 
                                   signif(coef(model)[1], 2), "\\sin{(\\mathrm{phase})} + ", 
                                   signif(coef(model)[2], 2), "\\cos{(\\mathrm{phase})}$"), 
-                           output = "text")
+                           output = "character")
 
 
 gdata %>% 
