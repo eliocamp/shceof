@@ -14,7 +14,7 @@ The easiest way to run this code is to use the docker environment, which comes n
 docker run --rm -p 8787:8787 -e DISABLE_AUTH=true -v $(pwd):/home/rstudio/shceof -v /home/rstudio/shceof/renv -v /home/rstudio/shceof/analysis/data eliocamp/shceof
 ```
 
-Open your web browser to [localhost:8787](localhost:8787) and you'll be welcomed by an RStudio session with a shceof folder with all that you need. And you can move [to the next section](#manuscript).
+Open your web browser to [localhost:8787](http://127.0.0.1/:8787) and you'll be welcomed by an RStudio session with a shceof folder with all that you need. And you can move [to the next section](#compiling-the-manuscript).
 
 ## Running locally
 
@@ -66,7 +66,7 @@ After that, the relevant datasets will be downlaoded the first time you compile 
 
 
 
-## Compiling the manuscript {#manuscript}
+## Compiling the manuscript
 
 To compile this manuscript you need to install the associated package with 
 
