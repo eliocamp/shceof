@@ -66,9 +66,42 @@ data_rds_fun <- function(file, download, citation = NULL) {
 #' @param force_download Logical indicating wether to force download of data.
 #' @export
 #' @rdname data_locations
-ERA5 <- data_nc_fun(file = data_path("raw", "era5.mon.mean.nc"),
-                    download = download_cds(request_era5),
-                    citation = citation_era5)
+ERA5_TOC <- data_nc_fun(file = data_path("raw", "era5.toc.mon.mean.nc"),
+                        download = download_cds(request_toc),
+                        citation = citation_o3_era5)
+
+#' @export
+#' @rdname data_locations
+ERA5_geopotential <- data_nc_fun(file = data_path("raw", "era5.z.mon.mean.nc"),
+                       download = download_cds(request_geopotential),
+                       citation = citation_era5)
+
+#' @export
+#' @rdname data_locations
+ERA5_geopotential_all <- data_nc_fun(file = data_path("raw", "era5.z-all.mon.mean.nc"),
+                                 download = download_cds(request_geopotential_all),
+                                 citation = citation_era5)
+
+
+#' @export
+#' @rdname data_locations
+ERA5_temperature <- data_nc_fun(file = data_path("raw", "era5.air.mon.mean.nc"),
+                                 download = download_cds(request_temperature),
+                                 citation = citation_era5)
+
+#' @export
+#' @rdname data_locations
+ERA5_vorticity <- data_nc_fun(file = data_path("raw", "era5.vor.mon.mean.nc"),
+                                download = download_cds(request_vorticity),
+                                citation = citation_era5)
+
+#' @export
+#' @rdname data_locations
+ERA5_ozone <- data_nc_fun(file = data_path("raw", "era5.o3.mon.mean.nc"),
+                              download = download_cds(request_ozone),
+                              citation = citation_era5)
+
+
 
 
 #' @param force_download Logical indicating wether to force download of data.
@@ -84,11 +117,6 @@ ERA5_BE <- data_nc_fun(file = data_path("raw", "era5be.mon.mean.nc"),
 ERA5_SST <- data_nc_fun(file = data_path("raw", "era5.sst.mon.mean.nc"),
                         download = download_cds(request_era5_sst))
 
-#' @export
-#' @rdname data_locations
-ERA20C <- data_nc_fun(file = data_path("raw", "era20c.mon.mean.nc"),
-                      download = download_webapi(request_era20c))
-
 
 #' @export
 #' @rdname data_locations
@@ -100,24 +128,13 @@ NCEP_PSI <- data_nc_fun(file = data_path("raw", "psi.mon.mean.nc"),
 NCEP_VOR <- data_nc_fun(file =  data_path("raw", "vor.mon.mean.nc"),
                         download = "ftp://ftp2.psl.noaa.gov/Datasets/ncep.reanalysis.derived/sigma/vor.mon.mean.nc")
 
-
-#' @export
-#' @rdname data_locations
-HADSST <- data_nc_fun(file = data_path("raw", "hadsst.mon.mean.nc"),
-                      download = "https://www.metoffice.gov.uk/hadobs/hadsst4/data/netcdf/HadSST.4.0.0.0_median.nc")
-
 #' @export
 #' @rdname data_locations
 CMAP <- data_nc_fun(file = data_path("raw", "cmap.mon.mean.nc"),
                     download = "ftp://ftp.cdc.noaa.gov/Datasets/cmap/std/precip.mon.mean.nc",
                     citation = citation_cmap)
 
-#' @param force_download Logical indicating wether to force download of data.
-#' @export
-#' @rdname data_locations
-O3 <- data_nc_fun(file = data_path("raw", "o3.mon.mean.nc"),
-                    download = download_cds(request_o3_era5),
-                    citation = citation_o3_era5)
+
 
 #' @export
 #' @rdname data_locations

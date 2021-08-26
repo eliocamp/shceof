@@ -2,37 +2,43 @@
 % Please edit documentation in R/data_locations.R
 \name{data_path}
 \alias{data_path}
-\alias{ERA5}
+\alias{ERA5_TOC}
+\alias{ERA5_geopotential}
+\alias{ERA5_geopotential_all}
+\alias{ERA5_temperature}
+\alias{ERA5_vorticity}
+\alias{ERA5_ozone}
 \alias{ERA5_BE}
 \alias{ERA5_SST}
-\alias{ERA20C}
 \alias{NCEP_PSI}
 \alias{NCEP_VOR}
-\alias{HADSST}
 \alias{CMAP}
-\alias{O3}
 \alias{ERSST}
 \title{Data locations}
 \usage{
 data_path(type = c("raw", "derived"), ...)
 
-ERA5(force_download = FALSE)
+ERA5_TOC(force_download = FALSE)
+
+ERA5_geopotential(force_download = FALSE)
+
+ERA5_geopotential_all(force_download = FALSE)
+
+ERA5_temperature(force_download = FALSE)
+
+ERA5_vorticity(force_download = FALSE)
+
+ERA5_ozone(force_download = FALSE)
 
 ERA5_BE(force_download = FALSE)
 
 ERA5_SST(force_download = FALSE)
 
-ERA20C(force_download = FALSE)
-
 NCEP_PSI(force_download = FALSE)
 
 NCEP_VOR(force_download = FALSE)
 
-HADSST(force_download = FALSE)
-
 CMAP(force_download = FALSE)
-
-O3(force_download = FALSE)
 
 ERSST(force_download = FALSE)
 }
