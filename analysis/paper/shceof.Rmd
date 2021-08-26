@@ -67,7 +67,7 @@ knitr::opts_chunk$set(
   echo = FALSE,
   cache = TRUE,
   comment = "#>",
-  cache.extra = 42,
+  cache.extra = 41,
   cache.path = "../cache/paper/",
   fig.path = "../figures/",
   dpi = 300,
@@ -186,7 +186,7 @@ geom_coords <- function() {
   )
 }
 
-coord_polar <- function(ymax = -20) {
+coord_polar <- function(ymax = -20, ...) {
   
   x <- c(seq(0, 360, length.out = 40), 
          seq(360, 0, length.out = 40), 
@@ -195,9 +195,9 @@ coord_polar <- function(ymax = -20) {
          rep(60, length.out = 40), 
          ymax)
   
-  cbind(x, y) |> 
-    list() |> 
-    sf::st_polygon() |> 
+  cbind(x, y) %>% 
+    list() %>% 
+    sf::st_polygon() %>% 
     sf::st_sfc(crs = "+proj=latlong") -> white
   
   list(
@@ -208,7 +208,7 @@ coord_polar <- function(ymax = -20) {
              lims_method = "box",
              crs = "+proj=laea +lat_0=-90",
              default_crs = "+proj=longlat",
-             label_axes =  "----")
+             label_axes =  "----", ...)
   )
 }
 
@@ -323,26 +323,24 @@ if (has_irlba) {
 ```
 
 ```{r read-data}
-era5 <- ReadNetCDF(ERA5(), vars = c(hgt = "z",
-                                    t = "t"),
-                   subset = list(level = list(850, 700, 200, 50),
-                                 latitude = -90:10)) %>% 
+era5 <- ERA5_geopotential() %>% 
+  ReadNetCDF(vars = c(hgt = "z"),
+             subset = list(level = list(200, 50),
+                           latitude = -90:10)) %>% 
   normalise_coords() %>% 
   .[season(time) == "SON"] %>%
   .[, w := season_weights(time)] %>% 
-  .[, .(hgt = mean(hgt*w), 
-        t = mean(t*w)), by = .(lev, lon, lat, time = seasonally(time))]
+  .[, .(hgt = mean(hgt*w)), by = .(lev, lon, lat, time = seasonally(time))]
 ```
 
 ```{r compute-psi}
 # Scaling magical numbers. (come from psi-test.Rmd)
 # Not really important, though.
 scaling <- c(add = -2.364646e+06, mult = 3.954828e+13)
-
-psi <- ReadNetCDF(ERA5(), vars = "vo",
-                  subset = list(level = c(50, 200),
-                                time = c("1979-01-01", "2019-12-01"))) %>%
+psi <- ERA5_vorticity() %>% 
+ ReadNetCDF(vars = "vo") %>%
   normalise_coords() %>%
+  .[, lev := 200] %>% 
   .[season(time) == "SON"] %>%
   .[, w := season_weights(time)] %>% 
   .[, .(vo = mean(vo*w)), by = .(lon, lat, lev, time = seasonally(time))] %>%
@@ -353,10 +351,9 @@ psi <- ReadNetCDF(ERA5(), vars = "vo",
 ```
 
 ```{r o3}
-o3 <- O3() %>% 
+o3 <- ERA5_TOC() %>% 
   ReadNetCDF(vars = c(toc = "tco3")) %>% 
   normalise_coords() %>% 
-  .[, lon := ConvertLongitude(lon)] %>% 
   .[lat <= -20] %>% 
   .[, toc := toc/2.1415e-5] %>%    # transform to Dobson Units (https://sacs.aeronomie.be/info/dobson.php)
   .[, w := season_weights(time)] %>% 
@@ -366,9 +363,10 @@ o3wave_lats <- c(-75, -45)
 ```
 
 ```{r psa}
-psa <- ReadNetCDF(ERA5(), vars = c(hgt = "z"),
-                  subset = list(level = list(500),
-                                latitude = -90:0)) %>% 
+psa <- ERA5_geopotential() %>% 
+  ReadNetCDF(vars = c(hgt = "z"),
+             subset = list(level = list(500),
+                           latitude = -90:0)) %>% 
   normalise_coords() %>% 
   .[, w := season_weights(time)] %>% 
   .[, .(hgt = mean(hgt*w)), by = .(lon, lat, time = seasonally(time))] %>% 
@@ -410,7 +408,7 @@ This makes it possible to represent planetary waves with different amplitude at 
 Another approach to characterising the Southern Hemisphere circulation is by using Empirical Orthogonal Functions (EOF, also known as Principal Component Analysis).
 Within the EOF framework, the Southern Annular Mode (SAM) appears as the leading mode of variability of the tropospheric Southern Hemisphere circulation [@fogt2020] followed by the two PSA [@mo2001].
 The SAM represents a relatively zonally symmetric pattern of alternating low pressures in polar latitude and a ring of high pressures in high latitudes with an embedded wave 3 pattern that is more prominent in the Pacific sector.
-The PSA1 and PSA2 describe the two out-of-phase sides of a meridionally propagating wave train that originates in the Eastern equatorial Pacific and travels towards the South Atlantic following a great-circle arch along the Antarctic Peninsula.
+The PSA1 and PSA2 describe the two out-of-phase sides of a meridionally propagating wave train that originates in the eastern equatorial Pacific and travels towards the South Atlantic following a great-circle arch along the Antarctic Peninsula.
 These patterns are derived by applying EOF to temporal anomalies, but @raphael2003 applied EOF methods specifically to zonal anomalies.
 
 EOFs are more flexible than Fourier decomposition modes in the sense that they can capture oscillation patterns that cannot be characterised by purely sinusoidal waves with constant amplitude.
@@ -449,7 +447,10 @@ Finally, in Section \@ref(precipitation) we show the relationship between these 
 
 ## Data
 
-We used monthly geopotential height, air temperature, ozone mixing ratio, and total ozone column (TOC) at 2.5\degree longitude by 2.5\degree latitude of horizontal resolution and 37 vertical isobaric levels from the European Centre for Medium-Range Weather Forecasts Reanalysis version 5 [ERA; @era5] for the period 1979-2019. Most of our analysis was restricted to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 [@era5be] to look at long-term trends. Streamfunction was derived from ERA5 vorticity at 200 hPa using the FORTRAN subroutine FISHPACK [@fishpack] and horizontal wave activity fluxes was computed following @plumb1985. We used Sea Surface Temperature (SST) monthly fields from Extended Reconstructed Sea Surface Temperature (ERSST) v5 [@huang2017] and precipitation monthly data from the CPC Merged Analysis of Precipitation [@cmap], with a 2.5\degree resolution in latitude and longitude.
+We used monthly geopotential height, air temperature, ozone mixing ratio, and total ozone column (TOC) at 2.5\degree longitude by 2.5\degree latitude of horizontal resolution and 37 vertical isobaric levels from the European Centre for Medium-Range Weather Forecasts Reanalysis version 5 [ERA; @era5] for the period 1979-2019. 
+Most of our analysis was restricted to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 [@era5be] to look at long-term trends. 
+Streamfunction was derived from ERA5 vorticity at 200 hPa using the FORTRAN subroutine FISHPACK [@fishpack] and horizontal wave activity fluxes was computed following @plumb1985. 
+We used Sea Surface Temperature (SST) monthly fields from Extended Reconstructed Sea Surface Temperature (ERSST) v5 [@huang2017] and precipitation monthly data from the CPC Merged Analysis of Precipitation [@cmap], with a 2.5\degree resolution in latitude and longitude.
 This rainfall gridded dataset is based on information from different sources such as rain gauge observations, satellite inferred estimations and the NCEP-NCAR reanalysis, and it is available since 1979 to present.
 
 ## Methods
@@ -559,9 +560,10 @@ background_palette <- grDevices::colorRampPalette(c("white", scales::muted("red"
 
 ```{r compute-ceof}
 invisible(
-  ReadNetCDF(ERA5(), vars = c(hgt = "z"),
-             subset = list(latitude = -90:10,
-                           level = list(200, 50))) %>%
+  ERA5_geopotential() %>% 
+    ReadNetCDF(vars = c(hgt = "z"),
+               subset = list(latitude = -90:10,
+                             level = list(200, 50))) %>%
     normalise_coords() %>%
     .[season(time) == "SON"] %>%
     .[, w := season_weights(time)] %>% 
@@ -587,7 +589,7 @@ table <- ceof_splitted[, eof[[1]]$left, by = .(lev = levs)] %>%
 n <- uniqueN(table$time)
 
 table2 <- table %>%
-  widyr::pairwise_cor(item, time, mag) |> 
+  widyr::pairwise_cor(item, time, mag) %>% 
   setDT() %>%
   .[, p.value := correlation_statistics(correlation, n)$p.value] %>% 
   .[tstrsplit(item1, "_")[[1]] != tstrsplit(item2, "_")[[1]], ] %>%
@@ -834,7 +836,7 @@ era_more <- rbind(
   ReadNetCDF(ERA5_BE(), vars = c(hgt = "z"),
              subset = list(latitude = range(pattern$lat),
                            level = list(200, 50))),
-  ReadNetCDF(ERA5(), vars = c(hgt = "z"),
+  ReadNetCDF(ERA5_geopotential(), vars = c(hgt = "z"),
              subset = list(latitude = range(pattern$lat),
                            level = list(200, 50)))) %>%
   normalise_coords() %>%
@@ -935,19 +937,25 @@ The spatial patterns shown in Figure \@ref(fig:ceofs-1) are derived by removing
 To understand the full geopotential height field changes associated with each cEOF, we computed regression patterns of the full geopotential fields onto each cEOF.
 
 ```{r compute-regression}
+
+era5 <- ERA5_temperature() %>% 
+  ReadNetCDF(vars = c("t"), 
+             subset = list(level = list(50, 200))) %>% 
+  normalise_coords() %>% 
+  .[season(time) == "SON"] %>%
+  .[, w := season_weights(time)] %>% 
+  .[, .(t = mean(t*w)), by = .(lev, lon, lat, time = seasonally(time))] %>% 
+  .[era5, on = .NATURAL]
+
 regr <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[season == "SON"] %>%
   sep_ReIm(format = "wide") %>%
   .[, hgt := NULL] %>%
   .[, `:=`(Real = as.numeric(scale(Real)), Imaginary = as.numeric(scale(Imaginary))),
     by = .(season, cEOF)] %>%
-  # dcast(time ~ cEOF, value.var = c("Real", "Imaginary")) %>%
   .[melt(era5, id.vars = c("time", "lon", "lat", "lev")), on = "time", allow.cartesian = TRUE] %>%
-  .[lev %in% c(850, 700, 200, 50)] %>%
-  # .[variable == "hgt"] %>%
   .[, FitLm(value, Imaginary, Real, se = TRUE),
     by = .(lev, lon, lat, variable, cEOF)] %>%
-  # .[, c("term", "cEOF") := tstrsplit(term, "_")] %>%
   rm_intercept() %>%
   .[, term := factor_ReIm(term)]
 ```
@@ -1001,7 +1009,7 @@ plot_regr <- function(data, which_cEOF, which_levs, which_var) {
     tag_facets("rc")
 }
 
-mgp <- latex2exp::TeX(r'(Geopotential height ($m^2s^{-1}$))')
+mgp <- latex2exp::TeX('Geopotential height ($m^2s^{-1}$)')
 ```
 
 (ref:eof1-regr-gh-cap) Regression of SON geopotential height anomalies ($m^2s^{-1}$) with the (column 1) real and (column 2) imaginary parts of the first cEOF for the 1979 -- 2019 period at (row a) 50 hPa and (row b) 200 hPa. These coefficients come from multiple linear regression involving the real and imaginary parts. Areas marked with dots have p-values smaller than 0.01 adjusted for False Detection Rate.
@@ -1016,7 +1024,7 @@ plot_regr(regr , "cEOF1", c(200, 50), "hgt") +
 
 Figure \@ref(fig:eof1-regr-gh) shows regression maps of SON geopotential height anomalies upon cEOF1.
 At 50 hPa (Figure \@ref(fig:eof1-regr-gh) row a), both the Real and Imaginary cEOF1 are associated with planetary wave 1 patterns, that are 90º out of phase.
-Their phases coincide with the ones shown in Figure \@ref(fig:ceofs-1)a.1, with the positive centre of the Real cEOF1 located towards the dateline, and the one of the Imaginary cEOF1 located over Eastern Antarctica.
+Their phases coincide with the ones shown in Figure \@ref(fig:ceofs-1)a.1, with the positive centre of the Real cEOF1 located towards the dateline, and the one of the Imaginary cEOF1 located over East Antarctica.
 However, the Real cEOF1 pattern is substantially altered by the zonally symmetric circulation.
 Instead of a clear wave 1 pattern, the regression pattern can be better describes as a monopole with its centre displaced from the South Pole.
 
@@ -1072,6 +1080,7 @@ time <- ceof[, eof[[1]]$left, by = .(season)] %>%
 
 sam_r2 <- sams %>%
   .[time, on = .NATURAL, allow.cartesian = TRUE] %>%
+  na.omit() %>% 
   .[, correlate(hgt, estimate), by = .(lev, term, part, cEOF)]
 
 
@@ -1284,15 +1293,27 @@ plot_regr(regr, "cEOF1", c(200, 50), "t") +
 ```
 
 ```{r t}
-t <- ERA5() %>% 
-  ReadNetCDF(vars = c("t", hgt = "z", "o3"), 
-             subset = list(latitude = c(-90, -20))) %>% 
+t <- ERA5_temperature() %>% 
+  ReadNetCDF(vars = c("t"), 
+             subset = list(latitude = o3wave_lats)) %>% 
   normalise_coords() %>% 
   .[season(time) == "SON"] %>% 
+  .[, .(t = weighted.mean(t, cos(lat*pi/180))), by = .(lon, lev, time)]
+
+o3_temp <- ERA5_ozone() %>% 
+  ReadNetCDF(vars = c("o3"), 
+             subset = list(latitude = o3wave_lats)) %>% 
+  normalise_coords() %>% 
+  .[season(time) == "SON"] %>% 
+  .[, .(o3 = weighted.mean(o3, cos(lat*pi/180))), by = .(lon, lev, time)]
+
+t <- t[o3_temp, on = .NATURAL]
+rm(o3_temp)
+
+t <- t %>% 
   .[, w := season_weights(time)] %>% 
   .[, .(t   = mean(t*w),
-        o3  = mean(o3*w),
-        hgt = mean(hgt*w)), by = .(lev, lon, lat, time = seasonally(time))]
+        o3  = mean(o3*w)), by = .(lev, lon, time = seasonally(time))]
 ```
 
 (ref:t-vertical-cap) Regression of SON anomalies of mean air temperature (shaded, Kelvin) and ozone mixing ratio (contours, negative contours with dashed lines, labels in parts per billion by mass) averaged between `r knitr::combine_words(LatLabel(o3wave_lats))` with the (a) real and (b) imaginary parts of the first cEOF for the 1979 -- 2019 period.
@@ -1313,10 +1334,6 @@ lable_placement_min <- function(direction = c("vertical", "horizontal"))  {
 
 ```{r t-vertical, fig.cap = "(ref:t-vertical-cap)", fig.height=2.5, fig.width=width_column}
 t %>% 
-  .[lat %between% o3wave_lats] %>% 
-  .[, .(hgt = weighted.mean(hgt, cos(lat*pi/180)),
-        o3 = weighted.mean(o3, cos(lat*pi/180)),
-        t = weighted.mean(t, cos(lat*pi/180))), by = .(lev, time, lon)] %>%  
   melt(id.vars = c("lev", "time", "lon")) %>% 
   .[, value := Anomaly(value), by = .(time, lev, variable)] %>%
   .[cut(ceof$eof[[1]], 1)$left, on = "time"] %>% 
@@ -1527,6 +1544,7 @@ regr_psi <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[, `:=`(Real = Real/sd(Real), Imaginary = Imaginary/sd(Imaginary)), 
     by = .(season, cEOF)] %>%
   .[psi, on = "time", allow.cartesian = TRUE] %>%
+  .[lev == 200] %>% 
   .[season(time) == "SON"] %>%
   .[, FitLm(psi.z, Real, Imaginary, se = TRUE),by = .(lon, lat, lev, cEOF, season)] %>%
   rm_intercept() %>%
@@ -1569,7 +1587,7 @@ enso_cor <-  ceof[, eof[[1]]$left, by = .(season)] %>%
 ```
 
 ```{r plot_sst_psi}
-plot_sst_psi <- function(which_cEOF, which_lev) {
+plot_sst_psi <- function(regr_sst, regr_psi, which_cEOF, which_lev) {
   sst_gdata <- regr_sst[cEOF == which_cEOF] %>%
     .[lat %between% c(-90, 10)] %>%
     .[, p_val := Pvaluate(estimate, std.error, df, "fdr"), 
@@ -1643,7 +1661,8 @@ plot_sst_psi <- function(which_cEOF, which_lev) {
 (ref:sst-psi-2-cap) Regression maps of cEOF2 with SST (K, column a) and streamfunction zonal anomalies ($m^2/s\times10^-7$, shaded) with their corresponding activity wave flux (vectors) (column b) for the 1979 -- 2019 period. Areas marked with dots have p-values smaller than 0.01 adjusted for FDR. 
 
 ```{r sst-psi-2,  fig.cap = "(ref:sst-psi-2-cap)", fig.width = 7, fig.height=4, dependson="plot_sst_psi", fig.env="figure*"}
-plot_sst_psi(which_cEOF = "cEOF2", which_lev = 200) 
+plot_sst_psi(regr_sst = regr_sst, regr_psi = regr_psi,
+             which_cEOF = "cEOF2", which_lev = 200) 
 ```
 
 The connections between cEOFs and Tropical sources are also assessed.
@@ -1750,7 +1769,8 @@ This explains the relative overabundance of years with cEOF2 near positive and n
 (ref:sst-psi-1-cap) Same as Figure \@ref(fig:sst-psi-2) but for cEOF1.
 
 ```{r sst-psi-1, fig.cap = "(ref:sst-psi-1-cap)", fig.width = 7, fig.height=4, dependson="plot_sst_psi", fig.env = "figure*"}
-plot_sst_psi(which_cEOF = "cEOF1", which_lev = 200) 
+plot_sst_psi(regr_sst = regr_sst, regr_psi = regr_psi,
+             which_cEOF = "cEOF1", which_lev = 200) 
 ```
 
 Figure \@ref(fig:sst-psi-1) shows SST and streamfunction regression maps for cEOF1.
@@ -1761,26 +1781,15 @@ This suggests that it's variability is driven primary by the internal variabilit
 
 ## Precipitation {#precipitation}
 
+
 ```{r cmap}
 cmap <- ReadNetCDF(CMAP(), vars = c(pp = "precip"),
-                   subset = list(lat = -90:10)) %>%
+                   subset = list(lat = -60:10)) %>%
   normalise_coords() %>%
   .[, w := season_weights(time)] %>% 
   .[, .(pp = mean(pp*w)), by = .(lon, lat, time = seasonally(time))]
 ```
 
-```{r regr_pp}
-regr_pp <- ceof[, eof[[1]]$left, by = season] %>%
-  sep_ReIm(hgt, "wide") %>%
-  .[, hgt := NULL] %>%
-  .[, `:=`(Real = Real/sd(Real), Imaginary = Imaginary/sd(Imaginary)), 
-    by = .(season, cEOF)] %>%
-  .[melt(cmap, id.vars = c("lon", "lat", "time")), on = "time", allow.cartesian = TRUE] %>%
-  .[season == "SON"] %>%
-  .[, FitLm(value, Imaginary, Real, se = TRUE), by = .(lon, lat, cEOF, variable, season)] %>%
-  rm_intercept() %>% 
-  .[, term := factor_ReIm(term)]
-```
 
 ```{r add_continents}
 continents <- list(africa  = list(lon = c(0, 60),
@@ -1801,54 +1810,203 @@ add_continent <- function(dt) {
     .[]
 }
 
+
+crop_continent <- function(continent) {
+  bbox <- c(xmin = min(continents[[continent]]$lon), 
+            xmax = max(continents[[continent]]$lon),
+            ymin = min(continents[[continent]]$lat),
+            ymax = max(continents[[continent]]$lat))
+  
+  function(data) {
+    s2 <- sf::sf_use_s2(FALSE)
+    on.exit(sf::sf_use_s2(s2))
+    data <- sf::st_crop(data, bbox)
+    data$continent <- continent
+    data
+  }
+}
 ```
 
+```{r}
+rotate_reim <- function(real, imaginary, angle = 0) {
+  z <- complex(real = real, imaginary = imaginary)
+  z <- rotate(z, angle)
+  list(real = Re(z),
+       imaginary = Im(z))
+}
+
+
+sst_for_regression <- ceof[, eof[[1]]$left, by = .(season)] %>%
+  .[cEOF == "cEOF2"] %>% 
+  copy() %>% 
+  sep_ReIm(hgt, "wide") %>%
+  .[, hgt := NULL] %>%
+  .[sst, on = "time", allow.cartesian = TRUE] %>%
+  .[season(time) == "SON"] %>% 
+  na.omit() 
+
+angles_regr <- -c(0, 45, 90, 45+90)*pi/180
+
+sst_regr <- lapply(angles_regr, function(a) {
+  sst_for_regression %>% 
+    copy() %>% 
+    .[, c("Real", "Imaginary") := rotate_reim(Real, Imaginary, a)] %>% 
+    .[, `:=`(Real = Real/sd(Real), Imaginary = Imaginary/sd(Imaginary)), 
+      by = .(season, cEOF)] %>%
+    .[, FitLm(t, Imaginary, Real, se = TRUE), by = .(lon, lat, cEOF, season)] %>%
+    rm_intercept() %>%
+    .[term == "Real"] %>% 
+    .[, term := factor_ReIm(term)] %>% 
+    .[, angle := a]
+}) %>% 
+  rbindlist()
+
+psi_for_regression <-  ceof[, eof[[1]]$left, by = .(season)] %>%
+  .[cEOF == "cEOF2"] %>% 
+  copy() %>% 
+  sep_ReIm(hgt, "wide") %>%
+  .[, hgt := NULL] %>%
+  .[psi, on = "time", allow.cartesian = TRUE] %>%
+  .[season(time) == "SON"] %>%
+  .[lev == 200]
+
+
+psi_regr <- lapply(angles_regr, function(a) {
+  psi_for_regression %>% 
+    copy() %>% 
+    .[, c("Real", "Imaginary") := rotate_reim(Real, Imaginary, a)] %>% 
+    .[, `:=`(Real = Real/sd(Real), Imaginary = Imaginary/sd(Imaginary)), 
+      by = .(season, cEOF)] %>%
+    .[, FitLm(psi.z, Real, Imaginary, se = TRUE),by = .(lon, lat, lev, cEOF, season)] %>%
+    rm_intercept() %>%
+    .[term == "Real"] %>% 
+    .[, psi.z := Anomaly(estimate), by = .(cEOF, season, lev, lat)] %>%
+    .[, c("fx", "fy") := shceof::WaveFlux(.SD, p = 200), 
+      by = .(lev, cEOF, season, term)] %>%
+    .[, term := factor_ReIm(term)] %>% 
+    .[, angle := a]
+}) %>% 
+  rbindlist()
+
+
+pp_for_regression <- ceof[, eof[[1]]$left, by = season] %>%
+  .[cEOF == "cEOF2"] %>% 
+  copy() %>% 
+  sep_ReIm(hgt, "wide") %>%
+  .[, hgt := NULL] %>%
+  .[cmap, on = "time", allow.cartesian = TRUE] %>%
+  .[season(time) == "SON"] %>% 
+  na.omit() %>% 
+  .[, pp := pp/sd(pp), by = .(lon, lat)]
+
+pp_regr <- lapply(angles_regr, function(a) {
+  pp_for_regression %>% 
+    copy() %>% 
+    .[, c("Real", "Imaginary") := rotate_reim(Real, Imaginary, a)] %>% 
+    .[, `:=`(Real = Real/sd(Real), Imaginary = Imaginary/sd(Imaginary)), 
+      by = .(season, cEOF)] %>%
+    .[, FitLm(pp, Imaginary, Real, se = TRUE),
+      by = .(lon, lat, cEOF, season)] %>%
+    .[term == "Real"] %>% 
+    rm_intercept() %>% 
+    .[, term := factor_ReIm(term)] %>% 
+    .[, angle := a*180/pi]
+
+}) %>%
+  rbindlist()
+ 
+
+# ceof[, eof[[1]]$left, by = season] %>%
+#   .[cEOF == "cEOF2"] %>% 
+#   copy() %>% 
+#   sep_ReIm(hgt, "wide") %>%
+#   .[, hgt := NULL] %>%
+#   .[, on = "time", allow.cartesian = TRUE] %>%
+#   .[season(time) == "SON"] %>% 
+#   na.omit() %>% 
+#   .[, pp := pp/sd(pp), by = .(lon, lat)]
+
+```
+
+
 ```{r plot_pp}
-plot_pp <- function(data, which_cEOF, which_term = c("Real", "Imaginary"), which_continent = NULL) {
-  filter_continent <- function(data) {
-    if (!is.null(which_continent)) {
-      data[continent == which_continent]
-    } else {
-      data
-    }
-    
-  }
+spoke <- function(data, coords) {
+  radius <-  grid::unit(.15, "snpc")
+  
+  outer_circle <-  grid::circleGrob(x = 0, 
+                             y = 0,
+                             r = radius*1.2)
+  
+  xcentre <- grid::unit(0, "npc") + grid:::grobHeight(outer_circle)/2
+  ycentre <-  grid::unit(0, "npc") + grid:::grobWidth(outer_circle)/2
+  
+  
+  circle <- grid::circleGrob(x = xcentre, 
+                             y = ycentre,
+                             r = radius, 
+                             gp = grid::gpar(fill = "white", 
+                                             alpha = 0.7))
+  # browser()
+  dx <- cos(coords$angle[1]*pi/180)*grid::grobHeight(circle)/2
+  dy <- sin(coords$angle[1]*pi/180)*grid::grobWidth(circle)/2
+  
+  
+  line <- grid::segmentsGrob(x0 = xcentre, y0 = ycentre, 
+                             x1 = xcentre + dx,
+                             y1 = ycentre + dy, 
+                             gp = grid::gpar(fill = "black"),
+                             arrow = grid::arrow(angle = 13, 
+                                                 length =  grid::unit(.15/2, "snpc"),
+                                                 type = "closed")
+  )
+  
+  grid::gTree(children = grid::gList(circle, line))
+  
+  
+}
+
+
+
+plot_pp <- function(data, which_cEOF) {
+  lats <- c(-55, -10)
+  breaks <- AnchorBreaks(exclude = 0)(c(-.9, .9))
+
   data %>%
-    .[cEOF %in% which_cEOF] %>%
-    .[term %in% which_term] %>%
+    # .[angle == unique(angle)[2]] %>% 
+    .[lat %between% lats] %>% 
+    # .[cEOF %in% which_cEOF] %>%
+    # .[term %in% which_term] %>%
     .[, lev := "sfc"] %>%
-    .[lat >= -60] %>%
-    add_continent() %>%
-    filter_continent() %>%
-    # .[abs(estimate) <= 2] %>%
+   
     .[, p.value := Pvaluate(estimate, std.error, df, "none"), 
       by = .(lev, cEOF, term)] %>%
     periodic(lon = c(0, 360)) %>%
     ggplot(aes(lon, lat)) +
-    # geom_raster(aes(fill = estimate)) +
-    geom_contour_fill(aes(z = estimate, fill = ..level..), 
-                      breaks = AnchorBreaks(exclude = 0)) +
-    geom_contour_tanaka(aes(z = estimate), breaks = AnchorBreaks(exclude = 0)) +
     
-    # scale_fill_divergent() +
-    scale_fill_divergent_discretised("Precipitation (mm/day)", 
-                                     # limits = c(-.8, .8),
+    geom_contour_fill(aes(z = estimate, fill = ..level..),
+                      breaks = breaks) +
+    geom_contour_tanaka(aes(z = estimate), breaks = breaks) +
+    
+
+    scale_fill_divergent_discretised("Precipitation (correlation)", 
+                                     # limits = c(-1, 1),
                                      # oob = scales::squish,
                                      low = "#8E521C",
                                      high = "#00665E",
                                      guide = guide_colorsteps_bottom(15)) +
-    # scale_fill_divergent_discretised(NULL, guide = guide_colorsteps_bottom(15)) +
+    
     geom_contour_pval(aes(z = p.value)) +
-    geom_qmap(keep = 1) +
+    geom_qmap() +
+    
+    grid_panel(spoke, aes(angle = -angle)) +
     
     scale_x_continuous("", expand = c(0, 0), breaks = seq(0, 360, by = 15), 
                        labels = LonLabel) +
     scale_y_latitude(ticks = 15) +
-    ggh4x::facet_nested(term ~ cEOF) +
+    facet_grid(angle ~ cEOF) +
     axis_labs_smol +
     tag_facets("rc") +
-    coord_sf(ylim = continents[[which_continent]]$lat,
-             xlim = continents[[which_continent]]$lon,
+    coord_sf(ylim = lats, 
              crs = "+proj=longlat +pm=180 +over",
              default_crs = "+proj=longlat +over") +
     theme(panel.spacing = grid::unit(1, "lines"))
@@ -1867,17 +2025,39 @@ box_australia <- data.frame(cEOF = "cEOF2",
 The influence of cEOFs variability in continental rainfall of extra-tropical Southern Hemisphere is also explored.
 We focus on South America and Oceania sectors because there are no relevant signals in southern Africa (not shown).
 
-(ref:pp-oceania-cap) Regression of SON mean precipitation anomalies in Oceania (mm per day, shaded) with the (row a) real and (row b) imaginary pars of the (column 1) cEOF1 and (column 2) cEOF2. For the 1979 -- 2019. Areas marked with dots have p-values smaller than 0.01 adjusted for False Detection Rate. In black is the West Australia region, defined as the box between `r knitr::combine_words(LonLabel(box_australia$lon))` and `r knitr::combine_words(LatLabel(box_australia$lat))`.
+(ref:pp-oceania-cap) Regression of SON mean precipitation anomalies in Oceania (mm per day, shaded) with the (row a) real and (row b) imaginary pars of the (column 1) cEOF1 and (column 2) cEOF2. For the 1979 -- 2019. Areas marked with dots have p-values smaller than 0.01 adjusted for False Detection Rate. In black is the East Australia region, defined as the box between `r knitr::combine_words(LonLabel(box_australia$lon))` and `r knitr::combine_words(LatLabel(box_australia$lat))`.
+
+```{r, fig.cap="precipitation correlation", fig.width=6.6, fig.height=5.5}
+plot_pp(pp_regr, c("cEOF1", "cEOF2"))
+```
+
+```{r}
+# a <- angles_regr[2]
+# 
+# plot_pp(pp_regr, c("cEOF1", "cEOF2"))
+# 
+# (plot_sst_psi(regr_sst = sst_regr[angle == a], regr_psi = psi_regr[angle == a],
+#               which_cEOF = "cEOF2", which_lev = 200)) / 
+#   (
+#     plot_pp(pp_regr[angle == a], c("cEOF1", "cEOF2"))
+#   )
+```
+
 
 ```{r pp-oceania, fig.cap = "(ref:pp-oceania-cap)", fig.width=width_column, fig.height=width_column*.8}
-plot_pp(regr_pp, c("cEOF1", "cEOF2"), which_continent =  "oceania") +
-  geom_rect(data = box_australia, aes(xmin = min(lon), xmax = max(lon),
-                                      ymin = min(lat), ymax = max(lat)),
-            fill = NA, colour = "gray20") 
+# plot_pp(regr_pp, c("cEOF1", "cEOF2"), which_continent =  "oceania") +
+#   geom_rect(data = box_australia, aes(xmin = min(lon), xmax = max(lon),
+#                                       ymin = min(lat), ymax = max(lat)),
+#             fill = NA, colour = "gray20") 
 
 ```
 
-The precipitation anomalies in Oceania associated with cEOF1 are weak and not statistically significant (Figure \@ref(fig:pp-oceania) column 1) whereas cEOF2 is associated with large and widespread anomalies. The Real cEOF2 is associated with positive seasonal anomalies in Northern and Eastern Australia, and negative ones over New Zealand, while precipitation anomalies associated with Imaginary cEOF2 are negative over all Eastern Australia. As it could be expected, these negative anomalies are similar to the springtime precipitation anomalies observed in relation with the Asymmetric SAM [@campitelli2021] and ENSO [@cai2011].
+The precipitation anomalies in Oceania associated with cEOF1 are weak and not statistically significant (Figure \@ref(fig:pp-oceania) column 1) whereas cEOF2 is associated with large and widespread anomalies. The Real cEOF2 is associated with positive seasonal anomalies in northern and eastern Australia, and negative ones over New Zealand, while precipitation anomalies associated with Imaginary cEOF2 are negative over all eastern Australia. 
+
+These precipitation anomalies associated with the cEOF2 are similar to the springtime precipitation anomalies observed in relation with the Asymmetric SAM [@campitelli2021] and ENSO [@cai2011], 
+
+
+
 \textcolor{red}{Acá te faltaría  sacar un poco más el jugo asociando con la figura 11. Además, ¿revisaste si podes también usar algún resultado asociado a los PSA? }
 
 (ref:australia-pp-phase-cap) Same as Figure \@ref(fig:enso-phase) but for precipitation anomalies averaged between `r knitr::combine_words(LonLabel(box_australia$lon))` and `r knitr::combine_words(LatLabel(box_australia$lat))` (box shown in Figure \@ref(fig:pp-oceania) column b) in $\frac{\mathrm{mm}}{\mathrm{day}}$. Black line is the fit precipitation \~ sin(phase) + cos(phase) computed by weighted OLS using the magnitude of the cEOF2 as weights.
@@ -1899,7 +2079,7 @@ p_value <- pf(fstatistic["value"], fstatistic["numdf"], fstatistic["dendf"],
               lower.tail = FALSE)
 
 
-equation <- latex2exp::TeX(paste0("$\\mathrm{Precipitation}_{\\mathrm{West Australia}} = ", 
+equation <- latex2exp::TeX(paste0("$\\mathrm{Precipitation}_{\\mathrm{East Australia}} = ", 
                                   signif(coef(model)[1], 2), "\\sin{(\\mathrm{phase})} + ", 
                                   signif(coef(model)[2], 2), "\\cos{(\\mathrm{phase})}$"))
 
@@ -1938,22 +2118,29 @@ gdata %>%
   panel_background
 ```
 
-To better understand the relationship between precipitation anomalies over Eastern Australia and the cEOF2, Figure \@ref(fig:australia-pp-phase) plots precipitation anomalies averaged over Eastern Australia (box in Figure \@ref(fig:pp-oceania)) as a function of cEOF2 phase.
+To better understand the relationship between precipitation anomalies over eastern Australia and the cEOF2, Figure \@ref(fig:australia-pp-phase) plots precipitation anomalies averaged over eastern Australia (box in Figure \@ref(fig:pp-oceania)) as a function of cEOF2 phase.
 The black line shows a sinusoidal fit, whose coefficients are fitted by weighted least squares using the magnitude of the EFO2 as weight.
 The $r^2$ corresponding to the fit is `r signif(summary(model)$r.squared, 2)` (p-value `r report_p(p_value)`).
-There is a strong relationship between the phase of the cEOF2 and precipitation anomalies in Eastern Australia, but the Real and Imaginary phases we chose are not exactly aligned with the direction that maximises this relationship.
+There is a strong relationship between the phase of the cEOF2 and precipitation anomalies in eastern Australia, but the Real and Imaginary phases we chose are not exactly aligned with the direction that maximises this relationship.
 To perform a more in-depth analysis of the relationship between this pattern and precipitation in this region, it would be recommended to align one of the axis (either the Real or the Imaginary) to the phase that maximises the described relationship.
+
+
+
+
+@cai2011 -> precipitación ENSO
+
+ no vio relación con la pp. mezclan fases, pero la fase es crucial. 
 
 (ref:pp-america-cap) As Figure \@ref(fig:pp-oceania) but for South America
 
 ```{r pp-america, fig.cap = "(ref:pp-america-cap)", fig.width=width_column, fig.height=width_column*1.1}
-plot_pp(data = regr_pp, which_cEOF = c("cEOF1", "cEOF2"), which_continent = "america")  +
-  scale_fill_divergent_discretised("Precipitation (mm/day)", 
-                                   limits = c(-1, 1),
-                                   # oob = scales::squish,
-                                   low = "#8E521C",
-                                   high = "#00665E",
-                                   guide = guide_colorsteps_bottom(15)) 
+# plot_pp(data = regr_pp, which_cEOF = c("cEOF1", "cEOF2"), which_continent = "america")  +
+#   scale_fill_divergent_discretised("Precipitation (mm/day)", 
+#                                    limits = c(-1, 1),
+#                                    # oob = scales::squish,
+#                                    low = "#8E521C",
+#                                    high = "#00665E",
+#                                    guide = guide_colorsteps_bottom(15)) 
 # annotate("rect", xmin = min(sesa$lon), xmax = max(sesa$lon), 
 #          ymin = min(sesa$lat), ymax = max(sesa$lat),
 #          fill = NA, color = "gray50", size = 0.3)
@@ -2003,7 +2190,7 @@ We show that the Imaginary cEOF2 can be identified with the PSA1 and the Real cE
 This cEOF prefers a phase aligned with the Imaginary cEOF2, because when ENSO is active, it forces the cEOF2 to be in the Imaginary phase.
 When ENSO is neutral, the cEOF2 is still active, but with no particular preferred phase.
 This mirrors the results of @cai2002, who showed that the CSIRO Model can create PSA-like variability even in the absence of ENSO forcing (with a climatological run), but the variability of one of the PSA modes was enhanced when adding the ENSO signal.
-The magnitude of the cEOF2 appears not to be related to the magnitude of ENSO, except frot the three strongest ENSO events in the period which coincide with the three strongest cEOF2 years.
+The magnitude of the cEOF2 appears not to be related to the magnitude of ENSO, except for the three strongest ENSO events in the period which coincide with the three strongest cEOF2 years.
 
 We further show that the Imaginary cEOF2 is closely related to the Southern Annular Mode in the troposphere.
 In fact, it has a very close resemblance to the zonally asymmetric portion of the SAM.
@@ -2015,6 +2202,12 @@ Precipitation anomalies associated with the Real cEOF2 are low and not statistic
 On the other hand, over Australia, both the Real and Imaginary phase are associated with significant precipitation anomalies, and we further show that the direction of maximum impact is not aligned with our chosen rotation of cEOF2.
 However, this underscores the benefit of using complex EOF, since it would be trivial to rotate it.
 That is, look for the rotation of complex EOF that maximises the relationship and use that as the relevant index for study or forecast. 
+
+Some aspects of our work are in direct contrast with @irving2016 analysis of the PSA. 
+They didn't find neither a strong association between PSA-like variability and ENSO, nor a relationship between it and Australian precipitation. 
+Part of the disagreement could be due to the fact that we focus data only for SON, which is when the teleconnection pattern is strongest, instead of the whole year. 
+@irving2016 use of ERA5 forectasted precipitation instead of the more observationally constrained CMAP dataset might also be an issue. 
+But in light of the previous discussion on the importance of the phase of the cEOF2 in its relationship with ENSO and with precipitation impacts, a big difference could be fact that @irving2016's methodology is insensitive to phase changes of the PSA-like variability. 
 
 To the extent that the cEOF2 can be identified with the PSA, what is the advantage of the technique proposed here?
 The spatial fields that the cEOF2 index describes are in quadrature by construction, which makes it possible to derive a proper amplitude and phase.
