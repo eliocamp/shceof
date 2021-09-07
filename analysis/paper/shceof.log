@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.3.30)  17 AUG 2021 16:56
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.3.30)  7 SEP 2021 15:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -581,7 +581,7 @@ Underfull \vbox (badness 5878) has occurred while \output is active []
 File: ../figures/eof-naive-1.pdf Graphic file (type pdf)
 <use ../figures/eof-naive-1.pdf>
 [5]
-Overfull \hbox (1.5178pt too wide) in paragraph at lines 247--251
+Overfull \hbox (1.5178pt too wide) in paragraph at lines 250--254
 []\TU/lmr/m/n/10 The cEOF methodology is applied to SON geopotential height zon
 al anoma-
  []
@@ -592,7 +592,7 @@ File: ../figures/ceofs-1-1.pdf Graphic file (type pdf)
 File: ../figures/extended-series-1.pdf Graphic file (type pdf)
 <use ../figures/extended-series-1.pdf>
 
-Overfull \hbox (81.56647pt too wide) in paragraph at lines 301--301
+Overfull \hbox (81.56647pt too wide) in paragraph at lines 304--304
 [][] 
  []
 
@@ -624,85 +624,102 @@ File: ../figures/o3-regr-1.pdf Graphic file (type pdf)
 File: ../figures/sst-psi-2-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-2-1.pdf>
 
-Overfull \hbox (153.83629pt too wide) in paragraph at lines 494--494
+Overfull \hbox (127.73885pt too wide) in paragraph at lines 495--496
 [][] 
  []
 
 [17]
-File: ../figures/enso-phase-1.pdf Graphic file (type pdf)
-<use ../figures/enso-phase-1.pdf>
-
-Underfull \vbox (badness 1189) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [18]
+File: ../figures/enso-phase-1.pdf Graphic file (type pdf)
+<use ../figures/enso-phase-1.pdf>
+[19]
+File: ../figures/pp-temp-2-1.pdf Graphic file (type pdf)
+<use ../figures/pp-temp-2-1.pdf>
+
+Overfull \hbox (123.72388pt too wide) in paragraph at lines 560--561
+ [][] 
+ []
+
+
+Overfull \hbox (1.07999pt too wide) in paragraph at lines 569--570
+\TU/lmr/m/n/10 positive temperatures in southern Australia and negative tempera
+ture in south-
+ []
+
+[20] [21]
+
+LaTeX Warning: Reference `fig:pp-temp-cap-1' on page 22 undefined on input line
+ 595.
+
+[22] [23] [24]
 File: ../figures/sst-psi-1-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-1-1.pdf>
 
-Overfull \hbox (153.83629pt too wide) in paragraph at lines 539--539
+Overfull \hbox (127.73885pt too wide) in paragraph at lines 664--664
 [][] 
  []
 
+File: ../figures/pp-temp-1-1.pdf Graphic file (type pdf)
+<use ../figures/pp-temp-1-1.pdf>
 
-Underfull \vbox (badness 2856) has occurred while \output is active []
+Overfull \hbox (123.72388pt too wide) in paragraph at lines 671--672
+ [][] 
+ []
 
-[19]
-File: ../figures/pp-oceania-1.pdf Graphic file (type pdf)
-<use ../figures/pp-oceania-1.pdf>
-File: ../figures/australia-pp-phase-1.pdf Graphic file (type pdf)
-<use ../figures/australia-pp-phase-1.pdf>
-[20] [21]
-File: ../figures/pp-america-1.pdf Graphic file (type pdf)
-<use ../figures/pp-america-1.pdf>
-[22] [23] (./shceof.bbl [24]
-Underfull \hbox (badness 1028) in paragraph at lines 48--51
-[]\TU/lmr/m/n/10 Bamston AG, Chelliah M, Goldenberg SB (1997) Documentation of 
-a
+(./shceof.bbl
+Underfull \hbox (badness 1173) in paragraph at lines 12--15
+[]\TU/lmr/m/n/8 Adams JC, Swartztrauber PN, Sweet R (1999) FISHPACK, a package 
+of Fortran
  []
 
 
-Underfull \hbox (badness 1701) in paragraph at lines 55--61
-\TU/lmr/m/n/10 J, Nicolas J, Radu R, Schepers D, Simmons A, Soci C, Thépaut
- []
-
-
-Underfull \hbox (badness 3138) in paragraph at lines 55--61
-\TU/lmr/m/n/10 JN (2020) ERA5 monthly averaged data on pressure levels from
- []
-
-
-Underfull \hbox (badness 1152) in paragraph at lines 55--61
-\TU/lmr/m/n/10 vice (C3S) Climate Data Store (CDS) (Accessed on $\OML/cmm/m/it/
-10 <$\TU/lmr/m/n/10 19-02-2021$\OML/cmm/m/it/10 >$\TU/lmr/m/n/10 ),
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 55--61
-\TU/lmr/m/n/10 https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-er
-a5-
+Underfull \hbox (badness 2205) in paragraph at lines 12--15
+\TU/lmr/m/n/8 subprograms for the solution of separable elliptic partial differ
+ential equations.
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [25]
+Underfull \hbox (badness 2020) in paragraph at lines 55--61
+\TU/lmr/m/n/8 las J, Radu R, Schepers D, Simmons A, Soci C, Thépaut JN (2020) E
+RA5
+ []
+
+
+Underfull \hbox (badness 1210) in paragraph at lines 55--61
+\TU/lmr/m/n/8 Copernicus Climate Change Service (C3S) Climate Data Store (CDS) 
+(Accessed
+ []
+
+
+Underfull \vbox (badness 7869) has occurred while \output is active []
+
+[26]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[26])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 647.
-[27]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 647.
+[27])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 679.
+[28]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 679.
 (./shceof.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 647.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 647.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 647.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 679.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 679.
+
+LaTeX Warning: There were undefined references.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 679.
  ) 
 Here is how much of TeX's memory you used:
- 12950 strings out of 493007
- 184057 string characters out of 6136719
- 297095 words of memory out of 5000000
- 16744 multiletter control sequences out of 15000+600000
+ 12952 strings out of 493007
+ 183995 string characters out of 6136719
+ 301850 words of memory out of 5000000
+ 16747 multiletter control sequences out of 15000+600000
  9678 words of font info for 46 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 44i,9n,47p,1110b,497s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,9n,47p,842b,489s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on shceof.pdf (27 pages).
+Output written on shceof.pdf (28 pages).
