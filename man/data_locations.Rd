@@ -9,7 +9,7 @@
 \alias{ERA5_vorticity}
 \alias{ERA5_ozone}
 \alias{ERA5_BE}
-\alias{ERA5_SST}
+\alias{ERA5_T2M}
 \alias{NCEP_PSI}
 \alias{NCEP_VOR}
 \alias{CMAP}
@@ -32,7 +32,7 @@ ERA5_ozone(force_download = FALSE)
 
 ERA5_BE(force_download = FALSE)
 
-ERA5_SST(force_download = FALSE)
+ERA5_T2M(force_download = FALSE)
 
 NCEP_PSI(force_download = FALSE)
 

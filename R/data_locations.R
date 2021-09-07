@@ -114,8 +114,8 @@ ERA5_BE <- data_nc_fun(file = data_path("raw", "era5be.mon.mean.nc"),
 
 #' @export
 #' @rdname data_locations
-ERA5_SST <- data_nc_fun(file = data_path("raw", "era5.sst.mon.mean.nc"),
-                        download = download_cds(request_era5_sst))
+ERA5_T2M <- data_nc_fun(file = data_path("raw", "era5.2mt.mon.mean.nc"),
+                        download = download_cds(request_era5_2mt))
 
 
 #' @export

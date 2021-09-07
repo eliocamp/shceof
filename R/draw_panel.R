@@ -41,3 +41,5 @@ grid_panel <- function(grob=grid::nullGrob(),
         show.legend = FALSE,
         params = list(grob = grob, debug = debug, ...))
 }
+
+

@@ -10,7 +10,7 @@
 #' @export
 geom_qmap <- function(subset = identity,
                       crop = NULL,
-                      color = "gray50", size = 0.2,
+                      color = "gray50", size = 0.3,
                       fill = NA, wrap = c(0, 360), weighting = 0.7,
                       keep = 0.015, ...) {
   lon <- lat <- group <- NULL

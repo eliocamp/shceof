@@ -12,7 +12,7 @@ if (file.exists(sam_file)) {
   library(shceof)
   library(metR)
 
-  sams <- ERA5() %>%
+  sams <- ERA5_geopotential_all() %>%
     ReadNetCDF(vars = c("hgt" = "z"),
                subset = list(latitude = c(-90, -20))) %>%
     normalise_coords() %>%

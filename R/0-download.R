@@ -103,7 +103,7 @@ request_geopotential <- list(
   format = "netcdf",
   product_type = "monthly_averaged_reanalysis",
   variable = c("geopotential"),
-  pressure_level = c("50", "200", "500"),
+  pressure_level = c("50", "200", "500", "850"),
   year = as.character(1979:2020),
   month = formatC(1:12, width = 2, flag = 0),   # Need all months to compute PSA
   time = "00:00",
@@ -189,9 +189,9 @@ request_toc <- list(
 )
 
 
-request_era5_sst <- list(
+request_era5_2mt <- list(
   format = "netcdf",
-  variable = c("sea_surface_temperature", "2m_temperature"),
+  variable = c("2m_temperature"),
   product_type = "monthly_averaged_reanalysis",
   year = as.character(1979:2020),
   month =  c("09", "10", "11"),
