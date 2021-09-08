@@ -160,8 +160,7 @@ geom_contour_pval <- function(mapping, p.value = 0.01, size = 0.1, ...) {
 }
 
 # There's a bunch of issues with s2 right now
-sf::sf_use_s2(FALSE)
-
+sink <- capture.output(sf::sf_use_s2(FALSE))
 
 geom_coords <- function() {
   
