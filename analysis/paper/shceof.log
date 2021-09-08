@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.3.30)  8 SEP 2021 12:48
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.3.30)  8 SEP 2021 16:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -569,16 +569,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 99--103
 File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 
 )
-Overfull \hbox (1.04004pt too wide) in paragraph at lines 120--122
+Overfull \hbox (1.04004pt too wide) in paragraph at lines 116--118
 \TU/lmr/m/n/10 The large-scale extratropical circulation in the Southern Hemisp
 here is strongly
  []
+
+
+Underfull \vbox (badness 5878) has occurred while \output is active []
 
 [1] [2] [3] [4]
 File: ../figures/eof-naive-1.pdf Graphic file (type pdf)
 <use ../figures/eof-naive-1.pdf>
 [5]
-Overfull \hbox (1.5178pt too wide) in paragraph at lines 254--258
+Overfull \hbox (1.5178pt too wide) in paragraph at lines 250--254
 []\TU/lmr/m/n/10 The cEOF methodology is applied to SON geopotential height zon
 al anoma-
  []
@@ -589,7 +592,7 @@ File: ../figures/ceofs-1-1.pdf Graphic file (type pdf)
 File: ../figures/extended-series-1.pdf Graphic file (type pdf)
 <use ../figures/extended-series-1.pdf>
 
-Overfull \hbox (81.56647pt too wide) in paragraph at lines 308--308
+Overfull \hbox (81.56647pt too wide) in paragraph at lines 304--304
 [][] 
  []
 
@@ -621,7 +624,7 @@ File: ../figures/o3-regr-1.pdf Graphic file (type pdf)
 File: ../figures/sst-psi-2-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-2-1.pdf>
 
-Overfull \hbox (127.73885pt too wide) in paragraph at lines 499--500
+Overfull \hbox (127.73885pt too wide) in paragraph at lines 495--496
 [][] 
  []
 
@@ -635,19 +638,19 @@ File: ../figures/enso-phase-1.pdf Graphic file (type pdf)
 File: ../figures/pp-t2m-r2-1.pdf Graphic file (type pdf)
 <use ../figures/pp-t2m-r2-1.pdf>
 
-Overfull \hbox (124.72763pt too wide) in paragraph at lines 560--561
+Overfull \hbox (124.72763pt too wide) in paragraph at lines 556--557
  [][] 
  []
 
 File: ../figures/pp-temp-2-1.pdf Graphic file (type pdf)
 <use ../figures/pp-temp-2-1.pdf>
 
-Overfull \hbox (123.72388pt too wide) in paragraph at lines 584--585
+Overfull \hbox (123.72388pt too wide) in paragraph at lines 580--581
  [][] 
  []
 
 [20]
-Overfull \hbox (1.07999pt too wide) in paragraph at lines 593--594
+Overfull \hbox (1.07999pt too wide) in paragraph at lines 589--590
 \TU/lmr/m/n/10 positive temperatures in southern Australia and negative tempera
 ture in south-
  []
@@ -658,20 +661,20 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [22]
 
 LaTeX Warning: Reference `fig:pp-temp-cap-1' on page 23 undefined on input line
- 619.
+ 615.
 
 [23] [24] [25]
 File: ../figures/sst-psi-1-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-1-1.pdf>
 
-Overfull \hbox (127.73885pt too wide) in paragraph at lines 688--688
+Overfull \hbox (127.73885pt too wide) in paragraph at lines 684--684
 [][] 
  []
 
 File: ../figures/pp-temp-1-1.pdf Graphic file (type pdf)
 <use ../figures/pp-temp-1-1.pdf>
 
-Overfull \hbox (123.72388pt too wide) in paragraph at lines 695--696
+Overfull \hbox (123.72388pt too wide) in paragraph at lines 691--692
  [][] 
  []
 
@@ -709,16 +712,16 @@ Underfull \vbox (badness 7869) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [28])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 703.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 699.
 [29]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 703.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 699.
 (./shceof.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 703.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 703.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 699.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 699.
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 703.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 699.
  ) 
 Here is how much of TeX's memory you used:
  12957 strings out of 493007
