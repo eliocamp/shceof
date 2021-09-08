@@ -159,6 +159,10 @@ geom_contour_pval <- function(mapping, p.value = 0.01, size = 0.1, ...) {
   )
 }
 
+# There's a bunch of issues with s2 right now
+sf::sf_use_s2(FALSE)
+
+
 geom_coords <- function() {
   
   list(
@@ -1818,7 +1822,7 @@ plot_sst_psi <- function(sst_regr, psi_regr) {
                                                                      order = 99)) +
     grid_panel(spoke, aes(angle = -angle, var = "SST"), inherit.aes = FALSE) +
     scale_x_continuous(NULL, expand = c(0, 0), 
-                       breaks = seq(-180, 180-60, by = 60),
+                       breaks = seq(0, 360, by = 60),
                        labels = LonLabel) +
     
     scale_y_continuous(NULL, breaks  = seq(-90, 0, by = 30), expand = c(0, 0)) +
@@ -1826,7 +1830,7 @@ plot_sst_psi <- function(sst_regr, psi_regr) {
     facet_grid(angle ~ var, labeller = labeller(angle = angles_labs)) +
     # coord_quickmap(ylim = c(NA, 10)) +
     coord_sf(ylim = c(-89, 10), expand = FALSE,
-             crs = "+proj=longlat +pm=180 +over",
+             # crs = "+proj=longlat +pm=180 +over",
              default_crs = "+proj=longlat +lon_wrap=180 +over") + 
     theme(legend.box = "horizontal",
           legend.text = element_text(size = rel(0.7)), 
@@ -1953,6 +1957,57 @@ This suggests that its variability is driven primary by the internal variability
 ## Precipitation and 2-metre temperature {#precipitation}
 
 
+```{r pp-t2m-r2, fig.cap = "(ref:cap-pp-t2m-r2)", fig.width=3.3*2, fig.height=3.3}
+breaks <- seq(.2, 1, by = .1)
+
+rbind(Precipitation = pp_regr,
+      `2-metre Temperature` = t2m_regr, idcol = "var") %>% 
+  .[angle == 0] %>% 
+  .[is.finite(r.squared)] %>% 
+  # .[cEOF == "cEOF2"] %>% 
+  periodic(lon = c(0, 360)) %>%
+  ggplot(aes(lon, lat)) +
+  geom_contour_fill(aes(z = r.squared, fill = ..level..), breaks = breaks) +
+  geom_contour_tanaka(aes(z = r.squared), breaks = breaks) +
+  # geom_text_contour(aes(z = r.squared, 
+  #                       label = ifelse(..level.. > 0.2, scales::percent(..level..), NA)), 
+  #                   breaks = breaks, size = 2,
+  #                   skip = 1, stroke = 0.15, stroke.colour = "white") +
+  geom_qmap(keep = .015) +
+  scale_fill_divergent_discretised(name = "Explained variance", midpoint = 0,
+                       labels = scales::percent_format(),
+                       guide = guide_colorsteps_bottom(15, show.limits = TRUE)) +
+  
+  scale_x_continuous(NULL, expand = c(0, 0),
+                     breaks = seq(0, 360, by = 60),
+                     labels = LonLabel) +
+  scale_y_continuous(NULL, breaks  = seq(-90, 0, by = 30), expand = c(0, 0)) +
+  
+  facet_grid(var ~ cEOF) +
+  # coord_quickmap(ylim = c(NA, 10)) +
+  coord_sf(ylim = c(NA, 10),
+           default_crs = "+proj=longlat +lon_wrap=180 +over") + 
+  theme(legend.box = "horizontal",
+        legend.text = element_text(size = rel(0.7)), 
+        legend.box.spacing = grid::unit(0, "lines") ) +
+  tag_facets("rc") 
+```
+
+(ref:cap-pp-t2m-r2) Explained variance ($r^2$) of 2-metre temperature (row a) and precipitation (row b) with cEOF1 (column 1) and cEOF2 (column 2).
+
+The influence of cEOFs variability in continental rainfall and 2-metre temperature in the Southern Hemisphere is also explored. 
+Figure \@ref(fig:pp-t2m-r2) shows the $r^2$ between the cEOF1 and cEOF2 and 2-metre temperature and precipitation. 
+For the cEOF1 there are no significant signals in precipitation and most of the temperature signal is low and restricted to the eastern coast of Antarctica. 
+
+There is a strong signal between both variables and cEOF2, with explained variance greater than 50% in some regions. 
+For 2-metre temperature, there are high values in the tropical Pacific and the SPCZ, as well as the region following an arc between New Zealand and the South Atlantic. 
+Over the continents, moderate values of about 30% variance explained can be seen in southern Australia, some regions of South America and the Antarctic Peninsula. 
+For precipitation, there are high values over the tropics. 
+At higher latitudes, moderate values are observed over eastern Australia and some regions of southern South America. 
+
+Since the cEOF1 has a relatively weak signal, we will focus on the cEOF2.
+
+
 ```{r add_continents}
 continents <- list(africa  = list(lon = c(0, 60),
                                   lat = c(-40, 0)),
@@ -2050,15 +2105,16 @@ plot_pp <- function(pp_regr, t2m_regr, hgt850_regr) {
     
     grid_panel(spoke, aes(angle = -angle, var = "SST"), inherit.aes = FALSE) +
     
-    scale_x_continuous("", expand = c(0, 0), breaks = seq(0, 360, by = 15), 
+    scale_x_continuous("", expand = c(0, 0), breaks = seq(0, 360, by = 30), 
                        labels = LonLabel) +
-    scale_y_latitude(ticks = 15) +
+    scale_y_continuous("", expand = c(0, 0), breaks = seq(-90, 0, by = 15), 
+                       labels = LatLabel) +
+    # scale_y_latitude(ticks = 15, labels = LatLabel) +
     scale_linetype_discrete(guide = "none") +
     facet_grid(angle ~ var, labeller = labeller(angle = angles_labs)) +
     axis_labs_smol +
     tag_facets("rc") +
-    coord_sf(ylim = c(-85, 10),
-             crs = "+proj=longlat +pm=180 +over",
+    coord_sf(ylim = c(NA, 10),
              default_crs = "+proj=longlat +over") +
     theme(panel.spacing = grid::unit(1, "lines")) +
     theme(legend.box = "horizontal",
@@ -2077,11 +2133,12 @@ box_australia <- data.frame(cEOF = "cEOF2",
                             lat = c(-40, -15))
 ```
 
-The influence of cEOFs variability in continental rainfall and 2-metre temperature in the Southern Hemisphere is also explored. Figure \@ref(fig:pp-temp-2) show regression maps of 2-meter temperature (column 1) and precipitation (column 2) upon standardised cEOF2 which, again, can be interpreted as the anomalies associates with a 1 standard deviation increase.
+
+Figure \@ref(fig:pp-temp-2) shows regression maps of 2-meter temperature (column 1) and precipitation (column 2) upon standardised cEOF2 which, again, can be interpreted as the anomalies associates with a 1 standard deviation increase.
 
 (ref:pp-temp-cap) Regression of SON mean 2-meter temperature (K, shaded) and 850hPa geopotential height (m, contours) (column 1), and precipitation (correlation, column 2) with different phases of cEOF2. For the 1979 -- 2019. Areas marked with dots have p-values smaller than 0.01 adjusted for False Detection Rate. 
 
-```{r pp-temp-2, fig.cap="(ref:pp-temp-cap)", fig.width=6.6, fig.height=5.5}
+```{r pp-temp-2, fig.cap="(ref:pp-temp-cap)", fig.width=6.6, fig.height=5.5, dependson="plot_pp"}
 plot_pp(pp_regr[cEOF == "cEOF2"], t2m_regr[cEOF == "cEOF2"], hgt850_regr[cEOF == "cEOF2"])
 ```
 
@@ -2285,6 +2342,6 @@ plot_sst_psi(sst_regr[cEOF == "cEOF1"], psi_regr[cEOF == "cEOF1"])
 
 (ref:pp-temp-cap-1) Same as Figure \@ref(fig:pp-temp-2) but for cEOF1.
 
-```{r pp-temp-1, fig.cap="(ref:pp-temp-cap-1)", fig.width=6.6, fig.height=5.5}
+```{r pp-temp-1, fig.cap="(ref:pp-temp-cap-1)", fig.width=6.6, fig.height=5.5, dependson="plot_pp"}
 plot_pp(pp_regr[cEOF == "cEOF1"], t2m_regr[cEOF == "cEOF1"], hgt850_regr[cEOF == "cEOF1"])
 ```
