@@ -717,10 +717,10 @@
     },
     "metR": {
       "Package": "metR",
-      "Version": "0.10.0",
+      "Version": "0.11.0",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "0e85761875017029df1d5157d9c8d718"
+      "Repository": "RSPM",
+      "Hash": "383bfe74994affab757693f0cdc6d574"
     },
     "mgcv": {
       "Package": "mgcv",

@@ -43,11 +43,13 @@ bibliography:
 bibstyle: spbasic
 # bibstyle options spbasic(default), spphys, spmpsci
 output: 
+  bookdown::word_document2: default
   bookdown::pdf_book: 
       base_format: rticles::springer_article
       latex_engine: "xelatex"
       citation_package: "natbib"
       # pandoc_args: ["--lua-filter=abstract-to-meta.lua"]
+always_allow_html: true
 header-includes: 
  - \usepackage{gensymb}
  - \usepackage{subfig}
