@@ -898,11 +898,11 @@ era_more %>%
   scale_alpha_manual(values = c(1, 0.2)) +
   geom_smooth(method = "lm", aes(color = stage(part, after_scale = scales::muted(color))),
               show.legend = FALSE, size = 0.8) +
-  scale_x_datetime(NULL, date_labels = "%Y", 
-                   breaks = seq(as.POSIXct("1950-01-01"), 
-                                as.POSIXct("2020-01-01"), by = "10 years"),
-                   minor_breaks = seq(as.POSIXct("1950-01-01"), 
-                                      as.POSIXct("2020-01-01"), by = "2 years")) +
+  scale_x_date(NULL, date_labels = "%Y",
+               breaks = seq(as.Date("1950-01-01"),
+                            as.Date("2020-01-01"), by = "10 years"),
+               minor_breaks = seq(as.Date("1950-01-01"),
+                                  as.Date("2020-01-01"), by = "2 years")) +
   scale_y_continuous(NULL, minor_breaks = NULL, sec.axis = dup_axis()) +
   scale_color_brewer(NULL, palette = "Dark2", 
                      guide = guide_legend(override.aes = list(fill = NA))) +
@@ -1324,9 +1324,13 @@ t <- t %>%
 (ref:t-vertical-cap) Regression of SON anomalies of mean air temperature (shaded, Kelvin) and ozone mixing ratio (contours, negative contours with dashed lines, labels in parts per billion by mass) averaged between `r knitr::combine_words(LatLabel(o3wave_lats))` with the (a) real and (b) imaginary parts of the first cEOF for the 1979 -- 2019 period.
 
 ```{r lable_placement_min}
-lable_placement_min <- function(direction = c("vertical", "horizontal"))  {
+label_placement_min <- function(direction = c("vertical", "horizontal"))  {
   direction <- direction[1]
   function(x, y) {
+    browser()
+    y <- x[[1]]$y
+    x <- x[[1]]$x
+    
     if (direction == "vertical") {
       return(which.min(y))
     }
@@ -1354,21 +1358,21 @@ t %>%
   geom_contour_tanaka(data = ~.x[variable == "t"],
                       aes(z = estimate),
                       breaks = AnchorBreaks(0, binwidth = 0.25, exclude = 0, sym = TRUE)) +
-  geom_contour2(data = ~.x[variable == "o3"], 
-                aes(z = estimate, linetype = factor(-sign(..level..))), 
+  geom_contour2(data = ~.x[variable == "o3"],
+                aes(z = estimate, linetype = factor(-sign(..level..))),
                 breaks = AnchorBreaks(0, exclude = 0)) +
-  geom_text_contour(data = ~.x[variable == "o3"], 
+  geom_text_contour(data = ~.x[variable == "o3"],
                     aes(z = estimate*1e9, label = signif(..level.., 2)),
                     size = 2,
-                    skip = 1, stroke = 0.15, stroke.colour = "white", 
-                    label.placement = lable_placement_min(),
+                    skip = 1, stroke = 0.15, stroke.colour = "white",
+                    # label.placement = label_placement_min(),
                     breaks = AnchorBreaks(0, exclude = 0)) +
   
-  scale_fill_divergent_discretised("Air temperature (K)", 
+  scale_fill_divergent_discretised("Air temperature (K)",
                                    # limits = c(-2.25, 2.25),
                                    labels = one_less,
-                                   guide = guide_colorsteps_bottom(15, show.limits = TRUE)) + 
-  scale_y_level(minor_breaks= NULL, 
+                                   guide = guide_colorsteps_bottom(15, show.limits = TRUE)) +
+  scale_y_level(minor_breaks= NULL,
                 sec.axis = sa_height_axis(breaks = seq(0, 50, by = 10),
                                           labels = function(x) paste0("~", x, " km"))) +
   scale_linetype(guide = "none") +
@@ -1376,7 +1380,8 @@ t %>%
   facet_grid(~term) +
   axis_labs_smol +
   coord_cartesian(clip = "off") +
-  tag_facets()
+  tag_facets() +
+  NULL
 ```
 
 The relation between cEOFs and air temperature was also evaluated.
