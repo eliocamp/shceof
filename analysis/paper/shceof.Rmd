@@ -43,11 +43,11 @@ bibliography:
 bibstyle: spbasic
 # bibstyle options spbasic(default), spphys, spmpsci
 output: 
-  bookdown::word_document2: default
+  # bookdown::word_document2: default
   bookdown::pdf_book: 
       base_format: rticles::springer_article
       latex_engine: "xelatex"
-      citation_package: "natbib"
+      # citation_package: "natbib"
       # pandoc_args: ["--lua-filter=abstract-to-meta.lua"]
 always_allow_html: true
 header-includes: 
@@ -76,10 +76,7 @@ knitr::opts_chunk$set(
   dev = c("pdf", "png")
 )
 
-
-
 width_column <- 3.3
-
 
 library(metR)
 library(data.table)
@@ -90,8 +87,6 @@ library(ggperiodic)
 library(patchwork)
 library(kableExtra)
 library(shceof)
-
-
 
 theme_set(theme_shceof(base_size = 10) +
             theme(legend.box.spacing = grid::unit(-.5, "lines")))
@@ -104,7 +99,6 @@ panel_background <- theme(panel.background = element_rect(fill = "#fbfbfb", colo
 grid <- theme(panel.grid = element_line(color = "gray10", size = 0.4, linetype = 3))
 no_grid <- theme(panel.grid = element_blank())
 grid_y <- theme(panel.grid.major.y = element_line(color = "gray60", size = 0.1))
-
 
 
 guide_colorstrip_bottom <- function(width = 15, height = 0.5, 
@@ -187,12 +181,10 @@ geom_coords <- function() {
                                 alpha = 0.7,
                                 colour = "black",
                                 bg.colour = "white")
-    
   )
 }
 
 coord_polar <- function(ymax = -20, ...) {
-  
   x <- c(seq(0, 360, length.out = 40), 
          seq(360, 0, length.out = 40), 
          0)
@@ -391,66 +383,111 @@ psa_time <- psa$left[season(time) == "SON"]
 
 # Introduction
 
+The large-scale extratropical circulation in the Southern Hemisphere (SH) is strongly zonally symmetric, but its zonal departures are highly relevant for regional impacts [e.g. @hoskins2005].
+Zonal asymmetries of extratropical circulation in the Southern Hemisphere strongly modulate weather systems and regional climate through promoting longitudinally different latitudinal transport of heat, humidity, and momentum [@trenberth1980a; @raphael2007] and could even be related to the occurrence of high-impact climate extremes [@pezza2012].
 
-The large-scale extratropical circulation in the Southern Hemisphere (SH) is strongly zonally symmetric, but its zonal departures are highly relevant for regiona limpacts and could even be related to the occurrence of high-impact climate extremes (REFERENCE). 
-Zonal asymmetries of extratropical circulation in the Southern Hemisphere strongly modulate weather systems and regional climate through promoting longitudinally different latitudinal transport of heat, humidity, and momentum [@trenberth1980].
+Zonally asymmetric circulation is typically described by the amplitude and phase of zonal waves obtained by Fourier decomposition of geopotential heights or sea-level pressures at each latitude [e.g. @vanloon1972; @trenberth1980a; @turner2017].
+This approach suggests that zonal waves 1 and 3 explain almost 99% of the total variance in the annual mean 500-hPa pattern at 50ºS [@vanloon1972].
+@trenberth1985 concluded that wave 3 plays a role in the development of blocking events.
+In addition, previous works have identified at extratropical and subpolar latitudes, wave-like patterns with dominant wavenumbers 3-4, also exerting distinctive regional impacts.
+@raphael2007 shows that variability in the planetary wave 3 projected onto its climatological location is associated with anomalies in the Antarctic sea-ice concentration.
 
-Well-known features of the zonally asymmetric circulation in the SH are the Pacific–South American Patterns [@mo2001], which are associated with Rossby wave trains influencing precipitation anomalies in regions like South America, particularly in the September-October-November trimester (cita). 
-In addition, previous works have identified at extratropical and subpolar latitudes, wave-like patterns with dominant wavenumbers  3--4, also exerting distinctive regional impacts.  
-@raphael2007 shows that variability in the planetary wave 3 projected onto its climatological location is associated with anomalies in the Antarctic sea-ice concentration. 
-@irving2015 showed that planetary wave amplitude in general is associated to sea-ice concentration, as well as to temperature and precipitation anomalies {where?}.
+The Fourier decomposition relies on the assumption that the circulation can be meaningfully described in terms of zonal waves of constant amplitude along a latitude circle.
+However, this is not valid for meridionally propagating waves or zonal waves with localised amplitudes.
+Addressing this limitation, the Fourier technique can be generalized to integrate all planetary wave amplitude regardless of wave number, by computing the wave envelope [@irving2015].
+The latter makes possible to represent planetary waves with different amplitude at different longitudes, but it removes all information about phase and wave number.
+With this approach, @irving2015 showed that planetary wave amplitude in general is associated to Antarctic sea-ice concentration and temperature, as well as to precipitation anomalies in regions of significant topography in SH mid-latitudes and Antarctica.
 
-Some of these zonally asymmetric patterns of the SH circulation variability, appear to have experienced secular changes. 
-For instance, @raphael2003 found that the amplitude of the zonal wave 1 experienced a large increase and that the zonal wave 3 experienced changes in its annual cycle between 1958 and 1996. 
+Another extensively used approach to characterize the SH tropospheric circulation anomalies, is by computing Empirical Orthogonal Functions (EOF, also known as Principal Component Analysis).
+Within the EOF framework, the Southern Annular Mode (SAM) appears as the leading mode of variability of the SH circulation [@fogt2020].
+SAM represents a relatively zonally symmetric pattern of alternating low pressures in polar latitude and a ring of high pressures in high latitudes with an embedded wave 3 pattern that is more prominent in the Pacific sector.
+Moreover, the 2nd and 3rd EOFs, usually known as Pacific--South American Patterns (PSA) 1 and PSA2 patterns, respectively, describe meridionally propagating wave trains that originates in the eastern equatorial Pacific and Australian-Indian Ocean sector, and travel towards the South Atlantic following a great-circle arch along the Antarctic coast [@mo2001].
+These patterns influence precipitation anomalies in regions like South America from autumn to spring (REF?).
+Although these patterns are usually derived by applying EOF to temporal anomalies, [@raphael2003] also applied EOF methods specifically to zonal anomalies.
+More recently, [@irving2016] proposed a novel methodology for objectively identifying the PSA pattern using Fourier decomposition.
+
+Patterns resulting from EOF analyses are more flexible than Fourier decomposition derived modes in the sense that they can capture oscillation patterns that cannot be characterised by purely sinusoidal waves with constant amplitude.
+Nonetheless, they are restricted to standing oscillation modes and could not represent properly propagating or phase-varying features such as zonal waves.
+A single EOF can also represent a mixture of two or more physical modes.
+
+A third methodology commonly used consists on identifying particular features of interest and creating indices using simple methods such as averages and differences.
+Examples of this methodology are the SAM Index of [@gong1999], the SH wave 3 activity index defined by @raphael2004 and the SH zonally asymmetric circulation index from @hobbs2010.
+These derived methods are grounded on other methods such as Fourier decomposition or EOF to identify the centres of action for the described phenomena and can be useful to characterise features that are not readily apparent with these methods.
+It is commonly easy the computation of these kind of indices, but they could be unable to capture non-stationary patterns.
+
+An alternative methodology that has been proposed to study travelling and standing waves is complex Empirical Orthogonal Functions [@horel1984].
+This method extends EOF analysis to capture oscillations with varying amplitude and phase and has been applied to the time domain on water level to study tide-river interactions [@laurel-castillo2020] and temperature and precipitation anomalies [e.g. @krokhin2007; @gelbrecht2018].
+To our knowledge, complex EOF has not been applied in the spatial domain to capture the phase-varying nature of planetary waves.
+
+Some of the zonally asymmetric patterns of the SH circulation variability described previously, appear to have experienced secular changes.
+For instance, @raphael2003 found that the amplitude of the zonal wave 1 experienced a large increase and that the zonal wave 3 experienced changes in its annual cycle between 1958 and 1996.
 However, little is known yet about variability and trends of these patterns.
 
-Zonally asymmetric circulation is typically described by the amplitude and phase of zonal waves obtained by Fourier decomposition of geopotential heights or sea-level pressures at each latitude  [e.g. @vanloon1972; @trenberth1980; @turner2017].
-This approach suggests that zonal waves 1 and 3 explain most of the variance of the SH tropospheric extratropical circulation (@vanloon1972). 
-However, this methodology relies on the assumption that the circulation can be meaningfully described in terms of zonal waves of constant amplitude along a latitude circle. 
-However, this is not valid for meridionally propagating waves or zonal waves with localised amplitudes.
-In the case of the wave 3, for example, @trenberth1985 concluded that it plays a role in the development of blocking events, but this was mostly due to increased amplitude of a longitudinally localised wave train instead of an hemispheric-scale zonal wave 3.
+The general goal of this study is to improve the description and understanding of springtime zonally asymmetric extratropical SH circulation using complex Empirical Orthogonal Functions, which allow to describe phase varying planetary waves with variable amplitudes along a latitude circle.
+In addition, it is proposed to expand the knowledge of the simultaneous behaviour of SH asymmetric circulation in the troposphere and the stratosphere.
+
+In Section 2 we describe the methods.
+In Section 3.1, we analyse the spatial patterns of each complex EOF.
+In Section 3.2 we study the spatial regressions with geopotential height and temperature anomalies.
+In Section 3.3, we analyse the relationship between cEOF1 and Ozone, and between cEOF2 with the SAM and the PSA.
+In Section 3.4 we study tropical forcings that explain the variability of each cEOF.
+Finally, in Section 3.5 we show the relationship between these modes of variability and precipitation anomalies in South America and Oceania.
 
 
-The Fourier technique can be generalised to integrate all planetary wave amplitude? regardless of wave number, by computing the wave envelope @irving2015.
-The latter makes possible to represent planetary waves with different amplitude at different longitudes, but it removes all information about phase and wave number.
+
+<!-- The large-scale extratropical circulation in the Southern Hemisphere (SH) is strongly zonally symmetric, but its zonal departures are highly relevant for regional impacts and could even be related to the occurrence of high-impact climate extremes (REFERENCE).  -->
+<!-- Zonal asymmetries of extratropical circulation in the Southern Hemisphere strongly modulate weather systems and regional climate through promoting longitudinally different latitudinal transport of heat, humidity, and momentum [@trenberth1980]. -->
+
+<!-- Hablar simplemente de cómo estos fenómenos varían en longitud.  -->
+
+<!-- @hill2009 ->  -->
+
+<!-- Comparan eventos ENSO del 97 y de 2002 -->
+<!-- La posición de las anomalías de circulación (PSA) son importantes para determinar el impacto del ENSO en sudamérica. Sugiere que la localización de la anomalía de SST cambia la localización del PSA.  -->
+
+<!-- > The meridional winds from the idealised experiments based on simplified and localised SST warming showed a significant difference between experiments forced by eastern versus central-west Pacific SST anomalies, with a clear phase shift of the PSA apparent. This phase shift in the idealised experiments is possibly the main factor responsible for the different responses in South American atmospheric circulation between the 1997/1998 and 2002/2003 El Niño events. The phase shift over southeastern South America was also seen in the low-level 850 hPa winds in the EN97 and EN02 experiments, suggesting that the PSA phase shift is responsible for the shift in the moisture transport over southeastern Brazil between the two El Niño events. In summary, the location of the maximum SST anomaly appears to be an important factor in controlling the amount of moisture transported into the SACZ region during El Niño events.  -->
+
+<!-- @hobbs2010 -> muestra la importancia de la longitud de ciclones -->
 
 
-Another extensively used approach to characterize the SH circulation anomalies, is by computing Empirical Orthogonal Functions (EOF, also known as Principal Component Analysis). 
-Within the EOF framework, the Southern Annular Mode (SAM) appears as the leading mode of variability of the SH circulation [@fogt2020] followed by two PSA-like patterns (Mo and Paegle 2001). 
-SAM represents a relatively zonally symmetric pattern of alternating low pressures in polar latitude and a ring of high pressures in high latitudes with an embedded wave 3 pattern that is more prominent in the Pacific sector.
-Moreover, the 2nd and 3rd EOFs, usually known as PSA1 and PSA2 patterns, respectively, describe meridionally propagating wave trains that originates in the eastern equatorial Pacific and Australian-Indian Ocean sector, and travel towards the South Atlantic following a great-circle arch along the Antarctic coast. 
-These patterns are usually derived by applying EOF to temporal anomalies, but @raphael2003 also applied EOF methods specifically to zonal anomalies.
+<!-- ciasto2015 -> no investiga impactos -->
 
-Patterns resulting from EOF analyses are more flexible than Fourier decomposition derived modes in the sense that they can capture oscillation patterns that cannot be characterised by purely sinusoidal waves with constant amplitude. 
-Nonetheless, they are restricted to standing oscillation modes and could not represent properly propagating or phase-varying features such as zonal waves. 
-A single EOF can also represent a mixture of two or more physical modes.
-The inability of a single EOF to describe travelling waves is what forces the PSA pattern to be described by two EOFs. 
-@irving2016 characterise this pattern in a Fourier framework. Being a meridionally propagating mode, the PSA cannot be correctly characterised by Fourier decomposition at each latitude circle.
-As a result, they reprojected meridional wind fields so that the path of the PSA laid on the equator. On this new projection, they could identify the PSA using Fourier decomposition.
+<!-- sun2013 -->
 
-Finally, another, hybrid methodology commonly used consists on identifying particular features of interest and creating indices using simple methods such as averages and differences.
-The SAM Index defined by [@marshall2003] following Gong and @gong1999, for example, describes SAM variability by the averaging the difference of sea level pressure between 40ºS and 65ºS.
-On the other hand, @raphael2004 used a similar methodology to describe the wave 3 activity in the SH circulation. 
-Averaging standardised geopotential-height anomalies at three locations of the ridges associated to the zonal wave 3 of the climatological mean. 
-By construction, the index is equivalent to projects the amplitude of the zonal wave 3 on the phase of the zonal wave 3 of the climatological mean field. 
-Similarly, @hobbs2010 propose that the zonally asymmetric circulation in the SH can be described by the strength and location of two anticyclones located in the sub-Antarctic western hemisphere. 
-These methods are grounded on other methods to identify the centres of action for the described phenomena and can be useful to characterise features that are not readily apparent with Fourier or EOF methods. 
-Using information at specific regions or locations makes easy the computation of indices like those, but they are not very robust or unable to capture non-stationary patterns.
+<!-- wilson2014 -> -->
+
+<!-- Observaciones y modelos enso canonico y modoki. diferentes patrones de circulacion.  -->
 
 
-The general goal of this study is to improve the description and understanding of planetary waves in the SH using an index that is able to capture the phase-varying nature of planetary waves and is flexible enough to describe planetary waves with non-constant amplitude in each latitude circle. 
-We use complex Empirical Orthogonal Functions [@horel1984] as a robust extension of EOF analysis that is capable of describing rich structures with meridional and zonal propagation, and amplitude modulation such as the PSA.
-
-We apply this method to characterise the springtime zonally asymmetric circulation of the extratropical SH circulation. 
-In addition to take vertical distribution into account, we analyse both the troposphere and the stratosphere.
 
 
-In Section \@ref(methods) we describe the methods.
-In Section \@ref(spatial), we analyse the spatial patterns of each complex EOF.
-In Section \@ref(regressions) we study the spatial regressions with geopotential height and temperatuer.
-In Section \@ref(other-variables), we analyise the relationship between cEOF1 and Ozone, and between EOF2 and the Southern Annular Mode and the PSA.
-In Section \@ref(tropical) we look for tropical forcings that explain the variability of each cEOF.
-Finally, in Section \@ref(precipitation) we show the relationship between these modes of variabiltiy and precipitation in South America and Oceania.
+<!-- wang2021 ->  -->
+
+<!-- > However, the spatial pattern of the PSA wave train excited by ENSO seems to be -->
+<!-- > non-stationary. Fogt and Bromwich (2006) indicated that the PSA mode moved -->
+<!-- > eastwards by 20° longitude in the 1990s owing to the eastward shift of the tropical -->
+<!-- > convective position. In addition, Wilson et al. (2014, 2016) and Ciasto et al. (2015) -->
+<!-- > found that the different types of ENSO can contribute to the wave shift. Specifically, -->
+<!-- > Rossby waves excited by central Pacific (CP)–type El Niño shift westwards owing to -->
+<!-- > the westward movement of the tropical diabatic heating. -->
+
+
+<!-- Diferencia en la localización de los centros en LN y EN -> diferencias en los impactos en la península antártica.  -->
+
+<!-- Lo más importante es la localización de la salida del jet, no la perturbación de sst.  -->
+
+<!-- fogt2006 ->  -->
+
+<!-- cambios en la posición de las teleccionexiones. Pero es todo con composiciones y comparando décadas. No mira impactos. -->
+
+
+<!-- lou2021 ->  -->
+
+<!-- > In combination, they produce the single propagating PSA mode. -->
+
+<!-- Complicado y no entiendo mucho, pero cosas que puedo ver es que PSA forza el océano subtropical que luego es precursora de ENSO. No sé si eso es súper  -->
+
+
 
 # Data and Methods {#methods}
 
@@ -476,10 +513,10 @@ We chose this latitude band because it is wide enough to capture most of the rel
 
 We computed the level-dependent SAM index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period according [@baldwin2009].
 We further split the SAM into its zonally symmetric and zonally asymmetric components (S-SAM and A-SAM indices respectively).
-These indices were obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields, as proposed by @campitelli2021.
+These indices were obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields, as proposed by @campitelli2022.
 Seasonal indices of the Pacific South American patterns (PSA1 and PSA2) were calculated -- in agreement with @mo2001 -- as the third and fourth leading EOF of seasonal mean anomalies for SH 500 hPa geopotential height.
 
-Linear trends were computed by Ordinary Least Squares (OLS) and the 95% confidence interval was computed assuming a t-distribution with the appropriate residual degrees of freedom [@wilks2011r].
+Linear trends were computed by Ordinary Least Squares (OLS) and the 95% confidence interval was computed assuming a t-distribution with the appropriate residual degrees of freedom [@wilks2011].
 
 ## Complex Empirical Orthogonal Functions (cEOF)
 
@@ -1081,7 +1118,7 @@ Comparing the location of the positive anomaly near 90ºW in column b of Figure�
 
 ### SAM
 
-(ref:sam-eof-vertical-cap) Coefficient of determination between the real and imaginary part of each cEOF and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level according to @campitelli2021 for the 1979 -- 2019 period. Thick lines represent estimates with p-value \< 0.01 corrected for False Detection Rate [@benjamini1995].
+(ref:sam-eof-vertical-cap) Coefficient of determination between the real and imaginary part of each cEOF and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level according to @@campitelli2022 for the 1979 -- 2019 period. Thick lines represent estimates with p-value \< 0.01 corrected for False Detection Rate [@benjamini1995].
 
 ```{r sam-eof-vertical, fig.cap = "(ref:sam-eof-vertical-cap)", fig.height=4, fig.width=width_column}
 time <- ceof[, eof[[1]]$left, by = .(season)] %>%
@@ -1132,7 +1169,7 @@ Correlations between SAM and the Real cEOF2 are non-significant.
 
 The relationship between the tropospheric SAM and cEOF1 is explained entirely by the zonally symmetric component of the SAM as shown by the low and statistically non-significant correlations between the A-SAM and either the Real or Imaginary cEOF1 and the high correlation with the S-SAM below 100 hPa.
 In the stratosphere, the Real cEOF1 is correlated with both A-SAM and S-SAM, while the Imaginary cEOF1 is highly correlated only with the A-SAM.
-These correlations are consistent with the regression patterns of geopotential height in Figure \@ref(fig:eof1-regr-gh) and their comparison with those obtained for SAM, A-SAM and S-SAM by @campitelli2021.
+These correlations are consistent with the regression patterns of geopotential height in Figure \@ref(fig:eof1-regr-gh) and their comparison with those obtained for SAM, A-SAM and S-SAM by @@campitelli2022.
 
 ```{r eof-filtered, eval=FALSE, fig.cap="Spatial pattern of the leading EOF of 200 hPa geopotential height with the variability of cEOF2 filtered out South of 20º. Arbitrary units.", fig.height=2.5, fig.width=2.5, include=FALSE}
 cEOF2 <- ceof$eof[[1]]$left[cEOF == "cEOF2"] %>% 
@@ -2236,7 +2273,7 @@ gdata %>%
 <!-- There is a strong relationship between the phase of the cEOF2 and precipitation anomalies in eastern Australia, but the Real and Imaginary phases we chose are not exactly aligned with the direction that maximises this relationship. -->
 
 
-Over South America, the Imaginary cEOF has positive correlations with precipitation in South Eastern South America (SESA) and central Chile, and negative correlations in eastern Brazil. This again is a well-known springtime precipitation signature of ENSO [@cai2020a] and it is also similar to the precipitation anomalies associated with the A-SAM [@campitelli2021].
+Over South America, the Imaginary cEOF has positive correlations with precipitation in South Eastern South America (SESA) and central Chile, and negative correlations in eastern Brazil. This again is a well-known springtime precipitation signature of ENSO [@cai2020a] and it is also similar to the precipitation anomalies associated with the A-SAM [@@campitelli2022].
 
 (ref:pp-america-cap) As Figure \@ref(fig:pp-oceania) but for South America
 
@@ -2356,3 +2393,5 @@ plot_sst_psi(sst_regr[cEOF == "cEOF1"], psi_regr[cEOF == "cEOF1"])
 ```{r pp-temp-1, fig.cap="(ref:pp-temp-cap-1)", fig.width=6.6, fig.height=5.5, dependson="plot_pp"}
 plot_pp(pp_regr[cEOF == "cEOF1"], t2m_regr[cEOF == "cEOF1"], hgt850_regr[cEOF == "cEOF1"])
 ```
+
+
