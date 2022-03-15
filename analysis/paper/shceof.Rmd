@@ -423,8 +423,14 @@ Some of the zonally asymmetric patterns of the SH circulation variability descri
 For instance, @raphael2003 found that the amplitude of the zonal wave 1 experienced a large increase and that the zonal wave 3 experienced changes in its annual cycle between 1958 and 1996.
 However, little is known yet about variability and trends of these patterns.
 
-The general goal of this study is to improve the description and understanding of springtime zonally asymmetric extratropical SH circulation using complex Empirical Orthogonal Functions, which allow to describe phase varying planetary waves with variable amplitudes along a latitude circle.
+The general goal of this study is to improve the description and understanding of the zonally asymmetric extratropical SH circulation using complex Empirical Orthogonal Functions, which allow to describe phase varying planetary waves with variable amplitudes along a latitude circle.
 In addition, it is proposed to expand the knowledge of the simultaneous behaviour of SH asymmetric circulation in the troposphere and the stratosphere.
+
+
+We restrict this paper to the September-October-November (SON) trimester.
+We chose this season because it showed the strongest and more clearly interpretable results in a preliminary analysis of the four season.
+This is is consistent with previous research that shows that this season experiences a maximum in tropical teleconnections [@cazes-boezio2003a] and stratosphere-troposphere interactions [@lim2018].
+
 
 In Section 2 we describe the methods.
 In Section 3.1, we analyse the spatial patterns of each complex EOF.
