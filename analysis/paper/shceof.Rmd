@@ -425,7 +425,9 @@ These derived methods are grounded on other methods such as Fourier decompositio
 It is commonly easy the computation of these kind of indices, but they could be unable to capture non-stationary patterns.
 
 An alternative methodology that has been proposed to study travelling and standing waves is complex Empirical Orthogonal Functions [@horel1984].
-This method extends EOF analysis to capture oscillations with varying amplitude and phase and has been applied to the time domain on water level to study tide-river interactions [@laurel-castillo2020] and temperature and precipitation anomalies [e.g. @krokhin2007; @gelbrecht2018].
+This method extends EOF analysis to capture oscillations with varying amplitude and phase and has been applied to the time domain. For instance, 
+@krokhin2007 applied cEOF to station-based monthly precipitation anomalies and monthly temperature anomalies in the Eastern Siberia and the Far East region to characterise the main modes of variability and their connection to teleconnection indices. 
+Similarly, @gelbrecht2018 used cEOF applied to daily precipitation from reanalysis to study the propagating characteristics of the South American Monsoon. 
 To our knowledge, complex EOF has not been applied in the spatial domain to capture the phase-varying nature of planetary waves.
 
 Some of the zonally asymmetric patterns of the SH circulation variability described previously, appear to have experienced secular changes.
