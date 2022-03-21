@@ -435,19 +435,16 @@ However, little is known yet about variability and trends of these patterns.
 The general goal of this study is to improve the description and understanding of the zonally asymmetric extratropical SH circulation using complex Empirical Orthogonal Functions, which allow to describe phase varying planetary waves with variable amplitudes along a latitude circle.
 In addition, it is proposed to expand the knowledge of the simultaneous behaviour of SH asymmetric circulation in the troposphere and the stratosphere.
 
-
 We restrict this paper to the September-October-November (SON) trimester.
 We chose this season because it showed the strongest and more clearly interpretable results in a preliminary analysis of the four season.
 This is is consistent with previous research that shows that this season experiences a maximum in tropical teleconnections [@cazes-boezio2003a] and stratosphere-troposphere interactions [@lim2018].
 
-
-In Section 2 we describe the methods.
-In Section 3.1, we analyse the spatial patterns of each complex EOF.
-In Section 3.2 we study the spatial regressions with geopotential height and temperature anomalies.
-In Section 3.3, we analyse the relationship between cEOF1 and Ozone, and between cEOF2 with the SAM and the PSA.
-In Section 3.4 we study tropical forcings that explain the variability of each cEOF.
-Finally, in Section 3.5 we show the relationship between these modes of variability and precipitation anomalies in South America and Oceania.
-
+In Section \@ref(methods) we describe the methods.
+In Section \@ref(spatial) we analyse the spatial patterns of each complex EOF.
+In Section \@ref(regressions) we study the spatial regressions with geopotential height and temperature anomalies.
+In Section \@ref(other-variables) we analyse the relationship between cEOF1 and Ozone, and between cEOF2 with the SAM and the PSA.
+In Section \@ref(tropical) we study tropical forcings that explain the variability of each cEOF.
+Finally, in Section \@ref(precipitation) we show the relationship between these modes of variability and precipitation anomalies in South America and Oceania.
 
 
 <!-- The large-scale extratropical circulation in the Southern Hemisphere (SH) is strongly zonally symmetric, but its zonal departures are highly relevant for regional impacts and could even be related to the occurrence of high-impact climate extremes (REFERENCE).  -->
