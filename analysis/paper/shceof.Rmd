@@ -291,6 +291,15 @@ enso <- rsoi::download_oni(TRUE, data_path("raw", "oni.csv")) %>%
   .[, oni := oni*season_weights(time)] %>% 
   .[, .(oni = mean(oni)), by = .(time = seasonally(time))]
 
+
+dmi <- download_dmi() %>%
+  as.data.table() %>%
+  .[, .(time = lubridate::as_datetime(Date), dmi = DMI)] %>%
+  na.omit() %>%
+  .[season(time) == "SON"] %>%
+  .[, dmi := dmi*season_weights(time)] %>% 
+  .[, .(dmi = mean(dmi)), by = .(time = seasonally(time))]
+
 sams <- readRDS(data_path("derived", "sam.Rds")) %>%
   .[season(time) == "SON"] %>%
   .[, estimate := estimate*season_weights(time)] %>% 
@@ -1779,6 +1788,14 @@ enso_cor <-  ceof[, eof[[1]]$left, by = .(season)] %>%
   .[, correlate(hgt, oni), by = .(cEOF, part)]
 ```
 
+```{r dmi_cor}
+dmi_cor <-  ceof[, eof[[1]]$left, by = .(season)] %>%
+  sep_ReIm() %>%
+  .[, hgt := scale(hgt), by = .(cEOF, part)] %>%
+  dmi[., on = "time"] %>%
+  na.omit() %>%
+  .[, correlate(hgt, dmi), by = .(cEOF, part)]
+```
 
 ```{r spoke}
 spoke <- function(data, coords) {
@@ -1909,6 +1926,7 @@ Besides showing the regression of the real and imaginary parts, we also show reg
 The Imaginary cEOF2 is associated with strong positive SST anomalies on the Central Pacific and negative anomalies over an area across the North of Australia and New Zealand, the South Pacific Convergence Zone (SPCZ) (Figure \@ref(fig:sst-psi-2).b1).
 This pattern is almost canonically positive ENSO [@bamston1997] and indeed, the correlation between the Imaginary cEOF2 and the Oceanic Niño Index [@bamston1997] is significant and very high `r enso_cor[cEOF == "cEOF2" & part == "Imaginary"]$text`. 
 On top of this ENSO-like pattern, there are positive anomalies in the western Indian Ocean and negative values in the eastern Indian Ocean, resembling a positive Indian Ocean Dipole. 
+The correlation between the Imaginary cEOF2 and the DMI is `r dmi_cor[cEOF == "cEOF2" & part == "Imaginary"]$text`. 
 
 Fittingly, the Imaginary cEOF2 is also associated with strong wave-like streamfunction anomalies emanating from the tropics (Figure \@ref(fig:sst-psi-2).b2), both from the Central Pacific sector and the Incean Ocean.
 These are consistent with the effect of ENSO and the Indian Ocean Dipole on the extratropics: the SST anomalies initiate anomalous tropical convection that excites Rossby waves that propagate meridionally towards higher latitudes [@mo2000; @cai2011; @nuncio2015].
