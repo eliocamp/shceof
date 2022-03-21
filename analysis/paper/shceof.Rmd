@@ -508,13 +508,14 @@ Finally, in Section 3.5 we show the relationship between these modes of variabil
 
 ## Data
 
-
-
 We used monthly geopotential height, air temperature, ozone mixing ratio, and total ozone column (TOC) at 2.5\degree longitude by 2.5\degree latitude of horizontal resolution and 37 vertical isobaric levels from the European Centre for Medium-Range Weather Forecasts Reanalysis version 5 [ERA; @era5] for the period 1979-2019. 
 Most of our analysis is restricted to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 [@era5be] to describe long-term trends. 
 We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK [@fishpack] and we computed horizontal wave activity fluxes following @plumb1985. 
 Sea Surface Temperature (SST) monthly fields are from Extended Reconstructed Sea Surface Temperature (ERSST) v5 [@huang2017] and precipitation monthly data from the CPC Merged Analysis of Precipitation [@cmap], with a 2.5\degree resolution in latitude and longitude.
 The rainfall gridded dataset is based on information from different sources such as rain gauge observations, satellite inferred estimations and the NCEP-NCAR reanalysis, and it is available since 1979 to present.
+
+The Oceanic Niño Index [ONI, @bamston1997] comes from NOAA's Climate Prediction Center and and the Dipole Mode Index [DMI, @saji2003] from Global Climate Observing System Working Group on Surface Pressure.
+In both cases, the monthly time series averaged seasonally to produce seasonal time series. 
 
 ## Methods
 
@@ -844,7 +845,7 @@ We evaluated statistical significance using a two-sided t-test and, in the case 
 
 ## Computation procedures
 
-We performed all analysis in this paper using the R programming language [@rcoreteam2020], using data.table [@dowle2020] and metR [@campitelli2020] packages. All graphics are made using ggplot2 [@wickham2009]. We downloaded data from reanalysis using the ecmwfr package [@hufkens2020] and indices of the ENSO with the rsoi package [@albers2020]. The paper was rendered using knitr and rmarkdown [@xie2015; @allaire2020].
+We performed all analysis in this paper using the R programming language [@rcoreteam2020], using data.table [@dowle2020] and metR [@campitelli2020] packages. All graphics are made using ggplot2 [@wickham2009]. We downloaded data from reanalysis using the ecmwfr package [@hufkens2020] and indices of ENSO and Indian Ocean Dipole with the rsoi package [@albers2020]. The paper was rendered using knitr and rmarkdown [@xie2015; @allaire2020].
 
 # Results
 
@@ -1926,7 +1927,7 @@ Besides showing the regression of the real and imaginary parts, we also show reg
 The Imaginary cEOF2 is associated with strong positive SST anomalies on the Central Pacific and negative anomalies over an area across the North of Australia and New Zealand, the South Pacific Convergence Zone (SPCZ) (Figure \@ref(fig:sst-psi-2).b1).
 This pattern is almost canonically positive ENSO [@bamston1997] and indeed, the correlation between the Imaginary cEOF2 and the Oceanic Niño Index [@bamston1997] is significant and very high `r enso_cor[cEOF == "cEOF2" & part == "Imaginary"]$text`. 
 On top of this ENSO-like pattern, there are positive anomalies in the western Indian Ocean and negative values in the eastern Indian Ocean, resembling a positive Indian Ocean Dipole. 
-The correlation between the Imaginary cEOF2 and the DMI is `r dmi_cor[cEOF == "cEOF2" & part == "Imaginary"]$text`. 
+Unsurprisingly, the correlation between the Imaginary cEOF2 and the DMI is `r dmi_cor[cEOF == "cEOF2" & part == "Imaginary"]$text`. 
 
 Fittingly, the Imaginary cEOF2 is also associated with strong wave-like streamfunction anomalies emanating from the tropics (Figure \@ref(fig:sst-psi-2).b2), both from the Central Pacific sector and the Incean Ocean.
 These are consistent with the effect of ENSO and the Indian Ocean Dipole on the extratropics: the SST anomalies initiate anomalous tropical convection that excites Rossby waves that propagate meridionally towards higher latitudes [@mo2000; @cai2011; @nuncio2015].
@@ -2393,6 +2394,10 @@ In particular, it is not clear whether the close identification between the Imag
 
 A version-controlled repository of the code used to create this analysis, including the code used to download the data can be found at <https://github.com/eliocamp/shceof>.
 
+
+* The Oceanic Niño Index is available via NOAA's Climate Prediction Center: <https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/detrend.nino34.ascii.txt>.
+
+* The Dipole Mode Index is available via Global Climate Observing System Working Group on Surface Pressure: <https://psl.noaa.gov/gcos_wgsp/Timeseries/Data/dmi.had.long.data>
 
 \appendix
 
