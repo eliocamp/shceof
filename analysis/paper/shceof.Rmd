@@ -384,7 +384,7 @@ psa_time <- psa$left[season(time) == "SON"]
 # Introduction
 
 The large-scale extratropical circulation in the Southern Hemisphere (SH) is strongly zonally symmetric, but its zonal departures are highly relevant for regional impacts [e.g. @hoskins2005].
-Zonal asymmetries of extratropical circulation in the Southern Hemisphere strongly modulate weather systems and regional climate through promoting longitudinally different latitudinal transport of heat, humidity, and momentum [@trenberth1980a; @raphael2007] and could even be related to the occurrence of high-impact climate extremes [@pezza2012].
+They strongly modulate weather systems and regional climate through promoting longitudinally different latitudinal transport of heat, humidity, and momentum [@trenberth1980a; @raphael2007] and could even be related to the occurrence of high-impact climate extremes [@pezza2012].
 
 Zonally asymmetric circulation is typically described by the amplitude and phase of zonal waves obtained by Fourier decomposition of geopotential heights or sea-level pressures at each latitude [e.g. @vanloon1972; @trenberth1980a; @turner2017].
 This approach suggests that zonal waves 1 and 3 explain almost 99% of the total variance in the annual mean 500-hPa pattern at 50ºS [@vanloon1972].
@@ -401,8 +401,8 @@ With this approach, @irving2015 showed that planetary wave amplitude in general 
 Another extensively used approach to characterize the SH tropospheric circulation anomalies, is by computing Empirical Orthogonal Functions (EOF, also known as Principal Component Analysis).
 Within the EOF framework, the Southern Annular Mode (SAM) appears as the leading mode of variability of the SH circulation [@fogt2020].
 SAM represents a relatively zonally symmetric pattern of alternating low pressures in polar latitude and a ring of high pressures in high latitudes with an embedded wave 3 pattern that is more prominent in the Pacific sector.
-Moreover, the 2nd and 3rd EOFs, usually known as Pacific--South American Patterns (PSA) 1 and PSA2 patterns, respectively, describe meridionally propagating wave trains that originates in the eastern equatorial Pacific and Australian-Indian Ocean sector, and travel towards the South Atlantic following a great-circle arch along the Antarctic coast [@mo2001].
-These patterns influence precipitation anomalies in regions like South America from autumn to spring (REF?).
+The 2nd and 3rd EOFs, usually known as Pacific--South American Patterns (PSA) 1 and PSA2 patterns, respectively, describe meridionally propagating wave trains that originate in the eastern equatorial Pacific and Australian-Indian Ocean sector, and travel towards the South Atlantic following a great-circle arch along the Antarctic coast [@mo2001].
+These patterns influence precipitation anomalies in South America [@mo2001].
 Although these patterns are usually derived by applying EOF to temporal anomalies, [@raphael2003] also applied EOF methods specifically to zonal anomalies.
 More recently, [@irving2016] proposed a novel methodology for objectively identifying the PSA pattern using Fourier decomposition.
 
