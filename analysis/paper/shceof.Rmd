@@ -396,7 +396,7 @@ In addition, previous works have identified at extratropical and subpolar latitu
 The Fourier decomposition relies on the assumption that the circulation can be meaningfully described in terms of zonal waves of constant amplitude along a latitude circle.
 However, this is not valid for meridionally propagating waves or zonal waves with localised amplitudes.
 Addressing this limitation, the Fourier technique can be generalized to integrate all planetary wave amplitude regardless of wave number, by computing the wave envelope [@irving2015].
-The latter makes possible to represent planetary waves with different amplitude at different longitudes, but it removes all information about phase and wave number.
+The latter makes it possible to represent planetary waves with different amplitude at different longitudes, but it removes all information about phase and wave number.
 With this approach, @irving2015 showed that planetary wave amplitude in general is associated to Antarctic sea-ice concentration and temperature, as well as to precipitation anomalies in regions of significant topography in SH mid-latitudes and Antarctica.
 
 Another extensively used approach to characterize the SH tropospheric circulation anomalies, is by computing Empirical Orthogonal Functions (EOF, also known as Principal Component Analysis).
@@ -495,29 +495,28 @@ Finally, in Section \@ref(precipitation) we show the relationship between these 
 
 ## Data
 
-We used monthly geopotential height, air temperature, ozone mixing ratio, and total ozone column (TOC) at 2.5\degree longitude by 2.5\degree latitude of horizontal resolution and 37 vertical isobaric levels from the European Centre for Medium-Range Weather Forecasts Reanalysis version 5 [ERA; @era5] for the period 1979-2019. 
+We used monthly geopotential height, air temperature, ozone mixing ratio, and total ozone column (TOC) at 2.5\degree longitude by 2.5\degree latitude of horizontal resolution and 37 vertical isobaric levels from the European Centre for Medium-Range Weather Forecasts Reanalysis version 5 [ERA; @era5] for the period 1979-2019. 
 Most of our analysis is restricted to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 [@era5be] to describe long-term trends. 
 We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK [@fishpack] and we computed horizontal wave activity fluxes following @plumb1985. 
-Sea Surface Temperature (SST) monthly fields are from Extended Reconstructed Sea Surface Temperature (ERSST) v5 [@huang2017] and precipitation monthly data from the CPC Merged Analysis of Precipitation [@cmap], with a 2.5\degree resolution in latitude and longitude.
+Sea Surface Temperature (SST) monthly fields are from Extended Reconstructed Sea Surface Temperature (ERSST) v5 [@huang2017] and precipitation monthly data from the CPC Merged Analysis of Precipitation [@cmap], with a 2.5\degree resolution in latitude and longitude.
 The rainfall gridded dataset is based on information from different sources such as rain gauge observations, satellite inferred estimations and the NCEP-NCAR reanalysis, and it is available since 1979 to present.
 
-The Oceanic Niño Index [ONI, @bamston1997] comes from NOAA's Climate Prediction Center and and the Dipole Mode Index [DMI, @saji2003] from Global Climate Observing System Working Group on Surface Pressure.
-In both cases, the monthly time series averaged seasonally to produce seasonal time series. 
+The Oceanic Niño Index [ONI, @bamston1997] comes from NOAA's Climate Prediction Center and the Dipole Mode Index [DMI, @saji2003] from Global Climate Observing System Working Group on Surface Pressure.
 
 ## Methods
 
 The study is restricted to the spring season, defined as the September-October-November (SON) trimester.
 We compute seasonal means for the different variables, averaging monthly values weighted by the number of days in each month.
-We use 200 hPa level to represent the high troposphere and 50 hPa to represent the lower stratosphere.
+We use the 200 hPa level to represent the high troposphere and 50 hPa to represent the lower stratosphere.
 
 The amplitude of the zonal waves was obtained through the Fourier transform of the spatial field at each latitude circle. 
 For the analysis of wave 1, we computed its amplitude and phase by averaging (area-weighted) the data for each variable and each SON between `r knitr::combine_words(LatLabel(o3wave_lats))`, and then extracting the wave-1 component of the Fourier spectrum. 
 We chose this latitude band because it is wide enough to capture most of the relevant anomalies of SH mid-latitudes.
 
-We computed the level-dependent SAM index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period according [@baldwin2009].
+We computed the level-dependent SAM index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period [@baldwin2009].
 We further split the SAM into its zonally symmetric and zonally asymmetric components (S-SAM and A-SAM indices respectively).
 These indices were obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields, as proposed by @campitelli2022.
-Seasonal indices of the Pacific South American patterns (PSA1 and PSA2) were calculated -- in agreement with @mo2001 -- as the third and fourth leading EOF of seasonal mean anomalies for SH 500 hPa geopotential height.
+Seasonal indices of the Pacific South American patterns (PSA1 and PSA2) were calculated, in agreement with @mo2001, as the third and fourth leading EOF of seasonal mean anomalies for 500-hPa geopotential heights at SH. 
 
 Linear trends were computed by Ordinary Least Squares (OLS) and the 95% confidence interval was computed assuming a t-distribution with the appropriate residual degrees of freedom [@wilks2011].
 
@@ -564,13 +563,13 @@ eof_naive[, eof[[1]]$right, by = lev] %>%
 
 ```
 
-In standard way of applying EOF analysis zonal waves may appear as pairs of EOFs, that could be degenerated representing similar patterns but shifted in phase [@horel1984].
-Figure \@ref(fig:eof-naive) shows the four eading EOFs of SON geopotential height zonal anomalies at 50 hPa south of 20\degree S.
-It is clear that the first two EOFs represent the same zonal wave 1 pattern and the last two represent a same zonal wave pattern with shorter wavenumber and four centers of action shifted by 1/4 wavelength.
+In the standard EOF analysis, zonal waves may appear as pairs of (possibly degenerated) EOFs representing similar patterns but shifted in phase [@horel1984].
+Figure \@ref(fig:eof-naive) shows the four leading EOFs of SON geopotential height zonal anomalies at 50 hPa south of 20\degree S.
+It is clear that the first two EOFs represent a single phase-varying zonal wave 1 pattern and the last two represent a similarly phase-varying pattern with shorter wavenumber and four centres of action shifted by 1/4 wavelength.
 A similar EOF structure can be seen in 200 hPa (not shown).
-Since each pair of EOFs seem to represent the same phase-varying structure, it would be desirable to combine them into a single index with amplitude and phase.
+Since each pair of EOFs seems to represent the same phase-varying structure, it would be desirable to combine them into a single pattern described by amplitude and phase.
 
-ON the other hand, complex Empirical Orthogonal Functions (cEOF) is a useful method to characterise zonal waves, associated with phase-varying structures [@horel1984].
+Complex Empirical Orthogonal Functions (cEOF) are a useful method for characterising zonal waves, associated with phase-varying structures [@horel1984].
 This method involves computing EOF on the analytic representation of the original field.
 That representation is a complex field in which the real part is the original data and the imaginary part is the original data shifted by 90\degree at each spectral frequency -- i.e. its Hilbert transform.
 The Hilbert transform is usually understood in terms of time-varying signal.
@@ -643,11 +642,11 @@ This motivates the decision of performing complex EOF jointly between levels.
 Therefore cEOFs were computed using data from both levels at the same time.
 In that sense each cEOF has a spatial component that depends on longitude, latitude and level, and a temporal component that depends only on time.
 
-The phase of principal components is defined up to an additive constant.
-For real principal components, this constant can be either 0 or $\pi$, corresponding to a change in sign.
-For complex principal components, it can be any number between 0 and $2\pi$ [@horel1984].
+The phase of cEOFs is defined up to an additive constant.
+For real EOFs, this constant can be either 0 or $\pi$, corresponding to a change in sign.
+For cEOFs, it can be any real number between 0 and $2\pi$ [@horel1984], corresponding to rotations in the complex plane.
 Since any choice is arbitrary and equally valid, we chose the phase of each cEOF so that the real and imaginary parts are aligned with meaningful phases in our analysis.
-This procedure does not create a spurious correlation, it only takes a known relationship and aligns it with a specific phase.
+This procedure does not create a spurious correlation, it only takes an existing relationship and aligns it with a specific phase.
 For the first complex principal component, the phase was chosen so that the time series corresponding to the real part has the maximum correlation with the zonal wave 1 of Total Ozone Column between `r knitr::combine_words(LatLabel(o3wave_lats))`.
 This also nearly minimises the correlation with the imaginary part.
 For the second complex principal component, the phase was chosen so that the coefficient of determination between the Oceanic Niño Index [@bamston1997] and the real part was minimized, which also nearly maximizes the correlation with the imaginary part.
@@ -2262,11 +2261,9 @@ These variables could be related with a significant sinusoidal fit that has a st
 The precipitation signal associated with the Real cEOF2 is less strong. 
 There is a residual positive correlation in the equatorial eastern Pacific and small, not statistically significant positive correlations over eastern Australia and negative ones over New Zealand.
 
-Lastly, the cEOF1 doesn't have a significant signal associated with 2-metre temperature or precipitacion (Fig. \@ref(fig:pp-temp-cap-1)).
-
 # Conclusions
 
-In this study we assessed the Austral Spring Extratropical Southern Hemisphere zonally assymetric circulation.
+In this study we assessed the Austral Spring Extratropical Southern Hemisphere zonally asymmetric circulation.
 For this purpose, two complex indices were derived using Complex Empirical Orthogonal Functions.
 This allowed us to characterise both the amplitude and phase of planetary waves that are not perfectly organised as sinusoidal waves with constant amplitude at each latitude circle.
 
