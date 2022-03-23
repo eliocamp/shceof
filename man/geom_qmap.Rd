@@ -8,7 +8,7 @@ geom_qmap(
   subset = identity,
   crop = NULL,
   color = "gray50",
-  size = 0.2,
+  size = 0.3,
   fill = NA,
   wrap = c(0, 360),
   weighting = 0.7,
