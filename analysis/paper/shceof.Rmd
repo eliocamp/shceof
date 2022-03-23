@@ -285,7 +285,7 @@ enso <- rsoi::download_oni(TRUE, data_path("raw", "oni.csv")) %>%
   .[, oni := oni*season_weights(time)] %>% 
   .[, .(oni = mean(oni)), by = .(time = seasonally(time))]
 
-dmi <- download_dmi() %>%
+dmi <- rsoi::download_dmi(TRUE, data_path("raw", "dmi.csv")) %>%
   as.data.table() %>%
   .[, .(time = lubridate::as_datetime(Date), dmi = DMI)] %>%
   na.omit() %>%
