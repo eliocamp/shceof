@@ -645,11 +645,15 @@ In that sense each cEOF has a spatial component that depends on longitude, latit
 The phase of cEOFs is defined up to an additive constant.
 For real EOFs, this constant can be either 0 or $\pi$, corresponding to a change in sign.
 For cEOFs, it can be any real number between 0 and $2\pi$ [@horel1984], corresponding to rotations in the complex plane.
-Since any choice is arbitrary and equally valid, we chose the phase of each cEOF so that the real and imaginary parts are aligned with meaningful phases in our analysis.
-This procedure does not create a spurious correlation, it only takes an existing relationship and aligns it with a specific phase.
-For the first complex principal component, the phase was chosen so that the time series corresponding to the real part has the maximum correlation with the zonal wave 1 of Total Ozone Column between `r knitr::combine_words(LatLabel(o3wave_lats))`.
-This also nearly minimises the correlation with the imaginary part.
-For the second complex principal component, the phase was chosen so that the coefficient of determination between the Oceanic Niño Index [@bamston1997] and the real part was minimized, which also nearly maximizes the correlation with the imaginary part.
+Since any choice is arbitrary and equally valid, we chose the phase of each cEOF so that the real or imaginary parts are aligned with meaningful phases in our analysis.
+
+Preliminary analysis showed that the first cEOF was closely related to the the zonal wave 1 of Total Ozone Column and the second cEOF was closely related to ENSO. 
+Therefore, to aid in the interpretation, we chose the phases of each cEOF so that these relationships are aligned with one of the complex components. 
+
+We chose the phase of cEOF1 so that the time series corresponding to the real part has the maximum correlation with the zonal wave 1 of Total Ozone Column between `r knitr::combine_words(LatLabel(o3wave_lats))`. 
+And we chose the phase of cEOF2 so that the coefficient of determination between the Oceanic Niño Index [@bamston1997] and the real part is minimized, which also nearly maximizes the correlation with the imaginary part.
+
+This procedure does not create spurious correlations, it only takes an existing relationship and aligns it with a specific phase.
 
 ```{r rotate_eofs}
 rotate <- function(z, angle = 0) {
