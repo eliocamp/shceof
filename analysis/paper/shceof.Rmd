@@ -495,7 +495,7 @@ Finally, in Section \@ref(precipitation) we show the relationship between these 
 
 ## Data
 
-We used monthly geopotential height, air temperature, ozone mixing ratio, and total ozone column (TOC) at 2.5\degree longitude by 2.5\degree latitude of horizontal resolution and 37 vertical isobaric levels from the European Centre for Medium-Range Weather Forecasts Reanalysis version 5 [ERA; @era5] for the period 1979-2019. 
+We used monthly geopotential height, air temperature, ozone mixing ratio, and total ozone column (TOC) at 2.5\degree longitude by 2.5\degree latitude of horizontal resolution and 37 vertical isobaric levels from the European Centre for Medium-Range Weather Forecasts Reanalysis version 5 [ERA; @era5] for the period 1979 -- 2019. 
 Most of our analysis is restricted to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 [@era5be] to describe long-term trends. 
 We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK [@fishpack] and we computed horizontal wave activity fluxes following @plumb1985. 
 Sea Surface Temperature (SST) monthly fields are from Extended Reconstructed Sea Surface Temperature (ERSST) v5 [@huang2017] and precipitation monthly data from the CPC Merged Analysis of Precipitation [@cmap], with a 2.5\degree resolution in latitude and longitude.
@@ -792,7 +792,7 @@ For each cEOF, we computed regression maps by fitting a multiple linear model in
 To obtain the linear coefficients of a variable $X$  with the imaginary and real parts of each cEOF we fit the equation
 
 $$
-X(\lambda, \phi, t) = \alpha(\lambda, \phi) \operatorname{Im}(\operatorname{cEOF}) + \beta(\lambda, \phi) \operatorname{Re}(\operatorname{cEOF}) + X_0(\lambda, \phi) +  \epsilon(\lambda, \phi, t)
+X(\lambda, \phi, t) = \alpha(\lambda, \phi) \operatorname{Im}(\mathrm{cEOF}) + \beta(\lambda, \phi) \mathrm{Re}(\mathrm{cEOF}) + X_0(\lambda, \phi) +  \epsilon(\lambda, \phi, t)
 $$
 
 where $\lambda$ and $\phi$ are the longitude and latitude, $t$ is the time, $\alpha$ and $\beta$ are the linear regression coefficients for imaginary and real parts respectively, $X_0$ and $\epsilon$ are the constant and error terms respectively.
@@ -868,7 +868,9 @@ era_more <- rbind(
 
 ```
 
-(ref:extended-series-cap) Time series extended using ERA5 back extended preliminary edition (period 1950 -- 1978) and ERA5 (period 1979 -- 2019). Dark straight line is the linear trend. Black horizontal and vertical line mark the mean value and range of each time series, respectively.
+(ref:extended-series-cap) Time series of the two leading cEOFs of SON zonal anomalies of geopotential height at 50 hPa and 200 hPa.
+cEOF1 (row a) and cEOF2 (row b) separated in their real (column 1) and imaginary (column 2) components. 
+Dark straight line is the linear trend. Black horizontal and vertical line mark the mean value and range of each time series, respectively.
 
 ```{r extended-series, fig.cap = "(ref:extended-series-cap)", fig.height=3, fig.width = 6, fig.env = "figure*"}
 # Check that the extended index coincides with the
@@ -926,7 +928,7 @@ era_more %>%
 ```
 
 To describe the variability of the circulation zonal anomalies, the spatial and temporal parts of the first two leading cEOFs of zonal anomalies of geopotential height at 50 hPa and 200 hPa, computed jointly at both levels, are shown in Figures \@ref(fig:ceofs-1) and \@ref(fig:extended-series).
-The first mode (cEOF1) explains 82% of the variance, while the second mode (cEOF2) explains a smaller fraction (7%).
+The first mode (cEOF1) explains 82% of the variance of the zonally anomalous fields, while the second mode (cEOF2) explains a smaller fraction (7%).
 In the spatial patterns (Fig. \@ref(fig:ceofs-1)), the real and the imaginary components are in quadrature by construction, so that each cEOF describe a single wave-like pattern whose amplitude and position (i.e. phase) is controlled by the magnitude and phase of the temporal cEOF.
 The wave patterns described by these cEOFs match the patterns seen in the traditional EOFs of Figure \@ref(fig:eof-naive).
 
@@ -934,20 +936,20 @@ The cEOF1 (Fig. \@ref(fig:ceofs-1) column a) is a hemispheric wave 1 pattern w
 At 50 hPa the Real cEOF1 has the maximum of the wave 1 at 150ºE and at 200 hPa, the maximum is located at around 175ºE indicating a westerly shift in phase.
 The cEOF2 (Fig. \@ref(fig:eof-naive) column b) shows also a zonal wave-like structure with maximum amplitude at high latitudes, but with shorter spatial scales.
 In particular, the dominant structure at both levels is a wave 3 but with larger amplitude in the pacific sector.
-This modulated amplitude is especially apparent at 200 hPa.
-There is no apparent phase shift but the amplitude of the pattern is greatly reduced in the stratosphere, suggesting that this barotropic mode represents mainly tropospheric variability.
+This modulated amplitude more evident at 200 hPa.
+There is no apparent phase shift with height but the amplitude of the pattern is greatly reduced in the stratosphere, suggesting that this barotropic mode represents mainly tropospheric variability.
 
-All cEOFs have non zero mean (Fig. \@ref(fig:extended-series)) because the geopotential fields that enter into the cEOFs algorithm are anomalies with respect to the zonal mean instead of the time mean.
-However, cEOF2's mean is almost zero, which indicates that only cEOF1 includes variability that significantly projects onto the mean zonally anomalous field.
-There is no significant simultaneous correlation between the time series.
-Both cEOFs show year-to-year variability but show no evidence of decadal variability.
+There is no significant simultaneous correlation between cEOFs time series.
+Both cEOFs show year-to-year variability but show no evidence of decadal variability (Fig. \@ref(fig:extended-series)).
+Because the geopotential fields that enter into the cEOFs algorithm are anomalies with respect to the zonal mean instead of the time mean, the cEOFs have non zero temporal mean. 
+However, cEOF2’s mean is almost zero, which indicates that only cEOF1 includes variability that significantly projects onto the mean zonally anomalous field. 
 
-A significant upward trend in the real component of cEOF1 is evident (Fig. \@ref(fig:extended-series)a.1, p-value `r trends[part == "Real" & cEOF == "cEOF1"]$p_report`)  while there is  no significant trend in any of the complex components of cEOF2.
-The positive trend in the Real cEOF1 translates into a positive trend in cEOF1 magnitude, but not in the phase (not shown).
+A significant upward trend in the real component of cEOF1 is evident (Fig. \@ref(fig:extended-series)a.1, p-value `r trends[part == "Real" & cEOF == "cEOF1"]$p_report`) while there is no significant trend in any of the complex components of cEOF2.
+The positive trend in the Real cEOF1 translates into a positive trend in cEOF1 magnitude, but not systematic change in phase (not shown).
 This long-term change indicates an increase in the magnitude of the high latitude zonal wave 1.
 In agreement, @raphael2003 detected a step change after around 1975 in the temporal evolution of leading EOF computed from August-September-October 500 hPa zonal geopotential height anomalies, which is similar to the cEOF1.
 
-## cEOFs Regressions {#regressions}
+## cEOFs Regression maps {#regressions}
 
 In the previous section, cEOFs were applied to zonal anomalies, that is anomalies derived by removing the zonally mean values in order to isolate the main characteristics of the main zonal waves characterizing the circulation in the SH. 
 In this section, regression fields were computed using the full fields of the variables in order to describe the influence of the cEOFs on the temporal anomalies.
