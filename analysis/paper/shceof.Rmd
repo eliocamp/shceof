@@ -581,32 +581,6 @@ The result of the cEOF methodology is a set of complex spatial patterns and comp
 The real and imaginary part of each spatial pattern represent the two phases of wave-like spatial patterns that are in quadrature.
 The magnitude and argument of each complex time series represent the amplitude and phase of each zonal wave.
 
-```{r corr-eofs}
-
-background_palette <- grDevices::colorRampPalette(c("white", scales::muted("red")),
-                                                  space = "Lab")
-# 
-# eof_naive[, eof[[1]]$left, by = lev] %>% 
-#   .[, item := paste(lev, EOF, sep = "_")] %>% 
-#   widyr::pairwise_cor(item, time, hgt) %>% 
-#   setDT() %>%
-#   # .[]
-#   .[tstrsplit(item1, "_")[[1]] != tstrsplit(item2, "_")[[1]], ] %>% 
-#   .[tstrsplit(item1, "_")[[1]] != 50] %>% 
-#   .[, item1 := tstrsplit(item1, "_")[[2]]] %>%
-#   .[, item2 := tstrsplit(item2, "_")[[2]]] %>% 
-#   .[, r2 := round(correlation^2, 2)] %>% 
-#   dcast(item1 ~ item2, value.var = "r2") %>% 
-#   setnames("item1", "200 hPa") %>% 
-#   kbl2(booktabs = TRUE, caption = "$R^2$ between pairs of EOFs of each level rounded to two decimals.") %>% 
-#   # add_header_above(c("", "50 hPa" = 4)) %>% 
-#   column_spec2(2:5,  background = spec_color2(.table[[.col]], option = background_palette, 
-#                                               scale_from = c(0, 1)),
-#                color = ifelse(.table[[.col]] > .5, "white", "black")) %>% 
-#   add_header_above(c("", "50 hPa" = 4)) %>%
-#   kable_classic()
-```
-
 ```{r compute-ceof}
 invisible(
   ERA5_geopotential() %>% 
