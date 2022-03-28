@@ -21,8 +21,6 @@ data_path <- function(type = c("raw", "derived"), ...) {
 
 
 data_nc_fun <- function(file, download, citation = NULL) {
-   # force(file)
-
    if (is.character(download)) {
       download <- simple_download(download)
    }
@@ -104,7 +102,7 @@ ERA5_ozone <- data_nc_fun(file = data_path("raw", "era5.o3.mon.mean.nc"),
 
 
 
-#' @param force_download Logical indicating wether to force download of data.
+#' @param force_download Logical indicating whether to force download of data.
 #' @export
 #' @rdname data_locations
 ERA5_BE <- data_nc_fun(file = data_path("raw", "era5be.mon.mean.nc"),

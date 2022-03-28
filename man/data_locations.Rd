@@ -47,7 +47,7 @@ ERSST(force_download = FALSE)
 
 \item{...}{characters to be contactenadted with [file.path()]}
 
-\item{force_download}{Logical indicating wether to force download of data.}
+\item{force_download}{Logical indicating whether to force download of data.}
 }
 \description{
 Functions that return the location of different datasets. They check that
