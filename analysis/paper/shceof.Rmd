@@ -2081,7 +2081,32 @@ Furthermore, it consolidates the identification of the cEOF2 with the PSA patter
 The correlation coefficients between precipitation anomalies and the Real cEOF2 (Fig.\ \@ref(fig:pp-temp-2)d.2) are weaker than for Imaginary cEOF2.
 There is a residual positive correlation in the equatorial eastern Pacific and small, not statistically significant positive correlations over eastern Australia and negative ones over New Zealand.
 
-# Conclusions
+
+# Discussion
+
+There is some disagreement in the literature of whether the phase of the PSA pattern is affected by the location of tropical SST anomalies [@irving2016].
+We show not only that the cEOF2 tends to be in the imaginary phase (\~PSA1) when the ENSO region is warm, but that central Pacific SST anomalies tend to move the cEOF towards the negative real phase and eastern Pacific SST anomalies tend to move it towards positive real phase.
+When ENSO is neutral, the cEOF2 is still as active, but with no preferred phase.
+This mirrors the results of @cai2002, who showed that the CSIRO Model can create PSA-like variability even in the absence of ENSO forcing (with a climatological run), but that the variability of one of the PSA modes was enhanced when adding the ENSO signal.
+
+The sensitivity of the phase of the cEOF2 to the location of the tropical SST anomalies was also seen by @ciasto2015, who detected similar Rossby wave patterns associated with central Pacific and eastern Pacific SST anomalies but with a change in phase.
+
+Some aspects of our work contrast with @irving2016 analysis of the PSA.
+They didn't find neither a strong association between PSA-like variability and ENSO, nor a relationship between it and Australian precipitation.
+Part of the disagreement could be due to the fact that we focus only on SON, which is when the teleconnection pattern is strongest, instead of the whole year.
+@irving2016 use of ERA5 forectasted precipitation instead of the more observationally constrained CMAP dataset might also be an issue.
+But in light of the previous discussion on the importance of the phase of the cEOF2 in its relationship with ENSO and with precipitation impacts, a big difference could be fact that @irving2016's methodology is insensitive to phase changes of the PSA-like variability.
+
+To the extent that the cEOF2 can be identified with the PSA, what is the advantage of the technique proposed here?
+The spatial fields that the cEOF2 index describes are in quadrature by construction, which makes it possible to derive a proper amplitude and phase.
+Furthermore, because of the way they are constructed, they are not forced to be orthogonal to the SAM.
+This allows us to show that Imaginary cEOF2 is closely related to the Southern Annular Mode in the troposphere.
+In fact, it is so highly correlated to the the zonally asymmetric portion of the SAM that we speculate that that the asymmetric component of the SAM might actually a statistical contamination of the PSA mode.
+
+
+
+
+# Conclusion
 
 In this study we assessed the Austral Spring Extratropical Southern Hemisphere zonally asymmetric circulation.
 For this purpose, two complex indices were derived using Complex Empirical Orthogonal Functions.
@@ -2096,35 +2121,13 @@ The second complex EOF represents a wave-3 pattern with maximum magnitude in the
 Essentially, it is an alternate representation of the PSA1 and PSA2 patterns [@mo2001].
 We show that the Imaginary cEOF2 can be roughly identified with the PSA1 and the Real cEOF2 with the PSA2.
 
-There is some disagreement in the literature of whether the phase of the PSA pattern is affected by the location of tropical SST anomalies [@irving2016].
-We show not only that the cEOF2 tends to be in the imaginary phase (\~PSA1) when the ENSO region is warm, but that central Pacific SST anomalies tend to move the cEOF towards the negative real phase and eastern Pacific SST anomalies tend to move it towards positive real phase.
-When ENSO is neutral, the cEOF2 is still active, but with no particular preferred phase.
-This mirrors the results of @cai2002, who showed that the CSIRO Model can create PSA-like variability even in the absence of ENSO forcing (with a climatological run), but the variability of one of the PSA modes was enhanced when adding the ENSO signal.
-The magnitude of the cEOF2 appears not to be related to the magnitude of ENSO, except for the three strongest ENSO events in the period which coincide with the three strongest cEOF2 years.
-
-The sensitivity of the phase of the cEOF2 to the location of the tropical SST anomalies was also seen by @ciasto2015, who detected similar Rossby wave patterns associated with central Pacific and eastern Pacific SST anomalies but with a change in phase.
-
-We further show that the Imaginary cEOF2 is closely related to the Southern Annular Mode in the troposphere.
-In fact, it has a very close resemblance to the zonally asymmetric portion of the SAM.
-This raises the possibility that the asymmetric component of the SAM is actually a statistical contamination of the PSA mode.
+The phase of the cEOF2 is related to the the variability of ENSO, but its magnitude appears not to be. Except for the three strongest ENSO events in the period which coincide with the three strongest cEOF2 years.
 
 Precipitation anomalies in South America associated with the Imaginary cEOF2 show a clear ENSO-like impact, with positive anomalies in South-Eastern South America, negative anomalies in Southern Brazil and positive anomalies in central Chile.
-Precipitation anomalies associated with the Real cEOF2 are low and not statistically significant, showing that the Imaginary phase is optimally aligned with the direction of maximum precipitation impacts.
+Precipitation anomalies associated with the Real cEOF2 are low and not statistically significant in this region, showing that the Imaginary phase is optimally aligned with the direction of maximum precipitation impacts there.
 
 On the other hand, over Australia, both the Real and Imaginary phase are associated with significant precipitation anomalies, and we further show that the direction of maximum impact is not aligned with our chosen rotation of cEOF2.
-However, this underscores the benefit of using complex EOF, since it would be trivial to rotate it.
-That is, look for the rotation of complex EOF that maximises the relationship and use that as the relevant index for study or forecast.
-
-Some aspects of our work are in direct contrast with @irving2016 analysis of the PSA.
-They didn't find neither a strong association between PSA-like variability and ENSO, nor a relationship between it and Australian precipitation.
-Part of the disagreement could be due to the fact that we focus data only for SON, which is when the teleconnection pattern is strongest, instead of the whole year.
-@irving2016 use of ERA5 forectasted precipitation instead of the more observationally constrained CMAP dataset might also be an issue.
-But in light of the previous discussion on the importance of the phase of the cEOF2 in its relationship with ENSO and with precipitation impacts, a big difference could be fact that @irving2016's methodology is insensitive to phase changes of the PSA-like variability.
-
-To the extent that the cEOF2 can be identified with the PSA, what is the advantage of the technique proposed here?
-The spatial fields that the cEOF2 index describes are in quadrature by construction, which makes it possible to derive a proper amplitude and phase.
-Furthermore, because of the way they are constructed, they are not forced to be orthogonal to the SAM.
-This makes it possible to study their relationship with the SAM free of the statistical contamination that comes with the usual definition of the PSA as the second and third EOFs.
+An analysis of the precipitation impacts on this regions could benefit for a differnet chosen rotation of the cEOF. 
 
 Further work should extend this analysis to other seasons and further study the relationship between the cEOF2 and the SAM.
 In particular, it is not clear whether the close identification between the Imaginary cEOF2 and the Asymmetric SAM arises from physical processes or statistical contamination.
