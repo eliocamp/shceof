@@ -41,7 +41,7 @@ bibliography:
 bibstyle: spbasic
 # bibstyle options spbasic(default), spphys, spmpsci
 output: 
-  bookdown::word_document2: default
+  # bookdown::word_document2: default
   bookdown::pdf_book: 
       base_format: rticles::springer_article
       latex_engine: "xelatex"
@@ -67,7 +67,7 @@ knitr::opts_chunk$set(
   echo = FALSE,
   cache = TRUE,
   comment = "#>",
-  cache.extra = 42,
+  cache.extra = 41,
   cache.path = "../cache/paper/",
   fig.path = "../figures/",
   dpi = 300,
@@ -278,17 +278,17 @@ correlation_statistics <- function(x, n, signif = 2) {
 ```
 
 ```{r read-indices}
-enso <- rsoi::download_oni(TRUE, data_path("raw", "oni.csv")) %>%
-  as.data.table() %>%
-  .[, .(time = lubridate::as_datetime(Date), oni = ONI)] %>%
+enso <- ENSO() %>%
+  fread() %>% 
+  .[, .(time = lubridate::as_datetime(Date), oni = ONI)] %>% 
   na.omit() %>%
   .[season(time) == "SON"] %>%
   .[, oni := oni*season_weights(time)] %>% 
   .[, .(oni = mean(oni)), by = .(time = seasonally(time))]
 
-dmi <- rsoi::download_dmi(TRUE, data_path("raw", "dmi.csv")) %>%
-  as.data.table() %>%
-  .[, .(time = lubridate::as_datetime(Date), dmi = DMI)] %>%
+dmi <- DMI() %>%
+  fread() %>% 
+  .[, .(time = lubridate::as_datetime(Date), dmi = DMI)] %>% 
   na.omit() %>%
   .[season(time) == "SON"] %>%
   .[, dmi := dmi*season_weights(time)] %>% 
@@ -338,7 +338,7 @@ era5 <- ERA5_geopotential() %>%
 # Not really important, though.
 scaling <- c(add = -2.364646e+06, mult = 3.954828e+13)
 psi <- ERA5_vorticity() %>% 
- ReadNetCDF(vars = "vo") %>%
+  ReadNetCDF(vars = "vo") %>%
   normalise_coords() %>%
   .[, lev := 200] %>% 
   .[season(time) == "SON"] %>%
@@ -1490,7 +1490,7 @@ cmap <- ReadNetCDF(CMAP(), vars = c(pp = "precip"),
 ```{r t2m}
 t2m <- ERA5_T2M() %>% 
   ReadNetCDF() %>% 
-   normalise_coords() %>%
+  normalise_coords() %>%
   .[, w := season_weights(time)] %>% 
   .[, .(t2m = mean(t2m*w)), by = .(lon, lat, time = seasonally(time))]
 ```
@@ -1509,7 +1509,7 @@ angles_labs <- setNames(c("Real", "45º", "Imaginary", "135º"), angles_regr*180
 hgt850 <- ERA5_geopotential() %>% 
   ReadNetCDF(vars = c(hgt = "z"), 
              subset = list(level = 850)) %>% 
-   normalise_coords() %>%
+  normalise_coords() %>%
   .[season(time) == "SON"] %>% 
   .[, w := season_weights(time)] %>% 
   .[, .(hgt = mean(hgt*w)), by = .(lon, lat, time = seasonally(time))]
@@ -1607,7 +1607,7 @@ pp_regr <- lapply(angles_regr, function(a) {
     rm_intercept() %>% 
     .[, term := factor_ReIm(term)] %>% 
     .[, angle := a*180/pi]
-
+  
 }) %>%
   rbindlist()
 
@@ -1632,7 +1632,7 @@ t2m_regr <- lapply(angles_regr, function(a) {
     rm_intercept() %>% 
     .[, term := factor_ReIm(term)] %>% 
     .[, angle := a*180/pi]
-
+  
 }) %>%
   rbindlist()
 ```
@@ -1660,8 +1660,8 @@ spoke <- function(data, coords) {
   radius <-  grid::unit(.15, "snpc")
   
   outer_circle <-  grid::circleGrob(x = 0, 
-                             y = 0,
-                             r = radius*1.2)
+                                    y = 0,
+                                    r = radius*1.2)
   
   xcentre <- grid::unit(0, "npc") + grid:::grobHeight(outer_circle)/2
   ycentre <-  grid::unit(0, "npc") + grid:::grobWidth(outer_circle)/2
@@ -1722,11 +1722,11 @@ plot_sst_psi <- function(sst_regr, psi_regr) {
     periodic(lon = c(0, 360)) %>%
     ggplot(aes(lon, lat)) +
     
-      geom_contour_fill(data = sst_gdata,
+    geom_contour_fill(data = sst_gdata,
                       aes(z = estimate, fill = ..level..),
                       breaks = breaks_sst) +
     geom_contour_pval(data = sst_gdata, aes(z = p_val)) +
-
+    
     scale_fill_divergent_discretised("SST (K)",
                                      labels = one_less,
                                      guide = guide_colorsteps_bottom(width = 15,
@@ -1896,8 +1896,8 @@ rbind(Precipitation = pp_regr,
   #                   skip = 1, stroke = 0.15, stroke.colour = "white") +
   geom_qmap(keep = .015) +
   scale_fill_divergent_discretised(name = "Explained variance", midpoint = 0,
-                       labels = scales::percent_format(),
-                       guide = guide_colorsteps_bottom(15, show.limits = TRUE)) +
+                                   labels = scales::percent_format(),
+                                   guide = guide_colorsteps_bottom(15, show.limits = TRUE)) +
   
   scale_x_continuous(NULL, expand = c(0, 0),
                      breaks = seq(0, 360, by = 60),
@@ -1965,11 +1965,11 @@ crop_continent <- function(continent) {
 plot_pp <- function(pp_regr, t2m_regr, hgt850_regr) {
   lats <- c(-55, 10)
   breaks_pp <- AnchorBreaks(exclude = 0)(c(-.9, .9))
-
+  
   pp_regr <- pp_regr %>% 
     copy() %>% 
     .[, var := "Precipitation"] %>% 
-        .[, p.value := Pvaluate(estimate, std.error, df, "none"), 
+    .[, p.value := Pvaluate(estimate, std.error, df, "none"), 
       by = .(cEOF, angle)]
   
   t2m_regr <- t2m_regr %>% 
@@ -1988,7 +1988,7 @@ plot_pp <- function(pp_regr, t2m_regr, hgt850_regr) {
                       breaks = breaks_pp) +
     geom_contour_tanaka(aes(z = estimate), breaks = breaks_pp) +
     
-
+    
     scale_fill_divergent_discretised("Precipitation (correlation)", 
                                      # limits = c(-1, 1),
                                      low = "#8E521C",
@@ -2005,7 +2005,7 @@ plot_pp <- function(pp_regr, t2m_regr, hgt850_regr) {
     geom_contour_tanaka(data = t2m_regr, 
                         aes(z = estimate),
                         breaks = AnchorBreaks(exclude = 0)) +
-  
+    
     scale_fill_divergent_discretised("Temperature",
                                      # limits = c(-1, 1),
                                      guide = guide_colorsteps_bottom(15, order = 1)) +
