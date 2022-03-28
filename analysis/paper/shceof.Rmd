@@ -810,6 +810,20 @@ All graphics are made using ggplot2 [@wickham2009].
 We downloaded data from reanalysis using the ecmwfr package [@hufkens2020] and indices of ENSO and Indian Ocean Dipole with the rsoi package [@albers2020].
 The paper was rendered using knitr and rmarkdown [@xie2015; @allaire2020].
 
+```{r}
+# Hacer citas automáticamente. Manejarlo manual con zotero en una colección 
+# global no sirve porque pueden cambiar las versiones.
+
+# knitr::write_bib(c("data.table",
+#                    "base",
+#                    "metR",
+#                    "ggplot",
+#                    "ecmwfr",
+#                    "rsoi",
+#                    "knitr",
+#                    "rmarkdown"), file = "autopackages.bib")
+```
+
 # Results
 
 ## cEOF spatial patterns {#spatial}
