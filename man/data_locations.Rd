@@ -4,48 +4,51 @@
 \alias{data_path}
 \alias{ERA5_TOC}
 \alias{ERA5_geopotential}
-\alias{ERA5_geopotential_all}
 \alias{ERA5_temperature}
 \alias{ERA5_vorticity}
 \alias{ERA5_ozone}
 \alias{ERA5_BE}
 \alias{ERA5_T2M}
 \alias{NCEP_PSI}
-\alias{NCEP_VOR}
 \alias{CMAP}
 \alias{ERSST}
+\alias{ENSO}
+\alias{DMI}
 \title{Data locations}
 \usage{
 data_path(type = c("raw", "derived"), ...)
 
-ERA5_TOC(force_download = FALSE)
+ERA5_TOC(from_source = FALSE)
 
-ERA5_geopotential(force_download = FALSE)
+ERA5_geopotential(from_source = FALSE)
 
-ERA5_geopotential_all(force_download = FALSE)
+ERA5_temperature(from_source = FALSE)
 
-ERA5_temperature(force_download = FALSE)
+ERA5_vorticity(from_source = FALSE)
 
-ERA5_vorticity(force_download = FALSE)
+ERA5_ozone(from_source = FALSE)
 
-ERA5_ozone(force_download = FALSE)
+ERA5_BE(from_source = FALSE)
 
-ERA5_BE(force_download = FALSE)
+ERA5_T2M(from_source = FALSE)
 
-ERA5_T2M(force_download = FALSE)
+NCEP_PSI(from_source = FALSE)
 
-NCEP_PSI(force_download = FALSE)
+CMAP(from_source = FALSE)
 
-NCEP_VOR(force_download = FALSE)
+ERSST(from_source = FALSE)
 
-CMAP(force_download = FALSE)
+ENSO(from_source = FALSE)
 
-ERSST(force_download = FALSE)
+DMI(from_source = FALSE)
 }
 \arguments{
 \item{type}{character indicating the type of data. The resulting base will be type_data}
 
 \item{...}{characters to be contactenadted with [file.path()]}
+
+\item{from_source}{Logical indicating whether to force download of data from the
+remote source instead of the Zeonodo repository.}
 
 \item{force_download}{Logical indicating whether to force download of data.}
 }
