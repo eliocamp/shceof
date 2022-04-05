@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.25)  28 MAR 2022 16:44
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.25)  5 APR 2022 15:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -592,28 +592,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 141--145
 Underfull \vbox (badness 5878) has occurred while \output is active []
 
 [1] [2] [3]
-Overfull \hbox (6.5489pt too wide) in paragraph at lines 203--206
-[]\TU/lmr/m/n/10 We restrict this paper to the September-October-November (SON) trimester.
- []
+Underfull \vbox (badness 5374) has occurred while \output is active []
 
 [4]
 File: ../figures/eof-naive-1.pdf Graphic file (type pdf)
 <use ../figures/eof-naive-1.pdf>
 [5]
-Overfull \hbox (1.5178pt too wide) in paragraph at lines 293--297
+Overfull \hbox (1.5178pt too wide) in paragraph at lines 291--295
 []\TU/lmr/m/n/10 The cEOF methodology is applied to SON geopotential height zonal anoma-
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[6] [7]
+[6]
+Underfull \vbox (badness 2080) has occurred while \output is active []
+
+[7]
 File: ../figures/ceofs-1-1.pdf Graphic file (type pdf)
 <use ../figures/ceofs-1-1.pdf>
 File: ../figures/extended-series-1.pdf Graphic file (type pdf)
 <use ../figures/extended-series-1.pdf>
 
-Overfull \hbox (81.56647pt too wide) in paragraph at lines 355--355
+Overfull \hbox (81.56647pt too wide) in paragraph at lines 350--350
 [][] 
  []
 
@@ -626,33 +627,33 @@ File: ../figures/eof1-regr-gh-1.pdf Graphic file (type pdf)
 [10]
 File: ../figures/eof2-regr-gh-1.pdf Graphic file (type pdf)
 <use ../figures/eof2-regr-gh-1.pdf>
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 [11]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[12]
-File: ../figures/phase-histogram-1.pdf Graphic file (type pdf)
-<use ../figures/phase-histogram-1.pdf>
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[13]
-File: ../figures/sam-eof-vertical-1.pdf Graphic file (type pdf)
-<use ../figures/sam-eof-vertical-1.pdf>
-[14]
 File: ../figures/eof1-regr-t-1.pdf Graphic file (type pdf)
 <use ../figures/eof1-regr-t-1.pdf>
 File: ../figures/t-vertical-1.pdf Graphic file (type pdf)
 <use ../figures/t-vertical-1.pdf>
-[15] [16]
+[12] [13]
 File: ../figures/o3-regr-1.pdf Graphic file (type pdf)
 <use ../figures/o3-regr-1.pdf>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[14]
+File: ../figures/phase-histogram-1.pdf Graphic file (type pdf)
+<use ../figures/phase-histogram-1.pdf>
+File: ../figures/sam-eof-vertical-1.pdf Graphic file (type pdf)
+<use ../figures/sam-eof-vertical-1.pdf>
+
+Underfull \vbox (badness 5133) has occurred while \output is active []
+
+[15]
+Underfull \vbox (badness 1348) has occurred while \output is active []
+
+[16]
 File: ../figures/sst-psi-2-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-2-1.pdf>
 
-Overfull \hbox (127.73885pt too wide) in paragraph at lines 546--546
+Overfull \hbox (127.73885pt too wide) in paragraph at lines 540--540
 [][] 
  []
 
@@ -666,29 +667,24 @@ File: ../figures/enso-phase-1.pdf Graphic file (type pdf)
 File: ../figures/pp-t2m-r2-1.pdf Graphic file (type pdf)
 <use ../figures/pp-t2m-r2-1.pdf>
 
-Overfull \hbox (124.72763pt too wide) in paragraph at lines 606--607
+Overfull \hbox (124.72763pt too wide) in paragraph at lines 600--601
  [][] 
  []
 
-
-Overfull \hbox (0.49002pt too wide) in paragraph at lines 612--614
-\TU/lmr/m/n/10 Figure []8[] shows the variance of the 2-meter temperature or precipitation anoma-
- []
-
 [20]
-Overfull \hbox (7.95003pt too wide) in paragraph at lines 622--623
+Overfull \hbox (7.95003pt too wide) in paragraph at lines 617--618
 \TU/lmr/m/n/10 precipitation (column 2) anomalies upon different phases of standardised cEOF2. 
  []
 
 File: ../figures/pp-temp-2-1.pdf Graphic file (type pdf)
 <use ../figures/pp-temp-2-1.pdf>
 
-Overfull \hbox (123.72388pt too wide) in paragraph at lines 628--629
+Overfull \hbox (123.72388pt too wide) in paragraph at lines 623--624
  [][] 
  []
 
 
-Overfull \hbox (1.07999pt too wide) in paragraph at lines 637--638
+Overfull \hbox (1.07999pt too wide) in paragraph at lines 632--633
 \TU/lmr/m/n/10 positive temperatures in southern Australia and negative temperature in south-
  []
 
@@ -699,79 +695,84 @@ Underfull \vbox (badness 2334) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [22] [23] [24]
-Overfull \hbox (4.0pt too wide) in paragraph at lines 715--717
+Overfull \hbox (0.26001pt too wide) in paragraph at lines 694--697
+[]\TU/lmr/m/n/10 The cEOF2 variability could be related to surface impacts, while the cEOF1
+ []
+
+
+Overfull \hbox (4.0pt too wide) in paragraph at lines 712--714
 \TU/lmr/m/n/10 ter: []$[][][][][] [] [] [] [][][] [] [][][] [] [][][][] [] [][][][] [] [][][] [] [][][][][][][][] [] [][][][][][][][] [] [][][][][][][][][][] []
  []
 
-[25]
+[25] [26]
 File: ../figures/sst-psi-1-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-1-1.pdf>
 
-Overfull \hbox (127.73885pt too wide) in paragraph at lines 732--732
+Overfull \hbox (127.73885pt too wide) in paragraph at lines 729--729
 [][] 
  []
 
 File: ../figures/pp-temp-1-1.pdf Graphic file (type pdf)
 <use ../figures/pp-temp-1-1.pdf>
 
-Overfull \hbox (123.72388pt too wide) in paragraph at lines 739--740
+Overfull \hbox (123.72388pt too wide) in paragraph at lines 736--737
  [][] 
  []
 
 
-Overfull \hbox (4.1431pt too wide) in paragraph at lines 754--756
+Overfull \hbox (4.1431pt too wide) in paragraph at lines 751--753
 []\TU/lmr/m/n/8 Baldwin, Mark P., and David W. J. Thompson. 2009. “A Critical Comparison of Stratosphere–
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[26]
-Overfull \hbox (23.19041pt too wide) in paragraph at lines 760--762
+[27]
+Overfull \hbox (23.19041pt too wide) in paragraph at lines 757--759
 \TU/lmr/m/n/8 (Accessed on $\OML/cmm/m/it/8 <$\TU/lmr/m/n/8 26-08-2021$\OML/cmm/m/it/8 >$\TU/lmr/m/n/8 ), https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[27]
+[28]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[28]
-Overfull \hbox (23.85606pt too wide) in paragraph at lines 829--831
+[29]
+Overfull \hbox (23.85606pt too wide) in paragraph at lines 826--828
 \TU/lmr/m/n/8 Types of ENSO.” \TU/lmr/m/it/8 Journal of Climate \TU/lmr/m/n/8 22 (3): 615–32. []$[][][][][] [] [] [] [][][] [] [][][] [] [][] [] [][][][] [] [][][][][][][][][][][][] []
  []
 
 
-Overfull \hbox (4.12004pt too wide) in paragraph at lines 838--840
+Overfull \hbox (4.12004pt too wide) in paragraph at lines 835--837
 []\TU/lmr/m/n/8 Lim, E.-P., H. H. Hendon, and D. W. J. Thompson. 2018. “Seasonal Evolution of Stratosphere-
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[29]
-Overfull \hbox (0.25206pt too wide) in paragraph at lines 880--882
+[30]
+Overfull \hbox (0.25206pt too wide) in paragraph at lines 877--879
 \TU/lmr/m/it/8 Monthly Weather Review \TU/lmr/m/n/8 108 (9): 1378–89. []$[][][][][] [] [] [] [][][] [] [][][] [] [][] [] [][][][] [] [][][][] [][] [][][][][][][][][] []
  []
 
 
-Overfull \hbox (1.67607pt too wide) in paragraph at lines 883--885
+Overfull \hbox (1.67607pt too wide) in paragraph at lines 880--882
 \TU/lmr/m/it/8 Weather Review \TU/lmr/m/n/8 113 (1): 3–21. []$[][][][][] [] [] [] [][][] [] [][][] [] [][] [] [][][][] [] [][][][] [][] [][][][][][][][][] [] [][][] [] [][][][][][] []
  []
 
 No file shceof.bbl.
-[30] (./shceof.aux)
+[31] (./shceof.aux)
 Package rerunfilecheck Info: File `shceof.out' has not changed.
 (rerunfilecheck)             Checksum: B9B29459163C95FD535B966F4971AB49;608.
  ) 
 Here is how much of TeX's memory you used:
  14000 strings out of 478118
- 226691 string characters out of 5852610
- 565310 words of memory out of 5000000
+ 226677 string characters out of 5852610
+ 565356 words of memory out of 5000000
  34382 multiletter control sequences out of 15000+600000
  475305 words of font info for 61 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  69i,9n,79p,551b,479s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on shceof.pdf (30 pages).
+Output written on shceof.pdf (31 pages).
