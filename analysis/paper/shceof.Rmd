@@ -68,7 +68,7 @@ knitr::opts_chunk$set(
   echo = FALSE,
   cache = TRUE,
   comment = "#>",
-  cache.extra = 41,
+  cache.extra = 42,
   cache.path = "../cache/paper/",
   fig.path = "../figures/",
   dpi = 300,
@@ -1719,7 +1719,7 @@ plot_sst_psi <- function(sst_regr, psi_regr) {
     geom_vector(aes(dx = fx, dy = fy), skip = 3, min.mag = 0.002, 
                 size = 0.1) +
     scale_mag(max_size = .5, guide = "none") +
-    geom_qmap(keep = .015) +
+    geom_qmap() +
     scale_fill_divergent_discretised(psi_expr, 
                                      labels = one_less,
                                      low = scales::muted("red"),
@@ -1870,7 +1870,7 @@ rbind(Precipitation = pp_regr,
   #                       label = ifelse(..level.. > 0.2, scales::percent(..level..), NA)), 
   #                   breaks = breaks, size = 2,
   #                   skip = 1, stroke = 0.15, stroke.colour = "white") +
-  geom_qmap(keep = .015) +
+  geom_qmap() +
   scale_fill_divergent_discretised(name = "Explained variance", midpoint = 0,
                                    labels = scales::percent_format(),
                                    guide = guide_colorsteps_bottom(15, show.limits = TRUE)) +

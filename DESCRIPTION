@@ -15,8 +15,6 @@ Imports:
     data.table,
     metR,
     spectral,
-    maps,
-    rmapshaper,
     memoise,
     kableExtra,
     ggplot2,
@@ -48,3 +46,5 @@ RoxygenNote: 7.1.1
 Remotes:
     eliocamp/tagger,
     eliocamp/ggpattern
+Depends: 
+    R (>= 2.10)

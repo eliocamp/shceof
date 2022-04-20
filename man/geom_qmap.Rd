@@ -10,9 +10,6 @@ geom_qmap(
   color = "gray50",
   size = 0.3,
   fill = NA,
-  wrap = c(0, 360),
-  weighting = 0.7,
-  keep = 0.015,
   ...
 )
 }
@@ -20,10 +17,6 @@ geom_qmap(
 \item{subset}{a function that will be applied to the map data.}
 
 \item{color, size, fill}{parameters passed to [ggplot2::geom_polygon()]}
-
-\item{wrap}{vector of length 2 interpreted as the longitude range of a global map (see [maps::map()])}
-
-\item{keep}{proportions of point to retain (passed to [rmapshaper::ms_simplify()])}
 
 \item{...}{other arguments passed to [ggplot2::geom_polygon()]}
 }
