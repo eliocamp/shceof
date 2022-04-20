@@ -1,6 +1,6 @@
 ---
 title: "Revisiting the Austral Spring Extratropical Southern Hemisphere zonally asymmetric circulation using complex Empirical Orthogonal Functions"
-titlerunning:  Title
+titlerunning:  SH zonally asymmetric circulation
 authors: 
 - name: Elio Campitelli
   address: |
@@ -385,11 +385,6 @@ psa <- lapply(psa, function(x) {
 
 psa_time <- psa$left[season(time) == "SON"]
 ```
-# Abstract 
-
-
-asdfsdf
-
 
 # Introduction
 
@@ -511,7 +506,7 @@ We used monthly geopotential height, air temperature, ozone mixing ratio, and to
 Most of our analysis is restricted to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 [@era5be] to describe long-term trends.
 We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK [@fishpack] and we computed horizontal wave activity fluxes following @plumb1985.
 Sea Surface Temperature (SST) monthly fields are from Extended Reconstructed Sea Surface Temperature (ERSST) v5 [@huang2017] and precipitation monthly data from the CPC Merged Analysis of Precipitation [@cmap], with a 2\degree and 2.5\degree horizontal resolution respectively.
-The rainfall gridded dataset is based on information from different sources such as rain gauge observations, satellite inferred estimations and the NCEP-NCAR reanalysis, and it is available since 1979 to present.
+The rainfall gridded dataset is based on information from different sources such as rain gauge observations, satellite inferred estimations and the NCEP-NCAR reanalysis, and it is available since 1979 to the present.
 
 The Oceanic Niño Index [ONI, @bamston1997] comes from NOAA's Climate Prediction Center and the Dipole Mode Index [DMI, @saji2003] from Global Climate Observing System Working Group on Surface Pressure.
 
@@ -2105,8 +2100,20 @@ Precipitation anomalies associated with the Real cEOF2 are low and not statistic
 On the other hand, over Australia, both the Real and Imaginary phase are associated with significant precipitation anomalies, and we further show that the direction of maximum impact is not aligned with our chosen rotation of cEOF2.
 An analysis of the precipitation impacts on this regions could benefit for a different chosen rotation of the cEOF. 
 
-The methodology proposed in this study allow a deeper understanding of  the zonally asymmetric springtime extratropical SH circulation such as a better description of PSA like variability using a unique complex index and the understanding of relationship between PSAs and ENSO or SAM variability. 
+The methodology proposed in this study allows for a deeper understanding of the zonally asymmetric springtime extratropical SH circulation such as a better description of PSA like variability using a unique complex index and the understanding of relationship between PSAs and ENSO or SAM variability. 
 Further work should extend this analysis to other seasons and further study the relationship between the cEOF2 and the SAM.
+
+# Abstract 
+
+We analyse the joint variabilty of the zonally asymmetric springtime stratospheric and tropospheric circulation using Complex Empirical Orthogonal Functions (cEOF) to characterise planetary waves of varying amplitude and phase. 
+The leading cEOF represents variabilty of a zonal wave 1 in the stratosphere and a monopole in the troposphere that correlates slightly with the Symmetric Southern Annular Mode (S-SAM).
+The second cEOF (cEOF2) is an alternative representation of the Pacific-South American modes. 
+One phase of this cEOF is also extremely correlated with the Asymmetric SAM (A-SAM) in the troposphere. 
+Springs with an active ENSO tend to phase-lock the cEOF2, but have no consistent impact on its magnitude.
+Furthermore, we find indications that the location of Pacific Sea Surface Temperature anomalies affect the precise phase of the cEOF2. 
+
+----
+
 
 ## Code availability {.unnumbered}
 
