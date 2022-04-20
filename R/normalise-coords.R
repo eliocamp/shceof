@@ -14,10 +14,6 @@ normalise_coords <- function(data,
                                            lon = c("longitude", "long"),
                                            time = c("date")),
                              extra = list()) {
-
-  checkmate::assert_list(rules, types = "character", names = "named", any.missing = FALSE)
-  checkmate::assert_list(extra, types = "character", names = "named", any.missing = FALSE)
-
   rules <- c(rules, extra)
 
   for (f in seq_along(rules)) {

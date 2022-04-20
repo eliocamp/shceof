@@ -20,7 +20,6 @@ Imports:
     memoise,
     kableExtra,
     ggplot2,
-    checkmate, 
     ecmwfr,
     lubridate, 
     reshape2, 
@@ -44,7 +43,6 @@ Suggests:
     rsoi,
     widyr,
     remotes,
-    testthat,
     magick
 RoxygenNote: 7.1.1
 Remotes:
