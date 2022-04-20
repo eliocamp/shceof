@@ -448,13 +448,6 @@
       "Repository": "CRAN",
       "Hash": "07a91f99e56951818ab911366db77700"
     },
-    "ggh4x": {
-      "Package": "ggh4x",
-      "Version": "0.1.2.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "44b3dce97bc5de004e5373c699d7ed73"
-    },
     "ggnewscale": {
       "Package": "ggnewscale",
       "Version": "0.4.5",
@@ -504,13 +497,6 @@
       "Source": "Repository",
       "Repository": "RSPM",
       "Hash": "08ab869f37e6a7741a64ab9069bcb67d"
-    },
-    "ggthemes": {
-      "Package": "ggthemes",
-      "Version": "4.2.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "617fb2c300f68e8b1ba21043fba88fd7"
     },
     "glue": {
       "Package": "glue",
@@ -878,13 +864,6 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "cb167f328b3ada4ec5cf67a7df4c900a"
-    },
-    "ppcor": {
-      "Package": "ppcor",
-      "Version": "1.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "0b26c0c84f22515249dd7915f4214d32"
     },
     "praise": {
       "Package": "praise",

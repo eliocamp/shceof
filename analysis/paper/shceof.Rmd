@@ -68,7 +68,7 @@ knitr::opts_chunk$set(
   echo = FALSE,
   cache = TRUE,
   comment = "#>",
-  cache.extra = 43,
+  cache.extra = 41,
   cache.path = "../cache/paper/",
   fig.path = "../figures/",
   dpi = 300,
@@ -83,7 +83,6 @@ library(magrittr)
 library(ggplot2)
 library(tagger)
 library(ggperiodic)
-# library(patchwork)
 library(kableExtra)
 library(shceof)
 
@@ -925,7 +924,12 @@ era_more %>%
   # Zero line + rangeframe
   geom_hline(data = ~.x[, mean(hgt)*1e3, by  = .(cEOF, part)], 
              aes(yintercept = V1), size = 0.2, color = "gray30") +
-  ggthemes::geom_rangeframe(sides = "r", size = 0.2, color = "gray30") +
+  geom_segment(data = ~.x[, .(min = min(hgt)*1e3,
+                              max = max(hgt)*1e3), by  = .(cEOF, part)],
+               aes(x = structure(Inf, class = "Date"),
+                   xend = structure(Inf, class = "Date"),
+                   y = min,
+                   yend = max), size = 0.2, color = "gray30") +
   geom_line(aes(color = part)) +
   geom_point(aes(color = part), size = 0.25) +
   # geom_line(data = era_less) +
@@ -1013,10 +1017,7 @@ plot_regr <- function(data, which_cEOF, which_levs, which_var) {
   
   
   if (length(which_cEOF) > 1) {
-    facet <- ggh4x::facet_nested(cEOF ~  term)
-  } else {
-    facet <- ggh4x::facet_nested(lev ~ cEOF +  term, 
-                                 labeller = labeller(lev = lab_lev))
+    stop("More than one ceof")
   }
   
   if ("lev" %in% colnames(data)) {
@@ -1044,10 +1045,13 @@ plot_regr <- function(data, which_cEOF, which_levs, which_var) {
     scale_y_latitude(labels = NULL,
                      minor_breaks = NULL) +
     grid_y +
-    facet +
+    facet_grid(lev ~ term, 
+               labeller = labeller(lev = lab_lev)) +
     geom_coords() +
     coord_polar() +
-    tag_facets("rc")
+    tag_facets("rc") +
+    labs(title = which_cEOF) +
+    theme(plot.title = element_text(hjust = 0.5, size = theme_get()$strip.text$size))
 }
 
 mgp <- latex2exp::TeX('Geopotential height ($m^2s^{-1}$)')

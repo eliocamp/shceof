@@ -29,9 +29,7 @@ Imports:
     tidyr,
     PCICt
 Suggests:
-    ggh4x,
     ggrepel,
-    ggthemes,
     ggperiodic,
     renv,
     roxygen2,
