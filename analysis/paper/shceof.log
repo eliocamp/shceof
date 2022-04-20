@@ -1,11 +1,11 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2022.3.25)  5 APR 2022 15:19
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.4.20)  20 APR 2022 16:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **shceof.tex
 (./shceof.tex
 LaTeX2e <2021-11-15> patch level 1
-L3 programming layer <2022-02-24> (./svjour3.cls
+L3 programming layer <2022-04-10> (./svjour3.cls
 Document Class: svjour3 2007/05/08 v3.2 
 LaTeX document class for Springer journals
 Class Springer-SVJour3 Info: extra/valid Springer sub-package (-> *.clo) 
@@ -138,7 +138,7 @@ File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: xetex.def on input line 107.
 (/home/elio/.TinyTeX/texmf-dist/tex/latex/graphics-def/xetex.def
-File: xetex.def 2021/03/18 v5.0k Graphics/color driver for xetex
+File: xetex.def 2022/04/16 v5.0m Graphics/color driver for xetex
 ))
 \Gin@req@height=\dimen159
 \Gin@req@width=\dimen160
@@ -510,16 +510,14 @@ Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1373.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1374.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1375.
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
-File: l3backend-xetex.def 2022-02-07 L3 backend support: XeTeX
-(|extractbb --version)
-\c__kernel_sys_dvipdfmx_version_int=\count340
-\l__color_backend_stack_int=\count341
-\g__color_backend_stack_int=\count342
-\g__graphics_track_int=\count343
+File: l3backend-xetex.def 2022-04-14 L3 backend support: XeTeX
+\l__color_backend_stack_int=\count340
+\g__color_backend_stack_int=\count341
+\g__graphics_track_int=\count342
 \l__pdf_internal_box=\box77
-\g__pdf_backend_object_int=\count344
-\g__pdf_backend_annotation_int=\count345
-\g__pdf_backend_link_int=\count346
+\g__pdf_backend_object_int=\count343
+\g__pdf_backend_annotation_int=\count344
+\g__pdf_backend_link_int=\count345
 ) (./shceof.aux)
 \openout1 = `shceof.aux'.
 
@@ -557,7 +555,7 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ) (/home/elio/.TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count347
+\c@section@level=\count346
 )
 LaTeX Info: Redefining \ref on input line 99.
 LaTeX Info: Redefining \pageref on input line 99.
@@ -584,21 +582,18 @@ Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
 SVJour3 warning: Missing \journalname
 
-Underfull \hbox (badness 10000) in paragraph at lines 141--145
+Underfull \hbox (badness 10000) in paragraph at lines 141--149
 
  []
 
 
-Underfull \vbox (badness 5878) has occurred while \output is active []
+Underfull \vbox (badness 2426) has occurred while \output is active []
 
-[1] [2] [3]
-Underfull \vbox (badness 5374) has occurred while \output is active []
-
-[4]
+[1] [2] [3] [4]
 File: ../figures/eof-naive-1.pdf Graphic file (type pdf)
 <use ../figures/eof-naive-1.pdf>
 [5]
-Overfull \hbox (1.5178pt too wide) in paragraph at lines 291--295
+Overfull \hbox (1.5178pt too wide) in paragraph at lines 297--301
 []\TU/lmr/m/n/10 The cEOF methodology is applied to SON geopotential height zonal anoma-
  []
 
@@ -614,7 +609,7 @@ File: ../figures/ceofs-1-1.pdf Graphic file (type pdf)
 File: ../figures/extended-series-1.pdf Graphic file (type pdf)
 <use ../figures/extended-series-1.pdf>
 
-Overfull \hbox (81.56647pt too wide) in paragraph at lines 350--350
+Overfull \hbox (81.56647pt too wide) in paragraph at lines 354--354
 [][] 
  []
 
@@ -653,7 +648,7 @@ Underfull \vbox (badness 1348) has occurred while \output is active []
 File: ../figures/sst-psi-2-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-2-1.pdf>
 
-Overfull \hbox (127.73885pt too wide) in paragraph at lines 540--540
+Overfull \hbox (127.73885pt too wide) in paragraph at lines 544--544
 [][] 
  []
 
@@ -667,25 +662,20 @@ File: ../figures/enso-phase-1.pdf Graphic file (type pdf)
 File: ../figures/pp-t2m-r2-1.pdf Graphic file (type pdf)
 <use ../figures/pp-t2m-r2-1.pdf>
 
-Overfull \hbox (124.72763pt too wide) in paragraph at lines 600--601
+Overfull \hbox (124.72763pt too wide) in paragraph at lines 604--605
  [][] 
  []
 
 [20]
-Overfull \hbox (7.95003pt too wide) in paragraph at lines 617--618
+Overfull \hbox (7.95003pt too wide) in paragraph at lines 621--622
 \TU/lmr/m/n/10 precipitation (column 2) anomalies upon different phases of standardised cEOF2. 
  []
 
 File: ../figures/pp-temp-2-1.pdf Graphic file (type pdf)
 <use ../figures/pp-temp-2-1.pdf>
 
-Overfull \hbox (123.72388pt too wide) in paragraph at lines 623--624
+Overfull \hbox (123.72388pt too wide) in paragraph at lines 627--628
  [][] 
- []
-
-
-Overfull \hbox (1.07999pt too wide) in paragraph at lines 632--633
-\TU/lmr/m/n/10 positive temperatures in southern Australia and negative temperature in south-
  []
 
 
@@ -695,12 +685,12 @@ Underfull \vbox (badness 2334) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [22] [23] [24]
-Overfull \hbox (0.26001pt too wide) in paragraph at lines 694--697
+Overfull \hbox (0.26001pt too wide) in paragraph at lines 698--701
 []\TU/lmr/m/n/10 The cEOF2 variability could be related to surface impacts, while the cEOF1
  []
 
 
-Overfull \hbox (4.0pt too wide) in paragraph at lines 712--714
+Overfull \hbox (4.0pt too wide) in paragraph at lines 716--718
 \TU/lmr/m/n/10 ter: []$[][][][][] [] [] [] [][][] [] [][][] [] [][][][] [] [][][][] [] [][][] [] [][][][][][][][] [] [][][][][][][][] [] [][][][][][][][][][] []
  []
 
@@ -708,19 +698,19 @@ Overfull \hbox (4.0pt too wide) in paragraph at lines 712--714
 File: ../figures/sst-psi-1-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-1-1.pdf>
 
-Overfull \hbox (127.73885pt too wide) in paragraph at lines 729--729
+Overfull \hbox (127.73885pt too wide) in paragraph at lines 733--733
 [][] 
  []
 
 File: ../figures/pp-temp-1-1.pdf Graphic file (type pdf)
 <use ../figures/pp-temp-1-1.pdf>
 
-Overfull \hbox (123.72388pt too wide) in paragraph at lines 736--737
+Overfull \hbox (123.72388pt too wide) in paragraph at lines 740--741
  [][] 
  []
 
 
-Overfull \hbox (4.1431pt too wide) in paragraph at lines 751--753
+Overfull \hbox (4.1431pt too wide) in paragraph at lines 755--757
 []\TU/lmr/m/n/8 Baldwin, Mark P., and David W. J. Thompson. 2009. “A Critical Comparison of Stratosphere–
  []
 
@@ -728,7 +718,7 @@ Overfull \hbox (4.1431pt too wide) in paragraph at lines 751--753
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [27]
-Overfull \hbox (23.19041pt too wide) in paragraph at lines 757--759
+Overfull \hbox (23.19041pt too wide) in paragraph at lines 761--763
 \TU/lmr/m/n/8 (Accessed on $\OML/cmm/m/it/8 <$\TU/lmr/m/n/8 26-08-2021$\OML/cmm/m/it/8 >$\TU/lmr/m/n/8 ), https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-
  []
 
@@ -739,12 +729,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [29]
-Overfull \hbox (23.85606pt too wide) in paragraph at lines 826--828
+Overfull \hbox (23.85606pt too wide) in paragraph at lines 830--832
 \TU/lmr/m/n/8 Types of ENSO.” \TU/lmr/m/it/8 Journal of Climate \TU/lmr/m/n/8 22 (3): 615–32. []$[][][][][] [] [] [] [][][] [] [][][] [] [][] [] [][][][] [] [][][][][][][][][][][][] []
  []
 
 
-Overfull \hbox (4.12004pt too wide) in paragraph at lines 835--837
+Overfull \hbox (4.12004pt too wide) in paragraph at lines 839--841
 []\TU/lmr/m/n/8 Lim, E.-P., H. H. Hendon, and D. W. J. Thompson. 2018. “Seasonal Evolution of Stratosphere-
  []
 
@@ -752,12 +742,12 @@ Overfull \hbox (4.12004pt too wide) in paragraph at lines 835--837
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [30]
-Overfull \hbox (0.25206pt too wide) in paragraph at lines 877--879
+Overfull \hbox (0.25206pt too wide) in paragraph at lines 881--883
 \TU/lmr/m/it/8 Monthly Weather Review \TU/lmr/m/n/8 108 (9): 1378–89. []$[][][][][] [] [] [] [][][] [] [][][] [] [][] [] [][][][] [] [][][][] [][] [][][][][][][][][] []
  []
 
 
-Overfull \hbox (1.67607pt too wide) in paragraph at lines 880--882
+Overfull \hbox (1.67607pt too wide) in paragraph at lines 884--886
 \TU/lmr/m/it/8 Weather Review \TU/lmr/m/n/8 113 (1): 3–21. []$[][][][][] [] [] [] [][][] [] [][][] [] [][] [] [][][][] [] [][][][] [][] [][][][][][][][][] [] [][][] [] [][][][][][] []
  []
 
@@ -767,12 +757,12 @@ Package rerunfilecheck Info: File `shceof.out' has not changed.
 (rerunfilecheck)             Checksum: B9B29459163C95FD535B966F4971AB49;608.
  ) 
 Here is how much of TeX's memory you used:
- 14000 strings out of 478118
- 226677 string characters out of 5852610
- 565356 words of memory out of 5000000
- 34382 multiletter control sequences out of 15000+600000
+ 14015 strings out of 478094
+ 227231 string characters out of 5852276
+ 566930 words of memory out of 5000000
+ 34424 multiletter control sequences out of 15000+600000
  475305 words of font info for 61 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 69i,9n,79p,551b,479s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 69i,9n,79p,551b,479s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on shceof.pdf (31 pages).
