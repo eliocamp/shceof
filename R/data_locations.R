@@ -23,7 +23,7 @@ download_from_source <- function(data) {
 }
 
 download_from_zenodo <- function(data) {
-  download.file(data$zenodo_url, data$file)
+  utils::download.file(data$zenodo_url, data$file)
 }
 
 
@@ -127,7 +127,6 @@ ERA5_ozone <- data_function(
   citation = citation_era5
 )
 
-#' @param force_download Logical indicating whether to force download of data.
 #' @export
 #' @rdname data_locations
 ERA5_BE <- data_function(

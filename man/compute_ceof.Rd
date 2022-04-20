@@ -15,13 +15,15 @@ compute_ceof(
 )
 }
 \arguments{
+\item{hgt}{vector of geopotential height observations}
+
+\item{lon, lat}{vectors of locations of geopotential height observations}
+
 \item{temporal}{Logical whether to compute temporal anomalies.}
 
-\item{lats.eof}{Range of latitudes.}
+\item{lats.eof}{Range of latitudes to use.}
 
 \item{n}{Numeric vector of EOFs to compute.}
-
-\item{dt}{data.table.}
 }
 \description{
 Computes ceof

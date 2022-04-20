@@ -48,7 +48,7 @@ download_ozone <- function(request) {
                                 path = tempdir())
 
 
-    files <- unzip(file_zip, exdir = tempdir())
+    files <- utils::unzip(file_zip, exdir = tempdir())
 
     data <- do.call(rbind, lapply(files, metR::ReadNetCDF))
     data <- normalise_coords(data)
@@ -206,7 +206,7 @@ request_era5_2mt <- list(
 simple_download <- function(url) {
   force(url)
   function(file){
-    download.file(url, destfile = file)
+    utils::download.file(url, destfile = file)
     file
   }
 }
@@ -223,7 +223,7 @@ download_ersst <- function(file) {
 
   files <- vapply(urls, function(url) {
     file <- tempfile(fileext = ".nc")
-    download.file(url, file)
+    utils::download.file(url, file)
     file
   }, character(1))
 

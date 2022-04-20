@@ -1,3 +1,8 @@
+#' Solve the poisson equation
+#'
+#' @param forcing numeric vector with the forcing (the vorticity)
+#' @param lon,lat numeric vectors with the locations of the forcing.
+#'
 #' @useDynLib shceof hwsssp_
 #' @export
 solve_poisson <- function(forcing, lon, lat) {

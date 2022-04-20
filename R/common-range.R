@@ -1,3 +1,8 @@
+#' Get the overlapping range of grouped observations.
+#'
+#' @param x vector of observations
+#' @param groups vector of groups
+#'
 #' @export
 common_range <- function(x, groups) {
   group_order <- grouping(groups)

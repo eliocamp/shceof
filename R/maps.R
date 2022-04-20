@@ -2,6 +2,7 @@
 #'
 #'
 #' @param subset a function that will be applied to the map data.
+#' @param crop optional bounding box to crop the map.
 #' @param color,size,fill parameters passed to [ggplot2::geom_polygon()]
 #' @param ... other arguments passed to [ggplot2::geom_polygon()]
 #'
@@ -35,17 +36,9 @@ geom_qmap <- function(subset = identity,
 }
 
 
-fortify <- ggplot2::fortify
-
-# zzz.R
-.onLoad <- function(lib, pkg) {
-  fortify <<- memoise::memoise(fortify)
-}
-
-
 
 `%||%` <- function (x, y) {
-  if (is_null(x))
+  if (is.null(x))
     y
   else x
 }

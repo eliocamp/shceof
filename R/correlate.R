@@ -10,7 +10,7 @@
 #'
 #' @export
 correlate <- function(x, y, signif = 2, sep = "\ ") {
-  correlation <- cor.test(x, y)
+  correlation <- stats::cor.test(x, y)
   out <- with(correlation,
               list(estimate = estimate,
                    p.value = p.value,

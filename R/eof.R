@@ -6,7 +6,7 @@
 #'
 #' @export
 flip_ceof <- function(eof, n = NULL) {
-  eof <- copy(eof)
+  eof <- data.table::copy(eof)
 
   pc_col <- attr(eof, "suffix", TRUE)
   val_col <- attr(eof, "value.var", TRUE)

@@ -4,7 +4,7 @@
 \alias{season_weights}
 \title{Computes weights for seasonal weighted means}
 \usage{
-season_weights(time, groups = seasonally(time))
+season_weights(time, groups = metR::seasonally(time))
 }
 \arguments{
 \item{time, }{a vector of times}

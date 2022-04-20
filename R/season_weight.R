@@ -16,10 +16,10 @@
 #'
 #'
 #' @export
-season_weights <- function(time, groups = seasonally(time)) {
+season_weights <- function(time, groups = metR::seasonally(time)) {
   w <- as.numeric(on_unique(time, lubridate::days_in_month))
 
-  setDT(list(w = w, groups = groups))[, w := w/mean(w), by = groups]$w
+  data.table::setDT(list(w = w, groups = groups))[, w := w/mean(w), by = groups]$w
 }
 
 

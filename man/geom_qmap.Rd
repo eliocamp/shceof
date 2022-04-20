@@ -16,6 +16,8 @@ geom_qmap(
 \arguments{
 \item{subset}{a function that will be applied to the map data.}
 
+\item{crop}{optional bounding box to crop the map.}
+
 \item{color, size, fill}{parameters passed to [ggplot2::geom_polygon()]}
 
 \item{...}{other arguments passed to [ggplot2::geom_polygon()]}

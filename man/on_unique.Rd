@@ -12,13 +12,13 @@ on_unique(x, f, ...)
 \item{f, }{function to apply. It needs to be a function that takes 1 value and
 returns 1 value.}
 
-\item{..., }{aditional arguments passed to `f`}
+\item{..., }{additional arguments passed to `f`}
 }
 \value{
 a vector the same length as `x`
 }
 \description{
-In cases when you have a large vector with a lot of repreated values
+In cases when you have a large vector with a lot of repeated values
 (for example, the dimension columns of a spatial field in a  data.table)
 applying a function to each unique value of a vector and then repeating
 the result is faster and more memory efficient than applying the function

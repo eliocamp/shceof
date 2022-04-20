@@ -36,15 +36,6 @@ var.wt <- function(x, w, na.rm = FALSE) {
   (sum(w*x^2) * sum.w - sum(w*x)^2) / (sum.w^2 - sum(w^2))
 }
 
-#' @export
-Detrend <- function(y, x) {
-   nas <- is.na(y)
-   m <- mean(y, na.rm = TRUE)
-   if (!hasArg(x)) x <- seq_along(y)
-   y[!nas] <- .lm.fit(cbind(1, x[!nas]), y[!nas])$residuals
-   return(y + m)
-}
-
 #' Compute p-values
 #'
 #' Computes p-values from the result of [metR::FitLm()] (or any assumed student-t-distributed

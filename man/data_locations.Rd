@@ -49,8 +49,6 @@ DMI(from_source = FALSE)
 
 \item{from_source}{Logical indicating whether to force download of data from the
 remote source instead of the Zeonodo repository.}
-
-\item{force_download}{Logical indicating whether to force download of data.}
 }
 \description{
 Functions that return the location of different datasets. They check that
