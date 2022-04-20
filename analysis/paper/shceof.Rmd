@@ -386,6 +386,15 @@ psa <- lapply(psa, function(x) {
 psa_time <- psa$left[season(time) == "SON"]
 ```
 
+# Abstract 
+
+We analyse the joint variabilty of the zonally asymmetric springtime stratospheric and tropospheric circulation using Complex Empirical Orthogonal Functions (cEOF) to characterise planetary waves of varying amplitude and phase. 
+The leading cEOF represents variabilty of a zonal wave 1 in the stratosphere and a monopole in the troposphere that correlates slightly with the Symmetric Southern Annular Mode (S-SAM).
+The second cEOF (cEOF2) is an alternative representation of the Pacific-South American modes. 
+One phase of this cEOF is also extremely correlated with the Asymmetric SAM (A-SAM) in the troposphere. 
+Springs with an active ENSO tend to phase-lock the cEOF2, but have no consistent impact on its magnitude.
+Furthermore, we find indications that the location of Pacific Sea Surface Temperature anomalies affect the precise phase of the cEOF2. 
+
 # Introduction
 
 The large-scale extratropical circulation in the Southern Hemisphere (SH) is strongly zonally symmetric, but its zonal departures are highly relevant for regional impacts [e.g. @hoskins2005].
@@ -2103,16 +2112,6 @@ An analysis of the precipitation impacts on this regions could benefit for a dif
 The methodology proposed in this study allows for a deeper understanding of the zonally asymmetric springtime extratropical SH circulation such as a better description of PSA like variability using a unique complex index and the understanding of relationship between PSAs and ENSO or SAM variability. 
 Further work should extend this analysis to other seasons and further study the relationship between the cEOF2 and the SAM.
 
-# Abstract 
-
-We analyse the joint variabilty of the zonally asymmetric springtime stratospheric and tropospheric circulation using Complex Empirical Orthogonal Functions (cEOF) to characterise planetary waves of varying amplitude and phase. 
-The leading cEOF represents variabilty of a zonal wave 1 in the stratosphere and a monopole in the troposphere that correlates slightly with the Symmetric Southern Annular Mode (S-SAM).
-The second cEOF (cEOF2) is an alternative representation of the Pacific-South American modes. 
-One phase of this cEOF is also extremely correlated with the Asymmetric SAM (A-SAM) in the troposphere. 
-Springs with an active ENSO tend to phase-lock the cEOF2, but have no consistent impact on its magnitude.
-Furthermore, we find indications that the location of Pacific Sea Surface Temperature anomalies affect the precise phase of the cEOF2. 
-
-----
 
 
 ## Code availability {.unnumbered}
