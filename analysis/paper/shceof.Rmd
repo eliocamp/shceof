@@ -26,9 +26,11 @@ thanks: |
 
  
 keywords:
-
-abstract: |
-  abstract
+  - Southern Hemisphere circulation
+  - Teleconnections
+  - Pacific South American Mode
+  - Southern Annular Mode
+  - Stratosphere
 
 
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -41,13 +43,12 @@ bibliography:
 bibstyle: spbasic
 # bibstyle options spbasic(default), spphys, spmpsci
 output: 
-  bookdown::word_document2: default
   bookdown::pdf_book: 
       base_format: rticles::springer_article
       latex_engine: "xelatex"
       keep_tex: true
       # citation_package: "natbib"
-      # pandoc_args: ["--lua-filter=abstract-to-meta.lua"]
+      pandoc_args: ["--lua-filter=abstract-to-meta.lua"]
 always_allow_html: true
 header-includes: 
  - \usepackage{gensymb}
@@ -382,6 +383,11 @@ psa <- lapply(psa, function(x) {
 
 psa_time <- psa$left[season(time) == "SON"]
 ```
+# Abstract 
+
+
+asdfsdf
+
 
 # Introduction
 
