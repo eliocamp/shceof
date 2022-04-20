@@ -50,7 +50,8 @@ Suggests:
     rsoi,
     widyr,
     remotes,
-    testthat
+    testthat,
+    magick
 RoxygenNote: 7.1.1
 Remotes:
     eliocamp/tagger,
