@@ -23,7 +23,6 @@ Imports:
     checkmate, 
     ecmwfr,
     lubridate, 
-    ppcor, 
     reshape2, 
     scales, 
     sf, 
