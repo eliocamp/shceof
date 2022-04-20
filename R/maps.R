@@ -26,8 +26,6 @@ geom_qmap <- function(subset = identity,
     data <- sf::st_crop(data, bbox)
   }
 
-
-  subset <- purrr::as_mapper(subset)
   data <- subset(data)
 
   ggplot2::geom_sf(data = data,

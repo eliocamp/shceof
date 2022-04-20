@@ -83,7 +83,7 @@ library(magrittr)
 library(ggplot2)
 library(tagger)
 library(ggperiodic)
-library(patchwork)
+# library(patchwork)
 library(kableExtra)
 library(shceof)
 
