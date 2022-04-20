@@ -275,6 +275,9 @@ correlation_statistics <- function(x, n, signif = 2) {
   )
 }
 
+r2 <- expression(`$r^2$` = paste("", "r", phantom()^{
+  paste("2")
+}, "", ""))
 ```
 
 ```{r read-indices}
@@ -758,39 +761,6 @@ if (nrow(bad_cells) != 0) {
 ceof <- ceof[rotation == "rotated"][, rotation := NULL][]
 ```
 
-(ref:rotations-cap) a) Correlation of the Real and Imaginary cEOF1 with wave 1 amplitude of Total Ozone Column averaged between `r knitr::combine_words(LatLabel(o3wave_lats))` and b) $R^2$ between the Real and Imaginary cEOF2 and the ONI index for different values of rotation. The vertical line marks the selected rotation, which maximises de correlation.
-
-```{r rotations, fig.cap="(ref:rotations-cap)", fig.height=2.5, fig.width=width_column, include=FALSE}
-r2 <- expression(`$r^2$` = paste("", "r", phantom()^{
-  paste("2")
-}, "", ""))
-
-rotations_o3 %>%
-  ggplot(aes(rotation, cor)) +
-  geom_vline(xintercept = best_rotation_cEOF1) +
-  geom_hline(yintercept = 0,  size = 0.2, color = "gray50") +
-  geom_line(aes(color = part)) +
-  scale_x_continuous("Rotation", breaks = seq(-pi, pi, by = 90*pi/180),
-                     labels = function(x) paste0(round(x*180/pi, 5), "º")) +
-  scale_y_continuous("Correlation") +
-  scale_color_brewer(NULL, palette = "Dark2", labels = lab_cplx) +
-  
-  rotations_cEOF2 %>%
-  melt(id.vars = "rotation") %>%
-  ggplot(aes(rotation, value^2)) +
-  geom_hline(yintercept = 0,  size = 0.2, color = "gray50") +
-  geom_vline(xintercept = best_rotation_cEOF2) +
-  geom_line(aes(color = variable)) +
-  scale_x_continuous("Rotation", breaks = seq(-pi, pi, by = 90*pi/180),
-                     labels = function(x) paste0(round(x*180/pi, 5), "º")) +
-  scale_y_continuous(r2) +
-  scale_color_brewer(NULL, palette = "Dark2", labels = lab_cplx) +
-  
-  plot_layout(guides = "collect") +
-  plot_annotation(tag_levels = "a", tag_suffix = ")")
-
-```
-
 While we compute these complex principal components using data from 1979 to 2019, we extended the complex time series back to the 1950 -- 1978 period by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial patterns.
 
 We performed linear regressions to quantify the association between the cEOFs and other variables (e.g. geopotential height, temperature, precipitation, and others).
@@ -1054,14 +1024,15 @@ plot_regr <- function(data, which_cEOF, which_levs, which_var) {
     theme(plot.title = element_text(hjust = 0.5, size = theme_get()$strip.text$size))
 }
 
-mgp <- latex2exp::TeX('Geopotential height ($m^2s^{-1}$)')
+# From latex2exp::TeX('Geopotential height ($m^2s^{-1}$)')
+mpg <- expression('Geopotential height ('*m^{2}*s^{phantom() - 1}*')')
 ```
 
 (ref:eof1-regr-gh-cap) Regression of SON geopotential height anomalies ($m^2s^{-1}$) with the (column 1) real and (column 2) imaginary parts of the first cEOF for the 1979 -- 2019 period at (row a) 50 hPa and (row b) 200 hPa. These coefficients come from multiple linear regression involving the real and imaginary parts. Areas marked with dots have p-values smaller than 0.01 adjusted for False Detection Rate.
 
 ```{r eof1-regr-gh, fig.cap = "(ref:eof1-regr-gh-cap)", fig.height=1.2*width_column, fig.width=width_column, dependson="plot_regr"}
 plot_regr(regr , "cEOF1", c(200, 50), "hgt") +
-  scale_fill_divergent(mgp,
+  scale_fill_divergent(mpg,
                        breaks = AnchorBreaks(0, exclude = 0),
                        guide = guide_colorsteps_bottom(15, even.steps = TRUE), 
                        limits = c(-2000, 2000)) 
@@ -1082,7 +1053,7 @@ While in the troposphere, they are associated with slightly off-centre monopoles
 
 ```{r eof2-regr-gh, fig.cap = "(ref:eof2-regr-gh-cap)", fig.height=1.3*width_column, fig.width=width_column, dependson="plot_regr"}
 plot_regr(regr, "cEOF2", c(200, 50), "hgt") +
-  scale_fill_divergent(mgp, 
+  scale_fill_divergent(mpg, 
                        breaks = AnchorBreaks(0, 200, exclude = 0),
                        guide = guide_colorsteps_bottom(15, even.steps = TRUE), 
                        limits = c(-1000, 1000))
@@ -1291,26 +1262,26 @@ wave_correlation <- temp %>%
         n = .N)] %>% 
   .[, correlation_statistics(cor, n)]
 
-temp %>% 
-  ggplot(aes(Mod(hgt), amplitude)) +
-  scale_x_continuous("EOF1 Amplitude") +
-  scale_y_continuous("O3 Wave-1\nAmplitude") +
-  
-  temp %>% 
-  copy() %>%
-  na.omit() %>% 
-  qwrap(phase = c(0, 2*pi) ~ c(-pi, pi)) %>% 
-  ggplot(aes(Arg(hgt), phase)) +
-  scale_x_continuous("EOF1 Phase",
-                     breaks = seq(-pi, pi, by = 15*pi/180),
-                     labels = function(x) paste0(round(x*180/pi, 5), "º")) +
-  scale_y_continuous("O3 Wave-1\nPhase",
-                     breaks = seq(-pi, pi, by = 30*pi/180),
-                     labels = function(x) paste0(round(x*180/pi, 5), "º"))  +
-  plot_layout(ncol  = 1) &
-  geom_point()  &
-  geom_smooth(method = "lm") & 
-  panel_background
+# temp %>% 
+#   ggplot(aes(Mod(hgt), amplitude)) +
+#   scale_x_continuous("EOF1 Amplitude") +
+#   scale_y_continuous("O3 Wave-1\nAmplitude") +
+#   
+#   temp %>% 
+#   copy() %>%
+#   na.omit() %>% 
+#   qwrap(phase = c(0, 2*pi) ~ c(-pi, pi)) %>% 
+#   ggplot(aes(Arg(hgt), phase)) +
+#   scale_x_continuous("EOF1 Phase",
+#                      breaks = seq(-pi, pi, by = 15*pi/180),
+#                      labels = function(x) paste0(round(x*180/pi, 5), "º")) +
+#   scale_y_continuous("O3 Wave-1\nPhase",
+#                      breaks = seq(-pi, pi, by = 30*pi/180),
+#                      labels = function(x) paste0(round(x*180/pi, 5), "º"))  +
+#   plot_layout(ncol  = 1) &
+#   geom_point()  &
+#   geom_smooth(method = "lm") & 
+#   panel_background
 
 ```
 
@@ -1721,7 +1692,8 @@ plot_sst_psi <- function(sst_regr, psi_regr) {
                        na.rm = TRUE))*1e-7
   breaks_stream <- AnchorBreaks(0, bins = 20, exclude = 0)(c(-rstream, rstream))
   
-  
+  #from latex2exp::TeX("Streamfunction ($m^2s^{-1}\\times 1e^{-7}$)")
+  psi_expr <- expression('Streamfunction ('*m^{2}*s^{phantom() - 1} %*% 1*e^{phantom() - 7}*')')
   # browser()
   stream_gdata %>% 
     periodic(lon = c(0, 360)) %>%
@@ -1748,7 +1720,7 @@ plot_sst_psi <- function(sst_regr, psi_regr) {
                 size = 0.1) +
     scale_mag(max_size = .5, guide = "none") +
     geom_qmap(keep = .015) +
-    scale_fill_divergent_discretised(latex2exp::TeX("Streamfunction ($m^2s^{-1}\\times 1e^{-7}$)"), 
+    scale_fill_divergent_discretised(psi_expr, 
                                      labels = one_less,
                                      low = scales::muted("red"),
                                      high = scales::muted("blue"),
@@ -1801,7 +1773,7 @@ Both of these phases could be also associated to wave trains generated in the re
 
 (ref:enso-phase-cap) SON ONI values plotted against cEOF2 phase for the 1979 -- 2019 period. Years with magnitude of cEOF2 greater (smaller) than the 50th percentile are shown as orange diamonds (green circles). Black line is the fit ONI \~ sin(phase) computed by weighted OLS using the magnitude of the cEOF2 as weights.
 
-```{r enso-phase, fig.cap = "(ref:enso-phase-cap)", fig.width = width_column, fig.height=3, include = TRUE}
+```{r enso-phase, fig.cap = "(ref:enso-phase-cap)", fig.width = width_column, fig.height=3}
 gdata <- ceof[, eof[[1]]$left, by = .(season)] %>%
   .[cEOF == "cEOF2"] %>% 
   # .[, hgt := Anomaly(hgt)] %>% 
@@ -1824,9 +1796,8 @@ cor_enso_mag_quantile <- gdata[mag >= quantile(mag, 0.5)] %>%
 cos_model <- gdata %>% 
   .[, lm(oni ~ I(sin(arg)) - 1, weights = mag )]
 
-equation <- latex2exp::TeX(paste0("$ONI = ", 
-                                  signif(coef(cos_model)[1], 2), 
-                                  "sin(Phase)$"))
+equation <- bquote(ONI  * {phantom() == phantom()} * .(signif(coef(cos_model)[1], 2)) * sin(Phase) )
+
 
 gdata %>% 
   ggplot(aes(arg, oni)) +
@@ -1846,7 +1817,7 @@ gdata %>%
                  shape  = q),
              size = 3) +
   ggrepel::geom_text_repel(data = ~.x[order(-oni)][1:3],
-                           aes(label = year(time))) +
+                           aes(label = year(time)), size = 2) +
   
   scale_color_brewer("", palette = "Dark2") +
   scale_shape_manual("", values = c(20, 18)) +

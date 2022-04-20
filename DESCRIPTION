@@ -41,7 +41,6 @@ Suggests:
     ncdf4,
     udunits2,
     rticles,
-    latex2exp,
     rsoi,
     widyr,
     remotes,

@@ -671,13 +671,6 @@
       "Repository": "CRAN",
       "Hash": "3d5108641f47470611a32d0bdf357a72"
     },
-    "latex2exp": {
-      "Package": "latex2exp",
-      "Version": "0.9.4",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "e98c8626b5142cba49800be7abc4021f"
-    },
     "lattice": {
       "Package": "lattice",
       "Version": "0.20-44",
