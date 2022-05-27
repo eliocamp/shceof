@@ -1847,7 +1847,7 @@ The correlation between the absolute magnitude of the ONI index and the  cEOF2 a
 However, this relationship is mostly driven by the three years with strongest ENSO events in the period (`r knitr::combine_words(year(gdata[order(-oni)][1:3]$time))`) which coincide with the three years with strongest cEOF2 magnitude (not shown).
 If those years are removed, the correlation becomes non-significant (`r cor_enso_mag_outlier$text`).
 Furthermore, even when using all years, the Spearman correlation --which is robust to outliers-- is also non-significant (`r signif(cor_enso_spearman$estimate, 2)`, p-value`r report_p(cor_enso_spearman$p.value)`). 
-Therefore, although the location of tropical SST anomalies seem to have an effect in defining the phase of the cEOF2, the relationship between the magnitude of cEOF2 and ONI remains uncertain.
+Therefore, although the location of tropical SST anomalies seem to have an effect in defining the phase of the cEOF2, the relationship between the magnitude of cEOF2 and ONI remains uncertain might be evident only in particularly intense ENSO events, for which there are few data. 
 
 It could be concluded that the wave train represented by cEOF2 can be both part of the internal variability of the extratropical atmosphere or forced by tropical SSTs.
 In the former case, the wave train has little phase preference.
