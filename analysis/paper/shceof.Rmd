@@ -1063,11 +1063,15 @@ plot_regr(regr, "cEOF2", c(200, 50), "hgt") +
 ```
 
 Figure \@ref(fig:eof2-regr-gh) shows the regression maps of geopotential height anomalies upon the cEOF2.
-Wave trains similar to those identified for cEOF2 patterns (Fig \@ref(fig:ceofs-1)) can be distinguished.
+In the troposphere (Fig. \@ref(fig:eof2-regr-gh) column b), wave trains similar to those identified for cEOF2 patterns (Fig \@ref(fig:ceofs-1)) can be distinguished.
 Regressed anomalies associated with the Real cEOF2 are 90º out of phase with those associated with the Imaginary cEOF2.
 All fields have a dominant zonal wave 3 limited to the western hemisphere, over the Pacific and Atlantic Oceans.
 cEOF2 then represents an equivalent barotropic wave train that is very similar to the the PSA Patterns [@mo2001].
 Comparing the location of the positive anomaly near 90ºW in column b of Figure \@ref(fig:eof2-regr-gh) with Figures 1.a and b from @mo2001, the Real cEOF2 regression map could be identified with PSA2, while the Imaginary cEOF2 resembles PSA1.
+
+These wave patterns are also present in the stratosphere (Fig. \@ref(fig:eof2-regr-gh) column a) supporting their  equivalent barotropic nature. 
+But also present is a monopole over the pole with negative sign associated with the Real cEOF2 and positive sign associated with the Imaginary cEOF2. 
+This monopole might indicate strengthening of the polar vortex associated with positive values of the Real cEOF2 and weakening associated with positive Imaginary cEOF2.
 
 ### Temperature and Ozone {#temp-ozone}
 
