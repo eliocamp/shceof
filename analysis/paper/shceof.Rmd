@@ -1901,7 +1901,7 @@ rbind(Precipitation = pp_regr,
 
 The influence of cEOFs variability in the anomalies of both 2-metre air temperature and precipitation in the Southern Hemisphere is also explored.
 Figure\ \@ref(fig:pp-t2m-r2) shows the 2-meter temperature or precipitation anomalies explained variance by the multiple linear model of both Real and Imaginary cEOF1 components (column 1), and both Real  and Imaginary cEOF2 components (column 2).
-The variance explained by cEOF1 for precipitation anomalies is extremely low and also for most of the temperature anomalies, except for the eastern western of Antarctica (Fig.\  \@ref(fig:pp-t2m-r2)a.1). 
+The variance explained by cEOF1 for precipitation anomalies is extremely low and also for most of the temperature anomalies, except for the northern tip of the Antarctic Peninsula, northern Weddell Sea and the Ross Sea coast (Fig.\  \@ref(fig:pp-t2m-r2)a.1). 
 
 On the other hand, the cEOF2  explained variance is greater than 50% in some regions for both variables (Fig.\ \@ref(fig:pp-t2m-r2) column 2). 
 For 2-metre temperature, there are high values in the tropical Pacific and the SPCZ, as well as the region following an arc between New Zealand and the South Atlantic, with higher values in the Southern Ocean.
