@@ -2083,12 +2083,6 @@ The latter agrees with the results of @cai2002, who showed that the CSIRO Model 
 
 The sensitivity of the phase of the PSAs to the location of the tropical SST anomalies was also seen by @ciasto2015, who detected similar Rossby wave patterns associated with central Pacific and eastern Pacific SST anomalies but with a change in phase.
 
-Some results of our work contrast with those obtained by @irving2016 when analysing the PSA.
-They did not find neither a strong association between PSA-like variability and ENSO, nor a relationship between this variability and Australian precipitation.
-Part of the disagreement could be due to the fact that we focus our analysis only on SON, which is the season when the teleconnection patterns are strongest, instead of the whole year.
-Moreover, @irving2016 use of ERA5 forectasted precipitation instead of the more observationally constrained CMAP dataset might be another source of disagreement.
-Additionally, the discrepancy could be related to the fact that @irving2016 show a weak relationship between ENSO and their PSA pattern, which explains partly the relationship between Australian rainfall and PSA-like variability.
-
 # Conclusion
 
 In this study we assessed extratropical Southern Hemisphere zonally asymmetric circulation in austral spring. For this purpose, two complex indices were derived using Complex Empirical Orthogonal Functions and used to characterise both  amplitude and phase of planetary waves.
