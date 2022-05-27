@@ -413,7 +413,7 @@ Addressing this limitation, the Fourier technique can be generalized to integrat
 The latter makes it possible to represent planetary waves with different amplitude at different longitudes, but it removes all information about phase and wave number.
 With this approach, @irving2015 showed that planetary wave amplitude in general is associated to Antarctic sea-ice concentration and temperature, as well as to precipitation anomalies in regions of significant topography in SH mid-latitudes and Antarctica.
 
-Another extensively used approach to characterize the SH tropospheric circulation anomalies, is by computing Empirical Orthogonal Functions (EOF, also known as Principal Component Analysis).
+Another extensively used approach to characterise the SH tropospheric circulation anomalies, is by computing Empirical Orthogonal Functions (EOF, also known as Principal Component Analysis).
 Within the EOF framework, the Southern Annular Mode (SAM) appears as the leading mode of variability of the SH circulation [@fogt2020].
 SAM represents a relatively zonally symmetric pattern of alternating low pressures in polar latitude and a ring of high pressures in high latitudes with an embedded wave 3 pattern that is more prominent in the Pacific sector.
 The 2nd and 3rd EOFs, usually known as Pacific--South American Patterns (PSA) 1 and PSA2 patterns, respectively, describe meridionally propagating wave trains that originate in the eastern equatorial Pacific and Australian-Indian Ocean sector, and travel towards the South Atlantic following a great-circle arch along the Antarctic coast [@mo2001].
@@ -667,7 +667,7 @@ This procedure does not create spurious correlations, it only takes an existing 
 
 Preliminary analysis showed that the first cEOF was closely related to the zonal wave 1 of Total Ozone Column and the second cEOF was closely related to ENSO.
 Therefore, to aid in the interpretation we chose the phase of cEOF1 so that the time series corresponding to the real part has the maximum correlation with the zonal wave 1 of Total Ozone Column between `r knitr::combine_words(LatLabel(o3wave_lats))`.
-Similarly, we chose the phase of cEOF2 so that the coefficient of determination between the Oceanic Niño Index [@bamston1997] and the real part is minimized, which also nearly maximizes the correlation with the imaginary part.
+Similarly, we chose the phase of cEOF2 so that the coefficient of determination between the Oceanic Niño Index [@bamston1997] and the real part is minimised, which also nearly maximises the correlation with the imaginary part.
 
 ```{r rotate_eofs}
 rotate <- function(z, angle = 0) {
@@ -2055,7 +2055,7 @@ However, the Imaginary cEOF2 is not the direction most correlated with precipita
 The 135º phase (an intermediate between positive Imaginary and negative Real cEOF2) component is associated with stronger and more extensive temporal correlations  with precipitation over Australia and New Zealand. 
 The influence of cEOF2 in Australian precipitation could be more related to the direct impacts of SST anomalies in the surrounded oceans rather than on the interconnection pattern represented by the cEOF2.
 
-Over South America, the Imaginary cEOF2 has positive correlations with precipitation in South Eastern South America (SESA) and central Chile, and negative correlations in eastern Brazil. This correlation field  matches the springtime precipitation signature of ENSO [e.g. @cai2020a] and it is also similar to the precipitation anomalies associated with the A-SAM [@@campitelli2022].
+Over South America, the Imaginary cEOF2 has positive correlations with precipitation in South Eastern South America (SESA) and central Chile, and negative correlations in eastern Brazil. This correlation field  matches the springtime precipitation signature of ENSO [e.g. @cai2020a] and it is also similar to the precipitation anomalies associated with the A-SAM [@campitelli2022].
 
 This result is not surprising considering the close relationship of the Imaginary cEOF2 with both ONI and A-SAM index, which was shown previously.  
 Furthermore, it consolidates the identification of the cEOF2 with the PSA pattern. Resembling the relationship between ONI and the phase of cEOF2 (Fig.\  \@ref(fig:enso-phase)), there is a cEOF2 phase dependence of the precipitation anomalies in SESA (not shown). 
