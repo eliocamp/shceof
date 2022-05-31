@@ -453,7 +453,6 @@ In Section\ \@ref(psa) and \@ref(sam) we analyse the relationship between cEOF2 
 In Section\ \@ref(tropical) we study tropical forcings that explain the variability of each cEOF.
 In Section\ \@ref(precipitation) we show the relationship between these modes of variability and precipitation and surface temperature anomalies in South America and Oceania.
 In Section\ \@ref(discussion) we compare our results with previous studies and discuss the benefits of our methodology.
-In Section\ \@ref(conclusion) we summarise the conclusions. 
 
 <!-- The large-scale extratropical circulation in the Southern Hemisphere (SH) is strongly zonally symmetric, but its zonal departures are highly relevant for regional impacts and could even be related to the occurrence of high-impact climate extremes (REFERENCE).  -->
 
@@ -2068,7 +2067,7 @@ Furthermore, it consolidates the identification of the cEOF2 with the PSA patter
 The correlation coefficients between precipitation anomalies and the Real cEOF2 (Fig.\ \@ref(fig:pp-temp-2)d.2) are weaker than for Imaginary cEOF2.
 There is a residual positive correlation in the equatorial eastern Pacific and small, not statistically significant positive correlations over eastern Australia and negative ones over New Zealand.
 
-# Discussion and conclusions
+# Discussion and conclusions {#discussion}
 
 In previous sections, it has been shown that variability patterns that arise from cEOF methodology describe the zonally asymmetric springtime extratropical SH circulation, reproducing previous features such as the variability related to PSAs or A-SAM. 
 
