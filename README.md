@@ -18,7 +18,7 @@ The easiest way to run this code is to use the docker environment, which comes n
 [Install Docker](https://docs.docker.com/engine/install/) if you haven't already. Then, go to the folder in which you cloned the repository and run this line:
 
 ```bash
-docker run --rm -p 8787:8787 -e DISABLE_AUTH=true -v $(pwd):/home/rstudio/shceof -v /home/rstudio/shceof/renv -v /home/rstudio/shceof/analysis/data eliocamp/shceof
+docker run --rm -p 8787:8787 -e DISABLE_AUTH=true -v $(pwd):/home/rstudio/shceof -v /home/rstudio/shceof/renv eliocamp/shceof
 ```
 
 Open your web browser to [localhost:8787](http://127.0.0.1:8787/) and you'll be welcomed by an RStudio session with a shceof folder with all that you need. And you can move [to the next section](#compiling-the-manuscript).
