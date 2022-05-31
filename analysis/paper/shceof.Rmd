@@ -2085,9 +2085,9 @@ The sensitivity of the phase of the PSAs to the location of the tropical SST ano
 
 # Conclusion
 
-In this study we assessed extratropical Southern Hemisphere zonally asymmetric circulation in austral spring. For this purpose, two complex indices were derived using Complex Empirical Orthogonal Functions and used to characterise both  amplitude and phase of planetary waves.
+In this study we assessed extratropical Southern Hemisphere zonally asymmetric circulation in austral spring. For this purpose, two complex indices were derived using Complex Empirical Orthogonal Functions and used to characterise both amplitude and phase of planetary waves.
 
-The cEOF1 represents the variability of the zonal wave 1 in the stratosphere, but represents a more zonally symmetric monopole in the troposphere.
+The cEOF1 represents the variability of the zonal wave 1 in the stratosphere.
 There is a statistically positive trend in the magnitude of this cEOF, which is consistent with previous studies that showed secular changes in springtime wave-1-like patterns [e.g. @raphael2003].
 This mode is closely related to stratospheric variability such as anomalies in Total Ozone Column.
 Otherwise, this complex EOF is not related with SST variability and continental precipitation in the Southern Hemisphere.
