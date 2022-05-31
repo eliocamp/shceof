@@ -57,9 +57,11 @@ data_function <- function(name,
       download_from_zenodo(data)
     }
 
-    md5 <- digest::digest(data$file, "md5", file = TRUE)
-    if (data$zenodo_md5 != md5) {
-      stop("File for dataset ", data$name, " has incorrect checksum.")
+    if (!is.null(data$zenodo_md5)) {
+      md5 <- digest::digest(data$file, "md5", file = TRUE)
+      if (data$zenodo_md5 != md5) {
+        stop("File for dataset ", data$name, " has incorrect checksum.")
+      }
     }
 
     data$file
