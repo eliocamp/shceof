@@ -1388,7 +1388,9 @@ plot
 Figure \@ref(fig:phase-histogram) shows an histogram that counts the number of SON seasons in which the cEOF2 phase was close to each of the four particular phases (positive/negative of real/imaginary component), with the observations for each season marked as rugs on the horizontal axis.
 In `r scales::percent(imaginary)` of seasons cEOF2 has a phase similar to either the negative or positive imaginary phase, making the imaginary phase the most common phase. 
 This is also, by construction, the phase that is most correlated with ENSO.
-Therefore, the Imaginary cEOF2 explains more variance than the Real cEOF2 and conventional EOF analysis will tend to separate the two.
+
+Therefore, by virtue of being the most common phase, the Imaginary cEOF2 explains more variance than the Real cEOF2.
+Conventional EOF analysis will therefore tend to separate them relatively cleanly, with the EOF representing the Imaginary cEOF2 always leading the one representing the Real cEOF2.
 
 This phase preferences is in agreement with @irving2016, who found a bimodal distribution to PSA-like variability (compare our Figure \@ref(fig:phase-histogram) with their Figure 6).
 
