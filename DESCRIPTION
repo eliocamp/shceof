@@ -40,7 +40,8 @@ Suggests:
     rsoi,
     widyr,
     remotes,
-    magick
+    magick,
+    pkgbuild
 RoxygenNote: 7.1.1
 Remotes:
     eliocamp/tagger,
