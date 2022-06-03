@@ -1403,7 +1403,7 @@ Such extremely high correlation between A-SAM and Imaginary cEOF2 suggests that 
 
 ```{r sst}
 sst <- ERSST() %>%
-  readRDS() %>% 
+  fread() %>% 
   .[season(time) == "SON"] %>%
   normalise_coords() %>%
   .[, w := season_weights(time)] %>% 
