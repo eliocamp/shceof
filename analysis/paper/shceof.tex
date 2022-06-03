@@ -249,7 +249,7 @@ We chose this latitude band because it is wide enough to capture most of the rel
 
 We computed the level-dependent SAM index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period (Baldwin and Thompson 2009).
 We further split the SAM into its zonally symmetric and zonally asymmetric components (S-SAM and A-SAM indices respectively).
-These indices were obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields, as proposed by Campitelli, Díaz, and Vera (2022).
+These indices were obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields, as proposed by Campitelli, Díaz, and Vera (2022a).
 Seasonal indices of the PSA patterns (PSA1 and PSA2) were calculated, in agreement with Mo and Paegle (2001), as the third and fourth leading EOF of seasonal mean anomalies for 500-hPa geopotential heights at SH.
 
 Linear trends were computed by Ordinary Least Squares (OLS) and the 95\% confidence interval was computed assuming a t-distribution with the appropriate residual degrees of freedom (D. Wilks 2011).
@@ -533,17 +533,17 @@ This phase preferences is in agreement with Irving and Simmonds (2016), who foun
 \end{figure}
 
 We now explore the relationship between SAM and the cEOFs motivated by the resemblance between cEOFs regression maps and SAM patterns shown in Section~\ref{regressions}.
-We then computed the coefficient of determination between the cEOFs time series and the three SAM indices (SAM, A-SAM and S-SAM) defined by Campitelli, Díaz, and Vera (2022) at each vertical level (Fig.~\ref{fig:sam-eof-vertical}).
+We then computed the coefficient of determination between the cEOFs time series and the three SAM indices (SAM, A-SAM and S-SAM) defined by Campitelli, Díaz, and Vera (2022a) at each vertical level (Fig.~\ref{fig:sam-eof-vertical}).
 The SAM index is statistically significant correlated with the Real cEOF1 in all levels, and with the Imaginary cEOF1 and Imaginary cEOF2 in the troposphere.
 On the other hand, correlations between SAM and the Real cEOF2 are non-significant.
 
 The relationship between the SAM and cEOF1 in the troposphere is explained entirely by the zonally symmetric component of the SAM as shown by the high correlation with the S-SAM below 100 hPa and the low and statistically non-significant correlations between the A-SAM and either the Real or Imaginary cEOF1.
 In the stratosphere, the Real cEOF1 is correlated with both A-SAM and S-SAM, while the Imaginary cEOF1 is highly correlated only with the A-SAM.
-These correlations are consistent with the regression maps of geopotential height in Figure~\ref{fig:eof1-regr-gh} and their comparison with those obtained for SAM, A-SAM and S-SAM by Campitelli, Díaz, and Vera (2022).
+These correlations are consistent with the regression maps of geopotential height in Figure~\ref{fig:eof1-regr-gh} and their comparison with those obtained for SAM, A-SAM and S-SAM by Campitelli, Díaz, and Vera (2022a).
 
 In the case of Imaginary cEOF2, its correlation with the SAM for the troposphere is associated to the asymmetric variability of the SAM.
 Indeed, the Imaginary cEOF2 shares up to 92\% variance with the A-SAM and only 12\% at most with the S-SAM (Figure~\ref{fig:sam-eof-vertical}.b2).
-Such extremely high correlation between A-SAM and Imaginary cEOF2 suggests that the modes obtained in this work are able to characterise the zonally asymmetric component of the SAM described previously by Campitelli, Díaz, and Vera (2022).
+Such extremely high correlation between A-SAM and Imaginary cEOF2 suggests that the modes obtained in this work are able to characterise the zonally asymmetric component of the SAM described previously by Campitelli, Díaz, and Vera (2022a).
 
 \hypertarget{tropical}{%
 \subsection{Tropical sources of cEOFs variabitliy}\label{tropical}}
@@ -654,7 +654,7 @@ However, the Imaginary cEOF2 is not the direction most correlated with precipita
 The 135º phase (an intermediate between positive Imaginary and negative Real cEOF2) component is associated with stronger and more extensive temporal correlations with precipitation over Australia and New Zealand.
 The influence of cEOF2 in Australian precipitation could be more related to the direct impacts of SST anomalies in the surrounded oceans rather than on the interconnection pattern represented by the cEOF2.
 
-Over South America, the Imaginary cEOF2 has positive correlations with precipitation in South Eastern South America (SESA) and central Chile, and negative correlations in eastern Brazil. This correlation field matches the springtime precipitation signature of ENSO (e.g. Cai et al. 2020) and it is also similar to the precipitation anomalies associated with the A-SAM (Campitelli, Díaz, and Vera 2022).
+Over South America, the Imaginary cEOF2 has positive correlations with precipitation in South Eastern South America (SESA) and central Chile, and negative correlations in eastern Brazil. This correlation field matches the springtime precipitation signature of ENSO (e.g. Cai et al. 2020) and it is also similar to the precipitation anomalies associated with the A-SAM (Campitelli, Díaz, and Vera 2022a).
 
 This result is not surprising considering the close relationship of the Imaginary cEOF2 with both ONI and A-SAM index, which was shown previously.\\
 Furthermore, it consolidates the identification of the cEOF2 with the PSA pattern. Resembling the relationship between ONI and the phase of cEOF2 (Fig.~~\ref{fig:enso-phase}), there is a cEOF2 phase dependence of the precipitation anomalies in SESA (not shown).
@@ -686,24 +686,40 @@ When ENSO phase is neutral, the cEOF2 is still as active, but with no preferred 
 The latter agrees with the results of Cai and Watterson (2002), who showed that the CSIRO Model can develop PSA-like variability even in the absence of ENSO forcing (i.e.~with a climatological run), but that the variability of one of the PSA modes was enhanced when adding the ENSO signal.
 The sensitivity of the phase of the PSAs to the location of the tropical SST anomalies was also seen by Ciasto, Simpkins, and England (2015), who detected similar Rossby wave patterns associated with central Pacific and eastern Pacific SST anomalies but with a change in phase.
 
-Our method is similar to Goyal et al. (2022) as they also derive an index with amplitude and phase of wave-like activity in the SH with very similar patterns to our cEOF2.
-Both indices are likely very similar (a detailed comparison is out of scope for this paper) but cEOF have the advantage of constructing the indices based on patterns that are exactly in quadrature by construction.
+The method used in this study have similarities to the one used by Goyal et al. (2022) as they construct an index of amplitude and phase of zonal wave 3-like variability by combining the two leading EOFs of meridional wind anomalies.
+The patterns obtained by them bear high resemblance with cEOF2.
+Although a detailed comparison is out of scope for this paper, the cEOF analysis has the advantage of constructing the indices based on patterns that are exactly in quadrature by construction.
 
 The methodology proposed in this study allows for a deeper understanding of the zonally asymmetric springtime extratropical SH circulation such as a better description of PSA like variability using a unique complex index and the understanding of relationship between PSAs and ENSO or SAM variability.
 Further work should extend this analysis to other seasons and further study the relationship between the cEOF2 and the SAM.
+
+\hypertarget{availability-of-data-and-material}{%
+\subsection*{Availability of data and material}\label{availability-of-data-and-material}}
+\addcontentsline{toc}{subsection}{Availability of data and material}
+
+All data used in this paper available in a version-controlled repository (Campitelli, Díaz, and Vera 2022b).
+It is also freely available from their respective sources:
+
+\begin{itemize}
+\item
+  ERA5 data can be obtained via the Copernicus Climate Data Store (\url{https://cds.climate.copernicus.eu/cdsapp/\#!/dataset/reanalysis-era5-pressure-levels-monthly-means/}).
+\item
+  ERSSTv5 can be obtained via NOAA's NCEI websiste at \url{https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ncdc:C00927}
+\item
+  CMAP Precipitation data provided by the NOAA/OAR/ESRL PSL, Boulder, Colorado, USA, from their Web site at \url{https://psl.noaa.gov/data/gridded/data.cmap.html}.
+\item
+  The Oceanic Niño Index is available via NOAA's Climate Prediction Center: \url{https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/detrend.nino34.ascii.txt}.
+\item
+  The Oceanic Niño Index is available via NOAA's Climate Prediction Center: \url{https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/detrend.nino34.ascii.txt}.
+\item
+  The Dipole Mode Index is available via Global Climate Observing System Working Group on Surface Pressure: \url{https://psl.noaa.gov/gcos_wgsp/Timeseries/Data/dmi.had.long.data}
+\end{itemize}
 
 \hypertarget{code-availability}{%
 \subsection*{Code availability}\label{code-availability}}
 \addcontentsline{toc}{subsection}{Code availability}
 
 A version-controlled repository of the code used to create this analysis, including the code used to download the data can be found at \url{https://github.com/eliocamp/shceof}.
-
-\begin{itemize}
-\item
-  The Oceanic Niño Index is available via NOAA's Climate Prediction Center: \url{https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/detrend.nino34.ascii.txt}.
-\item
-  The Dipole Mode Index is available via Global Climate Observing System Working Group on Surface Pressure: \url{https://psl.noaa.gov/gcos_wgsp/Timeseries/Data/dmi.had.long.data}
-\end{itemize}
 
 \appendix
 
@@ -764,7 +780,10 @@ Cai, Wenju, and Ian G. Watterson. 2002. {``Modes of {Interannual Variability} of
 Campitelli, Elio. 2020. \emph{{metR}: {Tools} for {Easier Analysis} of {Meteorological Fields}} (version 0.7.0). \url{https://CRAN.R-project.org/package=metR}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-campitelli2022}{}}%
-Campitelli, Elio, Leandro B. Díaz, and Carolina Vera. 2022. {``Assessment of Zonally Symmetric and Asymmetric Components of the {Southern Annular Mode} Using a Novel Approach.''} \emph{Climate Dynamics} 58 (1): 161--78. \url{https://doi.org/10.1007/s00382-021-05896-5}.
+Campitelli, Elio, Leandro B. Díaz, and Carolina Vera. 2022a. {``Assessment of Zonally Symmetric and Asymmetric Components of the {Southern Annular Mode} Using a Novel Approach.''} \emph{Climate Dynamics} 58 (1): 161--78. \url{https://doi.org/10.1007/s00382-021-05896-5}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-campitelli2022a}{}}%
+Campitelli, Elio, Leandro Díaz, and Carolina Vera. 2022b. {``Data for "{Revisiting} the {Austral Spring Extratropical Southern Hemisphere} Zonally Asymmetric Circulation Using Complex {Empirical Orthogonal Functions}".''} {Zenodo}. \url{https://doi.org/10.5281/zenodo.6612324}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-cazes-boezio2003}{}}%
 Cazes-Boezio, Gabriel, Andrew W. Robertson, and Carlos R. Mechoso. 2003. {``Seasonal {Dependence} of {ENSO Teleconnections} over {South America} and {Relationships} with {Precipitation} in {Uruguay}.''} \emph{Journal of Climate} 16 (8): 1159--76. \url{https://doi.org/10.1175/1520-0442(2003)16\%3C1159:SDOETO\%3E2.0.CO;2}.
@@ -794,7 +813,7 @@ Grytsai, A. 2011. {``Planetary Wave Peculiarities in {Antarctic} Ozone Distribut
 Hartmann, Dennis L., and Rolando R. Garcia. 1979. {``A {Mechanistic Model} of {Ozone Transport} by {Planetary Waves} in the {Stratosphere}.''} \emph{Journal of the Atmospheric Sciences} 36 (2): 350--64. \url{https://doi.org/10.1175/1520-0469(1979)036\%3C0350:AMMOOT\%3E2.0.CO;2}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-era5}{}}%
-Hersbach, H., B. Bell, P. Berrisford, G. Biavati, A. Horányi, J. Muñoz Sabater, J. Nicolas, et al. 2019. {``{Era5} Monthly Averaged Data on Pressure Levels from 1979 to Present.''} \emph{{Copernicus Climate Change Service} ({C3s}) {Climate Data Store} ({CDS})} (Accessed on {\(<\)}07-09-2021{\(>\)}). \url{https://doi.org/10.24381/cds.6860a573}.
+Hersbach, H., B. Bell, P. Berrisford, G. Biavati, A. Horányi, J. Muñoz Sabater, J. Nicolas, et al. 2019. {``{Era5} Monthly Averaged Data on Pressure Levels from 1979 to Present.''} \emph{{Copernicus Climate Change Service} ({C3s}) {Climate Data Store} ({CDS})} (Accessed on {\(<\)}03-06-2022{\(>\)}). \url{https://doi.org/10.24381/cds.6860a573}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-hobbs2010}{}}%
 Hobbs, William R., and Marilyn N. Raphael. 2010. {``Characterizing the Zonally Asymmetric Component of the {SH} Circulation.''} \emph{Climate Dynamics} 35 (5): 859--73. \url{https://doi.org/10.1007/s00382-009-0663-z}.

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.5.6)  3 JUN 2022 12:33
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.5.6)  3 JUN 2022 17:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -675,84 +675,109 @@ Overfull \hbox (123.72388pt too wide) in paragraph at lines 635--636
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [23] [24]
-Overfull \hbox (4.0pt too wide) in paragraph at lines 703--705
+Overfull \hbox (12.11998pt too wide) in paragraph at lines 700--702
+\TU/lmr/m/n/10 All data used in this paper available in a version-controlled repository (Campitelli,
+ []
+
+
+Overfull \hbox (0.43001pt too wide) in paragraph at lines 705--707
+[]\TU/lmr/m/n/10 ERA5 data can be obtained via the Copernicus Climate Data Store ([]$[][][][][] []
+ []
+
+
+Overfull \hbox (3.5pt too wide) in paragraph at lines 705--707
+[] [] [][][] [] [][][][][][][] [] [][][][][][][][][][] [] [][] [] [][][][][][] [] [] [] [][][][][][][][] [] [][][][][][][][][][] [][] [][][][] [][]
+ []
+
+
+Overfull \hbox (8.25pt too wide) in paragraph at lines 707--709
+[][][][] [] [][][][] [] [][][] [] [][][][][][] [] [][][][][][][][] [] [][][][][][][] [][] [][][][] [] [][][] [] [][][] [] [][] [] [][][] [] [][][][] []
+ []
+
+
+Overfull \hbox (4.0pt too wide) in paragraph at lines 711--713
 \TU/lmr/m/n/10 ter: []$[][][][][] [] [] [] [][][] [] [][][] [] [][][][] [] [][][][] [] [][][] [] [][][][][][][][] [] [][][][][][][][] [] [][][][][][][][][][] []
  []
 
-[25]
+
+Overfull \hbox (4.0pt too wide) in paragraph at lines 713--715
+\TU/lmr/m/n/10 ter: []$[][][][][] [] [] [] [][][] [] [][][] [] [][][][] [] [][][][] [] [][][] [] [][][][][][][][] [] [][][][][][][][] [] [][][][][][][][][][] []
+ []
+
+[25] [26]
 File: ../figures/sst-psi-1-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-1-1.pdf>
 
-Overfull \hbox (127.73885pt too wide) in paragraph at lines 720--720
+Overfull \hbox (127.73885pt too wide) in paragraph at lines 736--736
 [][] 
  []
 
 File: ../figures/pp-temp-1-1.pdf Graphic file (type pdf)
 <use ../figures/pp-temp-1-1.pdf>
 
-Overfull \hbox (123.72388pt too wide) in paragraph at lines 727--728
+Overfull \hbox (123.72388pt too wide) in paragraph at lines 743--744
  [][] 
  []
 
 
-Overfull \hbox (4.1431pt too wide) in paragraph at lines 742--744
+Overfull \hbox (4.1431pt too wide) in paragraph at lines 758--760
 []\TU/lmr/m/n/8 Baldwin, Mark P., and David W. J. Thompson. 2009. “A Critical Comparison of Stratosphere–
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[26]
-Overfull \hbox (23.19041pt too wide) in paragraph at lines 748--750
+[27]
+Overfull \hbox (23.19041pt too wide) in paragraph at lines 764--766
 \TU/lmr/m/n/8 (Accessed on $\OML/cmm/m/it/8 <$\TU/lmr/m/n/8 26-08-2021$\OML/cmm/m/it/8 >$\TU/lmr/m/n/8 ), https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[27]
-Overfull \hbox (2.34808pt too wide) in paragraph at lines 787--789
+[28]
+Overfull \hbox (2.34808pt too wide) in paragraph at lines 806--808
 []$[][][][][] [] [] [] [][][][][][][][] [] [][][][][][][] [] [][][] [] [][][][] [] [][][][][][][][] [] [][][][] [] [][][] [] [][][][] [][] [] [][] [][] [][] [][][][] [] [] [] [][][][] [][] [] [][]
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[28]
-Overfull \hbox (23.85606pt too wide) in paragraph at lines 820--822
+[29]
+Overfull \hbox (23.85606pt too wide) in paragraph at lines 839--841
 \TU/lmr/m/n/8 Types of ENSO.” \TU/lmr/m/it/8 Journal of Climate \TU/lmr/m/n/8 22 (3): 615–32. []$[][][][][] [] [] [] [][][] [] [][][] [] [][] [] [][][][] [] [][][][][][][][][][][][] []
  []
 
 
-Overfull \hbox (4.12004pt too wide) in paragraph at lines 829--831
+Overfull \hbox (4.12004pt too wide) in paragraph at lines 848--850
 []\TU/lmr/m/n/8 Lim, E.-P., H. H. Hendon, and D. W. J. Thompson. 2018. “Seasonal Evolution of Stratosphere-
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[29]
-Overfull \hbox (0.25206pt too wide) in paragraph at lines 871--873
+[30]
+Overfull \hbox (0.25206pt too wide) in paragraph at lines 890--892
 \TU/lmr/m/it/8 Monthly Weather Review \TU/lmr/m/n/8 108 (9): 1378–89. []$[][][][][] [] [] [] [][][] [] [][][] [] [][] [] [][][][] [] [][][][] [][] [][][][][][][][][] []
  []
 
 
-Overfull \hbox (1.67607pt too wide) in paragraph at lines 874--876
+Overfull \hbox (1.67607pt too wide) in paragraph at lines 893--895
 \TU/lmr/m/it/8 Weather Review \TU/lmr/m/n/8 113 (1): 3–21. []$[][][][][] [] [] [] [][][] [] [][][] [] [][] [] [][][][] [] [][][][] [][] [][][][][][][][][] [] [][][] [] [][][][][][] []
  []
 
 No file shceof.bbl.
-[30] (./shceof.aux)
+[31] (./shceof.aux)
 Package rerunfilecheck Info: File `shceof.out' has not changed.
 (rerunfilecheck)             Checksum: 20311DA4FA5656AD31005A895B7E6132;601.
  ) 
 Here is how much of TeX's memory you used:
- 14003 strings out of 478071
- 226914 string characters out of 5851520
- 566105 words of memory out of 5000000
- 34435 multiletter control sequences out of 15000+600000
+ 14004 strings out of 478071
+ 226949 string characters out of 5851520
+ 566164 words of memory out of 5000000
+ 34436 multiletter control sequences out of 15000+600000
  475305 words of font info for 61 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  69i,9n,79p,602b,479s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on shceof.pdf (30 pages).
+Output written on shceof.pdf (31 pages).
