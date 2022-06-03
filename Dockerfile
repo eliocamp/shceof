@@ -18,9 +18,8 @@ RUN R -e "system(sysreqs::sysreq_commands('DESCRIPTION', 'linux-x86_64-ubuntu-gc
   && rm -rf /var/lib/apt/lists/*
 
 # Get and install R packages to local library
-COPY renv.lock renv.lock
+COPY renv.lock .Rprofile ./
 COPY renv/activate.R renv/activate.R
-COPY .Rprofile .Rprofile
 RUN chown -R rstudio . \
   && sudo -u rstudio R -e 'renv::restore()'
 
