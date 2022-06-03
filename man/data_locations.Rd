@@ -4,6 +4,7 @@
 \alias{data_path}
 \alias{ERA5_TOC}
 \alias{ERA5_geopotential}
+\alias{ERA5_geopotential_all}
 \alias{ERA5_temperature}
 \alias{ERA5_vorticity}
 \alias{ERA5_ozone}
@@ -14,6 +15,7 @@
 \alias{ERSST}
 \alias{ENSO}
 \alias{DMI}
+\alias{SAM}
 \title{Data locations}
 \usage{
 data_path(type = c("raw", "derived"), ...)
@@ -21,6 +23,8 @@ data_path(type = c("raw", "derived"), ...)
 ERA5_TOC(from_source = FALSE)
 
 ERA5_geopotential(from_source = FALSE)
+
+ERA5_geopotential_all(from_source = FALSE)
 
 ERA5_temperature(from_source = FALSE)
 
@@ -41,11 +45,13 @@ ERSST(from_source = FALSE)
 ENSO(from_source = FALSE)
 
 DMI(from_source = FALSE)
+
+SAM(from_source = FALSE)
 }
 \arguments{
 \item{type}{character indicating the type of data. The resulting base will be type_data}
 
-\item{...}{characters to be contactenadted with [file.path()]}
+\item{...}{characters to be concatenated with [file.path()]}
 
 \item{from_source}{Logical indicating whether to force download of data from the
 remote source instead of the Zeonodo repository.}
@@ -53,4 +59,15 @@ remote source instead of the Zeonodo repository.}
 \description{
 Functions that return the location of different datasets. They check that
 relevant file exist and then return it with a class that has a neat print method.
+}
+\details{
+Each dataset has two potential sources, either the original source or the
+Zenodo repository associated with this paper. The default behaviour is to
+download the file from Zenodo if the file does not exist. This will
+get the exact files that where used for the paper.
+If `from_source = TRUE`, then the function will fetch the data from the
+primary source (e.g. Climate Data Store) and save the file where it should be.
+
+In either case, the file hash will be compared with a reference hash and warn
+if there are differences.
 }

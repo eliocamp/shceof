@@ -298,7 +298,8 @@ dmi <- DMI() %>%
   .[, dmi := dmi*season_weights(time)] %>% 
   .[, .(dmi = mean(dmi)), by = .(time = seasonally(time))]
 
-sams <- readRDS(data_path("derived", "sam.Rds")) %>%
+sams <- SAM() %>% 
+  fread() %>%
   .[season(time) == "SON"] %>%
   .[, estimate := estimate*season_weights(time)] %>% 
   .[, .(estimate = mean(estimate)),

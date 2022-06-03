@@ -17,7 +17,7 @@ compute_ceof(
 \arguments{
 \item{hgt}{vector of geopotential height observations}
 
-\item{lon, lat}{vectors of locations of geopotential height observations}
+\item{lon, lat.lev}{vectors of locations of geopotential height observations}
 
 \item{temporal}{Logical whether to compute temporal anomalies.}
 

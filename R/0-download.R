@@ -117,6 +117,19 @@ request_geopotential_all <- list(
   format = "netcdf",
   product_type = "monthly_averaged_reanalysis",
   variable = c("geopotential"),
+  pressure_level = c('1', '2', '3',
+                     '5', '7', '10',
+                     '20', '30', '50',
+                     '70', '100', '125',
+                     '150', '175', '200',
+                     '225', '250', '300',
+                     '350', '400', '450',
+                     '500', '550', '600',
+                     '650', '700', '750',
+                     '775', '800', '825',
+                     '850', '875', '900',
+                     '925', '950', '975',
+                     '1000'),
   year = as.character(1979:2020),
   month = formatC(1:12, width = 2, flag = 0),   # Need all months to compute PSA
   time = "00:00",
@@ -124,8 +137,6 @@ request_geopotential_all <- list(
   area = southern_hemisphere,
   dataset_short_name = "reanalysis-era5-pressure-levels-monthly-means"
 )
-
-
 
 
 request_vorticity <- list(
@@ -230,6 +241,6 @@ download_ersst <- function(file) {
   data <- lapply(files, function(file) metR::ReadNetCDF(file, vars = c(t = "sst")))
   data <- data.table::rbindlist(data)
 
-  saveRDS(data, file)
+  data.table::fwrite(data, file)
   file
 }
