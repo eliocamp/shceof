@@ -457,60 +457,6 @@ In Section\ \@ref(tropical) we study tropical forcings that explain the variabil
 In Section\ \@ref(precipitation) we show the relationship between these modes of variability and precipitation and surface temperature anomalies in South America and Oceania.
 In Section\ \@ref(discussion) we compare our results with previous studies and discuss the benefits of our methodology.
 
-<!-- The large-scale extratropical circulation in the Southern Hemisphere (SH) is strongly zonally symmetric, but its zonal departures are highly relevant for regional impacts and could even be related to the occurrence of high-impact climate extremes (REFERENCE).  -->
-
-<!-- Zonal asymmetries of extratropical circulation in the Southern Hemisphere strongly modulate weather systems and regional climate through promoting longitudinally different latitudinal transport of heat, humidity, and momentum [@trenberth1980]. -->
-
-<!-- Hablar simplemente de cómo estos fenómenos varían en longitud.  -->
-
-<!-- @hill2009 ->  -->
-
-<!-- Comparan eventos ENSO del 97 y de 2002 -->
-
-<!-- La posición de las anomalías de circulación (PSA) son importantes para determinar el impacto del ENSO en sudamérica. Sugiere que la localización de la anomalía de SST cambia la localización del PSA.  -->
-
-<!-- > The meridional winds from the idealised experiments based on simplified and localised SST warming showed a significant difference between experiments forced by eastern versus central-west Pacific SST anomalies, with a clear phase shift of the PSA apparent. This phase shift in the idealised experiments is possibly the main factor responsible for the different responses in South American atmospheric circulation between the 1997/1998 and 2002/2003 El Niño events. The phase shift over southeastern South America was also seen in the low-level 850 hPa winds in the EN97 and EN02 experiments, suggesting that the PSA phase shift is responsible for the shift in the moisture transport over southeastern Brazil between the two El Niño events. In summary, the location of the maximum SST anomaly appears to be an important factor in controlling the amount of moisture transported into the SACZ region during El Niño events.  -->
-
-<!-- @hobbs2010 -> muestra la importancia de la longitud de ciclones -->
-
-<!-- ciasto2015 -> no investiga impactos -->
-
-<!-- sun2013 -->
-
-<!-- wilson2014 -> -->
-
-<!-- Observaciones y modelos enso canonico y modoki. diferentes patrones de circulacion.  -->
-
-<!-- wang2021 ->  -->
-
-<!-- > However, the spatial pattern of the PSA wave train excited by ENSO seems to be -->
-
-<!-- > non-stationary. Fogt and Bromwich (2006) indicated that the PSA mode moved -->
-
-<!-- > eastwards by 20° longitude in the 1990s owing to the eastward shift of the tropical -->
-
-<!-- > convective position. In addition, Wilson et al. (2014, 2016) and Ciasto et al. (2015) -->
-
-<!-- > found that the different types of ENSO can contribute to the wave shift. Specifically, -->
-
-<!-- > Rossby waves excited by central Pacific (CP)–type El Niño shift westwards owing to -->
-
-<!-- > the westward movement of the tropical diabatic heating. -->
-
-<!-- Diferencia en la localización de los centros en LN y EN -> diferencias en los impactos en la península antártica.  -->
-
-<!-- Lo más importante es la localización de la salida del jet, no la perturbación de sst.  -->
-
-<!-- fogt2006 ->  -->
-
-<!-- cambios en la posición de las teleccionexiones. Pero es todo con composiciones y comparando décadas. No mira impactos. -->
-
-<!-- lou2021 ->  -->
-
-<!-- > In combination, they produce the single propagating PSA mode. -->
-
-<!-- Complicado y no entiendo mucho, pero cosas que puedo ver es que PSA forza el océano subtropical que luego es precursora de ENSO. No sé si eso es súper  -->
-
 # Data and Methods {#methods}
 
 ## Data
@@ -2090,19 +2036,35 @@ When ENSO phase is neutral, the cEOF2 is still as active, but with no preferred 
 The latter agrees with the results of @cai2002, who showed that the CSIRO Model can develop PSA-like variability even in the absence of ENSO forcing (i.e. with a climatological run), but that the variability of one of the PSA modes was enhanced when adding the ENSO signal. 
 The sensitivity of the phase of the PSAs to the location of the tropical SST anomalies was also seen by @ciasto2015, who detected similar Rossby wave patterns associated with central Pacific and eastern Pacific SST anomalies but with a change in phase.
 
-Our method is similar to @goyal2022 as they also derive an index with amplitude and phase of wave-like activity in the SH with very similar patterns to our cEOF2. 
-Both indices are likely very similar (a detailed comparison is out of scope for this paper) but cEOF have the advantage of constructing the indices based on patterns that are exactly in quadrature by construction. 
+The method used in this study have similarities to the one used by @goyal2022 as they construct an index of amplitude and phase of zonal wave 3-like variability by combining the two leading EOFs of meridional wind anomalies. 
+The patterns obtained by them bear high resemblance with cEOF2. 
+Although a detailed comparison is out of scope for this paper, the cEOF analysis has the advantage of constructing the indices based on patterns that are exactly in quadrature by construction.
 
 The methodology proposed in this study allows for a deeper understanding of the zonally asymmetric springtime extratropical SH circulation such as a better description of PSA like variability using a unique complex index and the understanding of relationship between PSAs and ENSO or SAM variability. 
 Further work should extend this analysis to other seasons and further study the relationship between the cEOF2 and the SAM.
 
-## Code availability {.unnumbered}
 
-A version-controlled repository of the code used to create this analysis, including the code used to download the data can be found at <https://github.com/eliocamp/shceof>.
+## Availability of data and material {.unnumbered}
+
+All data used in this paper available in a version-controlled repository [@campitelli2022a]. 
+It is also freely available from their respective sources:
+
+- ERA5 data can be obtained via the Copernicus Climate Data Store (<https://cds.climate.copernicus.eu/cdsapp\#!/dataset/reanalysis-era5-pressure-levels-monthly-means\>).
+
+- ERSSTv5 can be obtained via NOAA's NCEI websiste at <https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ncdc:C00927>
+
+- CMAP Precipitation data provided by the NOAA/OAR/ESRL PSL, Boulder, Colorado, USA, from their Web site at <https://psl.noaa.gov/data/gridded/data.cmap.html>.
+
+- The Oceanic Niño Index is available via NOAA's Climate Prediction Center: <https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/detrend.nino34.ascii.txt>.
 
 -   The Oceanic Niño Index is available via NOAA's Climate Prediction Center: <https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/detrend.nino34.ascii.txt>.
 
 -   The Dipole Mode Index is available via Global Climate Observing System Working Group on Surface Pressure: <https://psl.noaa.gov/gcos_wgsp/Timeseries/Data/dmi.had.long.data>
+
+
+## Code availability {.unnumbered}
+
+A version-controlled repository of the code used to create this analysis, including the code used to download the data can be found at <https://github.com/eliocamp/shceof>.
 
 \appendix
 
