@@ -28,6 +28,11 @@ download_from_zenodo <- function(data) {
 }
 
 
+zenodo_record <- "https://zenodo.org/record/6612429/"
+url_from_base <- function(file) {
+  paste0(zenodo_record, "/files/", basename(file), "?download=1")
+}
+
 data_function <- function(name,
                           file,
                           source,
@@ -38,6 +43,9 @@ data_function <- function(name,
     source <- simple_download(source)
   }
 
+  if (is.function(zenodo_url)) {
+    zenodo_url <- zenodo_url(basename(file))
+  }
   data <- list(
     name = name,
     file = file,
@@ -72,7 +80,6 @@ data_function <- function(name,
 
 }
 
-
 #' @param from_source Logical indicating whether to force download of data from the
 #' remote source instead of the Zeonodo repository.
 #'
@@ -93,7 +100,7 @@ ERA5_TOC <- data_function(
   name = "era5-total_column_ozone",
   file = data_path("raw", "era5.toc.mon.mean.nc"),
   source = download_cds(request_toc),
-  zenodo_url = "https://zenodo.org/record/6612324/files/era5.toc.mon.mean.nc?download=1",
+  zenodo_url = url_from_base,
   zenodo_md5 = "71c56bc40022026da943c35fb4983941",
   citation = citation_o3_era5
 )
@@ -104,7 +111,7 @@ ERA5_geopotential <- data_function(
   name = "era5-geopotential",
   file = data_path("raw", "era5.z.mon.mean.nc"),
   source = download_cds(request_geopotential),
-  zenodo_url = "https://zenodo.org/record/6612324/files/era5.z.mon.mean.nc?download=1",
+  zenodo_url = url_from_base,
   zenodo_md5 = "78cb847b37f05536da0a8fa7422a7c6f",
   citation = citation_era5
 )
@@ -115,8 +122,8 @@ ERA5_geopotential_all <- data_function(
   name = "era5-geopotential-all",
   file = data_path("raw", "era5-all.z.mon.mean.nc"),
   source = download_cds(request_geopotential_all),
-  zenodo_url = NULL,
-  zenodo_md5 = NULL,
+  zenodo_url = url_from_base,
+  zenodo_md5 = "d58ae65b9e68e92274a051251d267b45",
   citation = citation_era5
 )
 
@@ -128,7 +135,7 @@ ERA5_temperature <- data_function(
   name = "era5-air_temperature",
   file = data_path("raw", "era5.air.mon.mean.nc"),
   source = download_cds(request_temperature),
-  zenodo_url = "https://zenodo.org/record/6612324/files/era5.air.mon.mean.nc?download=1",
+  zenodo_url = url_from_base,
   zenodo_md5 = "ebabdb3760c5999f4e7360f1d9c93b9e",
   citation = citation_era5
 )
@@ -139,7 +146,7 @@ ERA5_vorticity <- data_function(
   name = "era5-vorticity",
   file = data_path("raw", "era5.vor.mon.mean.nc"),
   source = download_cds(request_vorticity),
-  zenodo_url = "https://zenodo.org/record/6612324/files/era5.vor.mon.mean.nc?download=1",
+  zenodo_url = url_from_base,
   zenodo_md5 = "ba65b25c763ed6541db9d8e89bf68a05",
   citation = citation_era5
 )
@@ -150,7 +157,7 @@ ERA5_ozone <- data_function(
   name = "era5-ozone",
   file = data_path("raw", "era5.o3.mon.mean.nc"),
   source = download_cds(request_ozone),
-  zenodo_url = "https://zenodo.org/record/6612324/files/era5.o3.mon.mean.nc?download=1",
+  zenodo_url = url_from_base,
   zenodo_md5 = "0055f304426c700d91be68be38df0b83",
   citation = citation_era5
 )
@@ -161,7 +168,7 @@ ERA5_BE <- data_function(
   name = "era5-back_extended-geopotential",
   file = data_path("raw", "era5be.mon.mean.nc"),
   source = download_cds(request_era5be),
-  zenodo_url = "https://zenodo.org/record/6612324/files/era5be.mon.mean.nc?download=1",
+  zenodo_url = url_from_base,
   zenodo_md5 = "7bebebf781bcdb045fc2a7735ef90629",
   citation = citation_era5be
 )
@@ -172,7 +179,7 @@ ERA5_BE <- data_function(
 ERA5_T2M <- data_function(
   name = "era5-2_metre_temperature",
   file = data_path("raw", "era5.2mt.mon.mean.nc"),
-  zenodo_url = "https://zenodo.org/record/6612324/files/era5.2mt.mon.mean.nc?download=1",
+  zenodo_url = url_from_base,
   zenodo_md5 = "bc6cb57caee814847374e47ca2f22fe2",
   source = download_cds(request_era5_2mt),
   citation = citation_era5
@@ -201,7 +208,7 @@ CMAP <- data_function(
   name = "cmap-precipitation",
   file = data_path("raw", "cmap.mon.mean.nc"),
   source = "ftp://ftp.cdc.noaa.gov/Datasets/cmap/std/precip.mon.mean.nc",
-  zenodo_url = "https://zenodo.org/record/6612324/files/cmap.mon.mean.nc?download=1",
+  zenodo_url = url_from_base,
   zenodo_md5 = "c003b8bb4d277418a5e7fa235828949b",
   citation = citation_cmap
 )
@@ -214,7 +221,7 @@ ERSST <- data_function(
   name = "ERSST",
   file = data_path("raw", "ersst.csv"),
   source = download_ersst,
-  zenodo_url = "https://zenodo.org/record/6612324/files/ersst.csv?download=1",
+  zenodo_url = url_from_base,
   zenodo_md5 = "fae3de4b4a0128b2a4b738d5cebd7094",
   citation = NULL
 )
@@ -235,7 +242,7 @@ ENSO <- data_function(
     )
     file
   },
-  zenodo_url = "https://zenodo.org/record/6612324/files/oni.csv?download=1",
+  zenodo_url = url_from_base,
   zenodo_md5 = "98d31a4984f1bac522717e4d303c890c",
   citation = NULL
 )
@@ -258,7 +265,7 @@ DMI <- data_function(
 
     file
   },
-  zenodo_url = "https://zenodo.org/record/6612324/files/dmi.csv?download=1",
+  zenodo_url = url_from_base,
   zenodo_md5 = "9e09ae2d9b6a260c78d76c80d3b4b9bf",
   citation = NULL
 )
@@ -286,7 +293,7 @@ SAM <- data_function(
     data.table::fwrite(sams, file)
     file
   },
-  zenodo_url = "https://zenodo.org/record/6612324/files/sam.csv?download=1",
+  zenodo_url = url_from_base,
   zenodo_md5 = "c46a278527ba97686172ca2f1a7e4469",
   citation = NULL
 )
