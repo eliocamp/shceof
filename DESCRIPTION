@@ -36,7 +36,6 @@ Suggests:
     ggnewscale,
     ncdf4,
     udunits2,
-    rticles,
     rsoi,
     widyr,
     remotes,

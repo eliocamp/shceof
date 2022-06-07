@@ -1,28 +1,45 @@
 ---
-title: "Revisiting the Austral Spring Extratropical Southern Hemisphere zonally asymmetric circulation using complex Empirical Orthogonal Functions"
-titlerunning:  SH zonally asymmetric circulation
-authors: 
-- name: Elio Campitelli
-  address: |
-    Universidad de Buenos Aires, Facultad de Ciencias Exactas y Naturales, Departamento de Ciencias de la Atmósfera y los Océanos. Buenos Aires, Argentina.  
-    CONICET – Universidad de Buenos Aires. Centro de Investigaciones del Mar y la Atmósfera (CIMA). Buenos Aires, Argentina.  
-    CNRS – IRD – CONICET – UBA. Instituto Franco-Argentino para el Estudio del Clima y sus Impactos (IRL 3351 IFAECI). Buenos Aires, Argentina.
-  email: elio.campitelli@cima.fcen.uba.ar
-  
-- name:  Leandro B. Díaz
-  address: |
-    Universidad de Buenos Aires, Facultad de Ciencias Exactas y Naturales, Departamento de Ciencias de la Atmósfera y los Océanos. Buenos Aires, Argentina.
-    CONICET – Universidad de Buenos Aires. Centro de Investigaciones del Mar y la Atmósfera (CIMA). Buenos Aires, Argentina.
-    CNRS – IRD – CONICET – UBA. Instituto Franco-Argentino para el Estudio del Clima y sus Impactos (IRL 3351 IFAECI). Buenos Aires, Argentina.
-  
-- name:  Carolina Vera
-  address: |
-    Universidad de Buenos Aires, Facultad de Ciencias Exactas y Naturales, Departamento de Ciencias de la Atmósfera y los Océanos. Buenos Aires, Argentina.
-    CONICET – Universidad de Buenos Aires. Centro de Investigaciones del Mar y la Atmósfera (CIMA). Buenos Aires, Argentina.
-    CNRS – IRD – CONICET – UBA. Instituto Franco-Argentino para el Estudio del Clima y sus Impactos (IRL 3351 IFAECI). Buenos Aires, Argentina.
+classoptions: 
+  - sn-basic
+year: 2022
+title:  "Revisiting the Austral Spring Extratropical Southern Hemisphere zonally asymmetric circulation using complex Empirical Orthogonal Functions"
+titlerunning: SH zonally asymmetric circulation with cEOF
 
-thanks: | 
-  The research was supported by UBACyT20020170100428BA and the CLIMAX Project funded by Belmont Forum/ANR-15-JCL/-0002-01. Elio Campitelli was supported by a PhD grant from CONICET, Argentina.
+authors: 
+  - firstname: Elio
+    lastname: Campitelli
+    email: elio.campitelli@cima.fcen.uba.ar
+    affiliation: [1,2,3]
+    corresponding: TRUE
+  - firstname: Leandro B.
+    lastname: Díaz
+    affiliation: [1,2,3]
+  - firstname: Carolina
+    lastname: Vera
+    affiliation: [1,2,3]
+
+affiliations:
+  - number: 1
+    corresponding: TRUE
+    info:
+      orgname: Universidad de Buenos Aires, Facultad de Ciencias Exactas y Naturales, Departamento de Ciencias de la Atmósfera y los Océanos
+    address:
+        city: Buenos Aires
+        country: Argentina
+  - number: 2
+    corresponding: TRUE
+    info:
+      orgname: CONICET – Universidad de Buenos Aires. Centro de Investigaciones del Mar y la Atmósfera (CIMA)
+    address:
+        city: Buenos Aires
+        country: Argentina  
+  - number: 3
+    corresponding: TRUE
+    info:
+      orgname: CNRS – IRD – CONICET – UBA. Instituto Franco-Argentino para el Estudio del Clima y sus Impactos (IRL 3351 IFAECI)
+    address:
+        city: Buenos Aires
+        country: Argentina          
 
  
 keywords:
@@ -32,33 +49,29 @@ keywords:
   - Southern Annular Mode
   - Stratosphere
 
-
-date: "`r format(Sys.time(), '%d %B, %Y')`"
-
 bibliography: 
   - references.bib
   - data.bib
   - packages.bib
 
-bibstyle: spbasic
-# bibstyle options spbasic(default), spphys, spmpsci
+# bibstyle: spbasic
+
 output: 
-  # bookdown::word_document2: default    
-  bookdown::pdf_book: 
-      base_format: rticles::springer_article
+  bookdown::pdf_document2:
       latex_engine: "xelatex"
       keep_tex: true
-      # citation_package: "natbib"
-      pandoc_args: ["--lua-filter=abstract-to-meta.lua"]
+      citation_package: "natbib"
+      template: "template.tex"
+      pandoc_args: ["--lua-filter=abstract-to-meta.lua", "--wrap=preserve"]
 always_allow_html: true
 header-includes: 
  - \usepackage{gensymb}
  - \usepackage{subfig}
  - \usepackage[inline]{showlabels}
  - \usepackage{chngcntr}
- - \usepackage{natbib}
- - \usepackage{lineno}
- - \linenumbers 
+ # - \usepackage{natbib}
+ # - \usepackage{lineno}
+ # - \linenumbers 
 ---
 
 ```{r setup, echo = FALSE, warning=FALSE, message=FALSE}
@@ -816,7 +829,7 @@ era_more <- rbind(
 
 (ref:extended-series-cap) Time series of the two leading cEOFs of SON zonal anomalies of geopotential height at 50 hPa and 200 hPa. cEOF1 (row a) and cEOF2 (row b) separated in their real (column 1) and imaginary (column 2) components. Dark straight line is the linear trend. Black horizontal and vertical line mark the mean value and range of each time series, respectively.
 
-```{r extended-series, fig.cap = "(ref:extended-series-cap)", fig.height=3, fig.width = 6, fig.env = "figure*"}
+```{r extended-series, fig.cap = "(ref:extended-series-cap)", fig.height=3, fig.width = 5, fig.env = "figure*"}
 # Check that the extended index coincides with the
 # original index.
 cors <- era_more %>%
@@ -860,9 +873,10 @@ era_more %>%
   scale_alpha_manual(values = c(1, 0.2)) +
   geom_smooth(method = "lm", aes(color = stage(part, after_scale = scales::muted(color))),
               show.legend = FALSE, size = 0.8) +
-  scale_x_date(NULL, date_labels = "%Y",
+  scale_x_date(NULL, 
                breaks = seq(as.Date("1950-01-01"),
                             as.Date("2020-01-01"), by = "10 years"),
+               labels = function(x) JumpBy(format(x, "%Y"), 2, fill = " "),
                minor_breaks = seq(as.Date("1950-01-01"),
                                   as.Date("2020-01-01"), by = "2 years")) +
   scale_y_continuous(NULL, minor_breaks = NULL, sec.axis = dup_axis()) +
@@ -1693,14 +1707,15 @@ plot_sst_psi <- function(sst_regr, psi_regr) {
     coord_sf(ylim = c(-89, 10), expand = FALSE,
              # crs = "+proj=longlat +pm=180 +over",
              default_crs = "+proj=longlat +lon_wrap=180 +over") + 
-    theme(legend.box = "horizontal",
+    theme(legend.box = "vertical",
           legend.text = element_text(size = rel(0.7)), 
+          legend.spacing = grid::unit(0, "lines"),
           legend.box.spacing = grid::unit(0, "lines") ) +
     tag_facets("rc") 
 }
 ```
 
-```{r  sst-psi-2,  fig.cap = "(ref:sst-psi-2-cap)", fig.width = 7, fig.height=5.6, dependson="plot_sst_psi", fig.env="figure*"}
+```{r sst-psi-2,  fig.cap = "(ref:sst-psi-2-cap)", fig.width = 5, fig.height=6, dependson="plot_sst_psi", fig.env="figure*"}
 plot_sst_psi(sst_regr[cEOF == "cEOF2"], psi_regr[cEOF == "cEOF2"]) 
 ```
 
@@ -1809,7 +1824,7 @@ This suggests that the variability of cEOF1 is driven primary by the internal va
 
 ## cEOFs surface impacts {#precipitation}
 
-```{r pp-t2m-r2, fig.cap = "(ref:cap-pp-t2m-r2)", fig.width=3.3*2, fig.height=3.3}
+```{r pp-t2m-r2, fig.cap = "(ref:cap-pp-t2m-r2)", fig.width=5, fig.height=3}
 breaks <- seq(.2, 1, by = .1)
 
 rbind(Precipitation = pp_regr,
@@ -1963,7 +1978,8 @@ plot_pp <- function(pp_regr, t2m_regr, hgt850_regr) {
     coord_sf(ylim = c(NA, 10),
              default_crs = "+proj=longlat +over") +
     theme(panel.spacing = grid::unit(1, "lines")) +
-    theme(legend.box = "horizontal",
+    theme(legend.box = "vertical",
+          legend.spacing = grid::unit(0, "lines"),
           legend.text = element_text(size = rel(0.7)), 
           legend.box.spacing = grid::unit(0, "lines") ) 
   
@@ -1983,7 +1999,7 @@ Figure\ \@ref(fig:pp-temp-2) shows regression maps of 2-metre temperature (colum
 
 (ref:pp-temp-cap) Regression of SON mean 2-meter temperature (K, shaded) and 850 hPa geopotential height (m, contours) (column 1), and precipitation (correlation, column 2) upon different phases of cEOF2. For the 1979 -- 2019. Areas marked with dots have p-values smaller than 0.01 adjusted for False Detection Rate.
 
-```{r pp-temp-2, fig.cap="(ref:pp-temp-cap)", fig.width=6.6, fig.height=5.5, dependson="plot_pp"}
+```{r pp-temp-2, fig.cap="(ref:pp-temp-cap)", fig.width=5, fig.height=6, dependson="plot_pp"}
 plot_pp(pp_regr[cEOF == "cEOF2"], t2m_regr[cEOF == "cEOF2"], hgt850_regr[cEOF == "cEOF2"])
 ```
 
@@ -2066,6 +2082,16 @@ It is also freely available from their respective sources:
 
 A version-controlled repository of the code used to create this analysis, including the code used to download the data can be found at <https://github.com/eliocamp/shceof>.
 
+
+
+\backmatter
+
+
+\bmhead{Acknowledgments}
+
+The research was supported by UBACyT20020170100428BA and the CLIMAX Project funded by Belmont Forum/ANR-15-JCL/-0002-01. Elio Campitelli was supported by a PhD grant from CONICET, Argentina.
+
+
 \appendix
 
 \counterwithin{figure}{section}
@@ -2078,7 +2104,7 @@ A version-controlled repository of the code used to create this analysis, includ
 
 (ref:sst-psi-1-cap) Same as Figure \@ref(fig:sst-psi-2) but for cEOF1.
 
-```{r sst-psi-1, fig.cap = "(ref:sst-psi-1-cap)", fig.width = 7, fig.height=5.6, dependson="plot_sst_psi", fig.env = "figure*"}
+```{r sst-psi-1, fig.cap = "(ref:sst-psi-1-cap)", fig.width = 5, fig.height=6, dependson="plot_sst_psi", fig.env = "figure*"}
 plot_sst_psi(sst_regr[cEOF == "cEOF1"], psi_regr[cEOF == "cEOF1"]) 
 ```
 
