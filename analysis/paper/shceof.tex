@@ -1,29 +1,74 @@
-% !TeX program = pdfLaTeX
-\documentclass[smallextended]{svjour3}       % onecolumn (second format)
-%\documentclass[twocolumn]{svjour3}          % twocolumn
-%
-\smartqed  % flush right qed marks, e.g. at end of proof
-%
-\usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage[utf8]{inputenc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                 %%
+%% Please do not use \input{...} to include other tex files.       %%
+%% Submit your LaTeX manuscript as one .tex document.              %%
+%%                                                                 %%
+%% All additional figures and files should be attached             %%
+%% separately and not embedded in the \TeX\ document itself.       %%
+%%                                                                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage[hyphens]{url} % not crucial - just used below for the URL
-\usepackage{hyperref}
+%%\documentclass[referee,sn-basic]{sn-jnl}% referee option is meant for double line spacing
 
-%
-% \usepackage{mathptmx}      % use Times fonts if available on your TeX system
-%
-% insert here the call for the packages your document requires
-%\usepackage{latexsym}
-% etc.
-%
-% please place your own definitions here and don't use \def but
-% \newcommand{}{}
-%
-% Insert the name of "your journal" with
-% \journalname{myjournal}
-%
+%%=======================================================%%
+%% to print line numbers in the margin use lineno option %%
+%%=======================================================%%
+
+%%\documentclass[lineno,sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+
+%%======================================================%%
+%% to compile with pdflatex/xelatex use pdflatex option %%
+%%======================================================%%
+
+%%\documentclass[pdflatex,sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+
+\documentclass[pdflatex,sn-basic]{sn-jnl}
+%%\documentclass[sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+%%\documentclass[pdflatex,sn-mathphys]{sn-jnl}% Math and Physical Sciences Reference Style
+%%\documentclass[sn-aps]{sn-jnl}% American Physical Society (APS) Reference Style
+%%\documentclass[sn-vancouver]{sn-jnl}% Vancouver Reference Style
+%%\documentclass[sn-apa]{sn-jnl}% APA Reference Style
+%%\documentclass[sn-chicago]{sn-jnl}% Chicago-based Humanities Reference Style
+%%\documentclass[sn-standardnature]{sn-jnl}% Standard Nature Portfolio Reference Style
+%%\documentclass[default]{sn-jnl}% Default
+%%\documentclass[default,iicol]{sn-jnl}% Default with double column layout
+
+%%%% Standard Packages
+%%<additional latex packages if required can be included here>
+%%%%
+
+%%%%%=============================================================================%%%%
+%%%%  Remarks: This template is provided to aid authors with the preparation
+%%%%  of original research articles intended for submission to journals published
+%%%%  by Springer Nature. The guidance has been prepared in partnership with
+%%%%  production teams to conform to Springer Nature technical requirements.
+%%%%  Editorial and presentation requirements differ among journal portfolios and
+%%%%  research disciplines. You may find sections in this template are irrelevant
+%%%%  to your work and are empowered to omit any such section if allowed by the
+%%%%  journal you intend to submit to. The submission guidelines and policies
+%%%%  of the journal take precedence. A detailed User Manual is available in the
+%%%%  template package for technical guidance.
+%%%%%=============================================================================%%%%
+
+\jyear{2022}%
+
+%% as per the requirement new theorem styles can be included as shown below
+\theoremstyle{thmstyleone}%
+\newtheorem{theorem}{Theorem}%  meant for continuous numbers
+%%\newtheorem{theorem}{Theorem}[section]% meant for sectionwise numbers
+%% optional argument [theorem] produces theorem numbering sequence instead of independent numbers for Proposition
+\newtheorem{proposition}[theorem]{Proposition}%
+%%\newtheorem{proposition}{Proposition}% to get separate numbers for theorem and proposition etc.
+
+\theoremstyle{thmstyletwo}%
+\newtheorem{example}{Example}%
+\newtheorem{remark}{Remark}%
+
+\theoremstyle{thmstylethree}%
+\newtheorem{definition}{Definition}%
+
+\raggedbottom
+%%\unnumbered% uncomment this for unnumbered level heads
 
 %% load any required packages here
 
@@ -45,43 +90,11 @@
 \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
 \makesavenoteenv{longtable}
 
-% Pandoc citation processing
-\newlength{\cslhangindent}
-\setlength{\cslhangindent}{1.5em}
-\newlength{\csllabelwidth}
-\setlength{\csllabelwidth}{3em}
-\newlength{\cslentryspacingunit} % times entry-spacing
-\setlength{\cslentryspacingunit}{\parskip}
-% for Pandoc 2.8 to 2.10.1
-\newenvironment{cslreferences}%
-  {}%
-  {\par}
-% For Pandoc 2.11+
-\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
- {% don't indent paragraphs
-  \setlength{\parindent}{0pt}
-  % turn on hanging indent if param 1 is 1
-  \ifodd #1
-  \let\oldpar\par
-  \def\par{\hangindent=\cslhangindent\oldpar}
-  \fi
-  % set entry spacing
-  \setlength{\parskip}{#2\cslentryspacingunit}
- }%
- {}
-\usepackage{calc}
-\newcommand{\CSLBlock}[1]{#1\hfill\break}
-\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
-\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
-\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 \usepackage{gensymb}
 \usepackage{subfig}
 \usepackage[inline]{showlabels}
 \usepackage{chngcntr}
-\usepackage{natbib}
-\usepackage{lineno}
-\linenumbers
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -96,102 +109,80 @@
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
 \usepackage{xcolor}
+
 \begin{document}
 
 
-\title{Revisiting the Austral Spring Extratropical Southern Hemisphere zonally asymmetric circulation using complex Empirical Orthogonal Functions \thanks{The research was supported by UBACyT20020170100428BA and the CLIMAX Project funded by Belmont Forum/ANR-15-JCL/-0002-01. Elio Campitelli was supported by a PhD grant from CONICET, Argentina.} }
+
+\title[SH zonally asymmetric circulation with cEOF]{Revisiting the Austral Spring Extratropical Southern Hemisphere zonally asymmetric circulation using complex Empirical Orthogonal Functions}
+
+%%=============================================================%%
+%% Prefix	-> \pfx{Dr}
+%% GivenName	-> \fnm{Joergen W.}
+%% Particle	-> \spfx{van der} -> surname prefix
+%% FamilyName	-> \sur{Ploeg}
+%% Suffix	-> \sfx{IV}
+%% NatureName	-> \tanm{Poet Laureate} -> Title after name
+%% Degrees	-> \dgr{MSc, PhD}
+%% \author*[1,2]{\pfx{Dr} \fnm{Joergen W.} \spfx{van der} \sur{Ploeg} \sfx{IV} \tanm{Poet Laureate}
+%%                 \dgr{MSc, PhD}}\email{iauthor@gmail.com}
+%%=============================================================%%
+
+\author*[1,2,3]{\fnm{Elio} \sur{Campitelli} }\email{\href{mailto:elio.campitelli@cima.fcen.uba.ar}{\nolinkurl{elio.campitelli@cima.fcen.uba.ar}}}
+
+\author[1,2,3]{\fnm{Leandro B.} \sur{Díaz} }
+
+\author[1,2,3]{\fnm{Carolina} \sur{Vera} }
 
 
-    \titlerunning{SH zonally asymmetric circulation}
+  \affil*[1]{\orgname{Universidad de Buenos Aires, Facultad de Ciencias Exactas y Naturales, Departamento de Ciencias de la Atmósfera y los Océanos}, \orgaddress{\city{Buenos Aires}, \country{Argentina}}}
+  \affil*[2]{\orgname{CONICET -- Universidad de Buenos Aires. Centro de Investigaciones del Mar y la Atmósfera (CIMA)}, \orgaddress{\city{Buenos Aires}, \country{Argentina}}}
+  \affil*[3]{\orgname{CNRS -- IRD -- CONICET -- UBA. Instituto Franco-Argentino para el Estudio del Clima y sus Impactos (IRL 3351 IFAECI)}, \orgaddress{\city{Buenos Aires}, \country{Argentina}}}
 
-\author{  Elio Campitelli \and  Leandro B. Díaz \and  Carolina Vera \and  }
-
-
-\institute{
-        Elio Campitelli \at
-     Universidad de Buenos Aires, Facultad de Ciencias Exactas y Naturales, Departamento de Ciencias de la Atmósfera y los Océanos. Buenos Aires, Argentina.\\
-CONICET -- Universidad de Buenos Aires. Centro de Investigaciones del Mar y la Atmósfera (CIMA). Buenos Aires, Argentina.\\
-CNRS -- IRD -- CONICET -- UBA. Instituto Franco-Argentino para el Estudio del Clima y sus Impactos (IRL 3351 IFAECI). Buenos Aires, Argentina. \\
-     \email{\href{mailto:elio.campitelli@cima.fcen.uba.ar}{\nolinkurl{elio.campitelli@cima.fcen.uba.ar}}}  %  \\
-%             \emph{Present address:} of F. Author  %  if needed
-    \and
-        Leandro B. Díaz \at
-     Universidad de Buenos Aires, Facultad de Ciencias Exactas y Naturales, Departamento de Ciencias de la Atmósfera y los Océanos. Buenos Aires, Argentina.
-CONICET -- Universidad de Buenos Aires. Centro de Investigaciones del Mar y la Atmósfera (CIMA). Buenos Aires, Argentina.
-CNRS -- IRD -- CONICET -- UBA. Instituto Franco-Argentino para el Estudio del Clima y sus Impactos (IRL 3351 IFAECI). Buenos Aires, Argentina. \\
-     %  \\
-%             \emph{Present address:} of F. Author  %  if needed
-    \and
-        Carolina Vera \at
-     Universidad de Buenos Aires, Facultad de Ciencias Exactas y Naturales, Departamento de Ciencias de la Atmósfera y los Océanos. Buenos Aires, Argentina.
-CONICET -- Universidad de Buenos Aires. Centro de Investigaciones del Mar y la Atmósfera (CIMA). Buenos Aires, Argentina.
-CNRS -- IRD -- CONICET -- UBA. Instituto Franco-Argentino para el Estudio del Clima y sus Impactos (IRL 3351 IFAECI). Buenos Aires, Argentina. \\
-     %  \\
-%             \emph{Present address:} of F. Author  %  if needed
-    \and
-    }
-
-\date{Received: date / Accepted: date}
-% The correct dates will be entered by the editor
-
-
-\maketitle
-
-\begin{abstract}
-The large-scale extratropical circulation in the Southern Hemisphere is strongly zonally symmetric, but its zonal departures, albeit highly relevant for regional impacts, have been less studied.
+\abstract{The large-scale extratropical circulation in the Southern Hemisphere is strongly zonally symmetric, but its zonal departures, albeit highly relevant for regional impacts, have been less studied.
 In this study we analyse the joint variability of the zonally asymmetric springtime stratospheric and tropospheric circulation using Complex Empirical Orthogonal Functions (cEOF) to characterise planetary waves of varying amplitude and phase.
 The leading cEOF represents variability of a zonal wave 1 in the stratosphere that correlates slightly with the Symmetric Southern Annular Mode (S-SAM).
 The second cEOF (cEOF2) is an alternative representation of the Pacific-South American modes.
 One phase of this cEOF is also extremely correlated with the Asymmetric SAM (A-SAM) in the troposphere.
 Springs with an active ENSO tend to phase-lock the cEOF2, but have no consistent impact on its magnitude.
 Furthermore, we find indications that the location of Pacific Sea Surface Temperature anomalies affect the phase of the cEOF2.
-As a result, the methodology proposed in this study provides a deeper understanding of the zonally asymmetric springtime extratropical SH circulation.
-\\
-\keywords{
-        Southern Hemisphere circulation \and
-        Teleconnections \and
-        Pacific South American Mode \and
-        Southern Annular Mode \and
-        Stratosphere \and
-    }
+As a result, the methodology proposed in this study provides a deeper understanding of the zonally asymmetric springtime extratropical SH circulation.}
+
+\keywords{Southern Hemisphere circulation, Teleconnections, Pacific South American Mode, Southern Annular Mode, Stratosphere}
 
 
-\end{abstract}
 
-
-\def\spacingset#1{\renewcommand{\baselinestretch}%
-{#1}\small\normalsize} \spacingset{1}
-
+\maketitle
 
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-The large-scale extratropical circulation in the Southern Hemisphere (SH) is strongly zonally symmetric, but its zonal departures are highly relevant for regional impacts (e.g. Hoskins and Hodges 2005).
-They strongly modulate weather systems and regional climate through promoting longitudinally different latitudinal transport of heat, humidity, and momentum (K. E. Trenberth 1980; M. N. Raphael 2007) and could even be related to the occurrence of high-impact climate extremes (Pezza, Rashid, and Simmonds 2012).
+The large-scale extratropical circulation in the Southern Hemisphere (SH) is strongly zonally symmetric, but its zonal departures are highly relevant for regional impacts \citep[e.g.][]{hoskins2005}.
+They strongly modulate weather systems and regional climate through promoting longitudinally different latitudinal transport of heat, humidity, and momentum \citep{trenberth1980a, raphael2007} and could even be related to the occurrence of high-impact climate extremes \citep{pezza2012}.
 
-Zonally asymmetric circulation is typically described by the amplitude and phase of zonal waves obtained by Fourier decomposition of geopotential heights or sea-level pressures at each latitude (e.g. van Loon and Jenne 1972; K. E. Trenberth 1980; Turner et al. 2017).
-This approach suggests that zonal waves 1 and 3 explain almost 99\% of the total variance in the annual mean 500-hPa pattern at 50ºS (van Loon and Jenne 1972).
-K. F. Trenberth and Mo (1985) concluded that wave 3 plays a role in the development of blocking events.
+Zonally asymmetric circulation is typically described by the amplitude and phase of zonal waves obtained by Fourier decomposition of geopotential heights or sea-level pressures at each latitude \citep[e.g.][]{vanloon1972, trenberth1980a, turner2017}.
+This approach suggests that zonal waves 1 and 3 explain almost 99\% of the total variance in the annual mean 500-hPa pattern at 50ºS \citep{vanloon1972}.
+\citet{trenberth1985} concluded that wave 3 plays a role in the development of blocking events.
 In addition, previous works have identified at extratropical and subpolar latitudes, wave-like patterns with dominant wavenumbers 3-4, also exerting distinctive regional impacts.
-M. N. Raphael (2007) shows that variability in the planetary wave 3 projected onto its climatological location is associated with anomalies in the Antarctic sea-ice concentration.
+\citet{raphael2007} shows that variability in the planetary wave 3 projected onto its climatological location is associated with anomalies in the Antarctic sea-ice concentration.
 
 The Fourier decomposition relies on the assumption that the circulation can be meaningfully described in terms of zonal waves of constant amplitude along a latitude circle.
 However, this is not valid for meridionally propagating waves or zonal waves with localised amplitudes.
-Addressing this limitation, the Fourier technique can be generalized to integrate all planetary wave amplitude regardless of wave number, by computing the wave envelope (Irving and Simmonds 2015).
+Addressing this limitation, the Fourier technique can be generalized to integrate all planetary wave amplitude regardless of wave number, by computing the wave envelope \citep{irving2015}.
 The latter makes it possible to represent planetary waves with different amplitude at different longitudes, but it removes all information about phase and wave number.
-With this approach, Irving and Simmonds (2015) showed that planetary wave amplitude in general is associated to Antarctic sea-ice concentration and temperature, as well as to precipitation anomalies in regions of significant topography in SH mid-latitudes and Antarctica.
+With this approach, \citet{irving2015} showed that planetary wave amplitude in general is associated to Antarctic sea-ice concentration and temperature, as well as to precipitation anomalies in regions of significant topography in SH mid-latitudes and Antarctica.
 
 Another extensively used approach to characterise the SH tropospheric circulation anomalies, is by computing Empirical Orthogonal Functions (EOF, also known as Principal Component Analysis).
-Within the EOF framework, the Southern Annular Mode (SAM) appears as the leading mode of variability of the SH circulation (Fogt and Marshall 2020).
+Within the EOF framework, the Southern Annular Mode (SAM) appears as the leading mode of variability of the SH circulation \citep{fogt2020}.
 SAM represents a relatively zonally symmetric pattern of alternating low pressures in polar latitude and a ring of high pressures in high latitudes with an embedded wave 3 pattern that is more prominent in the Pacific sector.
-The 2nd and 3rd EOFs, usually known as Pacific--South American Patterns (PSA) 1 and PSA2 patterns, respectively, describe meridionally propagating wave trains that originate in the eastern equatorial Pacific and Australian-Indian Ocean sector, and travel towards the South Atlantic following a great-circle arch along the Antarctic coast (Mo and Paegle 2001).
-These patterns influence precipitation anomalies in South America (Mo and Paegle 2001).
-Although these patterns are usually derived by applying EOF to temporal anomalies, M. Raphael (2003) also applied EOF methods specifically to zonal anomalies.
-Irving and Simmonds (2016) proposed a novel methodology for objectively identifying the PSA pattern using Fourier decomposition.
-More recently Goyal et al. (2022) created an index of amplitude and phase of zonal wave 3-like variability by combining the two leading EOFs of meridional wind anomalies.
+The 2nd and 3rd EOFs, usually known as Pacific--South American Patterns (PSA) 1 and PSA2 patterns, respectively, describe meridionally propagating wave trains that originate in the eastern equatorial Pacific and Australian-Indian Ocean sector, and travel towards the South Atlantic following a great-circle arch along the Antarctic coast \citep{mo2001}.
+These patterns influence precipitation anomalies in South America \citep{mo2001}.
+Although these patterns are usually derived by applying EOF to temporal anomalies, \citet{raphael2003} also applied EOF methods specifically to zonal anomalies.
+\citet{irving2016} proposed a novel methodology for objectively identifying the PSA pattern using Fourier decomposition.
+More recently \citet{goyal2022} created an index of amplitude and phase of zonal wave 3-like variability by combining the two leading EOFs of meridional wind anomalies.
 
 Some of the zonally asymmetric patterns of the SH circulation variability described previously, appear to have experienced secular changes.
-For instance, M. Raphael (2003) found that the amplitude of the zonal wave 1 experienced a large increase and that the zonal wave 3 experienced changes in its annual cycle between 1958 and 1996.
+For instance, \citet{raphael2003} found that the amplitude of the zonal wave 1 experienced a large increase and that the zonal wave 3 experienced changes in its annual cycle between 1958 and 1996.
 However, little is known yet about variability and trends of these patterns.
 
 Patterns resulting from EOF analyses are more flexible than Fourier decomposition derived modes in the sense that they can capture oscillation patterns that cannot be characterised by purely sinusoidal waves with constant amplitude.
@@ -199,20 +190,20 @@ Nonetheless, they are restricted to standing oscillation modes and could not pro
 A single EOF can also represent a mixture of two or more physical modes.
 
 A third methodology commonly used to describe circulation anomalies consists on identifying particular features of interest and creating indices using simple methods such as averages and differences.
-Examples of this methodology are the SAM Index of Gong and Wang (1999), the SH wave 3 activity index defined by M. N. Raphael (2004) and the SH zonally asymmetric circulation index from Hobbs and Raphael (2010).
+Examples of this methodology are the SAM Index of \citet{gong1999}, the SH wave 3 activity index defined by \citet{raphael2004} and the SH zonally asymmetric circulation index from \citet{hobbs2010}.
 These derived methods are grounded on other methods such as Fourier decomposition or EOF to identify the centres of action for the described phenomena and can be useful to characterise features that are not readily apparent with these methods.
 It is commonly easy the computation of these kind of indices, but they could be unable to capture non-stationary patterns.
 
-An alternative methodology that has been proposed to study travelling and standing waves is complex Empirical Orthogonal Functions {[}cEOF; Horel (1984){]}.
+An alternative methodology that has been proposed to study travelling and standing waves is complex Empirical Orthogonal Functions {[}cEOF; \citet{horel1984}{]}.
 This method extends EOF analysis to capture oscillations with varying amplitude and phase and has been applied to the time domain.
-For instance, Krokhin and Luxemburg (2007) applied cEOF to station-based monthly precipitation anomalies and monthly temperature anomalies in the Eastern Siberia and the Far East region to characterise the main modes of variability and their connection to teleconnection indices.
-Similarly, Gelbrecht, Boers, and Jürgen Kurths (2018) used cEOF applied to daily precipitation from reanalysis to study the propagating characteristics of the South American Monsoon.
+For instance, \citet{krokhin2007} applied cEOF to station-based monthly precipitation anomalies and monthly temperature anomalies in the Eastern Siberia and the Far East region to characterise the main modes of variability and their connection to teleconnection indices.
+Similarly, \citet{gelbrecht2018} used cEOF applied to daily precipitation from reanalysis to study the propagating characteristics of the South American Monsoon.
 To our knowledge, cEOF analysis has not been applied in the spatial domain to capture the phase-varying nature of planetary waves in the atmosphere.
 
 The general goal of this study is to improve the description and understanding of the zonally asymmetric extratropical SH circulation using cEOF, which allow to describe phase varying planetary waves with variable amplitudes along a latitude circle.
 In addition, it is proposed to expand the knowledge of the simultaneous behaviour of SH asymmetric circulation in the troposphere and the stratosphere.
 
-We restrict this paper to the spring September-October-November (SON) trimester because this season experiences a maximum in tropical teleconnections over South America (Cazes-Boezio, Robertson, and Mechoso 2003) and SH stratosphere-troposphere interactions (Lim, Hendon, and Thompson 2018).
+We restrict this paper to the spring September-October-November (SON) trimester because this season experiences a maximum in tropical teleconnections over South America \citep{cazes-boezio2003} and SH stratosphere-troposphere interactions \citep{lim2018}.
 
 In Section~\ref{methods} we describe the methods.
 In Section~\ref{spatial} we analyse the spatial patterns of each complex EOF.
@@ -228,13 +219,13 @@ In Section~\ref{discussion} we compare our results with previous studies and dis
 \hypertarget{data}{%
 \subsection{Data}\label{data}}
 
-We used monthly geopotential height, air temperature, ozone mixing ratio, and total ozone column (TOC) at 2.5\degree longitude by 2.5\degree latitude of horizontal resolution and 37 vertical isobaric levels from the European Centre for Medium-Range Weather Forecasts Reanalysis version 5 {[}ERA; Hersbach et al. (2019){]} for the period 1979 -- 2019.
-Most of our analysis is restricted to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 (Bell et al. 2020) to describe long-term trends.
-We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK (Adams, Swartztrauber, and Sweet 1999) and we computed horizontal wave activity fluxes following Plumb (1985).
-Sea Surface Temperature (SST) monthly fields are from Extended Reconstructed Sea Surface Temperature (ERSST) v5 (Huang et al. 2017) and precipitation monthly data from the CPC Merged Analysis of Precipitation (P. Xie and Arkin 1997), with a 2\degree and 2.5\degree horizontal resolution respectively.
+We used monthly geopotential height, air temperature, ozone mixing ratio, and total ozone column (TOC) at 2.5\degree longitude by 2.5\degree latitude of horizontal resolution and 37 vertical isobaric levels from the European Centre for Medium-Range Weather Forecasts Reanalysis version 5 {[}ERA; \citet{era5}{]} for the period 1979 -- 2019.
+Most of our analysis is restricted to the post-satellite era to avoid any confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 \citep{era5be} to describe long-term trends.
+We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK \citep{fishpack} and we computed horizontal wave activity fluxes following \citet{plumb1985}.
+Sea Surface Temperature (SST) monthly fields are from Extended Reconstructed Sea Surface Temperature (ERSST) v5 \citep{huang2017} and precipitation monthly data from the CPC Merged Analysis of Precipitation \citep{cmap}, with a 2\degree and 2.5\degree horizontal resolution respectively.
 The rainfall gridded dataset is based on information from different sources such as rain gauge observations, satellite inferred estimations and the NCEP-NCAR reanalysis, and it is available since 1979 to the present.
 
-The Oceanic Niño Index (ONI, Bamston, Chelliah, and Goldenberg 1997) comes from NOAA's Climate Prediction Center and the Dipole Mode Index (DMI, Saji and Yamagata 2003) from Global Climate Observing System Working Group on Surface Pressure.
+The Oceanic Niño Index \citep[ONI,][]{bamston1997} comes from NOAA's Climate Prediction Center and the Dipole Mode Index \citep[DMI,][]{saji2003} from Global Climate Observing System Working Group on Surface Pressure.
 
 \hypertarget{methods-1}{%
 \subsection{Methods}\label{methods-1}}
@@ -247,12 +238,12 @@ The amplitude of the zonal waves was obtained through the Fourier transform of t
 For the analysis of wave 1, we computed its amplitude and phase by averaging (area-weighted) the data for each variable and each SON between 75°S and 45°S, and then extracting the wave-1 component of the Fourier spectrum.
 We chose this latitude band because it is wide enough to capture most of the relevant anomalies of SH mid-latitudes.
 
-We computed the level-dependent SAM index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period (Baldwin and Thompson 2009).
+We computed the level-dependent SAM index as the leading EOF of year-round monthly geopotential height anomalies south of 20ºS at each level for the whole period \citep{baldwin2009}.
 We further split the SAM into its zonally symmetric and zonally asymmetric components (S-SAM and A-SAM indices respectively).
-These indices were obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields, as proposed by Campitelli, Díaz, and Vera (2022a).
-Seasonal indices of the PSA patterns (PSA1 and PSA2) were calculated, in agreement with Mo and Paegle (2001), as the third and fourth leading EOF of seasonal mean anomalies for 500-hPa geopotential heights at SH.
+These indices were obtained by projecting the zonally asymmetric and zonally symmetric part of the SAM spatial pattern onto monthly geopotential height fields, as proposed by \citet{campitelli2022}.
+Seasonal indices of the PSA patterns (PSA1 and PSA2) were calculated, in agreement with \citet{mo2001}, as the third and fourth leading EOF of seasonal mean anomalies for 500-hPa geopotential heights at SH.
 
-Linear trends were computed by Ordinary Least Squares (OLS) and the 95\% confidence interval was computed assuming a t-distribution with the appropriate residual degrees of freedom (D. Wilks 2011).
+Linear trends were computed by Ordinary Least Squares (OLS) and the 95\% confidence interval was computed assuming a t-distribution with the appropriate residual degrees of freedom \citep{wilks2011}.
 
 \hypertarget{complex-empirical-orthogonal-functions-ceof}{%
 \subsection{Complex Empirical Orthogonal Functions (cEOF)}\label{complex-empirical-orthogonal-functions-ceof}}
@@ -265,13 +256,13 @@ Linear trends were computed by Ordinary Least Squares (OLS) and the 95\% confide
 \caption{\label{fig:eof-naive}Spatial patterns of the four leading EOFs of SON zonal anomalies of geopotential height at 50 hPa south of 20\degree S for the 1979 -- 2019 period (arbitrary units).}
 \end{figure}
 
-In the standard EOF analysis, zonal waves may appear as pairs of (possibly degenerated) EOFs representing similar patterns but shifted in phase (Horel 1984).
+In the standard EOF analysis, zonal waves may appear as pairs of (possibly degenerated) EOFs representing similar patterns but shifted in phase \citep{horel1984}.
 Figure \ref{fig:eof-naive} shows the four leading EOFs of SON geopotential height zonal anomalies at 50 hPa south of 20\degree S.
 It is clear that the first two EOFs represent a single phase-varying zonal wave 1 pattern and the last two represent a similarly phase-varying pattern with shorter wavenumber and four centres of action shifted by 1/4 wavelength.
 A similar EOF structure can be seen in 200 hPa (not shown).
 Since each pair of EOFs seems to represent the same phase-varying structure, it would be desirable to combine them into a single pattern described by amplitude and phase.
 
-Complex Empirical Orthogonal Functions (cEOF) are a useful method for characterising zonal waves, associated with phase-varying structures (Horel 1984).
+Complex Empirical Orthogonal Functions (cEOF) are a useful method for characterising zonal waves, associated with phase-varying structures \citep{horel1984}.
 This method involves computing EOF on the analytic representation of the original field.
 That representation is a complex field in which the real part is the original data and the imaginary part is the original data shifted by 90\degree at each spectral frequency -- i.e.~its Hilbert transform.
 The Hilbert transform is usually understood in terms of time-varying signal.
@@ -313,13 +304,13 @@ In that sense each cEOF has a spatial component that depends on longitude, latit
 
 The phase of cEOFs is defined up to an additive constant.
 For real EOFs, this constant can be either 0 or \(\pi\), corresponding to a change in sign.
-For cEOFs, it can be any real number between 0 and \(2\pi\) (Horel 1984), corresponding to rotations in the complex plane.
+For cEOFs, it can be any real number between 0 and \(2\pi\) \citep{horel1984}, corresponding to rotations in the complex plane.
 Since any choice is arbitrary and equally valid, we chose the phase of each cEOF so that the real or imaginary parts are aligned with meaningful phases in our analysis.
 This procedure does not create spurious correlations, it only takes an existing relationship and aligns it with a specific phase.
 
 Preliminary analysis showed that the first cEOF was closely related to the zonal wave 1 of Total Ozone Column and the second cEOF was closely related to ENSO.
 Therefore, to aid in the interpretation we chose the phase of cEOF1 so that the time series corresponding to the real part has the maximum correlation with the zonal wave 1 of Total Ozone Column between 75°S and 45°S.
-Similarly, we chose the phase of cEOF2 so that the coefficient of determination between the Oceanic Niño Index (Bamston, Chelliah, and Goldenberg 1997) and the real part is minimised, which also nearly maximises the correlation with the imaginary part.
+Similarly, we chose the phase of cEOF2 so that the coefficient of determination between the Oceanic Niño Index \citep{bamston1997} and the real part is minimised, which also nearly maximises the correlation with the imaginary part.
 
 While we compute these complex principal components using data from 1979 to 2019, we extended the complex time series back to the 1950 -- 1978 period by projecting monthly geopotential height zonal anomalies standardised by level south of 20ºS onto the corresponding spatial patterns.
 
@@ -333,15 +324,15 @@ X(\lambda, \phi, t) = \alpha(\lambda, \phi) \operatorname{Im}(\mathrm{cEOF}) + \
 
 where \(\lambda\) and \(\phi\) are the longitude and latitude, \(t\) is the time, \(\alpha\) and \(\beta\) are the linear regression coefficients for imaginary and real parts respectively, \(X_0\) and \(\epsilon\) are the constant and error terms respectively.
 
-We evaluated statistical significance using a two-sided t-test and, in the case of regression maps, p-values were adjusted by controlling for the False Discovery Rate (Benjamini and Hochberg 1995; D. S. Wilks 2016) to avoid misleading results from the high number of regressions (Walker 1914; Katz and Brown 1991).
+We evaluated statistical significance using a two-sided t-test and, in the case of regression maps, p-values were adjusted by controlling for the False Discovery Rate \citep{benjamini1995, wilks2016} to avoid misleading results from the high number of regressions \citep{walker1914, katz1991}.
 
 \hypertarget{computation-procedures}{%
 \subsection{Computation procedures}\label{computation-procedures}}
 
-We performed all analysis in this paper using the R programming language (R Core Team 2020), using data.table (Dowle and Srinivasan 2020) and metR (Campitelli 2020) packages.
-All graphics are made using ggplot2 (Wickham 2009).
-We downloaded data from reanalysis using the ecmwfr package (Hufkens 2020) and indices of ENSO and Indian Ocean Dipole (IOD) with the rsoi package (Albers and Campitelli 2020).
-The paper was rendered using knitr and rmarkdown (Y. Xie 2015; Allaire et al. 2020).
+We performed all analysis in this paper using the R programming language \citep{rcoreteam2020}, using data.table \citep{dowle2020} and metR \citep{campitelli2020} packages.
+All graphics are made using ggplot2 \citep{wickham2009}.
+We downloaded data from reanalysis using the ecmwfr package \citep{hufkens2020} and indices of ENSO and Indian Ocean Dipole (IOD) with the rsoi package \citep{albers2020}.
+The paper was rendered using knitr and rmarkdown \citep{xie2015, allaire2020}.
 
 \hypertarget{results}{%
 \section{Results}\label{results}}
@@ -381,7 +372,7 @@ However, cEOF2 temporal mean is almost zero, which indicates that only cEOF1 inc
 A significant positive trend in the real component of cEOF1 is evident (Fig.~\ref{fig:extended-series}a.1, p-value~= 0.0037) while there is no significant trend in any of the complex components of cEOF2.
 The positive trend in the Real cEOF1 translates into a positive trend in cEOF1 magnitude, but not systematic change in phase (not shown).
 This long-term change indicates an increase in the magnitude of the high latitude zonal wave 1.
-In agreement, M. Raphael (2003) detected a step change after around 1975 in the temporal evolution of leading EOF computed from August-September-October 500 hPa zonal geopotential height anomalies, which is similar to the cEOF1.
+In agreement, \citet{raphael2003} detected a step change after around 1975 in the temporal evolution of leading EOF computed from August-September-October 500 hPa zonal geopotential height anomalies, which is similar to the cEOF1.
 
 \hypertarget{regressions}{%
 \subsection{cEOFs Regression maps}\label{regressions}}
@@ -404,7 +395,7 @@ Figure~\ref{fig:eof1-regr-gh} shows regression maps of SON geopotential height a
 At 50 hPa (Figure~\ref{fig:eof1-regr-gh} row a), the Real cEOF1 is associated with a centre located over the Ross Sea.
 The Imaginary cEOF1 is associated with a distinctive wave 1 pattern with maximum over the coast of East Antarctica.
 At 200 hPa (Figure~\ref{fig:eof1-regr-gh} row b) the Real cEOF1 shows a single centre of positive anomalies spanning West Antarctica surrounded by opposite anomalies in lower latitudes, with is centre shifted slightly eastward compared with the upper-level anomalies.
-The Imaginary cEOF1 shows a much more zonally symmetrical pattern resembling the negative SAM phase (e.g. Fogt and Marshall 2020).
+The Imaginary cEOF1 shows a much more zonally symmetrical pattern resembling the negative SAM phase \citep[e.g.][]{fogt2020}.
 Therefore, the magnitude and phase of the cEOF1 are associated with the magnitude and phase of a zonal wave mainly in the stratosphere.
 
 
@@ -419,8 +410,8 @@ Figure~\ref{fig:eof2-regr-gh} shows the regression maps of geopotential height a
 In the troposphere (Fig.~\ref{fig:eof2-regr-gh} column b), wave trains similar to those identified for cEOF2 patterns (Fig~\ref{fig:ceofs-1}) can be distinguished.
 Regressed anomalies associated with the Real cEOF2 are 90º out of phase with those associated with the Imaginary cEOF2.
 All fields have a dominant zonal wave 3 limited to the western hemisphere, over the Pacific and Atlantic Oceans.
-cEOF2 then represents an equivalent barotropic wave train that is very similar to the the PSA Patterns (Mo and Paegle 2001).
-Comparing the location of the positive anomaly near 90ºW in column b of Figure~\ref{fig:eof2-regr-gh} with Figures 1.a and b from Mo and Paegle (2001), the Real cEOF2 regression map could be identified with PSA2, while the Imaginary cEOF2 resembles PSA1.
+cEOF2 then represents an equivalent barotropic wave train that is very similar to the the PSA Patterns \citep{mo2001}.
+Comparing the location of the positive anomaly near 90ºW in column b of Figure~\ref{fig:eof2-regr-gh} with Figures 1.a and b from \citet{mo2001}, the Real cEOF2 regression map could be identified with PSA2, while the Imaginary cEOF2 resembles PSA1.
 
 These wave patterns are also present in the stratosphere (Fig.~\ref{fig:eof2-regr-gh} column a) supporting their equivalent barotropic nature.
 But also present is a monopole over the pole with negative sign associated with the Real cEOF2 and positive sign associated with the Imaginary cEOF2.
@@ -457,9 +448,9 @@ As a result of the hydrostatic balance, this is the level in which the geopotent
 
 The maximum ozone regressed anomalies match with the minimum temperature anomalies above 10 hPa and with the maximum temperature anomalies below 10 hPa (Fig.~\ref{fig:t-vertical}).
 Therefore, the ozone zonal wave 1 is anticorrelated with the temperature zonal wave 1 in the upper stratosphere, and directly correlated in the upper stratosphere.
-This change in phase is observed in ozone anomalies forced by planetary waves that reach the stratosphere (Hartmann and Garcia 1979; Wirth 1993; Smith 1995).
+This change in phase is observed in ozone anomalies forced by planetary waves that reach the stratosphere \citep{hartmann1979, wirth1993, smith1995}.
 In the photochemically-dominated upper stratosphere, cold temperatures inhibit the destruction of ozone, explaining the opposite behaviour for both variables.
-On the other hand, in the advectively-dominated lower stratosphere, ozone anomalies are 90º out of phase with horizontal and vertical transport, which are in addition 90º out of phase with temperature anomalies, resulting in same sign anomalies for the response of both variables (Hartmann and Garcia 1979; Wirth 1993; Smith 1995).
+On the other hand, in the advectively-dominated lower stratosphere, ozone anomalies are 90º out of phase with horizontal and vertical transport, which are in addition 90º out of phase with temperature anomalies, resulting in same sign anomalies for the response of both variables \citep{hartmann1979, wirth1993, smith1995}.
 
 
 
@@ -472,7 +463,7 @@ On the other hand, in the advectively-dominated lower stratosphere, ozone anomal
 
 
 The regression maps of TOC anomalies upon cEOF1 (Fig.~\ref{fig:o3-regr}) show zonal wave 1 patterns associated with both components of cEOF1.
-The climatological position of the springtime Ozone minimum (ozone hole) is outside the South Pole and towards the Weddell Sea (e.g. Grytsai 2011).
+The climatological position of the springtime Ozone minimum (ozone hole) is outside the South Pole and towards the Weddell Sea \citep[e.g.][]{grytsai2011}.
 Thus, the Real cEOF1 regression field (Figure~\ref{fig:o3-regr}a) coincides with the climatological position of the ozone hole, while it is 90° out of phase for the Imaginary cEOF1.
 The temporal correlation between the amplitudes of TOC planetary wave 1 and cEOF1 is 0.79 (CI: 0.63 -- 0.88), while the correlation between their phases is -0.85 (CI: -0.92 -- -0.74).
 Consequently, cEOF1 is strongly related with the SH ozone variability.
@@ -484,7 +475,7 @@ Consequently, cEOF1 is strongly related with the SH ozone variability.
 
 \begin{table}
 
-\caption{\label{tab:psa-eof2}Correlation coefficients (r) between cEOF2 components and the PSA1 and PSA2 modes computed as Mo and Paegle (2001) for the 1979 -- 2019 period. 95\% confidence intervals in parenthesis. p-values lower than 0.01 in bold.}
+\caption{\label{tab:psa-eof2}Correlation coefficients (r) between cEOF2 components and the PSA1 and PSA2 modes computed as \citet{mo2001} for the 1979 -- 2019 period. 95\% confidence intervals in parenthesis. p-values lower than 0.01 in bold.}
 \centering
 \begin{tabular}[t]{l>{}l>{}l}
 \toprule
@@ -519,7 +510,7 @@ This is also, by construction, the phase that is most correlated with ENSO.
 
 Therefore, by virtue of being the most common phase, the Imaginary cEOF2 explains more variance than the Real cEOF2.
 Conventional EOF analysis will therefore tend to separate them relatively cleanly, with the EOF representing the Imaginary cEOF2 always leading the one representing the Real cEOF2.
-This phase preferences is in agreement with Irving and Simmonds (2016), who found a bimodal distribution to PSA-like variability (compare our Figure~\ref{fig:phase-histogram} with their Figure 6).
+This phase preferences is in agreement with \citet{irving2016}, who found a bimodal distribution to PSA-like variability (compare our Figure~\ref{fig:phase-histogram} with their Figure 6).
 
 \hypertarget{sam}{%
 \subsection{SAM}\label{sam}}
@@ -529,21 +520,21 @@ This phase preferences is in agreement with Irving and Simmonds (2016), who foun
 \begin{figure}
 \centering
 \includegraphics{../figures/sam-eof-vertical-1.pdf}
-\caption{\label{fig:sam-eof-vertical}Coefficient of determination (\(r^2\)) between each component of cEOFs and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level for the 1979 -- 2019 period. Thick lines represent estimates with p-value \textless{} 0.01 corrected for False Detection Rate (Benjamini and Hochberg 1995).}
+\caption{\label{fig:sam-eof-vertical}Coefficient of determination (\(r^2\)) between each component of cEOFs and the SAM, Asymmetric SAM (A-SAM) and Symmetric SAM (S-SAM) indices computed at each level for the 1979 -- 2019 period. Thick lines represent estimates with p-value \textless{} 0.01 corrected for False Detection Rate \citep{benjamini1995}.}
 \end{figure}
 
 We now explore the relationship between SAM and the cEOFs motivated by the resemblance between cEOFs regression maps and SAM patterns shown in Section~\ref{regressions}.
-We then computed the coefficient of determination between the cEOFs time series and the three SAM indices (SAM, A-SAM and S-SAM) defined by Campitelli, Díaz, and Vera (2022a) at each vertical level (Fig.~\ref{fig:sam-eof-vertical}).
+We then computed the coefficient of determination between the cEOFs time series and the three SAM indices (SAM, A-SAM and S-SAM) defined by \citet{campitelli2022} at each vertical level (Fig.~\ref{fig:sam-eof-vertical}).
 The SAM index is statistically significant correlated with the Real cEOF1 in all levels, and with the Imaginary cEOF1 and Imaginary cEOF2 in the troposphere.
 On the other hand, correlations between SAM and the Real cEOF2 are non-significant.
 
 The relationship between the SAM and cEOF1 in the troposphere is explained entirely by the zonally symmetric component of the SAM as shown by the high correlation with the S-SAM below 100 hPa and the low and statistically non-significant correlations between the A-SAM and either the Real or Imaginary cEOF1.
 In the stratosphere, the Real cEOF1 is correlated with both A-SAM and S-SAM, while the Imaginary cEOF1 is highly correlated only with the A-SAM.
-These correlations are consistent with the regression maps of geopotential height in Figure~\ref{fig:eof1-regr-gh} and their comparison with those obtained for SAM, A-SAM and S-SAM by Campitelli, Díaz, and Vera (2022a).
+These correlations are consistent with the regression maps of geopotential height in Figure~\ref{fig:eof1-regr-gh} and their comparison with those obtained for SAM, A-SAM and S-SAM by \citet{campitelli2022}.
 
 In the case of Imaginary cEOF2, its correlation with the SAM for the troposphere is associated to the asymmetric variability of the SAM.
 Indeed, the Imaginary cEOF2 shares up to 92\% variance with the A-SAM and only 12\% at most with the S-SAM (Figure~\ref{fig:sam-eof-vertical}.b2).
-Such extremely high correlation between A-SAM and Imaginary cEOF2 suggests that the modes obtained in this work are able to characterise the zonally asymmetric component of the SAM described previously by Campitelli, Díaz, and Vera (2022a).
+Such extremely high correlation between A-SAM and Imaginary cEOF2 suggests that the modes obtained in this work are able to characterise the zonally asymmetric component of the SAM described previously by \citet{campitelli2022}.
 
 \hypertarget{tropical}{%
 \subsection{Tropical sources of cEOFs variabitliy}\label{tropical}}
@@ -559,19 +550,19 @@ Figure~\ref{fig:sst-psi-2} shows the regression maps of Sea Surface Temperatures
 Besides the regression maps for the Real and Imaginary components, we include the corresponding regressions for two intermediate directions (corresponding to 45° and 135°).
 
 The Imaginary cEOF2 (second row) is associated with strong positive SST anomalies on the Central Pacific and negative anomalies over an area across northern Australia, New Zealand the South Pacific Convergence Zone (SPCZ) (Figure~\ref{fig:sst-psi-2}.b1).
-The regression field of SST anomalies bears a strong resemblance with canonically positive ENSO (Bamston, Chelliah, and Goldenberg 1997).
+The regression field of SST anomalies bears a strong resemblance with canonically positive ENSO \citep{bamston1997}.
 Indeed, there is a significant and very high correlation (0.76 (CI: 0.6 -- 0.87)) between the ONI and the Imaginary cEOF2 time series.
-Besides the Pacific ENSO-like pattern, there are positive anomalies in the western Indian Ocean and negative values in the eastern Indian Ocean, resembling a positive IOD (Saji et al. 1999).
+Besides the Pacific ENSO-like pattern, there are positive anomalies in the western Indian Ocean and negative values in the eastern Indian Ocean, resembling a positive IOD \citep{saji1999}.
 Consistently, the correlation between the Imaginary cEOF2 and the DMI is 0.62 (CI: 0.38 -- 0.78).
 
 The Imaginary cEOF2 is associated with strong wave-like streamfunction anomalies emanating from the tropics (Figure~\ref{fig:sst-psi-2}.b2), both from the Central Pacific sector and the Indian Ocean.
-The atmospheric response associated with Imaginary cEOF2 is then consistent with the combined effect of ENSO and the IOD on the extratropics: with SST anomalies inducing anomalous tropical convection that in turn excite Rossby waves propagating meridionally towards higher latitudes (Mo 2000; Cai et al. 2011; Nuncio and Yuan 2015).
+The atmospheric response associated with Imaginary cEOF2 is then consistent with the combined effect of ENSO and the IOD on the extratropics: with SST anomalies inducing anomalous tropical convection that in turn excite Rossby waves propagating meridionally towards higher latitudes \citep{mo2000, cai2011, nuncio2015}.
 
 However, the cEOF2 is not associated with the same tropical SST anomaly patterns at all their phases
 Figure~\ref{fig:sst-psi-2}.d1 and d2 show that the Real cEOF2 is not associated either with any significant SST nor streamfunction anomalies in the tropics.
 As a result, the correlation between the Real cEOF2 and ENSO is also not significant (0 (CI: -0.3 -- 0.3)).
 Meanwhile, Rows a and c in Fig.~\ref{fig:sst-psi-2} show that the intermediate phases are still associated with significant SST regressed anomalies over the Pacific Ocean, but at slightly different locations.
-The 135º phase is associated with SST anomalies in the central Pacific (Fig.~\ref{fig:sst-psi-2}a.1), while the 45º phase is associated with SST anomalies (Fig.~\ref{fig:sst-psi-2}c.1) that correspond roughly to the Central Pacific and Eastern Pacific ``flavours'' of ENSO, respectively (Kao and Yu 2009).
+The 135º phase is associated with SST anomalies in the central Pacific (Fig.~\ref{fig:sst-psi-2}a.1), while the 45º phase is associated with SST anomalies (Fig.~\ref{fig:sst-psi-2}c.1) that correspond roughly to the Central Pacific and Eastern Pacific ``flavours'' of ENSO, respectively \citep{kao2009}.
 Both phases could be also associated to wave trains generated in the region surrounding Australia and propagates toward the extra-tropics.
 
 
@@ -649,12 +640,12 @@ Over the continents, the temperature anomalies regressions are non significant, 
 Tropical precipitation anomalies associated with the Imaginary cEOF2 are strong, with positive anomalies in the central Pacific and western Indian, and negative anomalies in the eastern Pacific (Fig.~\ref{fig:pp-temp-2}b.2).
 This field is consistent with the SST regression map (Fig.~\ref{fig:pp-temp-2}b.1) as the positive SST anomalies enhance tropical convection and the negative SST anomalies inhibits it.
 
-In the extra-tropics, the positive Imaginary cEOF2 is related to drier conditions over eastern Australia and the surrounding ocean, that it is similar signal as the one associated with ENSO (Cai et al. 2011).
+In the extra-tropics, the positive Imaginary cEOF2 is related to drier conditions over eastern Australia and the surrounding ocean, that it is similar signal as the one associated with ENSO \citep{cai2011}.
 However, the Imaginary cEOF2 is not the direction most correlated with precipitation in that area.
 The 135º phase (an intermediate between positive Imaginary and negative Real cEOF2) component is associated with stronger and more extensive temporal correlations with precipitation over Australia and New Zealand.
 The influence of cEOF2 in Australian precipitation could be more related to the direct impacts of SST anomalies in the surrounded oceans rather than on the interconnection pattern represented by the cEOF2.
 
-Over South America, the Imaginary cEOF2 has positive correlations with precipitation in South Eastern South America (SESA) and central Chile, and negative correlations in eastern Brazil. This correlation field matches the springtime precipitation signature of ENSO (e.g. Cai et al. 2020) and it is also similar to the precipitation anomalies associated with the A-SAM (Campitelli, Díaz, and Vera 2022a).
+Over South America, the Imaginary cEOF2 has positive correlations with precipitation in South Eastern South America (SESA) and central Chile, and negative correlations in eastern Brazil. This correlation field matches the springtime precipitation signature of ENSO \citep[e.g.][]{cai2020a} and it is also similar to the precipitation anomalies associated with the A-SAM \citep{campitelli2022}.
 
 This result is not surprising considering the close relationship of the Imaginary cEOF2 with both ONI and A-SAM index, which was shown previously.\\
 Furthermore, it consolidates the identification of the cEOF2 with the PSA pattern. Resembling the relationship between ONI and the phase of cEOF2 (Fig.~~\ref{fig:enso-phase}), there is a cEOF2 phase dependence of the precipitation anomalies in SESA (not shown).
@@ -680,13 +671,13 @@ Secondly, because of how these components are constructed, they are not forced t
 This allows us to show for example, that the Imaginary cEOF2, that resembles PSA1 variability, is closely associated to the SAM in the troposphere.
 Moreover, the high correlation of this component to the zonally asymmetric portion of the SAM allow us to speculate that the A-SAM might actually be a statistical contamination of the PSA mode on the symmetric SAM.
 
-Irving and Simmonds (2016) argued that there is some disagreement in the literature of whether the phase of the PSA pattern is affected by the location of tropical SST anomalies.
+\citet{irving2016} argued that there is some disagreement in the literature of whether the phase of the PSA pattern is affected by the location of tropical SST anomalies.
 With the methodology used in this study, we were able to show not only that the cEOF2 tends to be in the positive or negative imaginary phase (\textasciitilde PSA1) when the ENSO region is warm or cold, respectively, but also that central Pacific SST anomalies tend to align the cEOF towards the negative real phase and eastern Pacific SST anomalies tend to align it towards positive real phase.
 When ENSO phase is neutral, the cEOF2 is still as active, but with no preferred phase.
-The latter agrees with the results of Cai and Watterson (2002), who showed that the CSIRO Model can develop PSA-like variability even in the absence of ENSO forcing (i.e.~with a climatological run), but that the variability of one of the PSA modes was enhanced when adding the ENSO signal.
-The sensitivity of the phase of the PSAs to the location of the tropical SST anomalies was also seen by Ciasto, Simpkins, and England (2015), who detected similar Rossby wave patterns associated with central Pacific and eastern Pacific SST anomalies but with a change in phase.
+The latter agrees with the results of \citet{cai2002}, who showed that the CSIRO Model can develop PSA-like variability even in the absence of ENSO forcing (i.e.~with a climatological run), but that the variability of one of the PSA modes was enhanced when adding the ENSO signal.
+The sensitivity of the phase of the PSAs to the location of the tropical SST anomalies was also seen by \citet{ciasto2015}, who detected similar Rossby wave patterns associated with central Pacific and eastern Pacific SST anomalies but with a change in phase.
 
-The method used in this study have similarities to the one used by Goyal et al. (2022) as they construct an index of amplitude and phase of zonal wave 3-like variability by combining the two leading EOFs of meridional wind anomalies.
+The method used in this study have similarities to the one used by \citet{goyal2022} as they construct an index of amplitude and phase of zonal wave 3-like variability by combining the two leading EOFs of meridional wind anomalies.
 The patterns obtained by them bear high resemblance with cEOF2.
 Although a detailed comparison is out of scope for this paper, the cEOF analysis has the advantage of constructing the indices based on patterns that are exactly in quadrature by construction.
 
@@ -697,7 +688,7 @@ Further work should extend this analysis to other seasons and further study the 
 \subsection*{Availability of data and material}\label{availability-of-data-and-material}}
 \addcontentsline{toc}{subsection}{Availability of data and material}
 
-All data used in this paper available in a version-controlled repository (Campitelli, Díaz, and Vera 2022b).
+All data used in this paper available in a version-controlled repository \citep{campitelli2022a}.
 It is also freely available from their respective sources:
 
 \begin{itemize}
@@ -720,6 +711,12 @@ It is also freely available from their respective sources:
 \addcontentsline{toc}{subsection}{Code availability}
 
 A version-controlled repository of the code used to create this analysis, including the code used to download the data can be found at \url{https://github.com/eliocamp/shceof}.
+
+\backmatter
+
+\bmhead{Acknowledgments}
+
+The research was supported by UBACyT20020170100428BA and the CLIMAX Project funded by Belmont Forum/ANR-15-JCL/-0002-01. Elio Campitelli was supported by a PhD grant from CONICET, Argentina.
 
 \appendix
 
@@ -744,184 +741,10 @@ A version-controlled repository of the code used to create this analysis, includ
 \caption{\label{fig:pp-temp-1}Same as Figure \ref{fig:pp-temp-2} but for cEOF1.}
 \end{figure}
 
-\hypertarget{refs}{}
-\begin{CSLReferences}{1}{0}
-\leavevmode\vadjust pre{\hypertarget{ref-fishpack}{}}%
-Adams, John C., Paul N. Swartztrauber, and Roland Sweet. 1999. {``{FISHPACK}, a Package of {Fortran} Subprograms for the Solution of Separable Elliptic Partial Differential Equations.''} 1999. \url{https://www2.cisl.ucar.edu/resources/legacy/fishpack}.
 
-\leavevmode\vadjust pre{\hypertarget{ref-albers2020}{}}%
-Albers, Sam, and Elio Campitelli. 2020. \emph{Rsoi: {Import Various Northern} and {Southern Hemisphere Climate Indices}} (version 0.5.4). \url{https://CRAN.R-project.org/package=rsoi}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-allaire2020}{}}%
-Allaire, J. J., Yihui Xie {[}aut, cre, Jonathan McPherson, Javier Luraschi, Kevin Ushey, Aron Atkins, et al. 2020. \emph{Rmarkdown: {Dynamic Documents} for {R}} (version 2.4). \url{https://CRAN.R-project.org/package=rmarkdown}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-baldwin2009}{}}%
-Baldwin, Mark P., and David W. J. Thompson. 2009. {``A Critical Comparison of Stratosphere--Troposphere Coupling Indices.''} \emph{Quarterly Journal of the Royal Meteorological Society} 135 (644): 1661--72. \url{https://doi.org/10.1002/qj.479}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-bamston1997}{}}%
-Bamston, Anthony G., Muthuvel Chelliah, and Stanley B. Goldenberg. 1997. {``Documentation of a Highly {ENSO}‐related Sst Region in the Equatorial Pacific: {Research} Note.''} \emph{Atmosphere-Ocean} 35 (3): 367--83. \url{https://doi.org/10.1080/07055900.1997.9649597}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-era5be}{}}%
-Bell, B., H. Hersbach, P. Berrisford, P. Dahlgren, A. Horányi, J. Muñoz Sabater, J. Nicolas, et al. 2020. {``{Era5} Monthly Averaged Data on Pressure Levels from 1950 to 1978 (Preliminary Version).''} \emph{{Copernicus Climate Change Service} ({C3s}) {Climate Data Store} ({CDS})} (Accessed on {\(<\)}26-08-2021{\(>\)}), https://cds.climate.copernicus.eu/cdsapp\#!/dataset/reanalysis-era5-pressure-levels-monthly-means-preliminary-back-extension?tab=overview.
-
-\leavevmode\vadjust pre{\hypertarget{ref-benjamini1995}{}}%
-Benjamini, Yoav, and Yosef Hochberg. 1995. {``Controlling the {False Discovery Rate}: {A Practical} and {Powerful Approach} to {Multiple Testing}.''} \emph{Journal of the Royal Statistical Society: Series B (Methodological)} 57 (1): 289--300. \url{https://doi.org/10.1111/j.2517-6161.1995.tb02031.x}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-cai2020a}{}}%
-Cai, Wenju, Michael J. McPhaden, Alice M. Grimm, Regina R. Rodrigues, Andréa S. Taschetto, René D. Garreaud, Boris Dewitte, et al. 2020. {``Climate Impacts of the {El Niño}--{Southern Oscillation} on {South America}.''} \emph{Nature Reviews Earth \& Environment} 1 (4, 4): 215--31. \url{https://doi.org/10.1038/s43017-020-0040-3}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-cai2011}{}}%
-Cai, Wenju, Peter van Rensch, Tim Cowan, and Harry H. Hendon. 2011. {``Teleconnection {Pathways} of {ENSO} and the {IOD} and the {Mechanisms} for {Impacts} on {Australian Rainfall}.''} \emph{Journal of Climate} 24 (15): 3910--23. \url{https://doi.org/10.1175/2011JCLI4129.1}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-cai2002}{}}%
-Cai, Wenju, and Ian G. Watterson. 2002. {``Modes of {Interannual Variability} of the {Southern Hemisphere Circulation Simulated} by the {CSIRO Climate Model}.''} \emph{Journal of Climate} 15 (10): 1159--74. \url{https://doi.org/10.1175/1520-0442(2002)015\%3C1159:MOIVOT\%3E2.0.CO;2}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-campitelli2020}{}}%
-Campitelli, Elio. 2020. \emph{{metR}: {Tools} for {Easier Analysis} of {Meteorological Fields}} (version 0.7.0). \url{https://CRAN.R-project.org/package=metR}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-campitelli2022}{}}%
-Campitelli, Elio, Leandro B. Díaz, and Carolina Vera. 2022a. {``Assessment of Zonally Symmetric and Asymmetric Components of the {Southern Annular Mode} Using a Novel Approach.''} \emph{Climate Dynamics} 58 (1): 161--78. \url{https://doi.org/10.1007/s00382-021-05896-5}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-campitelli2022a}{}}%
-Campitelli, Elio, Leandro Díaz, and Carolina Vera. 2022b. {``Data for "{Revisiting} the {Austral Spring Extratropical Southern Hemisphere} Zonally Asymmetric Circulation Using Complex {Empirical Orthogonal Functions}".''} {Zenodo}. \url{https://doi.org/10.5281/zenodo.6612324}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-cazes-boezio2003}{}}%
-Cazes-Boezio, Gabriel, Andrew W. Robertson, and Carlos R. Mechoso. 2003. {``Seasonal {Dependence} of {ENSO Teleconnections} over {South America} and {Relationships} with {Precipitation} in {Uruguay}.''} \emph{Journal of Climate} 16 (8): 1159--76. \url{https://doi.org/10.1175/1520-0442(2003)16\%3C1159:SDOETO\%3E2.0.CO;2}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-ciasto2015}{}}%
-Ciasto, Laura M., Graham R. Simpkins, and Matthew H. England. 2015. {``Teleconnections Between {Tropical Pacific SST Anomalies} and {Extratropical Southern Hemisphere Climate}.''} \emph{Journal of Climate} 28 (1): 56--65. \url{https://doi.org/10.1175/JCLI-D-14-00438.1}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-dowle2020}{}}%
-Dowle, Matt, and Arun Srinivasan. 2020. \emph{Data.table: {Extension} of 'Data.frame'} (version 1.13.0). \url{https://CRAN.R-project.org/package=data.table}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-fogt2020}{}}%
-Fogt, Ryan L., and Gareth J. Marshall. 2020. {``The {Southern Annular Mode}: {Variability}, Trends, and Climate Impacts Across the {Southern Hemisphere}.''} \emph{WIREs Climate Change} 11 (4): e652. \url{https://doi.org/10.1002/wcc.652}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-gelbrecht2018}{}}%
-Gelbrecht, Maximilian, Niklas Boers, and Jürgen Kurths. 2018. {``Phase Coherence Between Precipitation in {South America} and {Rossby} Waves.''} \emph{Science Advances} 4 (12): eaau3191. \url{https://doi.org/10.1126/sciadv.aau3191}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-gong1999}{}}%
-Gong, Daoyi, and Shaowu Wang. 1999. {``Definition of {Antarctic Oscillation} Index.''} \emph{Geophysical Research Letters} 26 (4): 459--62. \url{https://doi.org/10.1029/1999GL900003}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-goyal2022}{}}%
-Goyal, Rishav, Martin Jucker, Alex Sen Gupta, and Matthew H. England. 2022. {``A New Zonal Wave 3 Index for the {Southern Hemisphere}.''} \emph{Journal of Climate} -1 (May): 1--25. \url{https://journals.ametsoc.org/view/journals/clim/aop/JCLI-D-21-0927.1/JCLI-D-21-0927.1.xml}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-grytsai2011}{}}%
-Grytsai, A. 2011. {``Planetary Wave Peculiarities in {Antarctic} Ozone Distribution During 1979--2008.''} \emph{International Journal of Remote Sensing} 32 (11): 3139--51. \url{https://doi.org/10.1080/01431161.2010.541518}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-hartmann1979}{}}%
-Hartmann, Dennis L., and Rolando R. Garcia. 1979. {``A {Mechanistic Model} of {Ozone Transport} by {Planetary Waves} in the {Stratosphere}.''} \emph{Journal of the Atmospheric Sciences} 36 (2): 350--64. \url{https://doi.org/10.1175/1520-0469(1979)036\%3C0350:AMMOOT\%3E2.0.CO;2}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-era5}{}}%
-Hersbach, H., B. Bell, P. Berrisford, G. Biavati, A. Horányi, J. Muñoz Sabater, J. Nicolas, et al. 2019. {``{Era5} Monthly Averaged Data on Pressure Levels from 1979 to Present.''} \emph{{Copernicus Climate Change Service} ({C3s}) {Climate Data Store} ({CDS})} (Accessed on {\(<\)}07-09-2021{\(>\)}). \url{https://doi.org/10.24381/cds.6860a573}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-hobbs2010}{}}%
-Hobbs, William R., and Marilyn N. Raphael. 2010. {``Characterizing the Zonally Asymmetric Component of the {SH} Circulation.''} \emph{Climate Dynamics} 35 (5): 859--73. \url{https://doi.org/10.1007/s00382-009-0663-z}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-horel1984}{}}%
-Horel, J. D. 1984. {``Complex {Principal Component Analysis}: {Theory} and {Examples}.''} \emph{Journal of Applied Meteorology and Climatology} 23 (12): 1660--73. \url{https://doi.org/10.1175/1520-0450(1984)023\%3C1660:CPCATA\%3E2.0.CO;2}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-hoskins2005}{}}%
-Hoskins, B. J., and K. I. Hodges. 2005. {``A {New Perspective} on {Southern Hemisphere Storm Tracks}.''} \emph{Journal of Climate} 18 (20): 4108--29. \url{https://doi.org/10.1175/JCLI3570.1}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-huang2017}{}}%
-Huang, Boyin, Peter W. Thorne, Viva F. Banzon, Tim Boyer, Gennady Chepurin, Jay H. Lawrimore, Matthew J. Menne, Thomas M. Smith, Russell S. Vose, and Huai-Min Zhang. 2017. {``Extended {Reconstructed Sea Surface Temperature}, {Version} 5 ({ERSSTv5}): {Upgrades}, {Validations}, and {Intercomparisons}.''} \emph{Journal of Climate} 30 (20): 8179--8205. \url{https://doi.org/10.1175/JCLI-D-16-0836.1}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-hufkens2020}{}}%
-Hufkens, Koen. 2020. \emph{Ecmwfr: {Programmatic} Interface to the Two {European Centre} for {Medium-Range Weather Forecasts API} Services} (version 1.3.0). \url{http://doi.org/10.5281/zenodo.2647541}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-irving2015}{}}%
-Irving, Damien, and Ian Simmonds. 2015. {``A {Novel Approach} to {Diagnosing Southern Hemisphere Planetary Wave Activity} and {Its Influence} on {Regional Climate Variability}.''} \emph{Journal of Climate} 28 (23): 9041--57. \url{https://doi.org/10.1175/JCLI-D-15-0287.1}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-irving2016}{}}%
----------. 2016. {``A {New Method} for {Identifying} the {Pacific}--{South American Pattern} and {Its Influence} on {Regional Climate Variability}.''} \emph{Journal of Climate} 29 (17): 6109--25. \url{https://doi.org/10.1175/JCLI-D-15-0843.1}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-kao2009}{}}%
-Kao, Hsun-Ying, and Jin-Yi Yu. 2009. {``Contrasting {Eastern-Pacific} and {Central-Pacific Types} of {ENSO}.''} \emph{Journal of Climate} 22 (3): 615--32. \url{https://doi.org/10.1175/2008JCLI2309.1}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-katz1991}{}}%
-Katz, Richard W., and Barbara G. Brown. 1991. {``The Problem of Multiplicity in Research on Teleconnections.''} \emph{International Journal of Climatology} 11 (5): 505--13. \url{https://doi.org/10.1002/joc.3370110504}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-krokhin2007}{}}%
-Krokhin, V. V., and W. M. J. Luxemburg. 2007. {``Temperatures and Precipitation Totals over the {Russian Far East} and {Eastern Siberia}: Long-Term Variability and Its Links to Teleconnection Indices.''} \emph{Hydrology and Earth System Sciences} 11 (6): 1831--41. \url{https://doi.org/10.5194/hess-11-1831-2007}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-lim2018}{}}%
-Lim, E.-P., H. H. Hendon, and D. W. J. Thompson. 2018. {``Seasonal {Evolution} of {Stratosphere-Troposphere Coupling} in the {Southern Hemisphere} and {Implications} for the {Predictability} of {Surface Climate}.''} \emph{Journal of Geophysical Research: Atmospheres} 123 (21): 12, 002--12, 016. \url{https://doi.org/10.1029/2018JD029321}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-vanloon1972}{}}%
-Loon, Harry van, and Roy L. Jenne. 1972. {``The Zonal Harmonic Standing Waves in the Southern Hemisphere.''} \emph{Journal of Geophysical Research} 77 (6): 992--1003. \url{https://doi.org/10.1029/JC077i006p00992}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-mo2000}{}}%
-Mo, Kingtse C. 2000. {``Relationships Between {Low-Frequency Variability} in the {Southern Hemisphere} and {Sea Surface Temperature Anomalies}.''} \emph{Journal of Climate} 13 (20): 3599--3610. \url{https://doi.org/10.1175/1520-0442(2000)013\%3C3599:RBLFVI\%3E2.0.CO;2}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-mo2001}{}}%
-Mo, Kingtse C., and Julia N. Paegle. 2001. {``The {Pacific}--{South American} Modes and Their Downstream Effects.''} \emph{International Journal of Climatology} 21 (10): 1211--29. \url{https://doi.org/10.1002/joc.685}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-nuncio2015}{}}%
-Nuncio, M., and Xiaojun Yuan. 2015. {``The {Influence} of the {Indian Ocean Dipole} on {Antarctic Sea Ice}.''} \emph{Journal of Climate} 28 (7): 2682--90. \url{https://doi.org/10.1175/JCLI-D-14-00390.1}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-pezza2012}{}}%
-Pezza, Alexandre Bernardes, Harun A. Rashid, and Ian Simmonds. 2012. {``Climate Links and Recent Extremes in Antarctic Sea Ice, High-Latitude Cyclones, {Southern Annular Mode} and {ENSO}.''} \emph{Climate Dynamics} 38 (1): 57--73. \url{https://doi.org/10.1007/s00382-011-1044-y}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-plumb1985}{}}%
-Plumb, R. Alan. 1985. {``On the {Three-Dimensional Propagation} of {Stationary Waves}.''} \emph{Journal of the Atmospheric Sciences} 42 (3): 217--29. \url{https://doi.org/10.1175/1520-0469(1985)042\%3C0217:OTTDPO\%3E2.0.CO;2}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-rcoreteam2020}{}}%
-R Core Team. 2020. \emph{R: {A} Language and Environment for Statistical Computing}. Manual. {Vienna, Austria}: {R Foundation for Statistical Computing}. \url{https://www.R-project.org/}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-raphael2004}{}}%
-Raphael, M. N. 2004. {``A Zonal Wave 3 Index for the {Southern Hemisphere}.''} \emph{Geophysical Research Letters} 31 (23). \url{https://doi.org/10.1029/2004GL020365}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-raphael2007}{}}%
----------. 2007. {``The Influence of Atmospheric Zonal Wave Three on {Antarctic} Sea Ice Variability.''} \emph{Journal of Geophysical Research: Atmospheres} 112 (D12). \url{https://doi.org/10.1029/2006JD007852}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-raphael2003}{}}%
-Raphael, Marilyn. 2003. {``Recent, {Large-Scale Changes} in the {Extratropical Southern Hemisphere Atmospheric Circulation}.''} \emph{Journal of Climate} 16 (17): 2915--24. \url{https://doi.org/10.1175/1520-0442(2003)016\%3C2915:RLCITE\%3E2.0.CO;2}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-saji1999}{}}%
-Saji, N. H., B. N. Goswami, P. N. Vinayachandran, and T. Yamagata. 1999. {``A Dipole Mode in the Tropical {Indian Ocean}.''} \emph{Nature} 401 (6751, 6751): 360--63. \url{https://doi.org/10.1038/43854}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-saji2003}{}}%
-Saji, N. H., and T. Yamagata. 2003. {``Possible Impacts of {Indian Ocean Dipole} Mode Events on Global Climate.''} \emph{Climate Research} 25 (2): 151--69. \url{https://doi.org/10.3354/cr025151}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-smith1995}{}}%
-Smith, Anne K. 1995. {``Numerical Simulation of Global Variations of Temperature, Ozone, and Trace Species in the Stratosphere.''} \emph{Journal of Geophysical Research: Atmospheres} 100 (D1): 1253--69. \url{https://doi.org/10.1029/94JD02395}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-trenberth1980a}{}}%
-Trenberth, Kevin E. 1980. {``Planetary {Waves} at 500 Mb in the {Southern Hemisphere}.''} \emph{Monthly Weather Review} 108 (9): 1378--89. \url{https://doi.org/10.1175/1520-0493(1980)108\%3C1378:PWAMIT\%3E2.0.CO;2}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-trenberth1985}{}}%
-Trenberth, Kevin F., and K. C. Mo. 1985. {``Blocking in the {Southern Hemisphere}.''} \emph{Monthly Weather Review} 113 (1): 3--21. \url{https://doi.org/10.1175/1520-0493(1985)113\%3C0003:BITSH\%3E2.0.CO;2}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-turner2017}{}}%
-Turner, John, J. Scott Hosking, Thomas J. Bracegirdle, Tony Phillips, and Gareth J. Marshall. 2017. {``Variability and Trends in the {Southern Hemisphere} High Latitude, Quasi-Stationary Planetary Waves.''} \emph{International Journal of Climatology} 37 (5): 2325--36. \url{https://doi.org/10.1002/joc.4848}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-walker1914}{}}%
-Walker, Sir Gilbert Thomas. 1914. \emph{Correlation in {Seasonal Variations} of {Weather}, {III}: {On} the {Criterion} for the {Reality} of {Relationships Or Periodicities}}. {Meteorological Office}. \url{https://books.google.com?id=cuGtuAAACAAJ}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-wickham2009}{}}%
-Wickham, Hadley. 2009. \emph{Ggplot2: {Elegant Graphics} for {Data Analysis}}. Use {R}! {New York}: {Springer-Verlag}. \url{https://doi.org/10.1007/978-0-387-98141-3}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-wilks2016}{}}%
-Wilks, D. S. 2016. {``{`{The Stippling Shows Statistically Significant Grid Points}'}: {How Research Results} Are {Routinely Overstated} and {Overinterpreted}, and {What} to {Do} about {It}.''} \emph{Bulletin of the American Meteorological Society} 97 (12): 2263--73. \url{https://doi.org/10.1175/BAMS-D-15-00267.1}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-wilks2011}{}}%
-Wilks, Daniel. 2011. \emph{Statistical {Methods} in the {Atmospheric Sciences}}. Vol. 100. {Elsevier}. \url{https://doi.org/10.1016/B978-0-12-385022-5.00022-1}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-wirth1993}{}}%
-Wirth, Volkmar. 1993. {``Quasi-Stationary Planetary Waves in Total Ozone and Their Correlation with Lower Stratospheric Temperature.''} \emph{Journal of Geophysical Research: Atmospheres} 98 (D5): 8873--82. \url{https://doi.org/10.1029/92JD02820}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-cmap}{}}%
-Xie, Pingping, and Phillip A. Arkin. 1997. {``Global {Precipitation}: {A} 17-{Year Monthly Analysis Based} on {Gauge Observations}, {Satellite Estimates}, and {Numerical Model Outputs}.''} \emph{Bull. Amer. Meteor. Soc.} 78 (Accessed on {\(<\)}26-08-2021{\(>\)}) (11): 2539--58. \url{https://doi.org/10.1175/1520-0477(1997)078\%3C2539:GPAYMA\%3E2.0.CO;2}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-xie2015}{}}%
-Xie, Yihui. 2015. \emph{Dynamic Documents with {R} and Knitr}. 2nd ed. {Boca Raton, Florida}: {Chapman and Hall/CRC}. \url{https://yihui.org/knitr/}.
-
-\end{CSLReferences}
-
-
-\bibliographystyle{spbasic}
 \bibliography{references.bib,data.bib,packages.bib}
+
+
 
 
 \end{document}
