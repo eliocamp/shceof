@@ -14,7 +14,7 @@ enso <- rsoi::download_oni(TRUE, data_path("raw", "oni.csv")) %>%
 
 
 sst <- ERSST() %>%
-  readRDS() %>%
+  fread() %>%
   .[season(time) == "SON"] %>%
   normalise_coords() %>%
   .[, w := season_weights(time)] %>%
