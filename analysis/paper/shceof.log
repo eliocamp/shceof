@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.12.2)  2 JAN 2023 19:02
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.12.2)  4 JAN 2023 12:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -855,16 +855,17 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [2]
-
-Package natbib Warning: Citation `gelbrecht2018' on page 3 undefined on input line 200.
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [3]
+Underfull \hbox (badness 1629) in paragraph at lines 206--207
+[]\TU/lmr/m/n/10.03749 We restrict this paper to the September-October-November (SON)
+ []
+
+
 Underfull \hbox (badness 1297) in paragraph at lines 206--207
 \TU/lmr/m/n/10.03749 trimester because during this season both the tropical teleconnections
  []
@@ -893,24 +894,24 @@ Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 [6]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 296.
+               Default added (so using `tbp') on input line 295.
 
-LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 299.
+LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 298.
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 299.
+(Font)              size <5> substituted on input line 298.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
-(Font)              size <5> substituted on input line 299.
+(Font)              size <5> substituted on input line 298.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 299.
+(Font)              size <5> substituted on input line 298.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 299.
+(Font)              size <5> substituted on input line 298.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -933,7 +934,7 @@ File: ../figures/ceofs-1-1.pdf Graphic file (type pdf)
 File: ../figures/extended-series-1.pdf Graphic file (type pdf)
 <use ../figures/extended-series-1.pdf>
 
-Overfull \hbox (8.70885pt too wide) in paragraph at lines 370--370
+Overfull \hbox (8.70885pt too wide) in paragraph at lines 371--371
 [][] 
  []
 
@@ -963,6 +964,8 @@ Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 [11]
 File: ../figures/eof1-regr-t-1.pdf Graphic file (type pdf)
 <use ../figures/eof1-regr-t-1.pdf>
+File: ../figures/t-vertical-1.pdf Graphic file (type pdf)
+<use ../figures/t-vertical-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -970,9 +973,6 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [12]
-File: ../figures/t-vertical-1.pdf Graphic file (type pdf)
-<use ../figures/t-vertical-1.pdf>
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
@@ -989,7 +989,7 @@ File: ../figures/o3-regr-1.pdf Graphic file (type pdf)
 <use ../figures/o3-regr-1.pdf>
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 496.
+               Default added (so using `tbp') on input line 497.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1019,7 +1019,7 @@ Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 File: ../figures/sst-psi-2-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-2-1.pdf>
 
-Overfull \hbox (8.70885pt too wide) in paragraph at lines 562--562
+Overfull \hbox (8.70885pt too wide) in paragraph at lines 563--563
 [][] 
  []
 
@@ -1030,15 +1030,15 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [18]
+File: ../figures/enso-phase-1.pdf Graphic file (type pdf)
+<use ../figures/enso-phase-1.pdf>
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [19]
-File: ../figures/enso-phase-1.pdf Graphic file (type pdf)
-<use ../figures/enso-phase-1.pdf>
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
@@ -1048,7 +1048,7 @@ Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 File: ../figures/pp-t2m-r2-1.pdf Graphic file (type pdf)
 <use ../figures/pp-t2m-r2-1.pdf>
 
-Overfull \hbox (8.70885pt too wide) in paragraph at lines 622--623
+Overfull \hbox (8.70885pt too wide) in paragraph at lines 623--624
  [][] 
  []
 
@@ -1086,23 +1086,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [25]
-Underfull \hbox (badness 2735) in paragraph at lines 731--732
+Underfull \hbox (badness 2735) in paragraph at lines 735--736
 \TU/lmr/m/n/10.03749 The research was supported by UBACyT20020170100428BA and the
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 766--768
-[]\TU/lmr/m/n/10.03749 ERA5 data can be obtained via the Copernicus Climate
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 766--768
-\TU/lmr/m/n/10.03749 Data Store ([][]$[][][][][] [] [] [] [][][] [] [][][][][][][] [] [][][][][][][][][][] [] [][] [] [][][][][][] [] [] [] [][][][][][][][] []
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 768--770
-[][][][] [] [][][][] [] [][][] [] [][][][][][] [] [][][][][][][][] [] [][][][][][][][][][][][][] [] [][][] [] [][][] [] [][] [] [][][] [] [][][][] [] [][][][] []
  []
 
 
@@ -1113,11 +1098,26 @@ Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [26]
 Underfull \hbox (badness 10000) in paragraph at lines 772--774
-\TU/lmr/m/n/10.03749 Center: [][]$[][][][][] [] [] [] [][][] [] [][][] [] [][][][] [] [][][][] [] [][][] [] [][][][][][][][] [] [][][][][][][][] [] [][][][][][][][][][] []
+[]\TU/lmr/m/n/10.03749 ERA5 data can be obtained via the Copernicus Climate
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 772--774
+\TU/lmr/m/n/10.03749 Data Store ([][]$[][][][][] [] [] [] [][][] [] [][][][][][][] [] [][][][][][][][][][] [] [][] [] [][][][][][] [] [] [] [][][][][][][][] []
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 774--776
+[][][][] [] [][][][] [] [][][] [] [][][][][][] [] [][][][][][][][] [] [][][][][][][][][][][][][] [] [][][] [] [][][] [] [][] [] [][][] [] [][][][] [] [][][][] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 778--780
+\TU/lmr/m/n/10.03749 Center: [][]$[][][][][] [] [] [] [][][] [] [][][] [] [][][][] [] [][][][] [] [][][] [] [][][][][][][][] [] [][][][][][][][] [] [][][][][][][][][][] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 780--782
 \TU/lmr/m/n/10.03749 Center: [][]$[][][][][] [] [] [] [][][] [] [][][] [] [][][][] [] [][][][] [] [][][] [] [][][][][][][][] [] [][][][][][][][] [] [][][][][][][][][][] []
  []
 
@@ -1131,14 +1131,14 @@ Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 File: ../figures/sst-psi-1-1.pdf Graphic file (type pdf)
 <use ../figures/sst-psi-1-1.pdf>
 
-Overfull \hbox (8.70885pt too wide) in paragraph at lines 803--803
+Overfull \hbox (8.70885pt too wide) in paragraph at lines 809--809
 [][] 
  []
 
 File: ../figures/pp-temp-1-1.pdf Graphic file (type pdf)
 <use ../figures/pp-temp-1-1.pdf>
 
-Overfull \hbox (9.7126pt too wide) in paragraph at lines 810--811
+Overfull \hbox (9.7126pt too wide) in paragraph at lines 816--817
  [][] 
  []
 
@@ -1192,13 +1192,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [31]
-Underfull \hbox (badness 1701) in paragraph at lines 207--212
+Underfull \hbox (badness 1701) in paragraph at lines 218--223
 []\TU/lmr/m/n/10.03749 Lim EP, Hendon HH, Thompson DWJ (2018) Seasonal Evolution of
- []
-
-
-Underfull \hbox (badness 1389) in paragraph at lines 230--233
-[]\TU/lmr/m/n/10.03749 Pezza AB, Rashid HA, Simmonds I (2012) Climate links and recent
  []
 
 
@@ -1208,7 +1203,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [32]
-Underfull \hbox (badness 3108) in paragraph at lines 278--281
+Underfull \hbox (badness 1389) in paragraph at lines 241--244
+[]\TU/lmr/m/n/10.03749 Pezza AB, Rashid HA, Simmonds I (2012) Climate links and recent
+ []
+
+
+Underfull \hbox (badness 3108) in paragraph at lines 289--292
 \TU/lmr/m/n/10.03749 Weather Review 113(1):3–21. [][]$[][][][][] [] [] [] [][][] [] [][][] [] [][] [] [][][][] [] [][][][][][][][][][][][][][][] []
  []
 
@@ -1219,15 +1219,11 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [33]
-Underfull \hbox (badness 2600) in paragraph at lines 319--324
+Underfull \hbox (badness 2600) in paragraph at lines 330--335
 \TU/lmr/m/n/10.03749 2558. [][]$[][][][][] [] [] [] [][][] [] [][][] [] [][] [] [][][][] [] [][][][][][][][][][][][][][][] [] [][][][][][][][][] [] [][][][][][] [][] [] [] [] []
  []
 
 )
-
-Package natbib Warning: There were undefined citations.
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
@@ -1242,12 +1238,12 @@ Package rerunfilecheck Info: File `shceof.out' has not changed.
 (rerunfilecheck)             Checksum: 90DEDD91F3042496F0CAE3767EF66A3A;3933.
  ) 
 Here is how much of TeX's memory you used:
- 17944 strings out of 477569
- 286805 string characters out of 5838941
- 646583 words of memory out of 5000000
- 38742 multiletter control sequences out of 15000+600000
+ 17950 strings out of 477569
+ 286913 string characters out of 5838941
+ 647678 words of memory out of 5000000
+ 38748 multiletter control sequences out of 15000+600000
  500672 words of font info for 166 fonts, out of 8000000 for 9000
  46 hyphenation exceptions out of 8191
- 87i,11n,90p,709b,573s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 87i,12n,90p,709b,573s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on shceof.pdf (34 pages).
