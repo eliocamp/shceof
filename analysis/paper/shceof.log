@@ -1,11 +1,11 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.12.2)  10 JAN 2023 14:57
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.1.10)  10 JAN 2023 16:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **shceof.tex
 (./shceof.tex
 LaTeX2e <2022-11-01> patch level 1
-L3 programming layer <2022-11-02> (./sn-jnl.cls
+L3 programming layer <2022-12-17> (./sn-jnl.cls
 Document Class: sn-jnl 2019/11/18 v0.1: An authoring template for Springer Journal articles
 (/home/elio/.TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
@@ -1248,11 +1248,11 @@ Package rerunfilecheck Info: File `shceof.out' has not changed.
 (rerunfilecheck)             Checksum: 90DEDD91F3042496F0CAE3767EF66A3A;3933.
  ) 
 Here is how much of TeX's memory you used:
- 18094 strings out of 477569
- 290486 string characters out of 5838941
- 654665 words of memory out of 5000000
- 38888 multiletter control sequences out of 15000+600000
- 500672 words of font info for 166 fonts, out of 8000000 for 9000
+ 18093 strings out of 478706
+ 290473 string characters out of 5848653
+ 1868979 words of memory out of 5000000
+ 37750 multiletter control sequences out of 15000+600000
+ 543700 words of font info for 170 fonts, out of 8000000 for 9000
  46 hyphenation exceptions out of 8191
  87i,13n,90p,709b,573s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
