@@ -1,5 +1,6 @@
 ---
 classoptions: 
+  - lineno
   - sn-basic
 year: 2022
 title:  "Revisiting the Austral Spring Extratropical Southern Hemisphere zonally asymmetric circulation using complex Empirical Orthogonal Functions"
@@ -57,8 +58,8 @@ bibliography:
 # bibstyle: spbasic
 
 output: 
-  bookdown::word_document2:
-      pandoc_args: ["--lua-filter=abstract-to-meta.lua", "--wrap=preserve"]
+  # bookdown::word_document2:
+  #     pandoc_args: ["--lua-filter=abstract-to-meta.lua", "--wrap=preserve"]
   bookdown::pdf_document2:
       latex_engine: "xelatex"
       keep_tex: true
@@ -86,7 +87,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   cache.extra = 44,
   cache.path = "../cache/paper/",
-  fig.path = "../figures/",
+  # fig.path = "../figures/",
   dpi = 300,
   dev = c("pdf", "png")
 )
@@ -451,7 +452,7 @@ A single EOF can also represent a mixture of two or more physical modes.
 A third methodology commonly used to describe circulation anomalies consists on identifying particular features of interest and creating indices using simple methods such as averages and differences.
 Examples of this methodology are the SAM Index of @gong1999, the SH wave 3 activity index defined by @raphael2004 and the SH zonally asymmetric circulation index from @hobbs2010.
 These derived methods are grounded on other methods such as Fourier decomposition or EOF to identify the centres of action for the described phenomena and can be useful to characterise features that are not readily apparent with these methods.
-These kinds of indices are generally easy to compute, but they usually don't capture non-stationary patterns.
+These kinds of indices are generally easy to compute, but they usually do not capture non-stationary patterns.
 
 An alternative methodology that has been proposed to study travelling and standing waves is complex Empirical Orthogonal Functions (cEOF; @horel1984).
 This method extends EOF analysis to capture oscillations with varying amplitude and phase and has been applied to the time domain.
@@ -462,7 +463,7 @@ To our knowledge, cEOF analysis has not been applied in the spatial domain to ca
 The general goal of this study is to improve the description and understanding of the zonally asymmetric extratropical SH circulation using cEOF, which can describe phase varying planetary waves with variable amplitude along a latitude circle.
 In addition, we try to expand the knowledge of the simultaneous behaviour of SH asymmetric circulation in the troposphere and the stratosphere.
 
-We restrict this paper to the September-October-November (SON) trimester because during this season both the tropical teleconnections over South America [@cazes-boezio2003] and the SH stratosphere-troposphere interactions [@lim2018] are at their maximum amplitude. 
+We restrict this work to the September-October-November (SON) trimester because during this season both the tropical teleconnections over South America [@cazes-boezio2003] and the SH stratosphere-troposphere interactions [@lim2018] are at their maximum amplitude. 
 
 In Section\ \@ref(methods) we describe the methods.
 In Section\ \@ref(spatial) we analyse the spatial patterns of each complex EOF.
@@ -479,7 +480,7 @@ In Section\ \@ref(discussion) we compare our results with previous studies and d
 We used monthly geopotential height, air temperature, ozone mixing ratio, and total column ozone (TOC) at 2.5º longitude by 2.5º latitude of horizontal resolution and 37 vertical isobaric levels from the European Centre for Medium-Range Weather Forecasts Reanalysis version 5 [ERA; @era5] for the period 1979 -- 2019.
 Most of our analysis is restricted to the post-satellite era to avoid confounding factors arising from the incorporation of satellite observations, but we also used the preliminary back extension of ERA5 from 1950 to 1978 [@era5be] to describe long-term trends.
 We derived streamfunction at 200 hPa from ERA5 vorticity using the FORTRAN subroutine FISHPACK [@fishpack] and we computed horizontal wave activity fluxes following @plumb1985.
-Sea Surface Temperature (SST) monthly fields are from Extended Reconstructed Sea Surface Temperature (ERSST) v5 [@huang2017] and precipitation monthly data from the CPC Merged Analysis of Precipitation [@cmap], with a 2º and 2.5º horizontal resolution, respectively.
+Sea Surface Temperature (SST) monthly fields are from Extended Reconstructed Sea Surface Temperature (ERSST) v5 [@huang2017] and precipitation monthly data from the CPC Merged Analysis of Precipitation [CMAP, @cmap], with a 2º and 2.5º horizontal resolution, respectively.
 The rainfall gridded dataset is based on information from different sources such as rain gauge observations, satellite inferred estimations and the NCEP-NCAR reanalysis, and it is available from 1979 to the present.
 
 The Oceanic Niño Index [ONI, @bamston1997] comes from NOAA's Climate Prediction Center and the Dipole Mode Index [DMI, @saji2003] from Global Climate Observing System Working Group on Surface Pressure.
@@ -502,7 +503,7 @@ Linear trends were computed by Ordinary Least Squares (OLS) and the 95% confiden
 
 ## Complex Empirical Orthogonal Functions (cEOF)
 
-(ref:eof-naive-cap) Spatial patterns of the four leading EOFs of SON geopotential height zonal anomalies of at 50 hPa south of 20º S for the 1979 -- 2019 period (arbitrary units).
+(ref:eof-naive-cap) Spatial patterns of the four leading EOFs of SON geopotential height zonal anomalies at 50 hPa south of 20º S for the 1979 -- 2019 period (arbitrary units).
 
 ```{r compute-eof-naive}
 eof_naive <- era5[lev %in% c(50, 200) & lat %between% c(-90, -20)] %>% 
@@ -546,35 +547,36 @@ In the standard EOF analysis, zonal waves may appear as pairs of (possibly degen
 Figure \@ref(fig:eof-naive) shows the four leading EOFs of SON geopotential height zonal anomalies at 50 hPa south of 20º S.
 It is clear that the first two EOFs represent a single phase-varying zonal wave 1 pattern and the last two represent a similarly phase-varying pattern with higher wavenumber and three centres of action shifted by 1/4 wavelength (90º in frequency space).
 
-To describe the phase-varying nature of these two waves, the simplest solution is to combine each pair of EOFs into indices of amplitude and phase.
+To describe the phase-varying nature of these two wave patterns, one way is to combine each pair of EOFs into indices of amplitude and phase.
 So, for instance, the amplitude of the wave 1-like EOF could be measured as $\sqrt{\mathrm{PC1}^2 + \mathrm{PC2}^2}$ and its phase as $\tan^{-1} \left ( \frac{\mathrm{PC2}}{\mathrm{PC1}} \right )$ (where $\mathrm{PC1}$ and $\mathrm{PC2}$ are the time series associated with each EOF).
-However, this rests on visual inspection of the spatial patterns and only works properly if both phases appear cleanly in different EOFs, which is not guaranteed by construction.
-In particular, this doesn't work with the wave 1 pattern observed as the leading EOF in 200 hPa geopotential height zonal anomalies (not shown).
+However, this rests on visual inspection of the spatial patterns and only works properly if both phases appear clearly in different EOFs, which is not guaranteed by construction.
+In particular, this does not work with the wave 1 pattern depicted as the leading EOF in 200 hPa geopotential height zonal anomalies (not shown).
 
-A better alternative for describing phase-varying waves is to use Complex Empirical Orthogonal Functions (cEOF) analysis [@horel1984]. 
-Each cEOF is represented by two spatial patterns that are shifted by 1/4 wavelength by construction.
-The actual field reconstructed by each cEOF is the linear combination of the two spatial fields weighted by its respective time series. 
+On the other hand, a better alternative for describing phase-varying waves is to use Complex Empirical Orthogonal Functions (cEOF) analysis [@horel1984]. 
+Each cEOF is a set of complex-valued spatial patterns and time series. 
+The real and imaginary components of the complex spatial pattern can be though of as representing two spatial patterns that are shifted by 1/4 wavelength by construction, similar to EOF1 and EOF2 in Figure \@ref(fig:eof-naive). 
+In this paper we use the term 0º cEOF and 90º cEOF to refer to each part of the whole cEOF.
+The actual field reconstructed by each cEOF is then the linear combination of the two spatial fields weighted by its respective time series. 
 This is analogous to how any sine wave can be constructed by the sum of a sine wave and cosine wave with different amplitude but constant phase. 
 This means that cEOFs naturally represent phase-varying wave-like patterns that change location as well as amplitude.
 
-Figure \@ref(fig:ceofs-1) a.1 shows the two spatial patterns of the cEOF of geopotential height zonal anomalies. 
-One of the cEOFs is plotted with shaded contours (which represents the 0º phase) and the other with black contours (which represents the 90º phase). 
-This cEOF is very similar to the two leading EOFs shown in Figure \@ref(fig:eof-naive) and represents a zonal wave 1 pattern; the 0º phase is roughtly the EOF1 and the 90º phase is roughtly the EOF2).
-For instance, when the phase of the wave matches the 0º phase, then the 0º phase time series will be positive and the 90º phase time series will be zero.
-Similarly, when the phase of the wave matches the 90º phase, the 90º phase time series will be positive and the 0º phase time series will be zero.
-The intermediate phases will have non zero values in both time series.
-The two phases described are not special and the same cEOF could be represented by any linear combinations of the phases shown in Figure \@ref(fig:ceofs-1) a.1. 
-This parallels traditional EOFs, which are defined up to sign, which corresponds to a rotation in the complex plane of either 0 or $\pi$.
-On the other hand cEOFs are defined up to a rotation in the complex plane of any value between 0 and $2\pi$ [@horel1984].
+For instance, when the phase of the wave matches the 0º phase, then the 0º phase time series is positive and the 90º phase time series is zero.
+Similarly, when the phase of the wave matches the 90º phase, the 90º phase time series is positive and the 0º phase time series is zero.
+The intermediate phases have non-zero values in both time series.
+
+Traditional EOFs are not unique, and instead are defined up to sign, which corresponds to a rotation in the complex plane of either 0 or $\pi$.
+In the same way, cEOFs are defined up to a rotation in the complex plane of any value between 0 and $2\pi$ [@horel1984].
 
 cEOFs are computed in the same way as traditional EOFs except that the data is first augmented by computing its analytic signal. 
-This is a complex number whose real part is the original series and whose imaginary part is the original data shifted by 90º at each spectral frequency -- i.e. 
-its Hilbert transform. Each cEOF is a set of complex-valued spatial patterns and time series in which the real (or 0º phase) and imaginary (or 90º phase) parts are the two orthogonal phases of the wave-like pattern. 
-In this paper we use the term 0º cEOF and 90º cEOF to refer to each part of the whole cEOF.
-
+This is a complex number whose real part is the original series and whose imaginary part is the original data shifted by 90º at each spectral frequency -- i.e. its Hilbert transform. 
 The Hilbert transform is usually understood in terms of time-varying signal.
-However, in this work we apply the Hilbert transform at each latitude circle and at each considered time (e.g. the signal only depends on longitude).
+However, in this work we apply the Hilbert transform at each latitude circle and at each considered time (i.e. the signal only depends on longitude).
 Since each latitude circle is a periodic domain, this procedure does not suffer from edge effects.
+
+We first applied cEOF analysis to geopotential height zonal anomalies south of 20ºS at 50 and at 200 hPa. 
+Figure \@ref(fig:ceofs-1) a.1 shows the spatial patterns of the two leading cEOF. 
+The 0º phase is plotted with shaded contours and the 90º phase, with black contours.
+The two phases of the leading cEOF are very similar to the two leading EOFs shown in Figure \@ref(fig:eof-naive) and represent a zonal wave 1 pattern; the 0º phase is roughly the EOF1 and the 90º phase is roughly the EOF2).
 
 ```{r compute-ceof}
 invisible(
@@ -628,7 +630,6 @@ table2 %>%
   kable_classic() 
 ```
 
-First, we applied the cEOF methodology is applied to zonal anomalies of SON geopotential height south of 20º S separately at 50 and 200 hPa.
 Table \@ref(tab:corr-ceof-splitted) shows the coefficient of determination between time series of the amplitude of each cEOF across levels.
 There is a high degree of correlation between the magnitude of the respective cEOF1 and cEOF2 at each level.
 The spatial patterns of the 50 hPa and 200 hPa cEOFs are also similar (not shown).
@@ -639,12 +640,12 @@ Therefore cEOFs were computed using data from both levels at the same time.
 In that sense each cEOF has a spatial component that depends on longitude, latitude and level, and a temporal component that depends only on time.
 
 As mentioned before, the choice of phases is arbitrary and equally valid. 
-But to make the interpretation easier, we chose the phase of each cEOF so that the either the 0º cEOF or the 90º cEOF is aligned with meaningful variables in our analysis.
+But to make the interpretation easier, we chose the phase of each cEOF so that either the 0º cEOF or the 90º cEOF is aligned with meaningful variables in our analysis.
 This procedure does not create spurious correlations, it only takes an existing relationship and aligns it with a specific phase.
 
-Preliminary analysis showed that the first cEOF was closely related to the zonal wave 1 of Total Column Ozone and the second cEOF was closely related to ENSO.
-Therefore, we chose the phase of cEOF1 so that the time series corresponding to the 0º cEOF1 has the maximum correlation with the zonal wave 1 of Total Column Ozone between `r knitr::combine_words(LatLabel(o3wave_lats))`.
-Similarly, we chose the phase of cEOF2 so that the coefficient of determination between the Oceanic Niño Index [@bamston1997] and the 0º cEOF2 is minimised, which also nearly maximises the correlation with the 90º cEOF2.
+Preliminary analysis showed that the first cEOF was closely related to the zonal wave 1 of TOC and the second cEOF was closely related to ENSO.
+Therefore, we chose the phase of cEOF1 so that the time series corresponding to the 0º cEOF1 has the maximum correlation with the zonal wave 1 of TOC between `r knitr::combine_words(LatLabel(o3wave_lats))`.
+Similarly, we chose the phase of cEOF2 so that the coefficient of determination between the ONI and the 0º cEOF2 is minimised, which also nearly maximises the correlation with the 90º cEOF2.
 
 ```{r rotate_eofs}
 rotate <- function(z, angle = 0) {
@@ -1770,7 +1771,7 @@ Figure\ \@ref(fig:sst-psi-2).d1 and d2 show that the 0º cEOF2 is not associated
 As a result, the correlation between the 0º cEOF2 and ENSO is not significant  (`r enso_cor[cEOF == "cEOF2" & part == "Real"]$text`).
 Meanwhile, Rows a and c in Fig.\ \@ref(fig:sst-psi-2) show that the intermediate phases are still associated with significant SST regressed anomalies over the Pacific Ocean, but at slightly different locations.
 The 135º phase is associated with SST anomalies in the central Pacific (Fig.\ \@ref(fig:sst-psi-2)a.1), while the 45º phase is associated with SST anomalies that correspond roughly to the Central Pacific and Eastern Pacific "flavours" of ENSO, respectively (Fig.\ \@ref(fig:sst-psi-2)c.1)  [@kao2009].
-Both phases are also associated to wave trains generated in the region surrounding Australia and propagates toward the extra-tropics, although less intense than the ones assocaited with the 90º phase.
+Both phases are also associated to wave trains generated in the region surrounding Australia and propagates toward the extra-tropics, although less intense than the ones associated with the 90º phase.
 
 (ref:enso-phase-cap) SON ONI values plotted against cEOF2 phase for the 1979 -- 2019 period. Years with magnitude of cEOF2 greater (smaller) than the 50th percentile are shown as orange diamonds (green circles). Black line is the fit ONI \~ sin(phase) computed by weighted OLS using the magnitude of the cEOF2 as weights.
 
@@ -1843,7 +1844,7 @@ If those years are removed, the correlation becomes non-significant (`r cor_enso
 Furthermore, even when using all years, the Spearman correlation --which is robust to outliers-- is also non-significant (`r signif(cor_enso_spearman$estimate, 2)`, p-value `r report_p(cor_enso_spearman$p.value)`). 
 Therefore, although the location of tropical SST anomalies seem to have an effect in defining the phase of the cEOF2, the relationship between the magnitude of cEOF2 and ONI remains uncertain and might be only evident in very strong ENSO events, that are scarce in the historical observational record.
 
-We believe that the wave train represented by cEOF2 can be both part of the internal variability of the extratropical atmosphere and forced by tropical SSTs.
+We conclude that the wave train represented by cEOF2 can be both part of the internal variability of the extratropical atmosphere and forced by tropical SSTs.
 In the former case, the wave train has little phase preference.
 However, when cEOF2 is excited by tropical SST variability, it tends to remain locked to the 90º phase.
 This explains the relative over-abundance of years with cEOF2 near positive and negative 90º phase in Figure\ \@ref(fig:phase-histogram).
@@ -1900,7 +1901,7 @@ The variance explained by cEOF1 for precipitation anomalies and temperature anom
 
 This lack of strong relationship between the cEOF1 and SST, temperature and precipitation might be surprising considering the correlation between the cEOF1 and the SAM (Fig. \@ref(fig:sam-eof-vertical) column 1) and the correlation between SAM and Central Pacific SST, temperature east and west of the Antarctic Peninsula, and with precipitation in western Australia [@fogt2020].
 There are two main reasons for this.
-First, the correlation between cEOF1 and the SAM in the troposphere is modest, with less than 50% of shared variance (Fig. \@ref(fig:sam-eof-vertical) column 1), so one need not expect these indices to be equivalent.
+First, the correlation between cEOF1 and the SAM in the troposphere is modest, with less than 50% of shared variance (Fig. \@ref(fig:sam-eof-vertical) column 1), so these indices are not expected to be equivalent.
 Second, @campitelli2022 showed that the strong relationship between the SAM and Pacific SSTs and temperature anomalies around the Antarctic Peninsula is mainly due to the asymmetric part of the SAM.
 Meanwhile, the cEOF1 is significantly correlated only with the symmetric part of the SAM (Fig. \@ref(fig:sam-eof-vertical) column 1), which by itself is not significantly correlated with surface temperatures in that area.
 
@@ -1908,8 +1909,6 @@ On the other hand, the cEOF2  explained variance is greater than 50% in some reg
 For 2-metre temperature, there are high values in the tropical Pacific and the SPCZ, as well as the region following an arc between New Zealand and the South Atlantic, with higher values in the Southern Ocean.
 Over the continents, there are moderate values of about 30% variance explained  in southern Australia, Southern South America and the Antarctic Peninsula.
 For precipitation, there are high values over the tropics. At higher latitudes, moderate values are observed over eastern Australia and some regions of southern South America.
-
-Since the cEOF1 has a relatively weak signal in the surface variables explored here, we will only focus on the cEOF2 influence.
 
 ```{r add_continents}
 continents <- list(africa  = list(lon = c(0, 60),
@@ -2033,6 +2032,7 @@ box_australia <- data.frame(cEOF = "cEOF2",
 ```
 
 
+Since the cEOF1 has a relatively weak signal in the surface variables explored here, we will only focus on the cEOF2 influence.
 Figure\ \@ref(fig:pp-temp-2) shows regression maps of 2-metre temperature (column 1) and precipitation (column 2) anomalies upon different phases of standardised cEOF2.
 
 (ref:pp-temp-cap) Regression of SON mean 2-meter temperature (K, shaded) and 850 hPa geopotential height (m, contours) (column 1), and precipitation (correlation, column 2) upon different phases of cEOF2. For the 1979 -- 2019. Areas marked with dots have p-values smaller than 0.01 adjusted for False Detection Rate.
@@ -2042,10 +2042,8 @@ plot_pp(pp_regr[cEOF == "cEOF2"], t2m_regr[cEOF == "cEOF2"], hgt850_regr[cEOF ==
 ```
 
 Temperature anomalies associated with the 90º cEOF (Fig.\ \@ref(fig:pp-temp-2).b1) show positive values in the tropical Pacific, consistent with SSTs anomalies associated with the same phase (Fig.\ \@ref(fig:sst-psi-2).b1).
-
 At higher latitudes there is a wave-like pattern of positive and negative values that coincide with the nodes of the 850 hPa geopotential height regression patterns.
 This is consistent with temperature anomalies produced by meridional advection of temperature by the meridional winds arising from geostrophic balance.
-
 Over the continents, the 90º cEOF2 (Fig.\ \@ref(fig:pp-temp-2)b.1) is associated with positive regressed temperature anomalies in southern Australia and negative regressed anomalies in southern South America and the Antarctic Peninsula, that are a result of the wave train described before.
 
 The temperatures anomalies associated with the 0º cEOF2 (Fig.\ \@ref(fig:pp-temp-2)d.1) are less extensive and restricted to mid and high latitudes.   
@@ -2055,13 +2053,13 @@ Tropical precipitation anomalies associated with the 90º cEOF2 are strong, with
 This field is consistent with the SST regression map (Fig.\ \@ref(fig:pp-temp-2)b.1) as the positive SST anomalies enhance tropical convection and the negative SST anomalies inhibits it. 
 
 In the extra-tropics, the positive 90º cEOF2 is related to drier conditions over eastern Australia and the surrounding ocean, that it is similar signal as the one associated with ENSO [@cai2011].
-However, the 90º cEOF2 is not the direction most correlated with precipitation in that area. 
+However, the 90º cEOF2 is not the phase most correlated with precipitation in that area. 
 The 135º phase (an intermediate between positive 90º and 180º cEOF2) component is associated with stronger and more extensive temporal correlations  with precipitation over Australia and New Zealand. 
 The influence of cEOF2 in Australian precipitation could be more related to the direct impacts of SST anomalies in the surrounded oceans rather than on the interconnection pattern represented by the cEOF2.
 
-Over South America, the 90º cEOF2 has positive correlations with precipitation in South Eastern South America (SESA) and central Chile, and negative correlations in eastern Brazil. This correlation field  matches the springtime precipitation signature of ENSO [e.g. @cai2020a] and it is also similar to the precipitation anomalies associated with the A-SAM [@campitelli2022].
-
-This result is not surprising considering the close relationship of the 90º cEOF2 with both ONI and A-SAM index, which was shown previously.  
+Over South America, the 90º cEOF2 has positive correlations with precipitation in South Eastern South America (SESA) and central Chile, and negative correlations in eastern Brazil. 
+This correlation field  matches the springtime precipitation signature of ENSO [e.g. @cai2020a] and it is also similar to the precipitation anomalies associated with the A-SAM [@campitelli2022].
+This result is not surprising considering the close relationship of the 90º cEOF2 with both ONI and A-SAM index, which was shown previously.
 Furthermore, it consolidates the identification of the cEOF2 with the PSA pattern. Resembling the relationship between ONI and the phase of cEOF2 (Fig.\  \@ref(fig:enso-phase)), there is a cEOF2 phase dependence of the precipitation anomalies in SESA (not shown). 
 
 The correlation coefficients between precipitation anomalies and the 0º cEOF2 (Fig.\ \@ref(fig:pp-temp-2)d.2) are weaker than for 90º cEOF2.
@@ -2070,15 +2068,14 @@ There is a residual positive correlation in the equatorial eastern Pacific and s
 # Discussion and conclusions {#discussion}
 
 In this study we assessed extratropical Southern Hemisphere zonally asymmetric circulation in austral spring. 
-For this purpose, were derived two complex indices using Complex Empirical Orthogonal Functions and used to characterise both amplitude and phase of planetary waves.
+For this purpose, we derived two complex indices using Complex Empirical Orthogonal Functions and used to characterise both amplitude and phase of planetary waves.
 
 The cEOF1 represents the variability of the zonal wave 1 in the stratosphere and is closely related to stratospheric variability such as anomalies in Total Column Ozone.
 Otherwise, this complex EOF is not related with SST variability and continental precipitation in the Southern Hemisphere. 
 On the other hand, the cEOF2 represents a wave-3 pattern with maximum magnitude in the Pacific sector, that is an alternative representation of the PSA1 and PSA2 patterns (Mo and Paegle 2001).
 The 90º cEOF2 can be identified with the PSA1 and the 0º cEOF2 with the PSA2. 
-
-While the cEOF2 variability is related to surface impacts, the cEOF1 influence is almost negligible.
-For instance, precipitation anomalies in South America associated with the 90º cEOF2 show a clear ENSO-like impact, with positive anomalies in South-Eastern South America, negative anomalies in Southern Brazil and positive anomalies in central Chile for positive 90º cEOF2 phase. 
+While the cEOF2 variability is related to surface impacts, the cEOF1 surface influence is almost negligible.
+For instance, precipitation anomalies in South America associated with the 90º cEOF2 show a clear ENSO-like impact, with positive anomalies in South-eastern South America, negative anomalies in Southern Brazil and positive anomalies in central Chile for positive 90º cEOF2 phase. 
 
 Variability patterns that arise from cEOF methodology describe the zonally asymmetric springtime extratropical SH circulation, reproducing previous features such as the variability related to PSAs or A-SAM.
 
@@ -2129,10 +2126,10 @@ partial_cor_enso <- ceof[, eof[[1]]$left, by = .(season)] %>%
 ```
 
 Most studies on the relationship between ENSO and SAM rely on correlations between an ENSO index and the SAM index [e.g. @lheureux2006, @cai2011a] or between the SAM index and other variables associated with tropical convection, such as OLR or tropical SSTS [e.g. @carvalho2005]. 
-@campitelli2022 showed that the correlation between ENSO and SAM is almost completely explained by the asymmetric component of the SAM. 
+However, @campitelli2022 showed that the correlation between ENSO and SAM is almost completely explained by the asymmetric component of the SAM. 
 In this work we show that the asymmetric component of the SAM can be identified with the PSA1. 
-Therefore, the correlation between ENSO and SAM is predominantly the correlation between ENSO and PSA1 (the partial correlation between the SAM index and the ONI, controlling for the 90º cEOF2 is non significant at `r partial_cor_enso[term == "sam", scales::number(partial_correlation, accuracy = 0.01)]`, p-value = `r partial_cor_enso[term == "sam", scales::pvalue(p.value, accuracy = 0.01)]`).
-This sheds new light into the previous literature, as one cannot assume that a high correlation between ENSO and SAM indexes indicates a relationship between ENSO and zonally symmetric variability. 
+Therefore, the correlation between ENSO and SAM is predominantly the correlation between ENSO and PSA1.
+This sheds new light into the previous literature, as it cannot be assumed that a high correlation between ENSO and SAM indexes indicates a relationship between ENSO and zonally symmetric variability. 
 
 Further investigation is necessary to determine the connection between the symmetric component of the SAM and the PSA. 
 It is possible that the PSA may force a zonally symmetric response (or vice versa) via wave-zonal mean flow interactions, or that this correlation is simply a statistical artefact resulting from the EOF methodology used to define the SAM and the fact that the spatial structure of the PSA projects onto the spatial structure of the symmetric SAM. 
@@ -2156,7 +2153,7 @@ Further work should extend this analysis to other seasons and further study the 
 
 ## Funding {.unnumbered}
 
-The research was supported by UBACyT20020170100428BA and the CLIMAX Project funded by Belmont Forum/ANR-15-JCL/-0002-01. Elio Campitelli was supported by a PhD grant from CONICET, Argentina.
+The research was supported by UBACyT20020170100428BA, Consejo Nacional de Investigaciones Científicas y Técnicas (CONICET) PIP 11220200102038CO, PICT-2020-SERIEA-I-INVI-00540, and the CLIMAX Project funded by Belmont Forum/ANR-15-JCL/-0002-01. Elio Campitelli was supported by a PhD grant from CONICET, Argentina.
 
 ## Conflict of interest/Competing interests  {.unnumbered}
 
@@ -2201,7 +2198,8 @@ A version-controlled repository of the code used to create this analysis, includ
 
 ##  Authors' contributions {.unnumbered}
 
-E.C. and L.D. wrote the main manuscript text. E.C. prepared the figures. All authors reviewed the manuscript.
+E.C. made the data curation, formal analysis and prepared all the figures. E.C. and L.D. wrote the main manuscript text.
+All authors reviewed the manuscript.
 
 \appendix
 

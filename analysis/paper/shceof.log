@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.12.2)  4 JAN 2023 12:59
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.12.2)  10 JAN 2023 14:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -531,57 +531,61 @@ Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibsep=\skip70
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count321
+) (/home/elio/.TinyTeX/texmf-dist/tex/latex/vruler/vruler.sty 2.3 <24/10/96>
+    VRULER version 2.3 Octorber 1996 By Z Jiang
+    University of New England, Australia
+    Email: zhuhan@neumann.une.edu.au
 ))
-\c@theorem=\count322
-\c@example=\count323
-\c@remark=\count324
-\c@definition=\count325
+\c@theorem=\count332
+\c@example=\count333
+\c@remark=\count334
+\c@definition=\count335
 (/home/elio/.TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
 Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
 \LTleft=\skip71
 \LTright=\skip72
 \LTpre=\skip73
 \LTpost=\skip74
-\LTchunksize=\count326
-\LTcapwidth=\dimen305
-\LT@head=\box70
-\LT@firsthead=\box71
-\LT@foot=\box72
-\LT@lastfoot=\box73
-\LT@gbox=\box74
-\LT@cols=\count327
-\LT@rows=\count328
-\c@LT@tables=\count329
-\c@LT@chunks=\count330
-\LT@p@ftn=\toks35
+\LTchunksize=\count336
+\LTcapwidth=\dimen310
+\LT@head=\box76
+\LT@firsthead=\box77
+\LT@foot=\box78
+\LT@lastfoot=\box79
+\LT@gbox=\box80
+\LT@cols=\count337
+\LT@rows=\count338
+\c@LT@tables=\count339
+\c@LT@chunks=\count340
+\LT@p@ftn=\toks52
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/tools/array.sty
 Package: array 2022/09/04 v2.5g Tabular extension package (FMi)
-\col@sep=\dimen306
-\ar@mcellbox=\box75
-\extrarowheight=\dimen307
-\NC@list=\toks36
+\col@sep=\dimen311
+\ar@mcellbox=\box81
+\extrarowheight=\dimen312
+\NC@list=\toks53
 \extratabsurround=\skip75
 \backup@length=\skip76
-\ar@cellbox=\box76
+\ar@cellbox=\box82
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count331
-\calc@Bcount=\count332
-\calc@Adimen=\dimen308
-\calc@Bdimen=\dimen309
+\calc@Acount=\count341
+\calc@Bcount=\count342
+\calc@Adimen=\dimen313
+\calc@Bdimen=\dimen314
 \calc@Askip=\skip77
 \calc@Bskip=\skip78
 LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count333
+\calc@Ccount=\count343
 \calc@Cskip=\skip79
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty
 Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count334
+\etb@tempcnta=\count344
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/mdwtools/footnote.sty
 Package: footnote 1997/01/28 1.13 Save footnotes around boxes
-\fn@notes=\box77
-\fn@width=\dimen310
+\fn@notes=\box83
+\fn@width=\dimen315
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/gensymb/gensymb.sty
 Package: gensymb 2022/10/17 v1.0.2 (KJH)
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/subfig/subfig.sty
@@ -590,14 +594,14 @@ Package: subfig 2005/06/28 ver: 1.3 subfig package
 Package: caption 2022/03/01 v3.6b Customizing captions (AR)
 (/home/elio/.TinyTeX/texmf-dist/tex/latex/caption/caption3.sty
 Package: caption3 2022/03/17 v2.3b caption3 kernel (AR)
-\caption@tempdima=\dimen311
-\captionmargin=\dimen312
-\caption@leftmargin=\dimen313
-\caption@rightmargin=\dimen314
-\caption@width=\dimen315
-\caption@indent=\dimen316
-\caption@parindent=\dimen317
-\caption@hangindent=\dimen318
+\caption@tempdima=\dimen316
+\captionmargin=\dimen317
+\caption@leftmargin=\dimen318
+\caption@rightmargin=\dimen319
+\caption@width=\dimen320
+\caption@indent=\dimen321
+\caption@parindent=\dimen322
+\caption@hangindent=\dimen323
 Package caption Info: Unknown document class (or package),
 (caption)             standard defaults will be used.
 Package caption Info: \@makecaption = \long macro:#1#2->\ifx \FigName \@captype \vskip \abovecaptionskip \@figurecaption {#1}{#2} \else \@tablecaption {#1}{#2} \vskip \belowcaptionskip \fi  on input line 1176.
@@ -607,8 +611,8 @@ Package caption Warning: Unknown document class (or package),
 (caption)                standard defaults will be used.
 See the caption package documentation for explanation.
 
-\c@caption@flags=\count335
-\c@continuedfloat=\count336
+\c@caption@flags=\count345
+\c@continuedfloat=\count346
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
@@ -619,33 +623,33 @@ Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 Package caption Info: rotating package is loaded.
 Package caption Info: wrapfig package is loaded.
 )
-\c@KVtest=\count337
+\c@KVtest=\count347
 \sf@farskip=\skip80
-\sf@captopadj=\dimen319
+\sf@captopadj=\dimen324
 \sf@capskip=\skip81
 \sf@nearskip=\skip82
-\c@subfigure=\count338
-\c@subfigure@save=\count339
-\c@lofdepth=\count340
-\c@subtable=\count341
-\c@subtable@save=\count342
-\c@lotdepth=\count343
+\c@subfigure=\count348
+\c@subfigure@save=\count349
+\c@lofdepth=\count350
+\c@subtable=\count351
+\c@subtable@save=\count352
+\c@lotdepth=\count353
 \sf@top=\skip83
 \sf@bottom=\skip84
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/showlabels/showlabels.sty
 Package: showlabels 2022/07/18 v1.9.2
 Package: `showlabels' v1.9.2 <2022/07/18>
 with amsmath equation tags
-\SL@labelposition=\count344
+\SL@labelposition=\count354
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/chngcntr/chngcntr.sty
 Package: chngcntr 2018/04/09 v1.1a change counter resetting
 Package chngcntr Info: \counterwithout already defined.
 (chngcntr)             Quitting chngcntr on input line 21.
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/colortbl/colortbl.sty
 Package: colortbl 2022/06/20 v1.0f Color table columns (DPC)
-\everycr=\toks37
+\everycr=\toks54
 \minrowclearance=\skip85
-\rownum=\count345
+\rownum=\count355
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape.sty
 Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
 (/home/elio/.TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
@@ -658,36 +662,36 @@ Package pdflscape Info: Auto-detected driver: dvipdfm (xetex) on input line 98.
 Package: tabu 2019/01/11 v2.9 - flexible LaTeX tabulars (FC+tabu-fixed)
 (/home/elio/.TinyTeX/texmf-dist/tex/latex/varwidth/varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
-\@vwid@box=\box78
-\sift@deathcycles=\count346
-\@vwid@loff=\dimen320
-\@vwid@roff=\dimen321
+\@vwid@box=\box84
+\sift@deathcycles=\count356
+\@vwid@loff=\dimen325
+\@vwid@roff=\dimen326
 )
-\c@taburow=\count347
-\tabu@nbcols=\count348
-\tabu@cnt=\count349
-\tabu@Xcol=\count350
-\tabu@alloc=\count351
-\tabu@nested=\count352
-\tabu@target=\dimen322
-\tabu@spreadtarget=\dimen323
-\tabu@naturalX=\dimen324
-\tabucolX=\dimen325
-\tabu@Xsum=\dimen326
-\extrarowdepth=\dimen327
-\abovetabulinesep=\dimen328
-\belowtabulinesep=\dimen329
-\tabustrutrule=\dimen330
-\tabu@thebody=\toks38
-\tabu@footnotes=\toks39
-\tabu@box=\box79
-\tabu@arstrutbox=\box80
-\tabu@hleads=\box81
-\tabu@vleads=\box82
+\c@taburow=\count357
+\tabu@nbcols=\count358
+\tabu@cnt=\count359
+\tabu@Xcol=\count360
+\tabu@alloc=\count361
+\tabu@nested=\count362
+\tabu@target=\dimen327
+\tabu@spreadtarget=\dimen328
+\tabu@naturalX=\dimen329
+\tabucolX=\dimen330
+\tabu@Xsum=\dimen331
+\extrarowdepth=\dimen332
+\abovetabulinesep=\dimen333
+\belowtabulinesep=\dimen334
+\tabustrutrule=\dimen335
+\tabu@thebody=\toks55
+\tabu@footnotes=\toks56
+\tabu@box=\box85
+\tabu@arstrutbox=\box86
+\tabu@hleads=\box87
+\tabu@vleads=\box88
 \tabu@cellskip=\skip86
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/threeparttable/threeparttable.sty
 Package: threeparttable 2003/06/13  v 3.0
-\@tempboxb=\box83
+\@tempboxb=\box89
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/threeparttablex/threeparttablex.sty
 Package: threeparttablex 2013/07/23 v0.3 by daleif
 (/home/elio/.TinyTeX/texmf-dist/tex/latex/environ/environ.sty
@@ -697,28 +701,28 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 ))
 \TPTL@width=\skip87
 ) (/home/elio/.TinyTeX/texmf-dist/tex/generic/ulem/ulem.sty
-\UL@box=\box84
-\UL@hyphenbox=\box85
+\UL@box=\box90
+\UL@hyphenbox=\box91
 \UL@skip=\skip88
-\UL@hook=\toks40
-\UL@height=\dimen331
-\UL@pe=\count353
-\UL@pixel=\dimen332
-\ULC@box=\box86
+\UL@hook=\toks57
+\UL@height=\dimen336
+\UL@pe=\count363
+\UL@pixel=\dimen337
+\ULC@box=\box92
 Package: ulem 2019/11/18
-\ULdepth=\dimen333
+\ULdepth=\dimen338
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/makecell/makecell.sty
 Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
-\rotheadsize=\dimen334
-\c@nlinenum=\count354
-\TeXr@lab=\toks41
+\rotheadsize=\dimen339
+\c@nlinenum=\count364
+\TeXr@lab=\toks58
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
 File: l3backend-xetex.def 2022-10-26 L3 backend support: XeTeX
-\g__graphics_track_int=\count355
-\l__pdf_internal_box=\box87
-\g__pdf_backend_object_int=\count356
-\g__pdf_backend_annotation_int=\count357
-\g__pdf_backend_link_int=\count358
+\g__graphics_track_int=\count365
+\l__pdf_internal_box=\box93
+\g__pdf_backend_object_int=\count366
+\g__pdf_backend_annotation_int=\count367
+\g__pdf_backend_link_int=\count368
 ) (./shceof.aux)
 \openout1 = `shceof.aux'.
 
@@ -747,7 +751,7 @@ LaTeX Font Info:    ... okay on input line 113.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 113.
 LaTeX Font Info:    ... okay on input line 113.
 \footinsA=\insert252
-\c@footnoteA=\count359
+\c@footnoteA=\count369
 LaTeX Font Info:    Redeclaring symbol font `AMSa' on input line 113.
 LaTeX Font Info:    Overwriting symbol font `AMSa' in version `normal'
 (Font)                  U/msa/m/n --> U/msa/m/n on input line 113.
@@ -788,7 +792,7 @@ LaTeX Font Info:    Overwriting symbol font `AMSa' in version `bold'
 * \@reversemargintrue
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\c@lstlisting=\count360
+\c@lstlisting=\count370
 Package hyperref Info: Link coloring ON on input line 113.
 (./shceof.out) (./shceof.out)
 \@outlinefile=\write3
@@ -861,8 +865,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [3]
-Underfull \hbox (badness 1629) in paragraph at lines 206--207
-[]\TU/lmr/m/n/10.03749 We restrict this paper to the September-October-November (SON)
+Underfull \hbox (badness 2302) in paragraph at lines 206--207
+[]\TU/lmr/m/n/10.03749 We restrict this work to the September-October-November (SON)
  []
 
 
@@ -877,8 +881,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [4]
-File: ../figures/eof-naive-1.pdf Graphic file (type pdf)
-<use ../figures/eof-naive-1.pdf>
+File: shceof_files/figure-latex/eof-naive-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/eof-naive-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -894,24 +898,24 @@ Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 [6]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 295.
+               Default added (so using `tbp') on input line 296.
 
-LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 298.
+LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 299.
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 298.
+(Font)              size <5> substituted on input line 299.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
-(Font)              size <5> substituted on input line 298.
+(Font)              size <5> substituted on input line 299.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 298.
+(Font)              size <5> substituted on input line 299.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 298.
+(Font)              size <5> substituted on input line 299.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -929,10 +933,10 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [8]
-File: ../figures/ceofs-1-1.pdf Graphic file (type pdf)
-<use ../figures/ceofs-1-1.pdf>
-File: ../figures/extended-series-1.pdf Graphic file (type pdf)
-<use ../figures/extended-series-1.pdf>
+File: shceof_files/figure-latex/ceofs-1-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/ceofs-1-1.pdf>
+File: shceof_files/figure-latex/extended-series-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/extended-series-1.pdf>
 
 Overfull \hbox (8.70885pt too wide) in paragraph at lines 371--371
 [][] 
@@ -951,10 +955,10 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [10]
-File: ../figures/eof1-regr-gh-1.pdf Graphic file (type pdf)
-<use ../figures/eof1-regr-gh-1.pdf>
-File: ../figures/eof2-regr-gh-1.pdf Graphic file (type pdf)
-<use ../figures/eof2-regr-gh-1.pdf>
+File: shceof_files/figure-latex/eof1-regr-gh-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/eof1-regr-gh-1.pdf>
+File: shceof_files/figure-latex/eof2-regr-gh-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/eof2-regr-gh-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -962,10 +966,10 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [11]
-File: ../figures/eof1-regr-t-1.pdf Graphic file (type pdf)
-<use ../figures/eof1-regr-t-1.pdf>
-File: ../figures/t-vertical-1.pdf Graphic file (type pdf)
-<use ../figures/t-vertical-1.pdf>
+File: shceof_files/figure-latex/eof1-regr-t-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/eof1-regr-t-1.pdf>
+File: shceof_files/figure-latex/t-vertical-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/t-vertical-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -973,6 +977,9 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [12]
+File: shceof_files/figure-latex/o3-regr-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/o3-regr-1.pdf>
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
@@ -985,8 +992,6 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [14]
-File: ../figures/o3-regr-1.pdf Graphic file (type pdf)
-<use ../figures/o3-regr-1.pdf>
 
 LaTeX Warning: No positions in optional float specifier.
                Default added (so using `tbp') on input line 497.
@@ -998,8 +1003,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [15]
-File: ../figures/phase-histogram-1.pdf Graphic file (type pdf)
-<use ../figures/phase-histogram-1.pdf>
+File: shceof_files/figure-latex/phase-histogram-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/phase-histogram-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1007,8 +1012,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [16]
-File: ../figures/sam-eof-vertical-1.pdf Graphic file (type pdf)
-<use ../figures/sam-eof-vertical-1.pdf>
+File: shceof_files/figure-latex/sam-eof-vertical-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/sam-eof-vertical-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1016,8 +1021,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [17]
-File: ../figures/sst-psi-2-1.pdf Graphic file (type pdf)
-<use ../figures/sst-psi-2-1.pdf>
+File: shceof_files/figure-latex/sst-psi-2-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/sst-psi-2-1.pdf>
 
 Overfull \hbox (8.70885pt too wide) in paragraph at lines 563--563
 [][] 
@@ -1030,8 +1035,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [18]
-File: ../figures/enso-phase-1.pdf Graphic file (type pdf)
-<use ../figures/enso-phase-1.pdf>
+File: shceof_files/figure-latex/enso-phase-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/enso-phase-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1045,8 +1050,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [20]
-File: ../figures/pp-t2m-r2-1.pdf Graphic file (type pdf)
-<use ../figures/pp-t2m-r2-1.pdf>
+File: shceof_files/figure-latex/pp-t2m-r2-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/pp-t2m-r2-1.pdf>
 
 Overfull \hbox (8.70885pt too wide) in paragraph at lines 623--624
  [][] 
@@ -1059,8 +1064,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [21]
-File: ../figures/pp-temp-2-1.pdf Graphic file (type pdf)
-<use ../figures/pp-temp-2-1.pdf>
+File: shceof_files/figure-latex/pp-temp-2-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/pp-temp-2-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1086,8 +1091,28 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [25]
-Underfull \hbox (badness 2735) in paragraph at lines 735--736
-\TU/lmr/m/n/10.03749 The research was supported by UBACyT20020170100428BA and the
+Underfull \hbox (badness 3128) in paragraph at lines 731--732
+\TU/lmr/m/n/10.03749 The research was supported by UBACyT20020170100428BA, Consejo
+ []
+
+
+Underfull \hbox (badness 4229) in paragraph at lines 731--732
+\TU/lmr/m/n/10.03749 Nacional de Investigaciones Científicas y Técnicas (CONICET) PIP
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 768--770
+[]\TU/lmr/m/n/10.03749 ERA5 data can be obtained via the Copernicus Climate
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 768--770
+\TU/lmr/m/n/10.03749 Data Store ([][]$[][][][][] [] [] [] [][][] [] [][][][][][][] [] [][][][][][][][][][] [] [][] [] [][][][][][] [] [] [] [][][][][][][][] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 770--772
+[][][][] [] [][][][] [] [][][] [] [][][][][][] [] [][][][][][][][] [] [][][][][][][][][][][][][] [] [][][] [] [][][] [] [][] [] [][][] [] [][][][] [] [][][][] []
  []
 
 
@@ -1097,27 +1122,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [26]
-Underfull \hbox (badness 10000) in paragraph at lines 772--774
-[]\TU/lmr/m/n/10.03749 ERA5 data can be obtained via the Copernicus Climate
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 772--774
-\TU/lmr/m/n/10.03749 Data Store ([][]$[][][][][] [] [] [] [][][] [] [][][][][][][] [] [][][][][][][][][][] [] [][] [] [][][][][][] [] [] [] [][][][][][][][] []
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 774--776
-[][][][] [] [][][][] [] [][][] [] [][][][][][] [] [][][][][][][][] [] [][][][][][][][][][][][][] [] [][][] [] [][][] [] [][] [] [][][] [] [][][][] [] [][][][] []
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 778--780
 \TU/lmr/m/n/10.03749 Center: [][]$[][][][][] [] [] [] [][][] [] [][][] [] [][][][] [] [][][][] [] [][][] [] [][][][][][][][] [] [][][][][][][][] [] [][][][][][][][][][] []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 780--782
+Underfull \hbox (badness 10000) in paragraph at lines 776--778
 \TU/lmr/m/n/10.03749 Center: [][]$[][][][][] [] [] [] [][][] [] [][][] [] [][][][] [] [][][][] [] [][][] [] [][][][][][][][] [] [][][][][][][][] [] [][][][][][][][][][] []
  []
 
@@ -1128,17 +1138,17 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [27]
-File: ../figures/sst-psi-1-1.pdf Graphic file (type pdf)
-<use ../figures/sst-psi-1-1.pdf>
+File: shceof_files/figure-latex/sst-psi-1-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/sst-psi-1-1.pdf>
 
-Overfull \hbox (8.70885pt too wide) in paragraph at lines 809--809
+Overfull \hbox (8.70885pt too wide) in paragraph at lines 806--806
 [][] 
  []
 
-File: ../figures/pp-temp-1-1.pdf Graphic file (type pdf)
-<use ../figures/pp-temp-1-1.pdf>
+File: shceof_files/figure-latex/pp-temp-1-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/pp-temp-1-1.pdf>
 
-Overfull \hbox (9.7126pt too wide) in paragraph at lines 816--817
+Overfull \hbox (9.7126pt too wide) in paragraph at lines 813--814
  [][] 
  []
 
@@ -1238,12 +1248,12 @@ Package rerunfilecheck Info: File `shceof.out' has not changed.
 (rerunfilecheck)             Checksum: 90DEDD91F3042496F0CAE3767EF66A3A;3933.
  ) 
 Here is how much of TeX's memory you used:
- 17950 strings out of 477569
- 286913 string characters out of 5838941
- 647678 words of memory out of 5000000
- 38748 multiletter control sequences out of 15000+600000
+ 18094 strings out of 477569
+ 290486 string characters out of 5838941
+ 654665 words of memory out of 5000000
+ 38888 multiletter control sequences out of 15000+600000
  500672 words of font info for 166 fonts, out of 8000000 for 9000
  46 hyphenation exceptions out of 8191
- 87i,12n,90p,709b,573s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 87i,13n,90p,709b,573s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on shceof.pdf (34 pages).
