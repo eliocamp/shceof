@@ -1,11 +1,11 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.1.10)  10 JAN 2023 16:07
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2023.2.24)  13 MAR 2023 18:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **shceof.tex
 (./shceof.tex
 LaTeX2e <2022-11-01> patch level 1
-L3 programming layer <2022-12-17> (./sn-jnl.cls
+L3 programming layer <2023-02-07> (./sn-jnl.cls
 Document Class: sn-jnl 2019/11/18 v0.1: An authoring template for Springer Journal articles
 (/home/elio/.TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
@@ -400,7 +400,7 @@ Package: listings 2020/03/24 1.8d (Carsten Heinz)
 \tempdime=\dimen297
 \tabhtdime=\dimen298
 (/home/elio/.TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
-Package: hyperref 2022-11-13 v7.00u Hypertext links for LaTeX
+Package: hyperref 2023-02-07 v7.00v Hypertext links for LaTeX
 (/home/elio/.TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
 Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
 ) (/home/elio/.TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
@@ -438,7 +438,7 @@ Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 \Hy@linkcounter=\count307
 \Hy@pagecounter=\count308
 (/home/elio/.TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2022-11-13 v7.00u Hyperref: PDFDocEncoding definition (HO)
+File: pd1enc.def 2023-02-07 v7.00v Hyperref: PDFDocEncoding definition (HO)
 ) (/home/elio/.TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 ) (/home/elio/.TinyTeX/texmf-dist/tex/generic/etexcmds/etexcmds.sty
@@ -446,21 +446,21 @@ Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
 )
 \Hy@SavedSpaceFactor=\count309
 (/home/elio/.TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def
-File: puenc.def 2022-11-13 v7.00u Hyperref: PDF Unicode definition (HO)
+File: puenc.def 2023-02-07 v7.00v Hyperref: PDF Unicode definition (HO)
 )
-Package hyperref Info: Hyper figures OFF on input line 4162.
-Package hyperref Info: Link nesting OFF on input line 4167.
-Package hyperref Info: Hyper index ON on input line 4170.
-Package hyperref Info: Plain pages OFF on input line 4177.
-Package hyperref Info: Backreferencing OFF on input line 4182.
+Package hyperref Info: Hyper figures OFF on input line 4177.
+Package hyperref Info: Link nesting OFF on input line 4182.
+Package hyperref Info: Hyper index ON on input line 4185.
+Package hyperref Info: Plain pages OFF on input line 4192.
+Package hyperref Info: Backreferencing OFF on input line 4197.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4410.
+Package hyperref Info: Bookmarks ON on input line 4425.
 \c@Hy@tempcnt=\count310
 (/home/elio/.TinyTeX/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
-LaTeX Info: Redefining \url on input line 4748.
+LaTeX Info: Redefining \url on input line 4763.
 \XeTeXLinkMargin=\dimen300
 (/home/elio/.TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
@@ -470,13 +470,13 @@ Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
 \Fld@menulength=\count311
 \Field@Width=\dimen301
 \Fld@charsize=\dimen302
-Package hyperref Info: Hyper figures OFF on input line 6027.
-Package hyperref Info: Link nesting OFF on input line 6032.
-Package hyperref Info: Hyper index ON on input line 6035.
-Package hyperref Info: backreferencing OFF on input line 6042.
-Package hyperref Info: Link coloring OFF on input line 6047.
-Package hyperref Info: Link coloring with OCG OFF on input line 6052.
-Package hyperref Info: PDF/A mode OFF on input line 6057.
+Package hyperref Info: Hyper figures OFF on input line 6042.
+Package hyperref Info: Link nesting OFF on input line 6047.
+Package hyperref Info: Hyper index ON on input line 6050.
+Package hyperref Info: backreferencing OFF on input line 6057.
+Package hyperref Info: Link coloring OFF on input line 6062.
+Package hyperref Info: Link coloring with OCG OFF on input line 6067.
+Package hyperref Info: PDF/A mode OFF on input line 6072.
 (/home/elio/.TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
@@ -487,7 +487,7 @@ package with kernel methods
 )
 Package hyperref Info: Driver (autodetected): hxetex.
 (/home/elio/.TinyTeX/texmf-dist/tex/latex/hyperref/hxetex.def
-File: hxetex.def 2022-11-13 v7.00u Hyperref driver for XeTeX
+File: hxetex.def 2023-02-07 v7.00v Hyperref driver for XeTeX
 (/home/elio/.TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty
 Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO)
 )
@@ -717,7 +717,7 @@ Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
 \c@nlinenum=\count364
 \TeXr@lab=\toks58
 ) (/home/elio/.TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
-File: l3backend-xetex.def 2022-10-26 L3 backend support: XeTeX
+File: l3backend-xetex.def 2023-01-16 L3 backend support: XeTeX
 \g__graphics_track_int=\count365
 \l__pdf_internal_box=\box93
 \g__pdf_backend_object_int=\count366
@@ -865,13 +865,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [3]
-Underfull \hbox (badness 2302) in paragraph at lines 206--207
+Underfull \hbox (badness 2302) in paragraph at lines 207--208
 []\TU/lmr/m/n/10.03749 We restrict this work to the September-October-November (SON)
- []
-
-
-Underfull \hbox (badness 1297) in paragraph at lines 206--207
-\TU/lmr/m/n/10.03749 trimester because during this season both the tropical teleconnections
  []
 
 
@@ -898,24 +893,24 @@ Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 [6]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 296.
+               Default added (so using `tbp') on input line 299.
 
-LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 299.
+LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 302.
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 299.
+(Font)              size <5> substituted on input line 302.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
-(Font)              size <5> substituted on input line 299.
+(Font)              size <5> substituted on input line 302.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 299.
+(Font)              size <5> substituted on input line 302.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 299.
+(Font)              size <5> substituted on input line 302.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -924,9 +919,6 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [7]
-Missing character: There is no º ("BA) in font cmr7!
-Missing character: There is no º ("BA) in font cmr7!
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
@@ -938,7 +930,7 @@ File: shceof_files/figure-latex/ceofs-1-1.pdf Graphic file (type pdf)
 File: shceof_files/figure-latex/extended-series-1.pdf Graphic file (type pdf)
 <use shceof_files/figure-latex/extended-series-1.pdf>
 
-Overfull \hbox (8.70885pt too wide) in paragraph at lines 371--371
+Overfull \hbox (8.70885pt too wide) in paragraph at lines 377--377
 [][] 
  []
 
@@ -966,19 +958,16 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [11]
-File: shceof_files/figure-latex/eof1-regr-t-1.pdf Graphic file (type pdf)
-<use shceof_files/figure-latex/eof1-regr-t-1.pdf>
-File: shceof_files/figure-latex/t-vertical-1.pdf Graphic file (type pdf)
-<use shceof_files/figure-latex/t-vertical-1.pdf>
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [12]
-File: shceof_files/figure-latex/o3-regr-1.pdf Graphic file (type pdf)
-<use shceof_files/figure-latex/o3-regr-1.pdf>
+File: shceof_files/figure-latex/eof1-regr-t-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/eof1-regr-t-1.pdf>
+File: shceof_files/figure-latex/t-vertical-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/t-vertical-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -992,9 +981,11 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [14]
+File: shceof_files/figure-latex/o3-regr-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/o3-regr-1.pdf>
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 497.
+               Default added (so using `tbp') on input line 504.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1024,7 +1015,7 @@ Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 File: shceof_files/figure-latex/sst-psi-2-1.pdf Graphic file (type pdf)
 <use shceof_files/figure-latex/sst-psi-2-1.pdf>
 
-Overfull \hbox (8.70885pt too wide) in paragraph at lines 563--563
+Overfull \hbox (8.70885pt too wide) in paragraph at lines 570--570
 [][] 
  []
 
@@ -1035,15 +1026,15 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [18]
-File: shceof_files/figure-latex/enso-phase-1.pdf Graphic file (type pdf)
-<use shceof_files/figure-latex/enso-phase-1.pdf>
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [19]
+File: shceof_files/figure-latex/enso-phase-1.pdf Graphic file (type pdf)
+<use shceof_files/figure-latex/enso-phase-1.pdf>
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
@@ -1053,7 +1044,7 @@ Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 File: shceof_files/figure-latex/pp-t2m-r2-1.pdf Graphic file (type pdf)
 <use shceof_files/figure-latex/pp-t2m-r2-1.pdf>
 
-Overfull \hbox (8.70885pt too wide) in paragraph at lines 623--624
+Overfull \hbox (8.70885pt too wide) in paragraph at lines 630--631
  [][] 
  []
 
@@ -1091,28 +1082,13 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [25]
-Underfull \hbox (badness 3128) in paragraph at lines 731--732
+Underfull \hbox (badness 3128) in paragraph at lines 739--740
 \TU/lmr/m/n/10.03749 The research was supported by UBACyT20020170100428BA, Consejo
  []
 
 
-Underfull \hbox (badness 4229) in paragraph at lines 731--732
+Underfull \hbox (badness 4229) in paragraph at lines 739--740
 \TU/lmr/m/n/10.03749 Nacional de Investigaciones Científicas y Técnicas (CONICET) PIP
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 768--770
-[]\TU/lmr/m/n/10.03749 ERA5 data can be obtained via the Copernicus Climate
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 768--770
-\TU/lmr/m/n/10.03749 Data Store ([][]$[][][][][] [] [] [] [][][] [] [][][][][][][] [] [][][][][][][][][][] [] [][] [] [][][][][][] [] [] [] [][][][][][][][] []
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 770--772
-[][][][] [] [][][][] [] [][][] [] [][][][][][] [] [][][][][][][][] [] [][][][][][][][][][][][][] [] [][][] [] [][][] [] [][] [] [][][] [] [][][][] [] [][][][] []
  []
 
 
@@ -1122,12 +1098,27 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [26]
-Underfull \hbox (badness 10000) in paragraph at lines 774--776
-\TU/lmr/m/n/10.03749 Center: [][]$[][][][][] [] [] [] [][][] [] [][][] [] [][][][] [] [][][][] [] [][][] [] [][][][][][][][] [] [][][][][][][][] [] [][][][][][][][][][] []
+Underfull \hbox (badness 10000) in paragraph at lines 776--778
+[]\TU/lmr/m/n/10.03749 ERA5 data can be obtained via the Copernicus Climate
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 776--778
+\TU/lmr/m/n/10.03749 Data Store ([][]$[][][][][] [] [] [] [][][] [] [][][][][][][] [] [][][][][][][][][][] [] [][] [] [][][][][][] [] [] [] [][][][][][][][] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 778--780
+[][][][] [] [][][][] [] [][][] [] [][][][][][] [] [][][][][][][][] [] [][][][][][][][][][][][][] [] [][][] [] [][][] [] [][] [] [][][] [] [][][][] [] [][][][] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 782--784
+\TU/lmr/m/n/10.03749 Center: [][]$[][][][][] [] [] [] [][][] [] [][][] [] [][][][] [] [][][][] [] [][][] [] [][][][][][][][] [] [][][][][][][][] [] [][][][][][][][][][] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--786
 \TU/lmr/m/n/10.03749 Center: [][]$[][][][][] [] [] [] [][][] [] [][][] [] [][][][] [] [][][][] [] [][][] [] [][][][][][][][] [] [][][][][][][][] [] [][][][][][][][][][] []
  []
 
@@ -1138,17 +1129,23 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [27]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \vbox (1.57643pt too high) has occurred while \output is active []
+
+[28]
 File: shceof_files/figure-latex/sst-psi-1-1.pdf Graphic file (type pdf)
 <use shceof_files/figure-latex/sst-psi-1-1.pdf>
 
-Overfull \hbox (8.70885pt too wide) in paragraph at lines 806--806
+Overfull \hbox (8.70885pt too wide) in paragraph at lines 814--814
 [][] 
  []
 
 File: shceof_files/figure-latex/pp-temp-1-1.pdf Graphic file (type pdf)
 <use shceof_files/figure-latex/pp-temp-1-1.pdf>
 
-Overfull \hbox (9.7126pt too wide) in paragraph at lines 813--814
+Overfull \hbox (9.7126pt too wide) in paragraph at lines 821--822
  [][] 
  []
 
@@ -1158,7 +1155,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
-[28]
+[29]
 Underfull \hbox (badness 6691) in paragraph at lines 44--49
 []\TU/lmr/m/n/10.03749 Bell B, Hersbach H, Berrisford P, et al (2020) ERA5 monthly
  []
@@ -1189,12 +1186,6 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
-[29]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-Overfull \vbox (1.57643pt too high) has occurred while \output is active []
-
 [30]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1202,7 +1193,13 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
 [31]
-Underfull \hbox (badness 1701) in paragraph at lines 218--223
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \vbox (1.57643pt too high) has occurred while \output is active []
+
+[32]
+Underfull \hbox (badness 1701) in paragraph at lines 230--235
 []\TU/lmr/m/n/10.03749 Lim EP, Hendon HH, Thompson DWJ (2018) Seasonal Evolution of
  []
 
@@ -1212,34 +1209,40 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
-[32]
-Underfull \hbox (badness 1389) in paragraph at lines 241--244
+[33]
+Underfull \hbox (badness 1389) in paragraph at lines 253--256
 []\TU/lmr/m/n/10.03749 Pezza AB, Rashid HA, Simmonds I (2012) Climate links and recent
  []
 
 
-Underfull \hbox (badness 3108) in paragraph at lines 289--292
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \vbox (1.57643pt too high) has occurred while \output is active []
+
+[34]
+Underfull \hbox (badness 3108) in paragraph at lines 301--304
 \TU/lmr/m/n/10.03749 Weather Review 113(1):3–21. [][]$[][][][][] [] [] [] [][][] [] [][][] [] [][] [] [][][][] [] [][][][][][][][][][][][][][][] []
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-Overfull \vbox (1.57643pt too high) has occurred while \output is active []
-
-[33]
-Underfull \hbox (badness 2600) in paragraph at lines 330--335
+Underfull \hbox (badness 2600) in paragraph at lines 342--347
 \TU/lmr/m/n/10.03749 2558. [][]$[][][][][] [] [] [] [][][] [] [][][] [] [][] [] [][][][] [] [][][][][][][][][][][][][][][] [] [][][][][][][][][] [] [][][][][][] [][] [] [] [] []
  []
 
-)
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Overfull \vbox (1.57643pt too high) has occurred while \output is active []
 
-[34] (./shceof.aux)
+[35])
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \vbox (1.57643pt too high) has occurred while \output is active []
+
+[36] (./shceof.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.28pt have occurred.
@@ -1248,12 +1251,12 @@ Package rerunfilecheck Info: File `shceof.out' has not changed.
 (rerunfilecheck)             Checksum: 90DEDD91F3042496F0CAE3767EF66A3A;3933.
  ) 
 Here is how much of TeX's memory you used:
- 18093 strings out of 478706
- 290473 string characters out of 5848653
- 1868979 words of memory out of 5000000
- 37750 multiletter control sequences out of 15000+600000
+ 18099 strings out of 478616
+ 290679 string characters out of 5846849
+ 1868007 words of memory out of 5000000
+ 37846 multiletter control sequences out of 15000+600000
  543700 words of font info for 170 fonts, out of 8000000 for 9000
  46 hyphenation exceptions out of 8191
- 87i,13n,90p,709b,573s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 87i,13n,90p,709b,593s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on shceof.pdf (34 pages).
+Output written on shceof.pdf (36 pages).

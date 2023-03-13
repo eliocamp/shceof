@@ -28,7 +28,7 @@ download_from_zenodo <- function(data) {
 }
 
 
-zenodo_record <- "https://zenodo.org/record/6612429/"
+zenodo_record <- "https://zenodo.org/record/7730671/"
 url_from_base <- function(file) {
   paste0(zenodo_record, "/files/", basename(file), "?download=1")
 }
@@ -127,7 +127,16 @@ ERA5_geopotential_all <- data_function(
   citation = citation_era5
 )
 
-
+#' @export
+#' @rdname data_locations
+ERA5_jet <- data_function(
+  name = "era5-jet",
+  file = data_path("raw", "era5-uwind.mon.mean.nc"),
+  source = download_cds(request_jet),
+  zenodo_url = url_from_base,
+  zenodo_md5 = "bba785ef40fb6e7c16cbec2dc23cf1a3",
+  citation = citation_era5
+)
 
 #' @export
 #' @rdname data_locations

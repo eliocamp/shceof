@@ -213,6 +213,20 @@ request_era5_2mt <- list(
 )
 
 
+request_jet <- list(
+  format = "netcdf",
+  product_type = "monthly_averaged_reanalysis",
+  variable = c("u_component_of_wind"),
+  pressure_level = c("10"),
+  year = as.character(1979:2020),
+  month = formatC(9:11, width = 2, flag = 0),   # Need all months to compute PSA
+  time = "00:00",
+  grid = c("2.5", "2.5"),
+  area = southern_hemisphere,
+  dataset_short_name = "reanalysis-era5-pressure-levels-monthly-means"
+)
+
+
 
 simple_download <- function(url) {
   force(url)

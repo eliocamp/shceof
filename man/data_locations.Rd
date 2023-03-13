@@ -5,6 +5,7 @@
 \alias{ERA5_TOC}
 \alias{ERA5_geopotential}
 \alias{ERA5_geopotential_all}
+\alias{ERA5_jet}
 \alias{ERA5_temperature}
 \alias{ERA5_vorticity}
 \alias{ERA5_ozone}
@@ -25,6 +26,8 @@ ERA5_TOC(from_source = FALSE)
 ERA5_geopotential(from_source = FALSE)
 
 ERA5_geopotential_all(from_source = FALSE)
+
+ERA5_jet(from_source = FALSE)
 
 ERA5_temperature(from_source = FALSE)
 
