@@ -58,6 +58,8 @@ bibliography:
 # bibstyle: spbasic
 
 output: 
+  bookdown::html_document2:
+      code_folding: "hide"
   # bookdown::word_document2:
   #     pandoc_args: ["--lua-filter=abstract-to-meta.lua", "--wrap=preserve"]
   bookdown::pdf_document2:
@@ -89,7 +91,7 @@ knitr::opts_chunk$set(
   cache.path = "../cache/paper/",
   # fig.path = "../figures/",
   dpi = 300,
-  dev = c("pdf", "png")
+  dev = if (knitr::is_html_output()) c("png") else c("pdf", "png")
 )
 
 width_column <- 3.3
@@ -2248,3 +2250,5 @@ plot_sst_psi(sst_regr[cEOF == "cEOF1"], psi_regr[cEOF == "cEOF1"], min.mag = 0.0
 ```{r pp-temp-1, fig.cap="(ref:pp-temp-cap-1)", fig.width=6.6, fig.height=5.5, dependson="plot_pp"}
 plot_pp(pp_regr[cEOF == "cEOF1"], t2m_regr[cEOF == "cEOF1"], hgt850_regr[cEOF == "cEOF1"])
 ```
+
+
