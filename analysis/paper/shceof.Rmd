@@ -60,6 +60,8 @@ link-citations: true
 output: 
   bookdown::gitbook:
       global_numbering: true
+      config:
+        sharing: false 
 
   bookdown::html_document2:
       code_folding: "hide"
