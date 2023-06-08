@@ -55,9 +55,12 @@ bibliography:
   - data.bib
   - packages.bib
 
+link-citations: true
 # bibstyle: spbasic
-
 output: 
+  bookdown::gitbook:
+      global_numbering: true
+
   bookdown::html_document2:
       code_folding: "hide"
   # bookdown::word_document2:
@@ -80,6 +83,7 @@ header-includes:
 ---
 
 ```{r setup, echo = FALSE, warning=FALSE, message=FALSE}
+format <- knitr::pandoc_to()
 knitr::opts_chunk$set(
   collapse = TRUE,
   warning = FALSE,
@@ -87,8 +91,8 @@ knitr::opts_chunk$set(
   echo = FALSE,
   cache = TRUE,
   comment = "#>",
-  cache.extra = 41,
-  cache.path = "../cache/paper/",
+  cache.extra = 42,
+  cache.path = paste0("../cache/paper/", format, "/"),
   # fig.path = "../figures/",
   dpi = 300,
   dev = if (knitr::is_html_output()) c("png") else c("pdf", "png")
